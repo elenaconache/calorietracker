@@ -79,7 +79,7 @@ class _FoodSearchViewState extends State<FoodSearchView> {
                           )),
                       SliverList(
                           delegate: SliverChildBuilderDelegate((context, index) => FoodItem(foodResponse: searchResponse.data!.commonFoods[index]),
-                              childCount: searchResponse.data!.brandedFoods.length)),
+                              childCount: searchResponse.data!.commonFoods.length)),
                       SliverPadding(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                           sliver: SliverToBoxAdapter(
