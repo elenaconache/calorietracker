@@ -26,4 +26,11 @@ class AppStrings {
   static String get generalErrorMessage => S.current.generalErrorMessage;
 
   static String get poweredByNutritionixLabel => S.current.poweredByNutritionixLabel;
+
+  static String caloriesServingShortLabel(calories, servingQuantity, servingUnit) =>
+      S.current.caloriesServingShortLabel(calories, servingQuantity, servingUnit);
+
+  static String get commonLabel => S.current.commonLabel;
+
+  static String get brandedLabel => S.current.brandedLabel;
 }

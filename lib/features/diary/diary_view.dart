@@ -50,10 +50,10 @@ class DiaryView extends StatelessWidget {
                   builder: (context, value, child) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          NutrientItem(value: diaryService.todayNutritionalInfo.carbohydrates, name: AppStrings.carbsLabel),
-                          NutrientItem(value: diaryService.todayNutritionalInfo.fat, name: AppStrings.fatLabel),
-                          NutrientItem(value: diaryService.todayNutritionalInfo.protein, name: AppStrings.proteinLabel),
-                          NutrientItem(value: diaryService.todayNutritionalInfo.calories, name: AppStrings.caloriesLabel),
+                          NutrientItem(value: diaryService.todayNutritionalInfo.carbohydrates ?? 0, name: AppStrings.carbsLabel),
+                          NutrientItem(value: diaryService.todayNutritionalInfo.fat ?? 0, name: AppStrings.fatLabel),
+                          NutrientItem(value: diaryService.todayNutritionalInfo.protein ?? 0, name: AppStrings.proteinLabel),
+                          NutrientItem(value: diaryService.todayNutritionalInfo.calories ?? 0, name: AppStrings.caloriesLabel),
                         ],
                       )),
             ),
@@ -81,11 +81,10 @@ class DiaryView extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 24),
                           child: SizedBox(
                               width: double.infinity,
-                              child: ElevatedButton(
+                              child: FilledButton.tonal(
                                 onPressed: () => _openSearchFoodScreen(context),
                                 child: Text(
                                   AppStrings.addFoodLabel.toUpperCase(),
-                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               )))))),
         ],

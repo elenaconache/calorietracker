@@ -3,6 +3,7 @@ import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:calorietracker/providers/dio_provider.dart';
 import 'package:calorietracker/service/date_formatting_service.dart';
 import 'package:calorietracker/service/diary_service.dart';
+import 'package:calorietracker/service/numeric_formatting_service.dart';
 import 'package:calorietracker/service/nutritionix_api_service.dart';
 import 'package:get_it/get_it.dart';
 
@@ -14,6 +15,7 @@ void setupLocator() {
   locator.registerLazySingleton<DateFormattingService>(() => DateFormattingService());
   locator.registerLazySingleton<DiaryService>(() => DiaryService());
   locator.registerLazySingleton<DioProvider>(() => DioProvider());
+  locator.registerLazySingleton<NumericFormattingService>(() => NumericFormattingService());
 
   locator.registerLazySingletonAsync<AppPathProvider>(() async {
     final appPathProvider = AppPathProvider();

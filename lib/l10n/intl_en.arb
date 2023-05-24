@@ -12,5 +12,21 @@
   "searchFoodsLabel": "Search food",
   "searchForFoodLabel": "Search for a food",
   "generalErrorMessage": "An error occurred.",
-  "poweredByNutritionixLabel": "Powered by Nutritionix"
+  "poweredByNutritionixLabel": "Powered by Nutritionix",
+  "caloriesServingShortLabel": "{calories} cal, {servingQuantity} {servingUnit}",
+  "@caloriesServingShortLabel": {
+    "placeholder": {
+      "calories": {
+        "type": "String"
+      },
+      "servingQuantity": {
+        "type": "String"
+      },
+      "servingUnit": {
+        "type": "String"
+      }
+    }
+  },
+  "commonLabel": "Common",
+  "brandedLabel": "Branded"
 }

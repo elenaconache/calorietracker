@@ -1,0 +1,21 @@
+enum Nutrient {
+  calories,
+  fat,
+  fatSaturated,
+  fatTrans,
+  fatPolyunsaturated,
+  fatMonounsaturated,
+  cholesterol,
+  carbohydrates,
+  fiber,
+  sugar,
+  protein,
+  sodium,
+  magnesium,
+  potassium,
+  calcium,
+  iron,
+  vitaminA,
+  vitaminC,
+  vitaminD
+}

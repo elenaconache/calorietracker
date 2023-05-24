@@ -20,12 +20,17 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(calories, servingQuantity, servingUnit) => "${calories} cal, ${servingQuantity} ${servingUnit}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addFoodLabel": MessageLookupByLibrary.simpleMessage("Add food"),
+        "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
         "caloriesLabel": MessageLookupByLibrary.simpleMessage("Calories"),
+        "caloriesServingShortLabel": m0,
         "carbsLabel": MessageLookupByLibrary.simpleMessage("Carbs"),
+        "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "diaryTitle": MessageLookupByLibrary.simpleMessage("Diary"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
         "generalErrorMessage": MessageLookupByLibrary.simpleMessage("An error occurred."),
