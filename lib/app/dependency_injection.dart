@@ -1,4 +1,4 @@
-import 'package:calorietracker/features/food_search/food_search_controller.dart';
+import 'package:calorietracker/features/food_search/food_search_service.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:calorietracker/providers/dio_provider.dart';
 import 'package:calorietracker/service/date_formatting_service.dart';
@@ -15,6 +15,7 @@ void setupLocator() {
   locator.registerLazySingleton<DateFormattingService>(() => DateFormattingService());
   locator.registerLazySingleton<DiaryService>(() => DiaryService());
   locator.registerLazySingleton<DioProvider>(() => DioProvider());
+  locator.registerLazySingleton<FoodSearchService>(() => FoodSearchService());
   locator.registerLazySingleton<NumericFormattingService>(() => NumericFormattingService());
 
   locator.registerLazySingletonAsync<AppPathProvider>(() async {
@@ -28,6 +29,4 @@ void setupLocator() {
       'x-app-key': '26f2d40ca353d5ece308c4db6b5d0c52'
     }));
   });
-
-  locator.registerFactory<FoodSearchController>(() => FoodSearchController());
 }

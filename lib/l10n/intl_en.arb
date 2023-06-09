@@ -28,5 +28,6 @@
     }
   },
   "commonLabel": "Common",
-  "brandedLabel": "Branded"
+  "brandedLabel": "Branded",
+  "noResultsTitle": "There were no results matching your search"
 }

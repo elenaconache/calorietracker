@@ -19,7 +19,9 @@ class FoodItem extends StatelessWidget {
         child: InkWell(
             onTap: () {},
             child: Ink(
-                decoration: BoxDecoration(border: Border(top: BorderSide(color: Theme.of(context).dividerColor, width: 0.2))),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    border: Border(top: BorderSide(color: Theme.of(context).dividerColor, width: 0.2))),
                 child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Column(children: [
@@ -56,11 +58,4 @@ class FoodItem extends StatelessWidget {
                       ])
                     ])))));
   }
-
-// ButtonStyle _getIconButtonStyle(BuildContext context) => ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) {
-//       if (states.contains(MaterialState.pressed)) {
-//         return Theme.of(context).colorScheme.primary.withOpacity(0.5);
-//       }
-//       return Theme.of(context).colorScheme.primary;
-//     }));
 }

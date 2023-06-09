@@ -206,6 +206,16 @@ class S {
       args: [],
     );
   }
+
+  /// `There were no results matching your search`
+  String get noResultsTitle {
+    return Intl.message(
+      'There were no results matching your search',
+      name: 'noResultsTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

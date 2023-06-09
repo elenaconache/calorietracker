@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
         "generalErrorMessage": MessageLookupByLibrary.simpleMessage("An error occurred."),
         "mealsLabel": MessageLookupByLibrary.simpleMessage("Meals"),
+        "noResultsTitle": MessageLookupByLibrary.simpleMessage("There were no results matching your search"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
         "poweredByNutritionixLabel": MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),

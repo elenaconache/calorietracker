@@ -33,4 +33,6 @@ class AppStrings {
   static String get commonLabel => S.current.commonLabel;
 
   static String get brandedLabel => S.current.brandedLabel;
+
+  static String get noResultsTitle => S.current.noResultsTitle;
 }
