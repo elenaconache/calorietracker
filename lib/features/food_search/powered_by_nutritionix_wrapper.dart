@@ -18,7 +18,7 @@ class PoweredByNutritionixWrapper extends StatelessWidget {
         AppStrings.poweredByNutritionixLabel,
         style: Theme.of(context).textTheme.bodySmall,
       )),
-      const SizedBox(height: 24),
+      const SizedBox(height: 16),
     ]);
   }
 }
