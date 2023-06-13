@@ -13,10 +13,12 @@ class FoodSearchView extends StatefulWidget {
 
 class _FoodSearchViewState extends State<FoodSearchView> {
   late final FoodSearchService _foodSearchService;
+  late final TextEditingController _searchQueryTextController;
 
   @override
   void initState() {
     _foodSearchService = locator<FoodSearchService>();
+    _searchQueryTextController = TextEditingController();
     super.initState();
   }
 
@@ -42,14 +44,21 @@ class _FoodSearchViewState extends State<FoodSearchView> {
                 decoration: InputDecoration(
                   border: _defaultBorder,
                   focusedBorder: _buildFocusedBorder(context),
-                  isDense: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
                   prefixIcon: const Icon(
                     Icons.search,
                     size: 24,
                   ),
+                  suffixIcon: IconButton(
+                    icon: const Icon(
+                      Icons.clear,
+                      size: 24,
+                    ),
+                    onPressed: _clearSearchQuery,
+                  ),
                   labelText: AppStrings.searchForFoodLabel,
                 ),
+                controller: _searchQueryTextController,
                 cursorWidth: 1,
                 textInputAction: TextInputAction.search,
                 onSubmitted: (query) => _foodSearchService.searchNutritionix(query: query),
@@ -65,4 +74,6 @@ class _FoodSearchViewState extends State<FoodSearchView> {
 
   OutlineInputBorder _buildFocusedBorder(BuildContext context) =>
       OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1));
+
+  void _clearSearchQuery() => _searchQueryTextController.clear();
 }
