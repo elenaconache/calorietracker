@@ -40,7 +40,7 @@ dependencies:
   dio_cache_interceptor: ^3.3.1
   path_provider: ^2.0.11
   dio_cache_interceptor_hive_store: ^3.1.0
-  dynamic_color: ^1.6.5
+  flutter_svg: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +57,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/
+    - assets/icons/
 
 flutter_intl:
   enabled: true

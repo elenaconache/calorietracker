@@ -1,8 +1,10 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
 import 'package:calorietracker/features/food_search/search_results_section.dart';
 import 'package:calorietracker/ui/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class FoodSearchView extends StatefulWidget {
   const FoodSearchView({super.key});
@@ -40,29 +42,42 @@ class _FoodSearchViewState extends State<FoodSearchView> {
         children: [
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: _defaultBorder,
-                  focusedBorder: _buildFocusedBorder(context),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    size: 24,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: const Icon(
-                      Icons.clear,
+              child: Row(children: [
+                Expanded(
+                    child: TextField(
+                  decoration: InputDecoration(
+                    border: _defaultBorder,
+                    focusedBorder: _buildFocusedBorder(context),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                    prefixIcon: const Icon(
+                      Icons.search,
                       size: 24,
                     ),
-                    onPressed: _clearSearchQuery,
+                    suffixIcon: IconButton(
+                      icon: const Icon(
+                        Icons.clear,
+                        size: 24,
+                      ),
+                      onPressed: _clearSearchQuery,
+                    ),
+                    labelText: AppStrings.searchForFoodLabel,
                   ),
-                  labelText: AppStrings.searchForFoodLabel,
-                ),
-                controller: _searchQueryTextController,
-                cursorWidth: 1,
-                textInputAction: TextInputAction.search,
-                onSubmitted: (query) => _foodSearchService.searchNutritionix(query: query),
-              )),
+                  controller: _searchQueryTextController,
+                  cursorWidth: 1,
+                  textInputAction: TextInputAction.search,
+                  onSubmitted: (query) => _foodSearchService.searchNutritionix(query: query),
+                )),
+                const SizedBox(width: 12),
+                IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/barcode_scanner.svg',
+                    width: 32,
+                    height: 32,
+                    colorFilter: ColorFilter.mode(Theme.of(context).iconTheme.color ?? primaryColor, BlendMode.srcIn),
+                  ),
+                  onPressed: () {},
+                )
+              ])),
           const Expanded(child: SearchResultsSection()),
         ],
       ),
