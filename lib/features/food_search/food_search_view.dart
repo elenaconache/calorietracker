@@ -75,5 +75,8 @@ class _FoodSearchViewState extends State<FoodSearchView> {
   OutlineInputBorder _buildFocusedBorder(BuildContext context) =>
       OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1));
 
-  void _clearSearchQuery() => _searchQueryTextController.clear();
+  void _clearSearchQuery() {
+    _searchQueryTextController.clear();
+    _foodSearchService.clearResults();
+  }
 }
