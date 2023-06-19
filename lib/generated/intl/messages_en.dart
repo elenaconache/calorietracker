@@ -22,25 +22,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(calories, servingQuantity, servingUnit) => "${calories} cal, ${servingQuantity} ${servingUnit}";
 
+  static String m1(calories) => "${calories} cal";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addFoodLabel": MessageLookupByLibrary.simpleMessage("Add food"),
         "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
+        "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
         "caloriesLabel": MessageLookupByLibrary.simpleMessage("Calories"),
         "caloriesServingShortLabel": m0,
+        "caloriesShortLabel": m1,
         "carbsLabel": MessageLookupByLibrary.simpleMessage("Carbs"),
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "diaryTitle": MessageLookupByLibrary.simpleMessage("Diary"),
+        "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dinner"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
         "generalErrorMessage": MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
         "mealsLabel": MessageLookupByLibrary.simpleMessage("Meals"),
+        "noFoodLoggedMessage": MessageLookupByLibrary.simpleMessage("You didn\'t log foods for this meal yet."),
         "noResultsTitle": MessageLookupByLibrary.simpleMessage("There were no results matching your search"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
         "poweredByNutritionixLabel": MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
         "searchForFoodLabel": MessageLookupByLibrary.simpleMessage("Search for a food"),
+        "snacksLabel": MessageLookupByLibrary.simpleMessage("Snacks"),
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today")
       };
 }

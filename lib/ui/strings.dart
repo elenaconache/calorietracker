@@ -35,4 +35,16 @@ class AppStrings {
   static String get brandedLabel => S.current.brandedLabel;
 
   static String get noResultsTitle => S.current.noResultsTitle;
+
+  static String get breakfastLabel => S.current.breakfastLabel;
+
+  static String get lunchLabel => S.current.lunchLabel;
+
+  static String get dinnerLabel => S.current.dinnerLabel;
+
+  static String get snacksLabel => S.current.snacksLabel;
+
+  static String get noFoodLoggedMessage => S.current.noFoodLoggedMessage;
+
+  static String caloriesShortLabel(int calories) => S.current.caloriesShortLabel(calories);
 }

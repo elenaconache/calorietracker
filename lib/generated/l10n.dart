@@ -216,6 +216,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Breakfast`
+  String get breakfastLabel {
+    return Intl.message(
+      'Breakfast',
+      name: 'breakfastLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lunch`
+  String get lunchLabel {
+    return Intl.message(
+      'Lunch',
+      name: 'lunchLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dinner`
+  String get dinnerLabel {
+    return Intl.message(
+      'Dinner',
+      name: 'dinnerLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Snacks`
+  String get snacksLabel {
+    return Intl.message(
+      'Snacks',
+      name: 'snacksLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You didn't log foods for this meal yet.`
+  String get noFoodLoggedMessage {
+    return Intl.message(
+      'You didn\'t log foods for this meal yet.',
+      name: 'noFoodLoggedMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{calories} cal`
+  String caloriesShortLabel(Object calories) {
+    return Intl.message(
+      '$calories cal',
+      name: 'caloriesShortLabel',
+      desc: '',
+      args: [calories],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

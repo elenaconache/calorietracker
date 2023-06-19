@@ -2,12 +2,15 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
 import 'package:calorietracker/features/food_search/search_results_section.dart';
+import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class FoodSearchView extends StatefulWidget {
-  const FoodSearchView({super.key});
+  final Meal meal;
+
+  const FoodSearchView({super.key, required this.meal});
 
   @override
   State<FoodSearchView> createState() => _FoodSearchViewState();
@@ -78,7 +81,7 @@ class _FoodSearchViewState extends State<FoodSearchView> {
                   onPressed: () {},
                 )
               ])),
-          const Expanded(child: SearchResultsSection()),
+          Expanded(child: SearchResultsSection(meal: widget.meal)),
         ],
       ),
     );

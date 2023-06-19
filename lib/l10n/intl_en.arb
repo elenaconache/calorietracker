@@ -29,5 +29,18 @@
   },
   "commonLabel": "Common",
   "brandedLabel": "Branded",
-  "noResultsTitle": "There were no results matching your search"
+  "noResultsTitle": "There were no results matching your search",
+  "breakfastLabel": "Breakfast",
+  "lunchLabel": "Lunch",
+  "dinnerLabel": "Dinner",
+  "snacksLabel": "Snacks",
+  "noFoodLoggedMessage": "You didn't log foods for this meal yet.",
+  "caloriesShortLabel": "{calories} cal",
+  "@caloriesShortLabel": {
+    "placeholder": {
+      "calories": {
+        "type": "int"
+      }
+    }
+  }
 }

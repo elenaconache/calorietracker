@@ -1,6 +1,8 @@
 enum Routes {
   diary('/'),
-  foodSearch('/foodSearch');
+  foodSearch('/foodSearch'),
+  addFood('addFood'),
+  unknown('/unknown');
 
   final String path;
 

@@ -1,5 +1,7 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_food_response.dart';
+import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/service/numeric_formatting_service.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/strings.dart';
@@ -7,17 +9,18 @@ import 'package:flutter/material.dart';
 
 class FoodItem extends StatelessWidget {
   final NutritionixFoodResponse foodResponse;
+  final Meal meal;
 
   //TODO: create a shared model for UI and convert from either Nutritionix or private API
 
-  const FoodItem({super.key, required this.foodResponse});
+  const FoodItem({super.key, required this.foodResponse, required this.meal});
 
   @override
   Widget build(BuildContext context) {
     final numericFormatter = locator<NumericFormattingService>();
     return Material(
         child: InkWell(
-            onTap: () {},
+            onTap: () => _navigateToAddFood(context),
             child: Ink(
                 decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
@@ -58,4 +61,6 @@ class FoodItem extends StatelessWidget {
                       ])
                     ])))));
   }
+
+  void _navigateToAddFood(BuildContext context) => Navigator.pushNamed(context, Routes.addFood.path, arguments: meal);
 }

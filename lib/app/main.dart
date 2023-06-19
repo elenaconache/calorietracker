@@ -1,7 +1,9 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/features/add_food/add_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/food_search/food_search_view.dart';
 import 'package:calorietracker/generated/l10n.dart';
+import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Calorie tracker',
       initialRoute: Routes.diary.path,
-      routes: {Routes.diary.path: (context) => const DiaryView(), Routes.foodSearch.path: (context) => const FoodSearchView()},
+      onGenerateRoute: _onGenerateRoute,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -44,5 +46,20 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
     );
+  }
+
+  Route? _onGenerateRoute(RouteSettings settings) {
+    final matchingRoute = Routes.values.firstWhere((route) => route.path == settings.name, orElse: () => Routes.unknown);
+    final args = settings.arguments;
+    switch (matchingRoute) {
+      case Routes.diary:
+        return MaterialPageRoute(builder: (context) => const DiaryView());
+      case Routes.foodSearch:
+        return MaterialPageRoute(builder: (context) => FoodSearchView(meal: args as Meal));
+      case Routes.addFood:
+        return MaterialPageRoute(builder: (context) => AddFoodView(meal: args as Meal));
+      default:
+        return null;
+    }
   }
 }

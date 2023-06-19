@@ -1,11 +1,14 @@
 import 'package:calorietracker/features/food_search/branded_results_section.dart';
 import 'package:calorietracker/features/food_search/common_results_section.dart';
 import 'package:calorietracker/features/food_search/powered_by_nutritionix_wrapper.dart';
+import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/strings.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultsSection extends StatefulWidget {
-  const SearchResultsSection({Key? key}) : super(key: key);
+  final Meal meal;
+
+  const SearchResultsSection({Key? key, required this.meal}) : super(key: key);
 
   @override
   State<SearchResultsSection> createState() => _SearchResultsSectionState();
@@ -41,9 +44,9 @@ class _SearchResultsSectionState extends State<SearchResultsSection> with Single
         controller: _tabController,
       ),
       Expanded(
-          child: TabBarView(controller: _tabController, children: const [
-        PoweredByNutritionixWrapper(child: CommonResultsSection()),
-        PoweredByNutritionixWrapper(child: BrandedResultsSection()),
+          child: TabBarView(controller: _tabController, children: [
+        PoweredByNutritionixWrapper(child: CommonResultsSection(meal: widget.meal)),
+        PoweredByNutritionixWrapper(child: BrandedResultsSection(meal: widget.meal)),
       ]))
     ]);
   }
