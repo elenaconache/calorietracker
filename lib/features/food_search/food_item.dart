@@ -1,4 +1,5 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_food_response.dart';
 import 'package:calorietracker/navigation/routes.dart';
@@ -53,14 +54,20 @@ class FoodItem extends StatelessWidget {
                           )
                         ])),
                         const SizedBox(width: 24),
-                        FloatingActionButton(
-                          mini: true,
-                          onPressed: () {},
-                          child: const Icon(Icons.add),
-                        )
+                        SizedBox(
+                            width: 48,
+                            height: 48,
+                            child: Ink(
+                                decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor),
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.add),
+                                )))
                       ])
                     ])))));
   }
 
-  void _navigateToAddFood(BuildContext context) => Navigator.pushNamed(context, Routes.addFood.path, arguments: meal);
+  void _navigateToAddFood(BuildContext context) =>
+      Navigator.pushNamed(context, Routes.addFood.path, arguments: AddFoodArguments(meal: meal, food: foodResponse));
 }

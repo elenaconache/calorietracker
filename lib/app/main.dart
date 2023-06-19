@@ -1,4 +1,5 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/food_search/food_search_view.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
       case Routes.foodSearch:
         return MaterialPageRoute(builder: (context) => FoodSearchView(meal: args as Meal));
       case Routes.addFood:
-        return MaterialPageRoute(builder: (context) => AddFoodView(meal: args as Meal));
+        return MaterialPageRoute(builder: (context) => AddFoodView(args: args as AddFoodArguments));
       default:
         return null;
     }
