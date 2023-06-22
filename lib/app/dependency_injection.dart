@@ -1,3 +1,4 @@
+import 'package:calorietracker/features/add_food/add_food_controller.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:calorietracker/providers/dio_provider.dart';
@@ -5,6 +6,7 @@ import 'package:calorietracker/service/date_formatting_service.dart';
 import 'package:calorietracker/service/diary_service.dart';
 import 'package:calorietracker/service/numeric_formatting_service.dart';
 import 'package:calorietracker/service/nutritionix_api_service.dart';
+import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_controller.dart';
 import 'package:get_it/get_it.dart';
 
 final GetIt locator = GetIt.instance;
@@ -12,6 +14,9 @@ final GetIt locator = GetIt.instance;
 const _nutritionixApiBaseUrl = 'https://trackapi.nutritionix.com/';
 
 void setupLocator() {
+  locator.registerFactory<AddFoodController>(() => AddFoodController());
+  locator.registerFactory<AppDropdownButtonController>(() => AppDropdownButtonController());
+
   locator.registerLazySingleton<DateFormattingService>(() => DateFormattingService());
   locator.registerLazySingleton<DiaryService>(() => DiaryService());
   locator.registerLazySingleton<DioProvider>(() => DioProvider());

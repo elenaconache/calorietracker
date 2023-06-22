@@ -276,6 +276,16 @@ class S {
       args: [calories],
     );
   }
+
+  /// `Meal`
+  String get mealLabel {
+    return Intl.message(
+      'Meal',
+      name: 'mealLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

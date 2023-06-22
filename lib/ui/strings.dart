@@ -47,4 +47,6 @@ class AppStrings {
   static String get noFoodLoggedMessage => S.current.noFoodLoggedMessage;
 
   static String caloriesShortLabel(int calories) => S.current.caloriesShortLabel(calories);
+
+  static String get mealLabel => S.current.mealLabel;
 }

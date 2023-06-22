@@ -42,5 +42,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "mealLabel": "Meal"
 }
