@@ -286,6 +286,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Servings`
+  String get servingsLabel {
+    return Intl.message(
+      'Servings',
+      name: 'servingsLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

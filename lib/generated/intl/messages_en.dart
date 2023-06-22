@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
         "searchForFoodLabel": MessageLookupByLibrary.simpleMessage("Search for a food"),
+        "servingsLabel": MessageLookupByLibrary.simpleMessage("Servings"),
         "snacksLabel": MessageLookupByLibrary.simpleMessage("Snacks"),
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today")
       };

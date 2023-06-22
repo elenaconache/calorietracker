@@ -3,6 +3,7 @@ import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
+import 'package:calorietracker/ui/components/app_text_field.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button.dart';
 import 'package:calorietracker/ui/strings.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,21 @@ class AddFoodView extends StatefulWidget {
 
 class _AddFoodViewState extends State<AddFoodView> {
   late final AddFoodController _controller;
+  late final TextEditingController _servingsCountController;
 
   @override
   void initState() {
     _controller = locator<AddFoodController>();
     _controller.selectMeal(meal: widget.args.meal);
+
+    _servingsCountController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _servingsCountController.dispose();
+    super.dispose();
   }
 
   @override
@@ -68,7 +78,17 @@ class _AddFoodViewState extends State<AddFoodView> {
                         optionNameMapper: _mealToNameMapper,
                         options: Meal.values,
                         selectedOption: selection,
-                      )))
+                      ))),
+          const SizedBox(height: 12),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: AppTextField(
+                labelText: AppStrings.servingsLabel,
+                suffixIcon: Icons.clear,
+                onSuffixIconPressed: _clearServingsCount,
+                controller: _servingsCountController,
+                inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
+              ))
         ])));
   }
 
@@ -86,4 +106,6 @@ class _AddFoodViewState extends State<AddFoodView> {
         return '';
     }
   }
+
+  void _clearServingsCount() => _servingsCountController.clear();
 }

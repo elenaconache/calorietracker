@@ -43,5 +43,6 @@
       }
     }
   },
-  "mealLabel": "Meal"
+  "mealLabel": "Meal",
+  "servingsLabel": "Servings"
 }
