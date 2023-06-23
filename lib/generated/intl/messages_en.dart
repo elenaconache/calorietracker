@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
         "caloriesLabel": MessageLookupByLibrary.simpleMessage("Calories"),
         "caloriesServingShortLabel": m0,
+        "caloriesShortGenericLabel": MessageLookupByLibrary.simpleMessage("cal"),
         "caloriesShortLabel": m1,
         "carbsLabel": MessageLookupByLibrary.simpleMessage("Carbs"),
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
@@ -49,7 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
         "searchForFoodLabel": MessageLookupByLibrary.simpleMessage("Search for a food"),
-        "servingsLabel": MessageLookupByLibrary.simpleMessage("Servings"),
+        "servingsLabel": MessageLookupByLibrary.simpleMessage("Serving size (grams)"),
         "snacksLabel": MessageLookupByLibrary.simpleMessage("Snacks"),
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today")
       };

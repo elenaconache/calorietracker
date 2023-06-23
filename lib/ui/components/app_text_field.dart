@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO: on tap outside, should clear focus from this text field
 class AppTextField extends StatelessWidget {
   final IconData? suffixIcon;
   final IconData? prefixIcon;
@@ -9,6 +10,8 @@ class AppTextField extends StatelessWidget {
   final TextInputAction? action;
   final Function(String)? onSubmitted;
   final TextInputType? inputType;
+  final int? maxLength;
+  final bool autofocus;
 
   const AppTextField({
     super.key,
@@ -20,35 +23,39 @@ class AppTextField extends StatelessWidget {
     this.onSubmitted,
     this.prefixIcon,
     this.inputType,
+    this.maxLength,
+    this.autofocus = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        border: _defaultBorder,
-        focusedBorder: _buildFocusedBorder(context),
-        contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: prefixIcon != null ? 0 : 16, right: suffixIcon != null ? 0 : 16),
-        prefixIcon: prefixIcon != null
-            ? Icon(
-                prefixIcon,
-                size: 24,
-              )
-            : null,
-        suffixIcon: IconButton(
-          icon: Icon(
-            suffixIcon,
-            size: 24,
+          border: _defaultBorder,
+          focusedBorder: _buildFocusedBorder(context),
+          contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: prefixIcon != null ? 0 : 16, right: suffixIcon != null ? 0 : 16),
+          prefixIcon: prefixIcon != null
+              ? Icon(
+                  prefixIcon,
+                  size: 24,
+                )
+              : null,
+          suffixIcon: IconButton(
+            icon: Icon(
+              suffixIcon,
+              size: 24,
+            ),
+            onPressed: onSuffixIconPressed,
           ),
-          onPressed: onSuffixIconPressed,
-        ),
-        labelText: labelText,
-      ),
+          labelText: labelText,
+          counter: const SizedBox.shrink()),
       controller: controller,
       cursorWidth: 1,
-      textInputAction: TextInputAction.search,
+      textInputAction: action,
       onSubmitted: onSubmitted,
       keyboardType: inputType,
+      maxLength: maxLength,
+      autofocus: autofocus,
     );
   }
 

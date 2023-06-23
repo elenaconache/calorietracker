@@ -1,6 +1,7 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
+import 'package:calorietracker/features/add_food/calories_macros_pie_chart.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
@@ -51,60 +52,63 @@ class _AddFoodViewState extends State<AddFoodView> {
           ],
         ),
         body: SingleChildScrollView(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
-              child: Text(
-                widget.args.food.name,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-              )),
-          if (widget.args.food.brandName != null)
-            Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: Text(
-                  widget.args.food.brandName!,
-                  style: Theme.of(context).textTheme.titleMedium,
-                )),
-          const SizedBox(height: 12),
-          const AppDivider(),
-          const SizedBox(height: 24),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ValueListenableBuilder(
-                  valueListenable: _controller.selectedMeal,
-                  builder: (context, selection, child) => AppDropdownButton<Meal>(
-                        hint: AppStrings.mealLabel,
-                        onChanged: (selectedMeal) => _controller.selectMeal(meal: selectedMeal),
-                        optionNameMapper: _mealToNameMapper,
-                        options: Meal.values,
-                        selectedOption: selection,
-                      ))),
-          const SizedBox(height: 12),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: AppTextField(
-                labelText: AppStrings.servingsLabel,
-                suffixIcon: Icons.clear,
-                onSuffixIconPressed: _clearServingsCount,
-                controller: _servingsCountController,
-                inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
-              ))
-        ])));
-  }
-
-  String _mealToNameMapper(meal) {
-    switch (meal) {
-      case Meal.breakfast:
-        return AppStrings.breakfastLabel;
-      case Meal.lunch:
-        return AppStrings.lunchLabel;
-      case Meal.dinner:
-        return AppStrings.dinnerLabel;
-      case Meal.snacks:
-        return AppStrings.snacksLabel;
-      default:
-        return '';
-    }
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
+                  child: Text(
+                    widget.args.food.name,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                  )),
+              if (widget.args.food.brandName != null)
+                Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Text(
+                      widget.args.food.brandName!,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    )),
+              const SizedBox(height: 12),
+              const AppDivider(),
+              const SizedBox(height: 24),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: AppTextField(
+                    labelText: AppStrings.servingsLabel,
+                    suffixIcon: Icons.clear,
+                    onSuffixIconPressed: _clearServingsCount,
+                    controller: _servingsCountController,
+                    inputType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                      signed: false,
+                    ),
+                    maxLength: 6,
+                    autofocus: true,
+                    action: TextInputAction.done,
+                  )),
+              const SizedBox(height: 16),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.selectedMeal,
+                      builder: (context, selection, child) => AppDropdownButton<Meal>(
+                            hint: AppStrings.mealLabel,
+                            onChanged: (selectedMeal) => _controller.selectMeal(meal: selectedMeal),
+                            optionNameMapper: (meal) => meal.label,
+                            options: Meal.values,
+                            selectedOption: selection,
+                          ))),
+              const SizedBox(height: 24),
+              const AppDivider(),
+              const Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [CaloriesMacrosPieChart(carbs: 10, fat: 20, protein: 30, calories: 240)],
+              ),
+              const SizedBox(width: 16),
+            ],
+          ),
+        ));
   }
 
   void _clearServingsCount() => _servingsCountController.clear();

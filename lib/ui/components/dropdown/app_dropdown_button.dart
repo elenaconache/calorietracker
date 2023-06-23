@@ -1,5 +1,5 @@
 import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/features/add_food/app_dropdown_button_content.dart';
+import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_content.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +8,7 @@ import 'app_dropdown_button_controller.dart';
 const _borderRadius = BorderRadius.all(Radius.circular(4.0));
 const _height = 48.0;
 
+// TODO: clear focus / show default decoration on tap outside or when pop up not opened
 class AppDropdownButton<T> extends StatefulWidget {
   final String hint;
   final List<T> options;

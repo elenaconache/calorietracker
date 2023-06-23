@@ -44,5 +44,6 @@
     }
   },
   "mealLabel": "Meal",
-  "servingsLabel": "Servings"
+  "servingsLabel": "Serving size (grams)",
+  "caloriesShortGenericLabel": "cal"
 }

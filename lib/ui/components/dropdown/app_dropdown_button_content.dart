@@ -19,7 +19,7 @@ class DropdownButtonContent<T> extends StatelessWidget {
           Expanded(
               child: Text(selectedOption != null ? optionNameMapper(selectedOption as T) : hint,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: selectedOption != null ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+                        color: selectedOption != null ? null : Theme.of(context).colorScheme.secondary,
                       ),
                   overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 16),

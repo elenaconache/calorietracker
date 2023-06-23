@@ -51,4 +51,6 @@ class AppStrings {
   static String get mealLabel => S.current.mealLabel;
 
   static String get servingsLabel => S.current.servingsLabel;
+
+  static String get caloriesShortGenericLabel => S.current.caloriesShortGenericLabel;
 }

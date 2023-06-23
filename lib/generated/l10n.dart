@@ -287,11 +287,21 @@ class S {
     );
   }
 
-  /// `Servings`
+  /// `Serving size (grams)`
   String get servingsLabel {
     return Intl.message(
-      'Servings',
+      'Serving size (grams)',
       name: 'servingsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `cal`
+  String get caloriesShortGenericLabel {
+    return Intl.message(
+      'cal',
+      name: 'caloriesShortGenericLabel',
       desc: '',
       args: [],
     );
