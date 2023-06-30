@@ -1,21 +1,28 @@
-import 'package:calorietracker/ui/colors.dart';
 import 'package:calorietracker/ui/strings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-const _carbsColor = melonYellow;
-const _fatColor = pastelTurquoise;
-const _proteinColor = carmineRed;
-const _pieChartEntryRadius = 10.0;
-const _pieChartSize = 140.0;
+const _pieChartEntryRadius = 8.0;
+const _pieChartSize = 130.0;
 
 class CaloriesMacrosPieChart extends StatelessWidget {
   final double carbs;
   final double fat;
   final double protein;
   final int calories;
+  final Color carbsColor;
+  final Color fatColor;
+  final Color proteinColor;
 
-  const CaloriesMacrosPieChart({super.key, required this.carbs, required this.fat, required this.protein, required this.calories});
+  const CaloriesMacrosPieChart(
+      {super.key,
+      required this.carbs,
+      required this.fat,
+      required this.protein,
+      required this.calories,
+      required this.carbsColor,
+      required this.fatColor,
+      required this.proteinColor});
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +49,19 @@ class CaloriesMacrosPieChart extends StatelessWidget {
 
   List<PieChartSectionData> get _macrosPieChartSections => [
         PieChartSectionData(
-          color: _carbsColor,
+          color: carbsColor,
           value: carbs,
           title: '',
           radius: _pieChartEntryRadius,
         ),
         PieChartSectionData(
-          color: _fatColor,
+          color: fatColor,
           value: fat,
           title: '',
           radius: _pieChartEntryRadius,
         ),
         PieChartSectionData(
-          color: _proteinColor,
+          color: proteinColor,
           value: protein,
           title: '',
           radius: _pieChartEntryRadius,

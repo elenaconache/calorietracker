@@ -5,28 +5,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'nutritionix_food_response.g.dart';
 
-const _nutrientAttribute = {
-  Nutrient.fat: 204,
-  Nutrient.fatSaturated: 606,
-  Nutrient.fatTrans: 605,
-  Nutrient.fatPolyunsaturated: 646,
-  Nutrient.fatMonounsaturated: 645,
-  Nutrient.cholesterol: 601,
-  Nutrient.carbohydrates: 205,
-  Nutrient.fiber: 291,
-  Nutrient.sugar: 269,
-  Nutrient.protein: 203,
-  Nutrient.sodium: 307,
-  Nutrient.magnesium: 304,
-  Nutrient.potassium: 306,
-  Nutrient.calcium: 301,
-  Nutrient.iron: 303,
-  Nutrient.vitaminA: 318,
-  Nutrient.vitaminC: 401,
-  Nutrient.vitaminD: 328,
-  Nutrient.calories: 208,
-};
-
 @JsonSerializable()
 class NutritionixFoodResponse {
   @JsonKey(name: 'food_name')
@@ -55,21 +33,65 @@ class NutritionixFoodResponse {
   Map<String, dynamic> toJson() => _$NutritionixFoodResponseToJson(this);
 
   @override
-  String toString() {
-    return toJson().toString();
-  }
+  String toString() => toJson().toString();
 
-  Nutrition get nutrition {
-    return Nutrition(
-      calories: nutrients
-          .firstWhere(
-            (element) => element.nutrientId == _nutrientAttribute[Nutrient.calories],
-            orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0),
-            //TODO: utility methods in nutritionix nutrient model to get calories and check if nutrient holds calories value
-          )
-          .value,
-    );
-  }
+  Nutrition get nutrition => Nutrition(
+        calories: _getNutrientValue(Nutrient.calories),
+        fat: _getNutrientValue(Nutrient.fat),
+        fatSaturated: _getNutrientValue(Nutrient.fatSaturated),
+        fatTrans: _getNutrientValue(Nutrient.fatTrans),
+        fatPolyunsaturated: _getNutrientValue(Nutrient.fatPolyunsaturated),
+        fatMonounsaturated: _getNutrientValue(Nutrient.fatMonounsaturated),
+        cholesterol: _getNutrientValue(Nutrient.cholesterol),
+        carbohydrates: _getNutrientValue(Nutrient.carbohydrates),
+        fiber: _getNutrientValue(Nutrient.fiber),
+        sugar: _getNutrientValue(Nutrient.sugar),
+        protein: _getNutrientValue(Nutrient.protein),
+        sodium: _getNutrientValue(Nutrient.sodium),
+        magnesium: _getNutrientValue(Nutrient.magnesium),
+        potassium: _getNutrientValue(Nutrient.potassium),
+        calcium: _getNutrientValue(Nutrient.calcium),
+        iron: _getNutrientValue(Nutrient.iron),
+        vitaminA: _getNutrientValue(Nutrient.vitaminA),
+        vitaminC: _getNutrientValue(Nutrient.vitaminC),
+        vitaminD: _getNutrientValue(Nutrient.vitaminD),
+      );
+
+  Nutrition get nutritionPer100Grams => Nutrition(
+        calories: _getNutrientValuePer100Grams(Nutrient.calories),
+        fat: _getNutrientValuePer100Grams(Nutrient.fat),
+        fatSaturated: _getNutrientValuePer100Grams(Nutrient.fatSaturated),
+        fatTrans: _getNutrientValuePer100Grams(Nutrient.fatTrans),
+        fatPolyunsaturated: _getNutrientValuePer100Grams(Nutrient.fatPolyunsaturated),
+        fatMonounsaturated: _getNutrientValuePer100Grams(Nutrient.fatMonounsaturated),
+        cholesterol: _getNutrientValuePer100Grams(Nutrient.cholesterol),
+        carbohydrates: _getNutrientValuePer100Grams(Nutrient.carbohydrates),
+        fiber: _getNutrientValuePer100Grams(Nutrient.fiber),
+        sugar: _getNutrientValuePer100Grams(Nutrient.sugar),
+        protein: _getNutrientValuePer100Grams(Nutrient.protein),
+        sodium: _getNutrientValuePer100Grams(Nutrient.sodium),
+        magnesium: _getNutrientValuePer100Grams(Nutrient.magnesium),
+        potassium: _getNutrientValuePer100Grams(Nutrient.potassium),
+        calcium: _getNutrientValuePer100Grams(Nutrient.calcium),
+        iron: _getNutrientValuePer100Grams(Nutrient.iron),
+        vitaminA: _getNutrientValuePer100Grams(Nutrient.vitaminA),
+        vitaminC: _getNutrientValuePer100Grams(Nutrient.vitaminC),
+        vitaminD: _getNutrientValuePer100Grams(Nutrient.vitaminD),
+      );
+
+  double _getNutrientValuePer100Grams(Nutrient nutrient) => !hasMeasurementInfo
+      ? 0
+      : nutrients
+              .firstWhere((element) => element.matchesNutrient(nutrient: nutrient), orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0))
+              .value /
+          servingWeightGrams! *
+          100;
+
+  double _getNutrientValue(Nutrient nutrient) => !hasMeasurementInfo
+      ? 0
+      : nutrients
+          .firstWhere((element) => element.matchesNutrient(nutrient: nutrient), orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0))
+          .value;
 
   bool get hasMeasurementInfo => servingWeightGrams != null && servingQuantity != null && servingUnit != null;
 }

@@ -1,5 +1,6 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
+import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_food_response.dart';
 import 'package:calorietracker/navigation/routes.dart';
@@ -11,8 +12,6 @@ import 'package:flutter/material.dart';
 class FoodItem extends StatelessWidget {
   final NutritionixFoodResponse foodResponse;
   final Meal meal;
-
-  //TODO: create a shared model for UI and convert from either Nutritionix or private API
 
   const FoodItem({super.key, required this.foodResponse, required this.meal});
 
@@ -68,6 +67,6 @@ class FoodItem extends StatelessWidget {
                     ])))));
   }
 
-  void _navigateToAddFood(BuildContext context) =>
-      Navigator.pushNamed(context, Routes.addFood.path, arguments: AddFoodArguments(meal: meal, food: foodResponse));
+  void _navigateToAddFood(BuildContext context) => Navigator.pushNamed(context, Routes.addFood.path,
+      arguments: AddFoodArguments(meal: meal, food: Food.nutritionix(nutritionixFoodResponse: foodResponse)));
 }

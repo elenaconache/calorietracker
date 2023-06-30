@@ -1,7 +1,7 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
-import 'package:calorietracker/features/add_food/calories_macros_pie_chart.dart';
+import 'package:calorietracker/features/add_food/calories_macros_section.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
@@ -26,14 +26,22 @@ class _AddFoodViewState extends State<AddFoodView> {
   void initState() {
     _controller = locator<AddFoodController>();
     _controller.selectMeal(meal: widget.args.meal);
+    _controller.initializeNutrients(nutrition: widget.args.food.nutrition);
 
     _servingsCountController = TextEditingController();
+    _servingsCountController.text = 100.toString();
+    _servingsCountController.addListener(_onServingSizeChanged);
     super.initState();
   }
 
   @override
   void dispose() {
     _servingsCountController.dispose();
+    _controller.selectedMeal.dispose();
+    _controller.currentServingSizeNutrients.dispose();
+    _servingsCountController.removeListener(_onServingSizeChanged);
+    _servingsCountController.dispose();
+
     super.dispose();
   }
 
@@ -100,16 +108,25 @@ class _AddFoodViewState extends State<AddFoodView> {
                           ))),
               const SizedBox(height: 24),
               const AppDivider(),
-              const Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [CaloriesMacrosPieChart(carbs: 10, fat: 20, protein: 30, calories: 240)],
-              ),
-              const SizedBox(width: 16),
+              // TODO: extract model for this component's parameters
+              ValueListenableBuilder(
+                  valueListenable: _controller.currentServingSizeNutrients,
+                  builder: (context, value, child) => CaloriesMacrosSection(
+                      calories: _controller.calories,
+                      carbsPercentage: _controller.carbsPercentage,
+                      proteinPercentage: _controller.proteinPercentage,
+                      fatPercentage: _controller.fatPercentage,
+                      carbsInGrams: _controller.carbsInGrams,
+                      fatInGrams: _controller.fatInGrams,
+                      proteinInGrams: _controller.proteinInGrams)),
+              const SizedBox(height: 12),
+              const AppDivider(),
             ],
           ),
         ));
   }
 
   void _clearServingsCount() => _servingsCountController.clear();
+
+  void _onServingSizeChanged() => _controller.recalculateNutrition(servingSizeGrams: _servingsCountController.text);
 }
