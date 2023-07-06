@@ -53,4 +53,36 @@ class AppStrings {
   static String get servingsLabel => S.current.servingsLabel;
 
   static String get caloriesShortGenericLabel => S.current.caloriesShortGenericLabel;
+
+  static String get saturatedFatLabel => S.current.saturatedFatLabel;
+
+  static String get polyunsaturatedFatLabel => S.current.polyunsaturatedFatLabel;
+
+  static String get monounsaturatedFatLabel => S.current.monounsaturatedFatLabel;
+
+  static String get transFatLabel => S.current.transFatLabel;
+
+  static String get cholesterolLabel => S.current.cholesterolLabel;
+
+  static String get sodiumLabel => S.current.sodiumLabel;
+
+  static String get potassiumLabel => S.current.potassiumLabel;
+
+  static String get carbohydratesLabel => S.current.carbohydratesLabel;
+
+  static String get fiberLabel => S.current.fiberLabel;
+
+  static String get sugarLabel => S.current.sugarLabel;
+
+  static String get vitaminALabel => S.current.vitaminALabel;
+
+  static String get vitaminCLabel => S.current.vitaminCLabel;
+
+  static String get calciumLabel => S.current.calciumLabel;
+
+  static String get ironLabel => S.current.ironLabel;
+
+  static String get magnesiumLabel => S.current.magnesiumLabel;
+
+  static String get vitaminDLabel => S.current.vitaminDLabel;
 }

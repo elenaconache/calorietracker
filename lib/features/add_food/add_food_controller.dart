@@ -22,11 +22,13 @@ class AddFoodController {
 
   double get proteinInGrams => currentServingSizeNutrients.value?.protein ?? 0;
 
-  int get carbsPercentage => ((_nutrition.carbohydrates ?? 0) * 4 / (_nutrition.calories ?? 0) * 100).toInt();
+  double get _totalMacros => (_nutrition.carbohydrates ?? 0) * 4 + (_nutrition.protein ?? 0) * 4 + (_nutrition.fat ?? 0) * 9;
 
-  int get fatPercentage => ((_nutrition.fat ?? 0) * 9 / (_nutrition.calories ?? 0) * 100).toInt();
+  int get carbsPercentage => ((_nutrition.carbohydrates ?? 0) * 4 / _totalMacros * 100).toInt();
 
-  int get proteinPercentage => ((_nutrition.protein ?? 0) * 4 / (_nutrition.calories ?? 0) * 100).toInt();
+  int get fatPercentage => ((_nutrition.fat ?? 0) * 9 / _totalMacros * 100).toInt();
+
+  int get proteinPercentage => ((_nutrition.protein ?? 0) * 4 / _totalMacros * 100).toInt();
 
   void recalculateNutrition({required String servingSizeGrams}) {
     final serving = int.tryParse(servingSizeGrams) ?? 100;

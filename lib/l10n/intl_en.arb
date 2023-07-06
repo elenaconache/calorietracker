@@ -45,5 +45,21 @@
   },
   "mealLabel": "Meal",
   "servingsLabel": "Serving size (grams)",
-  "caloriesShortGenericLabel": "cal"
+  "caloriesShortGenericLabel": "cal",
+  "saturatedFatLabel": "Saturated fat",
+  "polyunsaturatedFatLabel": "Polyunsaturated fat",
+  "monounsaturatedFatLabel": "Monounsaturated fat",
+  "transFatLabel": "Trans fat",
+  "cholesterolLabel": "Cholesterol",
+  "sodiumLabel": "Sodium",
+  "potassiumLabel": "Potassium",
+  "carbohydratesLabel": "Carbohydrates",
+  "fiberLabel": "Fiber",
+  "sugarLabel": "Sugar",
+  "vitaminALabel": "Vitamin A",
+  "vitaminCLabel": "Vitamin C",
+  "calciumLabel": "Calcium",
+  "ironLabel": "Iron",
+  "magnesiumLabel": "Magnesium",
+  "vitaminDLabel": "Vitamin D"
 }

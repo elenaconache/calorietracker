@@ -2,6 +2,7 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
 import 'package:calorietracker/features/add_food/calories_macros_section.dart';
+import 'package:calorietracker/features/add_food/nutrition_section.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
@@ -121,6 +122,11 @@ class _AddFoodViewState extends State<AddFoodView> {
                       proteinInGrams: _controller.proteinInGrams)),
               const SizedBox(height: 12),
               const AppDivider(),
+              ValueListenableBuilder(
+                  valueListenable: _controller.currentServingSizeNutrients,
+                  builder: (context, currentServingSizeNutrients, child) =>
+                      currentServingSizeNutrients != null ? NutritionSection(nutrition: currentServingSizeNutrients) : const SizedBox.shrink()),
+              const SizedBox(height: 24),
             ],
           ),
         ));
