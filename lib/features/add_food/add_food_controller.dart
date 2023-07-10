@@ -5,11 +5,13 @@ import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/service/collection_api_service.dart';
+import 'package:calorietracker/service/logging_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddFoodController {
   final ValueNotifier<Meal?> selectedMeal = ValueNotifier(null);
+  final ValueNotifier<bool> isLoading = ValueNotifier(false);
   late final ValueNotifier<Nutrition?> currentServingSizeNutrients;
   late final Nutrition _nutrition;
 
@@ -42,7 +44,9 @@ class AddFoodController {
   }
 
   // TODO: if the user is logging a food from the collection tab, call the API to log diary entry without adding a food and pass the food id
-  Future<void> logFood({required Meal meal, required Food food, required int servingQuantity, String? barcode}) async {
+  Future<void> logFood(
+      {required Meal meal, required Food food, required int servingQuantity, String? barcode, required VoidCallback onSuccess}) async {
+    isLoading.value = true;
     final collectionApiService = await locator.getAsync<CollectionApiService>();
     await collectionApiService
         .createDiaryEntryWithFood(
@@ -57,9 +61,10 @@ class AddFoodController {
           servingQuantity: servingQuantity,
           barcode: barcode,
         ))
-        .then((value) => debugPrint('success'))
+        .then((_) => onSuccess())
         .catchError((error, stackTrace) {
-      debugPrint('error: $error, $stackTrace');
+      locator<LoggingService>().handle(error, stackTrace);
+      isLoading.value = false;
     });
   }
 }

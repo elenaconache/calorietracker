@@ -12,6 +12,7 @@ class AppTextField extends StatelessWidget {
   final TextInputType? inputType;
   final int? maxLength;
   final bool autofocus;
+  final bool enabled;
 
   const AppTextField({
     super.key,
@@ -25,6 +26,7 @@ class AppTextField extends StatelessWidget {
     this.inputType,
     this.maxLength,
     this.autofocus = false,
+    this.enabled = true,
   });
 
   @override
@@ -56,6 +58,7 @@ class AppTextField extends StatelessWidget {
       keyboardType: inputType,
       maxLength: maxLength,
       autofocus: autofocus,
+      enabled: enabled,
     );
   }
 

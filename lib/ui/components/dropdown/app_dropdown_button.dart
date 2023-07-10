@@ -15,6 +15,7 @@ class AppDropdownButton<T> extends StatefulWidget {
   final Function(T? value)? onChanged;
   final T? selectedOption;
   final String Function(T value) optionNameMapper;
+  final bool enabled;
 
   const AppDropdownButton({
     super.key,
@@ -23,6 +24,7 @@ class AppDropdownButton<T> extends StatefulWidget {
     required this.onChanged,
     this.selectedOption,
     required this.optionNameMapper,
+    this.enabled = true,
   });
 
   @override
@@ -59,11 +61,15 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> with Single
             height: _height,
             child: InkWell(
                 borderRadius: _borderRadius,
-                onTap: _toggleDropdown,
+                onTap: widget.enabled ? _toggleDropdown : null,
                 child: ValueListenableBuilder(
                     valueListenable: _controller.isOpen,
                     builder: (context, isOpen, child) => DropdownButtonContent<T>(
-                        isOpen: isOpen, hint: widget.hint, optionNameMapper: widget.optionNameMapper, selectedOption: widget.selectedOption)))));
+                        enabled: widget.enabled,
+                        isOpen: isOpen,
+                        hint: widget.hint,
+                        optionNameMapper: widget.optionNameMapper,
+                        selectedOption: widget.selectedOption)))));
   }
 
   void _toggleDropdown({bool close = false}) async {

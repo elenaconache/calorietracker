@@ -55,13 +55,18 @@ class _AddFoodViewState extends State<AddFoodView> {
         appBar: AppBar(
           title: Text(AppStrings.addFoodLabel),
           actions: [
-            IconButton(
-                // TODO: send barcode as parameter to this view if the user scanned a barcode.
-                onPressed: _logFood,
-                icon: const Icon(
-                  Icons.check,
-                  size: 32,
-                ))
+            ValueListenableBuilder(
+                valueListenable: _controller.isLoading,
+                builder: (context, isLoading, _) => isLoading
+                    ? const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16), child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()))
+                    : IconButton(
+                        // TODO: send barcode as parameter to this view if the user scanned a barcode.
+                        onPressed: () => _logFood(context),
+                        icon: const Icon(
+                          Icons.check,
+                          size: 32,
+                        )))
           ],
         ),
         body: SingleChildScrollView(
@@ -86,31 +91,37 @@ class _AddFoodViewState extends State<AddFoodView> {
               const SizedBox(height: 24),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: AppTextField(
-                    labelText: AppStrings.servingsLabel,
-                    suffixIcon: Icons.clear,
-                    onSuffixIconPressed: _clearServingsCount,
-                    controller: _servingsCountController,
-                    inputType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                      signed: false,
-                    ),
-                    maxLength: 6,
-                    autofocus: true,
-                    action: TextInputAction.done,
-                  )),
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.isLoading,
+                      builder: (context, isLoading, _) => AppTextField(
+                            enabled: !isLoading,
+                            labelText: AppStrings.servingsLabel,
+                            suffixIcon: Icons.clear,
+                            onSuffixIconPressed: _clearServingsCount,
+                            controller: _servingsCountController,
+                            inputType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                              signed: false,
+                            ),
+                            maxLength: 6,
+                            autofocus: true,
+                            action: TextInputAction.done,
+                          ))),
               const SizedBox(height: 16),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: ValueListenableBuilder(
-                      valueListenable: _controller.selectedMeal,
-                      builder: (context, selection, child) => AppDropdownButton<Meal>(
-                        hint: AppStrings.mealLabel,
-                        onChanged: (selectedMeal) => _controller.selectMeal(meal: selectedMeal),
-                        optionNameMapper: (meal) => meal.label,
-                        options: Meal.values,
-                        selectedOption: selection,
-                      ))),
+                      valueListenable: _controller.isLoading,
+                      builder: (context, isLoading, _) => ValueListenableBuilder(
+                          valueListenable: _controller.selectedMeal,
+                          builder: (context, selection, child) => AppDropdownButton<Meal>(
+                                hint: AppStrings.mealLabel,
+                                onChanged: (selectedMeal) => _controller.selectMeal(meal: selectedMeal),
+                                optionNameMapper: (meal) => meal.label,
+                                options: Meal.values,
+                                selectedOption: selection,
+                                enabled: !isLoading,
+                              )))),
               const SizedBox(height: 24),
               const AppDivider(),
               // TODO: extract model for this component's parameters
@@ -136,7 +147,7 @@ class _AddFoodViewState extends State<AddFoodView> {
         ));
   }
 
-  void _logFood() {
+  void _logFood(BuildContext context) {
     final servingQuantity = int.tryParse(_servingsCountController.text);
     if (servingQuantity == null) {
       locator<LoggingService>().handle(
@@ -149,6 +160,7 @@ class _AddFoodViewState extends State<AddFoodView> {
         servingQuantity: servingQuantity,
         food: widget.args.food,
         meal: widget.args.meal,
+        onSuccess: () => Navigator.pop(context),
       ));
     }
   }
