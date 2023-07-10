@@ -1,5 +1,8 @@
+import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/models/collection/add_diary_entry_with_food_request.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
+import 'package:calorietracker/service/collection_api_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class AddFoodController {
@@ -33,5 +36,20 @@ class AddFoodController {
   void recalculateNutrition({required String servingSizeGrams}) {
     final serving = int.tryParse(servingSizeGrams) ?? 100;
     currentServingSizeNutrients.value = Nutrition.perServing(nutritionPer100Grams: _nutrition, servingSizeGrams: serving);
+  }
+
+  //TODO: send data to log as parameters
+  // TODO: constants for now for unit id and user id
+  // TODO: if the user is logging a food from the collection tab, call the API to log diary entry without adding a food and pass the food id
+  Future<void> logFood() async {
+    final collectionApiService = await locator.getAsync<CollectionApiService>();
+    await collectionApiService
+        .createDiaryEntryWithFood(
+            body: AddDiaryEntryWithFoodRequest(
+                entryDate: DateTime.now().toString(), userId: '', unitId: '', meal: Meal.breakfast, name: '', nutritionInfo: const Nutrition()))
+        .then((value) => debugPrint('success'))
+        .catchError((error, stackTrace) {
+      debugPrint('error: $error, $stackTrace');
+    });
   }
 }

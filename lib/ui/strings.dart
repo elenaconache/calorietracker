@@ -82,7 +82,5 @@ class AppStrings {
 
   static String get ironLabel => S.current.ironLabel;
 
-  static String get magnesiumLabel => S.current.magnesiumLabel;
-
   static String get vitaminDLabel => S.current.vitaminDLabel;
 }

@@ -46,7 +46,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "generalErrorMessage": MessageLookupByLibrary.simpleMessage("An error occurred."),
         "ironLabel": MessageLookupByLibrary.simpleMessage("Iron"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
-        "magnesiumLabel": MessageLookupByLibrary.simpleMessage("Magnesium"),
         "mealLabel": MessageLookupByLibrary.simpleMessage("Meal"),
         "mealsLabel": MessageLookupByLibrary.simpleMessage("Meals"),
         "monounsaturatedFatLabel": MessageLookupByLibrary.simpleMessage("Monounsaturated fat"),

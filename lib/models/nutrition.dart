@@ -1,5 +1,10 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'nutrition.g.dart';
+
 const _unknownNutrientValue = '-';
 
+@JsonSerializable()
 class Nutrition {
   final double? calories;
   final double? fat;
@@ -15,7 +20,6 @@ class Nutrition {
 
   final double? protein;
   final double? sodium;
-  final double? magnesium;
   final double? potassium;
   final double? calcium;
   final double? iron;
@@ -30,7 +34,6 @@ class Nutrition {
     this.fatMonounsaturated = 0,
     this.cholesterol = 0,
     this.sodium = 0,
-    this.magnesium = 0,
     this.potassium = 0,
     this.calcium = 0,
     this.iron = 0,
@@ -56,7 +59,6 @@ class Nutrition {
         fatMonounsaturated = _getNutrientPerServing(nutritionPer100Grams.fatMonounsaturated, servingSizeGrams),
         cholesterol = _getNutrientPerServing(nutritionPer100Grams.cholesterol, servingSizeGrams),
         sodium = _getNutrientPerServing(nutritionPer100Grams.sodium, servingSizeGrams),
-        magnesium = _getNutrientPerServing(nutritionPer100Grams.magnesium, servingSizeGrams),
         potassium = _getNutrientPerServing(nutritionPer100Grams.potassium, servingSizeGrams),
         calcium = _getNutrientPerServing(nutritionPer100Grams.calcium, servingSizeGrams),
         iron = _getNutrientPerServing(nutritionPer100Grams.iron, servingSizeGrams),
@@ -67,6 +69,10 @@ class Nutrition {
         calories = _getNutrientPerServing(nutritionPer100Grams.calories, servingSizeGrams),
         sugar = _getNutrientPerServing(nutritionPer100Grams.sugar, servingSizeGrams),
         fiber = _getNutrientPerServing(nutritionPer100Grams.fiber, servingSizeGrams);
+
+  factory Nutrition.fromJson(Map<String, dynamic> json) => _$NutritionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NutritionToJson(this);
 
   static double _getNutrientPerServing(double? nutrientPer100Grams, int servingSizeGrams) => (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
 
@@ -103,8 +109,6 @@ class Nutrition {
   String get formattedCalcium => calcium == null ? _unknownNutrientValue : '${vitaminC!.toStringAsFixed(1)} mg';
 
   String get formattedIron => iron == null ? _unknownNutrientValue : '${iron!.toStringAsFixed(1)} mg';
-
-  String get formattedMagnesium => magnesium == null ? _unknownNutrientValue : '${magnesium!.toStringAsFixed(1)} mg';
 
   String get formattedVitaminD => vitaminD == null ? _unknownNutrientValue : '${vitaminD!.toStringAsFixed(1)} IU';
 }

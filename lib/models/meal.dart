@@ -1,9 +1,14 @@
 import 'package:calorietracker/ui/strings.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 enum Meal {
+  @JsonValue('BREAKFAST')
   breakfast,
+  @JsonValue('LUNCH')
   lunch,
+  @JsonValue('DINNER')
   dinner,
+  @JsonValue('SNACKS')
   snacks;
 
   String get label {

@@ -11,7 +11,6 @@ enum Nutrient {
   sugar,
   protein,
   sodium,
-  magnesium,
   potassium,
   calcium,
   iron,

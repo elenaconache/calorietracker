@@ -447,16 +447,6 @@ class S {
     );
   }
 
-  /// `Magnesium`
-  String get magnesiumLabel {
-    return Intl.message(
-      'Magnesium',
-      name: 'magnesiumLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Vitamin D`
   String get vitaminDLabel {
     return Intl.message(

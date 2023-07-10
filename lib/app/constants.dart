@@ -12,7 +12,6 @@ const nutrientsAttributes = {
   Nutrient.sugar: 269,
   Nutrient.protein: 203,
   Nutrient.sodium: 307,
-  Nutrient.magnesium: 304,
   Nutrient.potassium: 306,
   Nutrient.calcium: 301,
   Nutrient.iron: 303,

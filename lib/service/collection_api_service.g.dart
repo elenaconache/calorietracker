@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'nutritionix_api_service.dart';
+part of 'collection_api_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'nutritionix_api_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _NutritionixApiService implements NutritionixApiService {
-  _NutritionixApiService(
+class _CollectionApiService implements CollectionApiService {
+  _CollectionApiService(
     this._dio, {
     this.baseUrl,
   });
@@ -19,26 +19,24 @@ class _NutritionixApiService implements NutritionixApiService {
   String? baseUrl;
 
   @override
-  Future<NutritionixSearchResponse> searchFood({required NutritionixSearchRequest body}) async {
+  Future<void> createDiaryEntryWithFood({required AddDiaryEntryWithFoodRequest body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(await compute(serializeNutritionixSearchRequest, body));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<NutritionixSearchResponse>(Options(
+    _data.addAll(await compute(serializeAddDiaryEntryWithFoodRequest, body));
+    await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'v2/search/instant',
+          'diary-entries/add-with-food',
           queryParameters: queryParameters,
           data: _data,
         )
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = await compute(deserializeNutritionixSearchResponse, _result.data!);
-    return value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

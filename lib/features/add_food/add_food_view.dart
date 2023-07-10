@@ -53,7 +53,7 @@ class _AddFoodViewState extends State<AddFoodView> {
           title: Text(AppStrings.addFoodLabel),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () => _controller.logFood(),
                 icon: const Icon(
                   Icons.check,
                   size: 32,
