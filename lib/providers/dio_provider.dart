@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/interceptors/logging_interceptor.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
@@ -37,6 +38,7 @@ class DioProvider {
     _cacheInterceptor ??= await cacheInterceptor;
     final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 9), receiveTimeout: const Duration(seconds: 9), baseUrl: baseUrl));
     dio.interceptors.add(_cacheInterceptor!);
+    dio.interceptors.add(locator<LoggingInterceptor>());
     dio.options.headers = headers;
     return dio;
   }

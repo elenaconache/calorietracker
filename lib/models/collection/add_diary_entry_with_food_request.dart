@@ -13,6 +13,8 @@ class AddDiaryEntryWithFoodRequest {
   final String unitId;
   final Meal meal;
   final Nutrition nutritionInfo;
+  final String? barcode;
+  final int servingQuantity;
 
   const AddDiaryEntryWithFoodRequest({
     required this.entryDate,
@@ -22,6 +24,8 @@ class AddDiaryEntryWithFoodRequest {
     required this.name,
     this.brand,
     required this.nutritionInfo,
+    this.barcode,
+    required this.servingQuantity,
   });
 
   factory AddDiaryEntryWithFoodRequest.fromJson(Map<String, dynamic> json) => _$AddDiaryEntryWithFoodRequestFromJson(json);

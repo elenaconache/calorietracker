@@ -1,3 +1,4 @@
+import 'package:calorietracker/extensions/numeric_extensions.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'nutrition.g.dart';
@@ -111,4 +112,30 @@ class Nutrition {
   String get formattedIron => iron == null ? _unknownNutrientValue : '${iron!.toStringAsFixed(1)} mg';
 
   String get formattedVitaminD => vitaminD == null ? _unknownNutrientValue : '${vitaminD!.toStringAsFixed(1)} IU';
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+
+  Nutrition round() => Nutrition(
+        fat: fat?.toPrecision(2),
+        fatSaturated: fatSaturated?.toPrecision(2),
+        fatTrans: fatTrans?.toPrecision(2),
+        fatPolyunsaturated: fatPolyunsaturated?.toPrecision(2),
+        fatMonounsaturated: fatMonounsaturated?.toPrecision(2),
+        cholesterol: cholesterol?.toPrecision(2),
+        sodium: sodium?.toPrecision(2),
+        potassium: potassium?.toPrecision(2),
+        calcium: calcium?.toPrecision(2),
+        iron: iron?.toPrecision(2),
+        vitaminA: vitaminA?.toPrecision(2),
+        vitaminC: vitaminC?.toPrecision(2),
+        vitaminD: vitaminD?.toPrecision(2),
+        carbohydrates: carbohydrates?.toPrecision(2),
+        protein: protein?.toPrecision(2),
+        calories: calories?.toPrecision(2),
+        sugar: sugar?.toPrecision(2),
+        fiber: fiber?.toPrecision(2),
+      );
 }

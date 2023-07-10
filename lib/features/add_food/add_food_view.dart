@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
 import 'package:calorietracker/features/add_food/calories_macros_section.dart';
 import 'package:calorietracker/features/add_food/nutrition_section.dart';
 import 'package:calorietracker/models/meal.dart';
+import 'package:calorietracker/service/logging_service.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button.dart';
@@ -53,7 +56,8 @@ class _AddFoodViewState extends State<AddFoodView> {
           title: Text(AppStrings.addFoodLabel),
           actions: [
             IconButton(
-                onPressed: () => _controller.logFood(),
+                // TODO: send barcode as parameter to this view if the user scanned a barcode.
+                onPressed: _logFood,
                 icon: const Icon(
                   Icons.check,
                   size: 32,
@@ -101,12 +105,12 @@ class _AddFoodViewState extends State<AddFoodView> {
                   child: ValueListenableBuilder(
                       valueListenable: _controller.selectedMeal,
                       builder: (context, selection, child) => AppDropdownButton<Meal>(
-                            hint: AppStrings.mealLabel,
-                            onChanged: (selectedMeal) => _controller.selectMeal(meal: selectedMeal),
-                            optionNameMapper: (meal) => meal.label,
-                            options: Meal.values,
-                            selectedOption: selection,
-                          ))),
+                        hint: AppStrings.mealLabel,
+                        onChanged: (selectedMeal) => _controller.selectMeal(meal: selectedMeal),
+                        optionNameMapper: (meal) => meal.label,
+                        options: Meal.values,
+                        selectedOption: selection,
+                      ))),
               const SizedBox(height: 24),
               const AppDivider(),
               // TODO: extract model for this component's parameters
@@ -130,6 +134,23 @@ class _AddFoodViewState extends State<AddFoodView> {
             ],
           ),
         ));
+  }
+
+  void _logFood() {
+    final servingQuantity = int.tryParse(_servingsCountController.text);
+    if (servingQuantity == null) {
+      locator<LoggingService>().handle(
+        Exception('Could not log food with null serving quantity.'),
+        StackTrace.current,
+      );
+    } else {
+      unawaited(_controller.logFood(
+        barcode: null,
+        servingQuantity: servingQuantity,
+        food: widget.args.food,
+        meal: widget.args.meal,
+      ));
+    }
   }
 
   void _clearServingsCount() => _servingsCountController.clear();

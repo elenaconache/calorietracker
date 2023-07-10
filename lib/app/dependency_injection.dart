@@ -1,10 +1,12 @@
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
+import 'package:calorietracker/interceptors/logging_interceptor.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:calorietracker/providers/dio_provider.dart';
 import 'package:calorietracker/service/collection_api_service.dart';
 import 'package:calorietracker/service/date_formatting_service.dart';
 import 'package:calorietracker/service/diary_service.dart';
+import 'package:calorietracker/service/logging_service.dart';
 import 'package:calorietracker/service/numeric_formatting_service.dart';
 import 'package:calorietracker/service/nutritionix_api_service.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_controller.dart';
@@ -24,6 +26,8 @@ void setupLocator() {
   locator.registerLazySingleton<DiaryService>(() => DiaryService());
   locator.registerLazySingleton<DioProvider>(() => DioProvider());
   locator.registerLazySingleton<FoodSearchService>(() => FoodSearchService());
+  locator.registerLazySingleton<LoggingInterceptor>(() => LoggingInterceptor());
+  locator.registerLazySingleton<LoggingService>(() => LoggingService());
   locator.registerLazySingleton<NumericFormattingService>(() => NumericFormattingService());
 
   locator.registerLazySingletonAsync<AppPathProvider>(() async {
