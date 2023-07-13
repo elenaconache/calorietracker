@@ -31,8 +31,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(value) => "Protein ${value}g";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+  static Map<String, Function> _notInlinedMessages(_) =>
+      <String, Function>{
         "addFoodLabel": MessageLookupByLibrary.simpleMessage("Add food"),
         "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
         "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
