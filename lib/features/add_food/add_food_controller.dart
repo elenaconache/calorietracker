@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/constants.dart';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/collection/add_diary_entry_with_food_request.dart';
@@ -5,6 +7,7 @@ import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/service/collection_api_service.dart';
+import 'package:calorietracker/service/diary_service.dart';
 import 'package:calorietracker/service/logging_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,25 +47,27 @@ class AddFoodController {
   }
 
   // TODO: if the user is logging a food from the collection tab, call the API to log diary entry without adding a food and pass the food id
-  Future<void> logFood(
-      {required Meal meal, required Food food, required int servingQuantity, String? barcode, required VoidCallback onSuccess}) async {
+  // TODO: handle logging a food for a different date, not just for today
+  Future<void> logFood({required Meal meal, required Food food, required int servingQuantity, String? barcode, required VoidCallback onSuccess}) async {
     isLoading.value = true;
     final collectionApiService = await locator.getAsync<CollectionApiService>();
     await collectionApiService
         .createDiaryEntryWithFood(
             body: AddDiaryEntryWithFoodRequest(
-          entryDate: DateTime.now().toIso8601String(),
-          userId: testUserId,
-          unitId: gramsUnitId,
-          meal: meal,
-          name: food.name,
-          nutritionInfo: food.nutrition.round(),
-          brand: food.brandName,
-          servingQuantity: servingQuantity,
-          barcode: barcode,
-        ))
-        .then((_) => onSuccess())
-        .catchError((error, stackTrace) {
+      entryDate: DateTime.now().toIso8601String(),
+      userId: testUserId,
+      unitId: gramsUnitId,
+      meal: meal,
+      name: food.name,
+      nutritionInfo: food.nutrition.round(),
+      brand: food.brandName,
+      servingQuantity: servingQuantity,
+      barcode: barcode,
+    ))
+        .then((_) {
+      unawaited(locator<DiaryService>().fetchDiary());
+      onSuccess();
+    }).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       isLoading.value = false;
     });

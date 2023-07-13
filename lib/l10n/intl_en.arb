@@ -60,5 +60,29 @@
   "vitaminCLabel": "Vitamin C",
   "calciumLabel": "Calcium",
   "ironLabel": "Iron",
-  "vitaminDLabel": "Vitamin D"
+  "vitaminDLabel": "Vitamin D",
+  "carbsValue": "Carbs {value}g",
+  "@carbsValue": {
+    "placeholder": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "fatValue": "Fat {value}g",
+  "@fatValue": {
+    "placeholder": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "proteinValue": "Protein {value}g",
+  "@proteinValue": {
+    "placeholder": {
+      "value": {
+        "type": "int"
+      }
+    }
+  }
 }

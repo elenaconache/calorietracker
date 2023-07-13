@@ -456,6 +456,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Carbs {value}g`
+  String carbsValue(Object value) {
+    return Intl.message(
+      'Carbs ${value}g',
+      name: 'carbsValue',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Fat {value}g`
+  String fatValue(Object value) {
+    return Intl.message(
+      'Fat ${value}g',
+      name: 'fatValue',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Protein {value}g`
+  String proteinValue(Object value) {
+    return Intl.message(
+      'Protein ${value}g',
+      name: 'proteinValue',
+      desc: '',
+      args: [value],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

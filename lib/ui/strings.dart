@@ -83,4 +83,10 @@ class AppStrings {
   static String get ironLabel => S.current.ironLabel;
 
   static String get vitaminDLabel => S.current.vitaminDLabel;
+
+  static String carbsValue(int value) => S.current.carbsValue(value);
+
+  static String fatValue(int value) => S.current.fatValue(value);
+
+  static String proteinValue(int value) => S.current.proteinValue(value);
 }

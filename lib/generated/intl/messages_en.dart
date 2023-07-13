@@ -24,6 +24,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(calories) => "${calories} cal";
 
+  static String m2(value) => "Carbs ${value}g";
+
+  static String m3(value) => "Fat ${value}g";
+
+  static String m4(value) => "Protein ${value}g";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -37,11 +43,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "caloriesShortLabel": m1,
         "carbohydratesLabel": MessageLookupByLibrary.simpleMessage("Carbohydrates"),
         "carbsLabel": MessageLookupByLibrary.simpleMessage("Carbs"),
+        "carbsValue": m2,
         "cholesterolLabel": MessageLookupByLibrary.simpleMessage("Cholesterol"),
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "diaryTitle": MessageLookupByLibrary.simpleMessage("Diary"),
         "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dinner"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
+        "fatValue": m3,
         "fiberLabel": MessageLookupByLibrary.simpleMessage("Fiber"),
         "generalErrorMessage": MessageLookupByLibrary.simpleMessage("An error occurred."),
         "ironLabel": MessageLookupByLibrary.simpleMessage("Iron"),
@@ -56,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "potassiumLabel": MessageLookupByLibrary.simpleMessage("Potassium"),
         "poweredByNutritionixLabel": MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
+        "proteinValue": m4,
         "saturatedFatLabel": MessageLookupByLibrary.simpleMessage("Saturated fat"),
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
         "searchForFoodLabel": MessageLookupByLibrary.simpleMessage("Search for a food"),
