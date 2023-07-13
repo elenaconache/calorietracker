@@ -1,21 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'collection_food_response.dart';
+part of 'diary_entry_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CollectionFoodResponse _$CollectionFoodResponseFromJson(Map<String, dynamic> json) {
+DiaryEntryResponse _$DiaryEntryResponseFromJson(Map<String, dynamic> json) {
   $checkKeys(
     json,
-    requiredKeys: const ['id', 'name', 'calories', 'fat', 'carbohydrates', 'protein'],
+    requiredKeys: const ['id', 'name', 'entryDate', 'unitId', 'servingQuantity', 'calories', 'fat', 'carbohydrates', 'protein'],
   );
-  return CollectionFoodResponse(
+  return DiaryEntryResponse(
     id: json['id'] as String,
-    barcode: json['barcode'] as String?,
     name: json['name'] as String,
     brand: json['brand'] as String?,
+    entryDate: json['entryDate'] as String,
+    unitId: json['unitId'] as String,
+    servingQuantity: (json['servingQuantity'] as num).toDouble(),
     calories: json['calories'] as int,
     fat: (json['fat'] as num).toDouble(),
     fatSaturated: (json['fatSaturated'] as num?)?.toDouble(),
@@ -37,11 +39,13 @@ CollectionFoodResponse _$CollectionFoodResponseFromJson(Map<String, dynamic> jso
   );
 }
 
-Map<String, dynamic> _$CollectionFoodResponseToJson(CollectionFoodResponse instance) => <String, dynamic>{
+Map<String, dynamic> _$DiaryEntryResponseToJson(DiaryEntryResponse instance) => <String, dynamic>{
       'id': instance.id,
-      'barcode': instance.barcode,
       'name': instance.name,
       'brand': instance.brand,
+      'entryDate': instance.entryDate,
+      'unitId': instance.unitId,
+      'servingQuantity': instance.servingQuantity,
       'calories': instance.calories,
       'fat': instance.fat,
       'fatSaturated': instance.fatSaturated,

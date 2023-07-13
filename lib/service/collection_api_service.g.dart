@@ -39,6 +39,34 @@ class _CollectionApiService implements CollectionApiService {
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
   }
 
+  @override
+  Future<List<MealEntriesResponse>> getDiaryEntries({
+    required String userId,
+    required String date,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<MealEntriesResponse>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'diary-entries/${userId}/${date}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = await compute(
+      deserializeMealEntriesResponseList,
+      _result.data!.cast<Map<String, dynamic>>(),
+    );
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic && !(requestOptions.responseType == ResponseType.bytes || requestOptions.responseType == ResponseType.stream)) {
       if (T == String) {
