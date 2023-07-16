@@ -22,4 +22,4 @@ const nutrientsAttributes = {
 };
 
 const gramsUnitId = '914743b6-b1f1-4630-a373-113810939541';
-const testUserId = '86acb379-eab9-42c5-91f7-33b9c193756d';
+const testUserId = '08b63360-b996-4a01-91c8-74b044850c30';

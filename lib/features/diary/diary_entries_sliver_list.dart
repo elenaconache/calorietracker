@@ -23,7 +23,8 @@ class DiaryEntriesSliverList extends StatelessWidget {
         ),
       );
     } else {
-      return const SliverToBoxAdapter(child: NoLoggedFoodsMessage());
+      return const SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 6), sliver: SliverToBoxAdapter(child: NoLoggedFoodsMessage()));
     }
   }
 }

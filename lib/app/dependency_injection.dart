@@ -15,7 +15,7 @@ import 'package:get_it/get_it.dart';
 final GetIt locator = GetIt.instance;
 
 // TODO: extract collection base url into env variable
-const _collectionApiBaseUrl = 'http://192.168.0.93:8080/';
+const _collectionApiBaseUrl = 'http://192.168.0.133:8080/calorietracker/';
 const _nutritionixApiBaseUrl = 'https://trackapi.nutritionix.com/';
 
 void setupLocator() {
