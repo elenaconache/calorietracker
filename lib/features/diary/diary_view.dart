@@ -1,7 +1,8 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/diary/day_nutrition_summary.dart';
+import 'package:calorietracker/features/diary/diary_entries_sliver_list.dart';
 import 'package:calorietracker/features/diary/meal_title.dart';
-import 'package:calorietracker/features/diary/no_logged_foods_message.dart';
+import 'package:calorietracker/models/helpers/api_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/service/diary_service.dart';
@@ -65,11 +66,13 @@ class _DiaryViewState extends State<DiaryView> {
             ),
           ),
           const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverToBoxAdapter(child: AppDivider()),
-          const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverPadding(padding: EdgeInsets.symmetric(horizontal: 24), sliver: SliverToBoxAdapter(child: MealTitle(meal: Meal.breakfast))),
-          const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverPadding(padding: EdgeInsets.symmetric(horizontal: 24), sliver: SliverToBoxAdapter(child: NoLoggedFoodsMessage())),
+          const SliverToBoxAdapter(child: MealTitle(meal: Meal.breakfast)),
+          ValueListenableBuilder(
+              valueListenable: _diaryService.selectedDayMealEntries,
+              builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                    entries: _diaryService.getSelectedDayMealEntries(meal: Meal.breakfast),
+                    error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                  )),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             sliver: SliverToBoxAdapter(
@@ -79,11 +82,14 @@ class _DiaryViewState extends State<DiaryView> {
               child: Text(AppStrings.addFoodLabel.toUpperCase()),
             ))),
           ),
-          const SliverToBoxAdapter(child: AppDivider()),
           const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverPadding(padding: EdgeInsets.symmetric(horizontal: 24), sliver: SliverToBoxAdapter(child: MealTitle(meal: Meal.lunch))),
-          const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverPadding(padding: EdgeInsets.symmetric(horizontal: 24), sliver: SliverToBoxAdapter(child: NoLoggedFoodsMessage())),
+          const SliverToBoxAdapter(child: MealTitle(meal: Meal.lunch)),
+          ValueListenableBuilder(
+              valueListenable: _diaryService.selectedDayMealEntries,
+              builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                    entries: _diaryService.getSelectedDayMealEntries(meal: Meal.lunch),
+                    error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                  )),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             sliver: SliverToBoxAdapter(
@@ -93,11 +99,14 @@ class _DiaryViewState extends State<DiaryView> {
               child: Text(AppStrings.addFoodLabel.toUpperCase()),
             ))),
           ),
-          const SliverToBoxAdapter(child: AppDivider()),
           const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverPadding(padding: EdgeInsets.symmetric(horizontal: 24), sliver: SliverToBoxAdapter(child: MealTitle(meal: Meal.dinner))),
-          const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverPadding(padding: EdgeInsets.symmetric(horizontal: 24), sliver: SliverToBoxAdapter(child: NoLoggedFoodsMessage())),
+          const SliverToBoxAdapter(child: MealTitle(meal: Meal.dinner)),
+          ValueListenableBuilder(
+              valueListenable: _diaryService.selectedDayMealEntries,
+              builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                    entries: _diaryService.getSelectedDayMealEntries(meal: Meal.dinner),
+                    error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                  )),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             sliver: SliverToBoxAdapter(
@@ -107,11 +116,14 @@ class _DiaryViewState extends State<DiaryView> {
               child: Text(AppStrings.addFoodLabel.toUpperCase()),
             ))),
           ),
-          const SliverToBoxAdapter(child: AppDivider()),
           const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverPadding(padding: EdgeInsets.symmetric(horizontal: 24), sliver: SliverToBoxAdapter(child: MealTitle(meal: Meal.snacks))),
-          const SliverPadding(padding: EdgeInsets.only(top: 12)),
-          const SliverPadding(padding: EdgeInsets.symmetric(horizontal: 24), sliver: SliverToBoxAdapter(child: NoLoggedFoodsMessage())),
+          const SliverToBoxAdapter(child: MealTitle(meal: Meal.snacks)),
+          ValueListenableBuilder(
+              valueListenable: _diaryService.selectedDayMealEntries,
+              builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                    entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
+                    error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                  )),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             sliver: SliverToBoxAdapter(
@@ -121,7 +133,7 @@ class _DiaryViewState extends State<DiaryView> {
               child: Text(AppStrings.addFoodLabel.toUpperCase()),
             ))),
           ),
-          const SliverToBoxAdapter(child: AppDivider()),
+          const SliverPadding(padding: EdgeInsets.only(top: 32)),
         ],
       ),
     );

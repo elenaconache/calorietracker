@@ -44,7 +44,6 @@ class _AddFoodViewState extends State<AddFoodView> {
     _controller.selectedMeal.dispose();
     _controller.currentServingSizeNutrients.dispose();
     _servingsCountController.removeListener(_onServingSizeChanged);
-    _servingsCountController.dispose();
 
     super.dispose();
   }

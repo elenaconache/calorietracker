@@ -1,5 +1,6 @@
 import 'package:calorietracker/app/constants.dart';
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/models/collection/diary_entry_response.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
 import 'package:calorietracker/models/helpers/api_response.dart';
 import 'package:calorietracker/models/meal.dart';
@@ -48,6 +49,7 @@ class DiaryService {
   }
 
   Future<void> fetchDiary({DateTime? date}) async {
+    selectedDayMealEntries.value = ApiResponse.loading();
     final fetchedDate = _dateFormattingService.format(dateTime: (date ?? DateTime.now()).toString(), format: collectionApiDateFormat);
     final apiService = await locator.getAsync<CollectionApiService>();
     apiService.getDiaryEntries(userId: testUserId, date: fetchedDate).then((response) {
@@ -87,4 +89,7 @@ class DiaryService {
               ));
     }
   }
+
+  List<DiaryEntryResponse> getSelectedDayMealEntries({required Meal meal}) =>
+      selectedDayMealEntries.value.data?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)?.diaryEntries.toList() ?? [];
 }
