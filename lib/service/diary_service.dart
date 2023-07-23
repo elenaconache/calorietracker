@@ -1,4 +1,3 @@
-import 'package:calorietracker/app/constants.dart';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/collection/diary_entry_response.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
@@ -8,6 +7,7 @@ import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/service/collection_api_service.dart';
 import 'package:calorietracker/service/date_formatting_service.dart';
 import 'package:calorietracker/service/logging_service.dart';
+import 'package:calorietracker/service/storage_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -52,12 +52,17 @@ class DiaryService {
     selectedDayMealEntries.value = ApiResponse.loading();
     final fetchedDate = _dateFormattingService.format(dateTime: (date ?? DateTime.now()).toString(), format: collectionApiDateFormat);
     final apiService = await locator.getAsync<CollectionApiService>();
-    apiService.getDiaryEntries(userId: testUserId, date: fetchedDate).then((response) {
-      selectedDayMealEntries.value = ApiResponse.success(response);
-    }).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
-      selectedDayMealEntries.value = ApiResponse.error();
-    });
+    final userId = await locator<StorageService>().read(key: userIdKey);
+    if (userId?.isEmpty ?? true) {
+      // TODO: navigate to login and show error snack bar
+    } else {
+      apiService.getDiaryEntries(userId: userId!, date: fetchedDate).then((response) {
+        selectedDayMealEntries.value = ApiResponse.success(response);
+      }).catchError((error, stackTrace) {
+        locator<LoggingService>().handle(error, stackTrace);
+        selectedDayMealEntries.value = ApiResponse.error();
+      });
+    }
   }
 
   Nutrition getSelectedDayMealNutrients({required Meal meal}) {

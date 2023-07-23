@@ -6,7 +6,9 @@ part of 'add_diary_entry_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AddDiaryEntryRequest _$AddDiaryEntryRequestFromJson(Map<String, dynamic> json) => AddDiaryEntryRequest(
+AddDiaryEntryRequest _$AddDiaryEntryRequestFromJson(
+        Map<String, dynamic> json) =>
+    AddDiaryEntryRequest(
       entryDate: json['entryDate'] as String,
       userId: json['userId'] as String,
       unitId: json['unitId'] as String,
@@ -15,7 +17,9 @@ AddDiaryEntryRequest _$AddDiaryEntryRequestFromJson(Map<String, dynamic> json) =
       meal: $enumDecode(_$MealEnumMap, json['meal']),
     );
 
-Map<String, dynamic> _$AddDiaryEntryRequestToJson(AddDiaryEntryRequest instance) => <String, dynamic>{
+Map<String, dynamic> _$AddDiaryEntryRequestToJson(
+        AddDiaryEntryRequest instance) =>
+    <String, dynamic>{
       'entryDate': instance.entryDate,
       'userId': instance.userId,
       'unitId': instance.unitId,

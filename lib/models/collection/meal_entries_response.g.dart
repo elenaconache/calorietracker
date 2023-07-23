@@ -13,11 +13,15 @@ MealEntriesResponse _$MealEntriesResponseFromJson(Map<String, dynamic> json) {
   );
   return MealEntriesResponse(
     meal: $enumDecode(_$MealEnumMap, json['meal']),
-    diaryEntries: (json['diaryEntries'] as List<dynamic>).map((e) => DiaryEntryResponse.fromJson(e as Map<String, dynamic>)).toList(),
+    diaryEntries: (json['diaryEntries'] as List<dynamic>)
+        .map((e) => DiaryEntryResponse.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
-Map<String, dynamic> _$MealEntriesResponseToJson(MealEntriesResponse instance) => <String, dynamic>{
+Map<String, dynamic> _$MealEntriesResponseToJson(
+        MealEntriesResponse instance) =>
+    <String, dynamic>{
       'meal': _$MealEnumMap[instance.meal]!,
       'diaryEntries': instance.diaryEntries,
     };

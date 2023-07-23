@@ -6,12 +6,16 @@ part of 'nutritionix_search_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NutritionixSearchRequest _$NutritionixSearchRequestFromJson(Map<String, dynamic> json) => NutritionixSearchRequest(
+NutritionixSearchRequest _$NutritionixSearchRequestFromJson(
+        Map<String, dynamic> json) =>
+    NutritionixSearchRequest(
       query: json['query'] as String,
       detailed: json['detailed'] as String,
     );
 
-Map<String, dynamic> _$NutritionixSearchRequestToJson(NutritionixSearchRequest instance) => <String, dynamic>{
+Map<String, dynamic> _$NutritionixSearchRequestToJson(
+        NutritionixSearchRequest instance) =>
+    <String, dynamic>{
       'query': instance.query,
       'detailed': instance.detailed,
     };

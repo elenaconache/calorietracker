@@ -19,30 +19,35 @@ class _NutritionixApiService implements NutritionixApiService {
   String? baseUrl;
 
   @override
-  Future<NutritionixSearchResponse> searchFood({required NutritionixSearchRequest body}) async {
+  Future<NutritionixSearchResponse> searchFood(
+      {required NutritionixSearchRequest body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(await compute(serializeNutritionixSearchRequest, body));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<NutritionixSearchResponse>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NutritionixSearchResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          'v2/search/instant',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = await compute(deserializeNutritionixSearchResponse, _result.data!);
+            .compose(
+              _dio.options,
+              'v2/search/instant',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        await compute(deserializeNutritionixSearchResponse, _result.data!);
     return value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
-    if (T != dynamic && !(requestOptions.responseType == ResponseType.bytes || requestOptions.responseType == ResponseType.stream)) {
+    if (T != dynamic &&
+        !(requestOptions.responseType == ResponseType.bytes ||
+            requestOptions.responseType == ResponseType.stream)) {
       if (T == String) {
         requestOptions.responseType = ResponseType.plain;
       } else {

@@ -19,7 +19,8 @@ class _CollectionApiService implements CollectionApiService {
   String? baseUrl;
 
   @override
-  Future<void> createDiaryEntryWithFood({required AddDiaryEntryWithFoodRequest body}) async {
+  Future<void> createDiaryEntryWithFood(
+      {required AddDiaryEntryWithFoodRequest body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -48,18 +49,19 @@ class _CollectionApiService implements CollectionApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<MealEntriesResponse>>(Options(
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<MealEntriesResponse>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          'diary-entries/${userId}/${date}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .compose(
+              _dio.options,
+              'diary-entries/${userId}/${date}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = await compute(
       deserializeMealEntriesResponseList,
       _result.data!.cast<Map<String, dynamic>>(),
@@ -90,7 +92,9 @@ class _CollectionApiService implements CollectionApiService {
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
-    if (T != dynamic && !(requestOptions.responseType == ResponseType.bytes || requestOptions.responseType == ResponseType.stream)) {
+    if (T != dynamic &&
+        !(requestOptions.responseType == ResponseType.bytes ||
+            requestOptions.responseType == ResponseType.stream)) {
       if (T == String) {
         requestOptions.responseType = ResponseType.plain;
       } else {

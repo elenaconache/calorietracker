@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 const _carbsColor = melonYellow;
 const _fatColor = pastelTurquoise;
 const _proteinColor = carmineRed;
+const _unknownMacroColor = blanchedAlmond;
 
 class CaloriesMacrosSection extends StatelessWidget {
   final int calories;
@@ -44,6 +45,7 @@ class CaloriesMacrosSection extends StatelessWidget {
               carbsColor: _carbsColor,
               fatColor: _fatColor,
               proteinColor: _proteinColor,
+              defaultMacroNutrient: _unknownMacroColor,
             )),
         Expanded(child: MacroItem(percentage: carbsPercentage, quantityInGrams: carbsInGrams, name: AppStrings.carbsLabel, color: _carbsColor)),
         Expanded(child: MacroItem(percentage: fatPercentage, quantityInGrams: fatInGrams, name: AppStrings.fatLabel, color: _fatColor)),

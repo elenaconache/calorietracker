@@ -9,6 +9,7 @@ import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/service/collection_api_service.dart';
 import 'package:calorietracker/service/diary_service.dart';
 import 'package:calorietracker/service/logging_service.dart';
+import 'package:calorietracker/service/storage_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,11 +36,11 @@ class AddFoodController {
 
   double get _totalMacros => (_nutrition.carbohydrates ?? 0) * 4 + (_nutrition.protein ?? 0) * 4 + (_nutrition.fat ?? 0) * 9;
 
-  int get carbsPercentage => ((_nutrition.carbohydrates ?? 0) * 4 / _totalMacros * 100).toInt();
+  int get carbsPercentage => _totalMacros == 0 ? 0 : ((_nutrition.carbohydrates ?? 0) * 4 / _totalMacros * 100).toInt();
 
-  int get fatPercentage => ((_nutrition.fat ?? 0) * 9 / _totalMacros * 100).toInt();
+  int get fatPercentage => _totalMacros == 0 ? 0 : ((_nutrition.fat ?? 0) * 9 / _totalMacros * 100).toInt();
 
-  int get proteinPercentage => ((_nutrition.protein ?? 0) * 4 / _totalMacros * 100).toInt();
+  int get proteinPercentage => _totalMacros == 0 ? 0 : ((_nutrition.protein ?? 0) * 4 / _totalMacros * 100).toInt();
 
   void recalculateNutrition({required String servingSizeGrams}) {
     final serving = int.tryParse(servingSizeGrams) ?? 100;
@@ -48,28 +49,35 @@ class AddFoodController {
 
   // TODO: if the user is logging a food from the collection tab, call the API to log diary entry without adding a food and pass the food id
   // TODO: handle logging a food for a different date, not just for today
-  Future<void> logFood({required Meal meal, required Food food, required int servingQuantity, String? barcode, required VoidCallback onSuccess}) async {
+  Future<void> logFood(
+      {required Meal meal, required Food food, required int servingQuantity, String? barcode, required VoidCallback onSuccess}) async {
     isLoading.value = true;
     final collectionApiService = await locator.getAsync<CollectionApiService>();
-    await collectionApiService
-        .createDiaryEntryWithFood(
-            body: AddDiaryEntryWithFoodRequest(
-      entryDate: DateTime.now().toIso8601String(),
-      userId: testUserId,
-      unitId: gramsUnitId,
-      meal: meal,
-      name: food.name,
-      nutritionInfo: food.nutrition.round(),
-      brand: food.brandName,
-      servingQuantity: servingQuantity,
-      barcode: barcode,
-    ))
-        .then((_) {
-      unawaited(locator<DiaryService>().fetchDiary());
-      onSuccess();
-    }).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
-      isLoading.value = false;
-    });
+    final userId = await locator<StorageService>().read(key: userIdKey);
+    if (userId?.isEmpty ?? true) {
+      locator<LoggingService>().info('Could not log food. Missing user id.');
+      // TODO: navigate to login screen and show a snack bar saying the session expired
+    } else {
+      await collectionApiService
+          .createDiaryEntryWithFood(
+              body: AddDiaryEntryWithFoodRequest(
+        entryDate: DateTime.now().toIso8601String(),
+        userId: userId!,
+        unitId: gramsUnitId,
+        meal: meal,
+        name: food.name,
+        nutritionInfo: food.nutrition.round(),
+        brand: food.brandName,
+        servingQuantity: servingQuantity,
+        barcode: barcode,
+      ))
+          .then((_) {
+        unawaited(locator<DiaryService>().fetchDiary());
+        onSuccess();
+      }).catchError((error, stackTrace) {
+        locator<LoggingService>().handle(error, stackTrace);
+        isLoading.value = false;
+      });
+    }
   }
 }

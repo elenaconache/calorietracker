@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/login/login_state.dart';
 import 'package:calorietracker/service/collection_api_service.dart';
@@ -22,7 +24,8 @@ class LoginController {
       isDisabled: true,
     );
     final apiService = await locator.getAsync<CollectionApiService>();
-    await apiService.getUserId(username: username).then((userId) async {
+    await apiService.getUserId(username: username).then((response) async {
+      final userId = jsonDecode(response);
       if (userId.isNotEmpty) {
         await locator<StorageService>().write(key: userIdKey, value: userId).catchError((error, stackTrace) {
           locator<LoggingService>().handle(error, stackTrace);

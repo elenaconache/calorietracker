@@ -13,16 +13,19 @@ class CaloriesMacrosPieChart extends StatelessWidget {
   final Color carbsColor;
   final Color fatColor;
   final Color proteinColor;
+  final Color defaultMacroNutrient;
 
-  const CaloriesMacrosPieChart(
-      {super.key,
-      required this.carbs,
-      required this.fat,
-      required this.protein,
-      required this.calories,
-      required this.carbsColor,
-      required this.fatColor,
-      required this.proteinColor});
+  const CaloriesMacrosPieChart({
+    super.key,
+    required this.carbs,
+    required this.fat,
+    required this.protein,
+    required this.calories,
+    required this.carbsColor,
+    required this.fatColor,
+    required this.proteinColor,
+    required this.defaultMacroNutrient,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,5 +69,12 @@ class CaloriesMacrosPieChart extends StatelessWidget {
           title: '',
           radius: _pieChartEntryRadius,
         ),
+        if (protein == 0 && fat == 0 && carbs == 0)
+          PieChartSectionData(
+            color: defaultMacroNutrient,
+            value: 100,
+            title: '',
+            radius: _pieChartEntryRadius,
+          )
       ];
 }

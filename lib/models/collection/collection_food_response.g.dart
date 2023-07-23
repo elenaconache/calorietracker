@@ -6,10 +6,18 @@ part of 'collection_food_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CollectionFoodResponse _$CollectionFoodResponseFromJson(Map<String, dynamic> json) {
+CollectionFoodResponse _$CollectionFoodResponseFromJson(
+    Map<String, dynamic> json) {
   $checkKeys(
     json,
-    requiredKeys: const ['id', 'name', 'calories', 'fat', 'carbohydrates', 'protein'],
+    requiredKeys: const [
+      'id',
+      'name',
+      'calories',
+      'fat',
+      'carbohydrates',
+      'protein'
+    ],
   );
   return CollectionFoodResponse(
     id: json['id'] as String,
@@ -37,7 +45,9 @@ CollectionFoodResponse _$CollectionFoodResponseFromJson(Map<String, dynamic> jso
   );
 }
 
-Map<String, dynamic> _$CollectionFoodResponseToJson(CollectionFoodResponse instance) => <String, dynamic>{
+Map<String, dynamic> _$CollectionFoodResponseToJson(
+        CollectionFoodResponse instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'barcode': instance.barcode,
       'name': instance.name,
