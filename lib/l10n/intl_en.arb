@@ -84,5 +84,8 @@
         "type": "int"
       }
     }
-  }
+  },
+  "loginTitle": "Login",
+  "usernameLabel": "Username",
+  "userNotFoundError": "The username you entered was not found."
 }

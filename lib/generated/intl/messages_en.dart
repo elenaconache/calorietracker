@@ -31,8 +31,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(value) => "Protein ${value}g";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+  static Map<String, Function> _notInlinedMessages(_) =>
+      <String, Function>{
         "addFoodLabel": MessageLookupByLibrary.simpleMessage("Add food"),
         "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
         "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fiberLabel": MessageLookupByLibrary.simpleMessage("Fiber"),
         "generalErrorMessage": MessageLookupByLibrary.simpleMessage("An error occurred."),
         "ironLabel": MessageLookupByLibrary.simpleMessage("Iron"),
+        "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
         "mealLabel": MessageLookupByLibrary.simpleMessage("Meal"),
         "mealsLabel": MessageLookupByLibrary.simpleMessage("Meals"),
@@ -74,6 +75,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugarLabel": MessageLookupByLibrary.simpleMessage("Sugar"),
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today"),
         "transFatLabel": MessageLookupByLibrary.simpleMessage("Trans fat"),
+        "userNotFoundError": MessageLookupByLibrary.simpleMessage("The username you entered was not found."),
+        "usernameLabel": MessageLookupByLibrary.simpleMessage("Username"),
         "vitaminALabel": MessageLookupByLibrary.simpleMessage("Vitamin A"),
         "vitaminCLabel": MessageLookupByLibrary.simpleMessage("Vitamin C"),
         "vitaminDLabel": MessageLookupByLibrary.simpleMessage("Vitamin D")

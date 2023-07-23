@@ -3,8 +3,8 @@ import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
 import 'package:calorietracker/features/food_search/search_results_section.dart';
 import 'package:calorietracker/models/meal.dart';
+import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
-import 'package:calorietracker/ui/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

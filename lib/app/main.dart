@@ -3,6 +3,7 @@ import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/food_search/food_search_view.dart';
+import 'package:calorietracker/features/login/login_view.dart';
 import 'package:calorietracker/generated/l10n.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Calorie tracker',
-      initialRoute: Routes.diary.path,
+      initialRoute: Routes.login.path,
       onGenerateRoute: _onGenerateRoute,
       localizationsDelegates: const [
         S.delegate,
@@ -41,10 +42,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
-        colorScheme: _defaultDarkColorScheme,
-        useMaterial3: true,
-        scaffoldBackgroundColor: Colors.black,
-      ),
+          colorScheme: _defaultDarkColorScheme,
+          useMaterial3: true,
+          scaffoldBackgroundColor: Colors.black,
+          snackBarTheme: SnackBarThemeData(
+              backgroundColor: _defaultDarkColorScheme.background,
+              contentTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: _defaultDarkColorScheme.tertiary))),
       themeMode: ThemeMode.dark,
     );
   }
@@ -59,6 +62,8 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (context) => FoodSearchView(meal: args as Meal));
       case Routes.addFood:
         return MaterialPageRoute(builder: (context) => AddFoodView(args: args as AddFoodArguments));
+      case Routes.login:
+        return MaterialPageRoute(builder: (context) => const LoginView());
       default:
         return null;
     }

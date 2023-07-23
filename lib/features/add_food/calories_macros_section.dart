@@ -1,7 +1,7 @@
 import 'package:calorietracker/features/add_food/calories_macros_pie_chart.dart';
 import 'package:calorietracker/features/add_food/macro_item.dart';
+import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/colors.dart';
-import 'package:calorietracker/ui/strings.dart';
 import 'package:flutter/material.dart';
 
 const _carbsColor = melonYellow;

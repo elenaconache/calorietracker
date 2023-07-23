@@ -1,6 +1,6 @@
 import 'package:calorietracker/features/add_food/nutrient_row.dart';
 import 'package:calorietracker/models/nutrition.dart';
-import 'package:calorietracker/ui/strings.dart';
+import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class NutritionSection extends StatelessWidget {

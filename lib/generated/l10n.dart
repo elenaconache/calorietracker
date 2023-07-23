@@ -486,6 +486,36 @@ class S {
       args: [value],
     );
   }
+
+  /// `Login`
+  String get loginTitle {
+    return Intl.message(
+      'Login',
+      name: 'loginTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username`
+  String get usernameLabel {
+    return Intl.message(
+      'Username',
+      name: 'usernameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The username you entered was not found.`
+  String get userNotFoundError {
+    return Intl.message(
+      'The username you entered was not found.',
+      name: 'userNotFoundError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

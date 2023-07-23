@@ -2,7 +2,7 @@ import 'package:calorietracker/features/food_search/branded_results_section.dart
 import 'package:calorietracker/features/food_search/common_results_section.dart';
 import 'package:calorietracker/features/food_search/powered_by_nutritionix_wrapper.dart';
 import 'package:calorietracker/models/meal.dart';
-import 'package:calorietracker/ui/strings.dart';
+import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultsSection extends StatefulWidget {

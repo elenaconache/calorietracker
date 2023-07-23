@@ -7,10 +7,10 @@ import 'package:calorietracker/features/add_food/calories_macros_section.dart';
 import 'package:calorietracker/features/add_food/nutrition_section.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/service/logging_service.dart';
+import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button.dart';
-import 'package:calorietracker/ui/strings.dart';
 import 'package:flutter/material.dart';
 
 class AddFoodView extends StatefulWidget {

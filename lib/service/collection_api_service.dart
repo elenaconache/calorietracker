@@ -15,4 +15,7 @@ abstract class CollectionApiService {
 
   @GET('diary-entries/{userId}/{date}')
   Future<List<MealEntriesResponse>> getDiaryEntries({@Path('userId') required String userId, @Path('date') required String date});
+
+  @GET('users/{username}')
+  Future<String> getUserId({@Path('username') required String username});
 }

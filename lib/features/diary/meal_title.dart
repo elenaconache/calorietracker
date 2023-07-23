@@ -2,8 +2,8 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/helpers/api_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/service/diary_service.dart';
+import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/dot.dart';
-import 'package:calorietracker/ui/strings.dart';
 import 'package:flutter/material.dart';
 
 class MealTitle extends StatelessWidget {

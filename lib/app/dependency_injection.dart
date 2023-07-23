@@ -1,5 +1,6 @@
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
+import 'package:calorietracker/features/login/login_controller.dart';
 import 'package:calorietracker/interceptors/logging_interceptor.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:calorietracker/providers/dio_provider.dart';
@@ -9,26 +10,31 @@ import 'package:calorietracker/service/diary_service.dart';
 import 'package:calorietracker/service/logging_service.dart';
 import 'package:calorietracker/service/numeric_formatting_service.dart';
 import 'package:calorietracker/service/nutritionix_api_service.dart';
+import 'package:calorietracker/service/storage_service.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_controller.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
 final GetIt locator = GetIt.instance;
 
 // TODO: extract collection base url into env variable
-const _collectionApiBaseUrl = 'http://192.168.0.133:8080/calorietracker/';
+const _collectionApiBaseUrl = 'http://192.168.55.180:8080/'; //'http://192.168.0.133:8080/calorietracker/
 const _nutritionixApiBaseUrl = 'https://trackapi.nutritionix.com/';
 
 void setupLocator() {
   locator.registerFactory<AddFoodController>(() => AddFoodController());
   locator.registerFactory<AppDropdownButtonController>(() => AppDropdownButtonController());
+  locator.registerFactory<LoginController>(() => LoginController());
 
   locator.registerLazySingleton<DateFormattingService>(() => DateFormattingService());
   locator.registerLazySingleton<DiaryService>(() => DiaryService());
   locator.registerLazySingleton<DioProvider>(() => DioProvider());
+  locator.registerLazySingleton<FlutterSecureStorage>(() => const FlutterSecureStorage());
   locator.registerLazySingleton<FoodSearchService>(() => FoodSearchService());
   locator.registerLazySingleton<LoggingInterceptor>(() => LoggingInterceptor());
   locator.registerLazySingleton<LoggingService>(() => LoggingService());
   locator.registerLazySingleton<NumericFormattingService>(() => NumericFormattingService());
+  locator.registerLazySingleton<StorageService>(() => StorageService());
 
   locator.registerLazySingletonAsync<AppPathProvider>(() async {
     final appPathProvider = AppPathProvider();

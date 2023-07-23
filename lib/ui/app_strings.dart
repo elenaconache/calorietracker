@@ -1,6 +1,8 @@
 import 'package:calorietracker/generated/l10n.dart';
 
 class AppStrings {
+  AppStrings._();
+
   static String get diaryTitle => S.current.diaryTitle;
 
   static String get todayTitle => S.current.todayTitle;
@@ -89,4 +91,10 @@ class AppStrings {
   static String fatValue(int value) => S.current.fatValue(value);
 
   static String proteinValue(int value) => S.current.proteinValue(value);
+
+  static String get loginTitle => S.current.loginTitle;
+
+  static String get usernameLabel => S.current.usernameLabel;
+
+  static String get userNotFoundError => S.current.userNotFoundError;
 }
