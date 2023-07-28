@@ -1,5 +1,6 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/diary/day_nutrition_summary.dart';
+import 'package:calorietracker/features/diary/diary_controller.dart';
 import 'package:calorietracker/features/diary/diary_entries_sliver_list.dart';
 import 'package:calorietracker/features/diary/meal_title.dart';
 import 'package:calorietracker/models/helpers/api_response_status.dart';
@@ -19,12 +20,20 @@ class DiaryView extends StatefulWidget {
 
 class _DiaryViewState extends State<DiaryView> {
   late final DiaryService _diaryService;
+  late final DiaryController _controller;
 
   @override
   void initState() {
     _diaryService = locator<DiaryService>();
+    _controller = locator<DiaryController>();
     WidgetsBinding.instance.addPostFrameCallback((_) => _diaryService.fetchDiary());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.enabledMacrosPercentageMode.dispose();
+    super.dispose();
   }
 
   @override
@@ -68,7 +77,14 @@ class _DiaryViewState extends State<DiaryView> {
                 ),
               ),
               const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              const SliverToBoxAdapter(child: MealTitle(meal: Meal.breakfast)),
+              SliverToBoxAdapter(
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.enabledMacrosPercentageMode,
+                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                            meal: Meal.breakfast,
+                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                            onTap: _controller.toggleMacrosMode,
+                          ))),
               ValueListenableBuilder(
                   valueListenable: _diaryService.selectedDayMealEntries,
                   builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
@@ -85,7 +101,14 @@ class _DiaryViewState extends State<DiaryView> {
                 ))),
               ),
               const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              const SliverToBoxAdapter(child: MealTitle(meal: Meal.lunch)),
+              SliverToBoxAdapter(
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.enabledMacrosPercentageMode,
+                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                            meal: Meal.lunch,
+                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                            onTap: _controller.toggleMacrosMode,
+                          ))),
               ValueListenableBuilder(
                   valueListenable: _diaryService.selectedDayMealEntries,
                   builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
@@ -102,7 +125,14 @@ class _DiaryViewState extends State<DiaryView> {
                 ))),
               ),
               const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              const SliverToBoxAdapter(child: MealTitle(meal: Meal.dinner)),
+              SliverToBoxAdapter(
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.enabledMacrosPercentageMode,
+                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                            meal: Meal.dinner,
+                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                            onTap: _controller.toggleMacrosMode,
+                          ))),
               ValueListenableBuilder(
                   valueListenable: _diaryService.selectedDayMealEntries,
                   builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
@@ -119,7 +149,14 @@ class _DiaryViewState extends State<DiaryView> {
                 ))),
               ),
               const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              const SliverToBoxAdapter(child: MealTitle(meal: Meal.snacks)),
+              SliverToBoxAdapter(
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.enabledMacrosPercentageMode,
+                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                            meal: Meal.snacks,
+                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                            onTap: _controller.toggleMacrosMode,
+                          ))),
               ValueListenableBuilder(
                   valueListenable: _diaryService.selectedDayMealEntries,
                   builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(

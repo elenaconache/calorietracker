@@ -20,62 +20,83 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(calories, servingQuantity, servingUnit) => "${calories} cal, ${servingQuantity} ${servingUnit}";
+  static String m0(calories, servingQuantity, servingUnit) =>
+      "${calories} cal, ${servingQuantity} ${servingUnit}";
 
   static String m1(calories) => "${calories} cal";
 
-  static String m2(value) => "Carbs ${value}g";
+  static String m2(percentage) => "Carbs ${percentage}%";
 
-  static String m3(value) => "Fat ${value}g";
+  static String m3(value) => "Carbs ${value}g";
 
-  static String m4(value) => "Protein ${value}g";
+  static String m4(percentage) => "Fat ${percentage}%";
+
+  static String m5(value) => "Fat ${value}g";
+
+  static String m6(percentage) => "Protein ${percentage}%";
+
+  static String m7(value) => "Protein ${value}g";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) =>
-      <String, Function>{
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "addFoodLabel": MessageLookupByLibrary.simpleMessage("Add food"),
         "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
         "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
         "calciumLabel": MessageLookupByLibrary.simpleMessage("Calcium"),
         "caloriesLabel": MessageLookupByLibrary.simpleMessage("Calories"),
         "caloriesServingShortLabel": m0,
-        "caloriesShortGenericLabel": MessageLookupByLibrary.simpleMessage("cal"),
+        "caloriesShortGenericLabel":
+            MessageLookupByLibrary.simpleMessage("cal"),
         "caloriesShortLabel": m1,
-        "carbohydratesLabel": MessageLookupByLibrary.simpleMessage("Carbohydrates"),
+        "carbohydratesLabel":
+            MessageLookupByLibrary.simpleMessage("Carbohydrates"),
         "carbsLabel": MessageLookupByLibrary.simpleMessage("Carbs"),
-        "carbsValue": m2,
+        "carbsPercentageValue": m2,
+        "carbsValue": m3,
         "cholesterolLabel": MessageLookupByLibrary.simpleMessage("Cholesterol"),
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "diaryTitle": MessageLookupByLibrary.simpleMessage("Diary"),
         "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dinner"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
-        "fatValue": m3,
+        "fatPercentageValue": m4,
+        "fatValue": m5,
         "fiberLabel": MessageLookupByLibrary.simpleMessage("Fiber"),
-        "generalErrorMessage": MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "generalErrorMessage":
+            MessageLookupByLibrary.simpleMessage("An error occurred."),
         "ironLabel": MessageLookupByLibrary.simpleMessage("Iron"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
         "mealLabel": MessageLookupByLibrary.simpleMessage("Meal"),
         "mealsLabel": MessageLookupByLibrary.simpleMessage("Meals"),
-        "monounsaturatedFatLabel": MessageLookupByLibrary.simpleMessage("Monounsaturated fat"),
-        "noFoodLoggedMessage": MessageLookupByLibrary.simpleMessage("You didn\'t log foods for this meal yet."),
-        "noResultsTitle": MessageLookupByLibrary.simpleMessage("There were no results matching your search"),
+        "monounsaturatedFatLabel":
+            MessageLookupByLibrary.simpleMessage("Monounsaturated fat"),
+        "noFoodLoggedMessage": MessageLookupByLibrary.simpleMessage(
+            "You didn\'t log foods for this meal yet."),
+        "noResultsTitle": MessageLookupByLibrary.simpleMessage(
+            "There were no results matching your search"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
-        "polyunsaturatedFatLabel": MessageLookupByLibrary.simpleMessage("Polyunsaturated fat"),
+        "polyunsaturatedFatLabel":
+            MessageLookupByLibrary.simpleMessage("Polyunsaturated fat"),
         "potassiumLabel": MessageLookupByLibrary.simpleMessage("Potassium"),
-        "poweredByNutritionixLabel": MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
+        "poweredByNutritionixLabel":
+            MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
-        "proteinValue": m4,
-        "saturatedFatLabel": MessageLookupByLibrary.simpleMessage("Saturated fat"),
+        "proteinPercentageValue": m6,
+        "proteinValue": m7,
+        "saturatedFatLabel":
+            MessageLookupByLibrary.simpleMessage("Saturated fat"),
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
-        "searchForFoodLabel": MessageLookupByLibrary.simpleMessage("Search for a food"),
-        "servingsLabel": MessageLookupByLibrary.simpleMessage("Serving size (grams)"),
+        "searchForFoodLabel":
+            MessageLookupByLibrary.simpleMessage("Search for a food"),
+        "servingsLabel":
+            MessageLookupByLibrary.simpleMessage("Serving size (grams)"),
         "snacksLabel": MessageLookupByLibrary.simpleMessage("Snacks"),
         "sodiumLabel": MessageLookupByLibrary.simpleMessage("Sodium"),
         "sugarLabel": MessageLookupByLibrary.simpleMessage("Sugar"),
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today"),
         "transFatLabel": MessageLookupByLibrary.simpleMessage("Trans fat"),
-        "userNotFoundError": MessageLookupByLibrary.simpleMessage("The username you entered was not found."),
+        "userNotFoundError": MessageLookupByLibrary.simpleMessage(
+            "The username you entered was not found."),
         "usernameLabel": MessageLookupByLibrary.simpleMessage("Username"),
         "vitaminALabel": MessageLookupByLibrary.simpleMessage("Vitamin A"),
         "vitaminCLabel": MessageLookupByLibrary.simpleMessage("Vitamin C"),

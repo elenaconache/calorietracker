@@ -87,5 +87,29 @@
   },
   "loginTitle": "Login",
   "usernameLabel": "Username",
-  "userNotFoundError": "The username you entered was not found."
+  "userNotFoundError": "The username you entered was not found.",
+  "carbsPercentageValue": "Carbs {percentage}%",
+  "@carbsPercentageValue": {
+    "placeholder": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "fatPercentageValue": "Fat {percentage}%",
+  "@fatPercentageValue": {
+    "placeholder": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "proteinPercentageValue": "Protein {percentage}%",
+  "@proteinPercentageValue": {
+    "placeholder": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  }
 }

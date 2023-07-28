@@ -138,4 +138,12 @@ class Nutrition {
         sugar: sugar?.toPrecision(2),
         fiber: fiber?.toPrecision(2),
       );
+
+  double get _totalMacros => (carbohydrates ?? 0) * 4 + (protein ?? 0) * 4 + (fat ?? 0) * 9;
+
+  int get carbsPercentage => _totalMacros == 0 ? 0 : ((carbohydrates ?? 0) * 4 / _totalMacros * 100).toInt();
+
+  int get fatPercentage => _totalMacros == 0 ? 0 : ((fat ?? 0) * 9 / _totalMacros * 100).toInt();
+
+  int get proteinPercentage => _totalMacros == 0 ? 0 : ((protein ?? 0) * 4 / _totalMacros * 100).toInt();
 }

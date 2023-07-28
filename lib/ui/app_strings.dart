@@ -97,4 +97,10 @@ class AppStrings {
   static String get usernameLabel => S.current.usernameLabel;
 
   static String get userNotFoundError => S.current.userNotFoundError;
+
+  static String carbsPercentageValue(int percentage) => S.current.carbsPercentageValue(percentage);
+
+  static String proteinPercentageValue(int percentage) => S.current.proteinPercentageValue(percentage);
+
+  static String fatPercentageValue(int percentage) => S.current.fatPercentageValue(percentage);
 }

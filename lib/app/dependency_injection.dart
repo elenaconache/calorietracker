@@ -1,4 +1,5 @@
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
+import 'package:calorietracker/features/diary/diary_controller.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
 import 'package:calorietracker/features/login/login_controller.dart';
 import 'package:calorietracker/interceptors/logging_interceptor.dart';
@@ -18,12 +19,13 @@ import 'package:get_it/get_it.dart';
 final GetIt locator = GetIt.instance;
 
 // TODO: extract collection base url into env variable
-const _collectionApiBaseUrl = 'http://192.168.55.180:8080/'; //'http://192.168.0.133:8080/calorietracker/
+const _collectionApiBaseUrl = 'http://192.168.0.133:8080/calorietracker/';
 const _nutritionixApiBaseUrl = 'https://trackapi.nutritionix.com/';
 
 void setupLocator() {
   locator.registerFactory<AddFoodController>(() => AddFoodController());
   locator.registerFactory<AppDropdownButtonController>(() => AppDropdownButtonController());
+  locator.registerFactory<DiaryController>(() => DiaryController());
   locator.registerFactory<LoginController>(() => LoginController());
 
   locator.registerLazySingleton<DateFormattingService>(() => DateFormattingService());
