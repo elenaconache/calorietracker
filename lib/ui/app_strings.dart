@@ -103,4 +103,6 @@ class AppStrings {
   static String proteinPercentageValue(int percentage) => S.current.proteinPercentageValue(percentage);
 
   static String fatPercentageValue(int percentage) => S.current.fatPercentageValue(percentage);
+
+  static String get accountsTitle => S.current.accountsTitle;
 }

@@ -551,6 +551,16 @@ class S {
       args: [percentage],
     );
   }
+
+  /// `Accounts`
+  String get accountsTitle {
+    return Intl.message(
+      'Accounts',
+      name: 'accountsTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

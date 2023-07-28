@@ -39,17 +39,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accountsTitle": MessageLookupByLibrary.simpleMessage("Accounts"),
         "addFoodLabel": MessageLookupByLibrary.simpleMessage("Add food"),
         "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
         "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
         "calciumLabel": MessageLookupByLibrary.simpleMessage("Calcium"),
         "caloriesLabel": MessageLookupByLibrary.simpleMessage("Calories"),
         "caloriesServingShortLabel": m0,
-        "caloriesShortGenericLabel":
-            MessageLookupByLibrary.simpleMessage("cal"),
+        "caloriesShortGenericLabel": MessageLookupByLibrary.simpleMessage("cal"),
         "caloriesShortLabel": m1,
-        "carbohydratesLabel":
-            MessageLookupByLibrary.simpleMessage("Carbohydrates"),
+        "carbohydratesLabel": MessageLookupByLibrary.simpleMessage("Carbohydrates"),
         "carbsLabel": MessageLookupByLibrary.simpleMessage("Carbs"),
         "carbsPercentageValue": m2,
         "carbsValue": m3,

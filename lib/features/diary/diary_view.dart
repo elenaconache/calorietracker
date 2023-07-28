@@ -3,6 +3,7 @@ import 'package:calorietracker/features/diary/day_nutrition_summary.dart';
 import 'package:calorietracker/features/diary/diary_controller.dart';
 import 'package:calorietracker/features/diary/diary_entries_sliver_list.dart';
 import 'package:calorietracker/features/diary/meal_title.dart';
+import 'package:calorietracker/features/diary/user_avatar_action.dart';
 import 'package:calorietracker/models/helpers/api_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
@@ -41,10 +42,9 @@ class _DiaryViewState extends State<DiaryView> {
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          title: Text(
-            AppStrings.diaryTitle,
-          ),
+          title: Text(AppStrings.diaryTitle),
           scrolledUnderElevation: 8,
+          actions: const [UserAvatarAction()],
         ),
         body: RefreshIndicator(
           onRefresh: _diaryService.fetchDiary,

@@ -3,7 +3,8 @@ enum Routes {
   foodSearch('/foodSearch'),
   addFood('addFood'),
   unknown('/unknown'),
-  login('/login');
+  login('/login'),
+  accounts('accounts');
 
   final String path;
 

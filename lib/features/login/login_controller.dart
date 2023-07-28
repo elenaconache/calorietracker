@@ -6,6 +6,7 @@ import 'package:calorietracker/models/user.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/storage_service.dart';
+import 'package:calorietracker/services/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -59,5 +60,6 @@ class LoginController {
       storedUsers.add(User(id: userId, username: username));
       await storageService.saveList(key: usersKey, list: storedUsers, toJson: (user) => user.toJson());
     }
+    await locator<UserService>().fetchLoggedInState();
   }
 }

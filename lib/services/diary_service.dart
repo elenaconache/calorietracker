@@ -7,7 +7,7 @@ import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
-import 'package:calorietracker/services/storage_service.dart';
+import 'package:calorietracker/services/user_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +52,7 @@ class DiaryService {
     selectedDayMealEntries.value = ApiResponse.loading();
     final fetchedDate = _dateFormattingService.format(dateTime: (date ?? DateTime.now()).toString(), format: collectionApiDateFormat);
     final apiService = await locator.getAsync<CollectionApiService>();
-    final userId = await locator<StorageService>().get(key: selectedUserIdKey);
+    final userId = locator<UserService>().selectedUser.value?.id;
     if (userId?.isEmpty ?? true) {
       // TODO: navigate to login and show error snack bar
     } else {

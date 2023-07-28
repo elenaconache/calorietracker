@@ -9,7 +9,7 @@ import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
-import 'package:calorietracker/services/storage_service.dart';
+import 'package:calorietracker/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +51,7 @@ class AddFoodController {
       {required Meal meal, required Food food, required int servingQuantity, String? barcode, required VoidCallback onSuccess}) async {
     isLoading.value = true;
     final collectionApiService = await locator.getAsync<CollectionApiService>();
-    final userId = await locator<StorageService>().get(key: selectedUserIdKey);
+    final userId = locator<UserService>().selectedUser.value?.id;
     if (userId?.isEmpty ?? true) {
       locator<LoggingService>().info('Could not log food. Missing user id.');
       // TODO: navigate to login screen and show a snack bar saying the session expired
