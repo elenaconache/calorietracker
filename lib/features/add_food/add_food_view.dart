@@ -6,7 +6,7 @@ import 'package:calorietracker/features/add_food/add_food_controller.dart';
 import 'package:calorietracker/features/add_food/calories_macros_section.dart';
 import 'package:calorietracker/features/add_food/nutrition_section.dart';
 import 'package:calorietracker/models/meal.dart';
-import 'package:calorietracker/service/logging_service.dart';
+import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';

@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/login/login_state.dart';
-import 'package:calorietracker/service/collection_api_service.dart';
-import 'package:calorietracker/service/logging_service.dart';
-import 'package:calorietracker/service/storage_service.dart';
+import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/logging_service.dart';
+import 'package:calorietracker/services/storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 

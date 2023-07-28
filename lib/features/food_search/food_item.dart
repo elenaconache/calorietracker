@@ -4,7 +4,7 @@ import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_food_response.dart';
 import 'package:calorietracker/navigation/routes.dart';
-import 'package:calorietracker/service/numeric_formatting_service.dart';
+import 'package:calorietracker/services/numeric_formatting_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:flutter/material.dart';

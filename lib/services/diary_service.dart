@@ -4,10 +4,10 @@ import 'package:calorietracker/models/collection/meal_entries_response.dart';
 import 'package:calorietracker/models/helpers/api_response.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
-import 'package:calorietracker/service/collection_api_service.dart';
-import 'package:calorietracker/service/date_formatting_service.dart';
-import 'package:calorietracker/service/logging_service.dart';
-import 'package:calorietracker/service/storage_service.dart';
+import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/date_formatting_service.dart';
+import 'package:calorietracker/services/logging_service.dart';
+import 'package:calorietracker/services/storage_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 

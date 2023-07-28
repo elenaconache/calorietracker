@@ -1,5 +1,5 @@
 import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/service/logging_service.dart';
+import 'package:calorietracker/services/logging_service.dart';
 import 'package:dio/dio.dart';
 
 class LoggingInterceptor extends Interceptor {

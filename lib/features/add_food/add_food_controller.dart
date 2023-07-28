@@ -6,10 +6,10 @@ import 'package:calorietracker/models/collection/add_diary_entry_with_food_reque
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
-import 'package:calorietracker/service/collection_api_service.dart';
-import 'package:calorietracker/service/diary_service.dart';
-import 'package:calorietracker/service/logging_service.dart';
-import 'package:calorietracker/service/storage_service.dart';
+import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/diary_service.dart';
+import 'package:calorietracker/services/logging_service.dart';
+import 'package:calorietracker/services/storage_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
