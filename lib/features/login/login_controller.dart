@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/login/login_state.dart';
+import 'package:calorietracker/models/user.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/storage_service.dart';
@@ -27,9 +28,7 @@ class LoginController {
     await apiService.getUserId(username: username).then((response) async {
       final userId = jsonDecode(response);
       if (userId.isNotEmpty) {
-        await locator<StorageService>().write(key: userIdKey, value: userId).catchError((error, stackTrace) {
-          locator<LoggingService>().handle(error, stackTrace);
-        });
+        await _saveUser(userId, username);
         onSuccess();
       } else {
         onError(null);
@@ -43,5 +42,22 @@ class LoginController {
       }
     });
     loginState.value = const LoginState(isLoading: false, isDisabled: false);
+  }
+
+  Future<void> _saveUser(userId, String username) async {
+    final storageService = locator<StorageService>();
+    await storageService.save(key: selectedUserIdKey, value: userId).catchError((error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+    });
+    var storedUsers = await storageService.getList<User>(
+      key: usersKey,
+      fromJson: (userJson) => User.fromJson(userJson),
+    );
+    if (storedUsers.any((user) => user.id == userId)) {
+      locator<LoggingService>().info('Skipping saving user id as it was already stored.');
+    } else {
+      storedUsers.add(User(id: userId, username: username));
+      await storageService.saveList(key: usersKey, list: storedUsers, toJson: (user) => user.toJson());
+    }
   }
 }

@@ -51,7 +51,7 @@ class AddFoodController {
       {required Meal meal, required Food food, required int servingQuantity, String? barcode, required VoidCallback onSuccess}) async {
     isLoading.value = true;
     final collectionApiService = await locator.getAsync<CollectionApiService>();
-    final userId = await locator<StorageService>().read(key: userIdKey);
+    final userId = await locator<StorageService>().get(key: selectedUserIdKey);
     if (userId?.isEmpty ?? true) {
       locator<LoggingService>().info('Could not log food. Missing user id.');
       // TODO: navigate to login screen and show a snack bar saying the session expired

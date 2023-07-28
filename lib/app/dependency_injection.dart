@@ -12,6 +12,7 @@ import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/numeric_formatting_service.dart';
 import 'package:calorietracker/services/nutritionix_api_service.dart';
 import 'package:calorietracker/services/storage_service.dart';
+import 'package:calorietracker/services/user_service.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_controller.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -37,6 +38,7 @@ void setupLocator() {
   locator.registerLazySingleton<LoggingService>(() => LoggingService());
   locator.registerLazySingleton<NumericFormattingService>(() => NumericFormattingService());
   locator.registerLazySingleton<StorageService>(() => StorageService());
+  locator.registerLazySingleton<UserService>(() => UserService());
 
   locator.registerLazySingletonAsync<AppPathProvider>(() async {
     final appPathProvider = AppPathProvider();

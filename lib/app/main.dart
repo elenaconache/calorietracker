@@ -7,13 +7,16 @@ import 'package:calorietracker/features/login/login_view.dart';
 import 'package:calorietracker/generated/l10n.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
+import 'package:calorietracker/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 const primaryColor = Colors.pink;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
+  await locator<UserService>().fetchLoggedInState();
   runApp(const MyApp());
 }
 
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Calorie tracker',
-      initialRoute: Routes.login.path,
+      initialRoute: _initialRoutePath,
       onGenerateRoute: _onGenerateRoute,
       localizationsDelegates: const [
         S.delegate,
@@ -51,6 +54,8 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
     );
   }
+
+  String get _initialRoutePath => locator<UserService>().isLoggedIn.value ? Routes.diary.path : Routes.login.path;
 
   Route? _onGenerateRoute(RouteSettings settings) {
     final matchingRoute = Routes.values.firstWhere((route) => route.path == settings.name, orElse: () => Routes.unknown);

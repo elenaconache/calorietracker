@@ -52,7 +52,7 @@ class DiaryService {
     selectedDayMealEntries.value = ApiResponse.loading();
     final fetchedDate = _dateFormattingService.format(dateTime: (date ?? DateTime.now()).toString(), format: collectionApiDateFormat);
     final apiService = await locator.getAsync<CollectionApiService>();
-    final userId = await locator<StorageService>().read(key: userIdKey);
+    final userId = await locator<StorageService>().get(key: selectedUserIdKey);
     if (userId?.isEmpty ?? true) {
       // TODO: navigate to login and show error snack bar
     } else {
