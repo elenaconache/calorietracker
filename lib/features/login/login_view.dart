@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/login/login_controller.dart';
+import 'package:calorietracker/features/login/login_error.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
@@ -69,7 +69,7 @@ class _LoginViewState extends State<LoginView> {
                                 borderRadius: BorderRadius.circular(4.0),
                               )),
                             ),
-                            child: Text(AppStrings.loginTitle))))
+                            child: Text(AppStrings.continueLabel))))
           ],
         ),
       ),
@@ -83,9 +83,23 @@ class _LoginViewState extends State<LoginView> {
   void _onLoginPressed(BuildContext context) {
     unawaited(_loginController.login(
         username: _usernameController.text,
-        onError: (status) {
+        onError: (loginError) {
           if (context.mounted) {
-            final errorMessage = status == HttpStatus.notFound ? AppStrings.userNotFoundError : AppStrings.generalErrorMessage;
+            final String errorMessage;
+            switch (loginError) {
+              case LoginError.alreadyLoggedIn:
+                errorMessage = AppStrings.alreadyLoggedInMessage;
+                break;
+              case LoginError.notFound:
+                errorMessage = AppStrings.userNotFoundError;
+                break;
+              case LoginError.connection:
+                errorMessage = AppStrings.connectionErrorMessage;
+                break;
+              case LoginError.unknown:
+                errorMessage = AppStrings.generalErrorMessage;
+                break;
+            }
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
           }
         },

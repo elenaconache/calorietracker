@@ -7,12 +7,14 @@ import 'package:flutter/cupertino.dart';
 class UserService {
   final ValueNotifier<bool> isLoggedIn = ValueNotifier(false);
   final ValueNotifier<User?> selectedUser = ValueNotifier(null);
+  final ValueNotifier<List<User>> users = ValueNotifier([]);
 
   Future<void> fetchLoggedInState() async {
     final storageService = locator<StorageService>();
     final userId = await storageService.get(key: selectedUserIdKey);
     if (userId != null) {
       final users = await storageService.getList(key: usersKey, fromJson: (json) => User.fromJson(json));
+      this.users.value = users;
       selectedUser.value = users.firstWhereOrNull((user) => user.id == userId);
       isLoggedIn.value = selectedUser.value != null;
     } else {

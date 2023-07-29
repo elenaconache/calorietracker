@@ -105,4 +105,14 @@ class AppStrings {
   static String fatPercentageValue(int percentage) => S.current.fatPercentageValue(percentage);
 
   static String get accountsTitle => S.current.accountsTitle;
+
+  static String get logoutLabel => S.current.logoutLabel;
+
+  static String get addAccountLabel => S.current.addAccountLabel;
+
+  static String get continueLabel => S.current.continueLabel;
+
+  static String get alreadyLoggedInMessage => S.current.alreadyLoggedInMessage;
+
+  static String get connectionErrorMessage => S.current.connectionErrorMessage;
 }

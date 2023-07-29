@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/features/login/login_error.dart';
 import 'package:calorietracker/features/login/login_state.dart';
 import 'package:calorietracker/models/user.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
@@ -18,34 +20,46 @@ class LoginController {
 
   Future<void> login({
     required String username,
-    required Function(int? status) onError,
+    required Function(LoginError loginError) onError,
     required VoidCallback onSuccess,
   }) async {
     loginState.value = const LoginState(
       isLoading: true,
       isDisabled: true,
     );
-    final apiService = await locator.getAsync<CollectionApiService>();
-    await apiService.getUserId(username: username).then((response) async {
-      final userId = jsonDecode(response);
-      if (userId.isNotEmpty) {
-        await _saveUser(userId, username);
-        onSuccess();
-      } else {
-        onError(null);
-      }
-    }).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
-      if (error is DioError) {
-        onError(error.response?.statusCode);
-      } else {
-        onError(null);
-      }
-    });
+    if (await _isUserAlreadySaved(username)) {
+      onError(LoginError.alreadyLoggedIn);
+    } else {
+      final apiService = await locator.getAsync<CollectionApiService>();
+      await apiService.getUserId(username: username).then((response) async {
+        final userId = jsonDecode(response);
+        if (userId.isNotEmpty) {
+          await _saveUser(userId, username);
+          onSuccess();
+        } else {
+          onError(LoginError.unknown);
+        }
+      }).catchError((error, stackTrace) {
+        final LoginError loginError;
+        locator<LoggingService>().handle(error, stackTrace);
+        if (error is DioError) {
+          if (error.type == DioErrorType.connectionError) {
+            loginError = LoginError.connection;
+          } else if (error.response?.statusCode == HttpStatus.notFound) {
+            loginError = LoginError.notFound;
+          } else {
+            loginError = LoginError.unknown;
+          }
+          onError(loginError);
+        } else {
+          onError(LoginError.unknown);
+        }
+      });
+    }
     loginState.value = const LoginState(isLoading: false, isDisabled: false);
   }
 
-  Future<void> _saveUser(userId, String username) async {
+  Future<void> _saveUser(String userId, String username) async {
     final storageService = locator<StorageService>();
     await storageService.save(key: selectedUserIdKey, value: userId).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
@@ -61,5 +75,14 @@ class LoginController {
       await storageService.saveList(key: usersKey, list: storedUsers, toJson: (user) => user.toJson());
     }
     await locator<UserService>().fetchLoggedInState();
+  }
+
+  Future<bool> _isUserAlreadySaved(String username) async {
+    final storageService = locator<StorageService>();
+    final storedUsers = await storageService.getList<User>(
+      key: usersKey,
+      fromJson: (userJson) => User.fromJson(userJson),
+    );
+    return storedUsers.any((user) => user.username == username);
   }
 }

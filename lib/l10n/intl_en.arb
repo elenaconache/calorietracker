@@ -112,5 +112,10 @@
       }
     }
   },
-  "accountsTitle": "Accounts"
+  "accountsTitle": "Accounts",
+  "logoutLabel": "Logout",
+  "addAccountLabel": "Add account",
+  "continueLabel": "Continue",
+  "alreadyLoggedInMessage": "You are already logged in with this account.",
+  "connectionErrorMessage": "Could not connect to the server."
 }

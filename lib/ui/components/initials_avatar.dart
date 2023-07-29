@@ -21,7 +21,7 @@ class InitialsAvatar extends StatelessWidget {
         child: Center(
             child: Text(
           _initials,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         )),
       ),
     );

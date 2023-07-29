@@ -40,7 +40,9 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountsTitle": MessageLookupByLibrary.simpleMessage("Accounts"),
+        "addAccountLabel": MessageLookupByLibrary.simpleMessage("Add account"),
         "addFoodLabel": MessageLookupByLibrary.simpleMessage("Add food"),
+        "alreadyLoggedInMessage": MessageLookupByLibrary.simpleMessage("You are already logged in with this account."),
         "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
         "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
         "calciumLabel": MessageLookupByLibrary.simpleMessage("Calcium"),
@@ -54,25 +56,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "carbsValue": m3,
         "cholesterolLabel": MessageLookupByLibrary.simpleMessage("Cholesterol"),
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
+        "connectionErrorMessage": MessageLookupByLibrary.simpleMessage("Could not connect to the server."),
+        "continueLabel": MessageLookupByLibrary.simpleMessage("Continue"),
         "diaryTitle": MessageLookupByLibrary.simpleMessage("Diary"),
         "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dinner"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
         "fatPercentageValue": m4,
         "fatValue": m5,
         "fiberLabel": MessageLookupByLibrary.simpleMessage("Fiber"),
-        "generalErrorMessage":
-            MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "generalErrorMessage": MessageLookupByLibrary.simpleMessage("An error occurred."),
         "ironLabel": MessageLookupByLibrary.simpleMessage("Iron"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
+        "logoutLabel": MessageLookupByLibrary.simpleMessage("Logout"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
         "mealLabel": MessageLookupByLibrary.simpleMessage("Meal"),
         "mealsLabel": MessageLookupByLibrary.simpleMessage("Meals"),
-        "monounsaturatedFatLabel":
-            MessageLookupByLibrary.simpleMessage("Monounsaturated fat"),
-        "noFoodLoggedMessage": MessageLookupByLibrary.simpleMessage(
-            "You didn\'t log foods for this meal yet."),
-        "noResultsTitle": MessageLookupByLibrary.simpleMessage(
-            "There were no results matching your search"),
+        "monounsaturatedFatLabel": MessageLookupByLibrary.simpleMessage("Monounsaturated fat"),
+        "noFoodLoggedMessage": MessageLookupByLibrary.simpleMessage("You didn\'t log foods for this meal yet."),
+        "noResultsTitle": MessageLookupByLibrary.simpleMessage("There were no results matching your search"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
         "polyunsaturatedFatLabel":
             MessageLookupByLibrary.simpleMessage("Polyunsaturated fat"),

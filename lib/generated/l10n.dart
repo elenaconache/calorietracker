@@ -561,6 +561,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Logout`
+  String get logoutLabel {
+    return Intl.message(
+      'Logout',
+      name: 'logoutLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add account`
+  String get addAccountLabel {
+    return Intl.message(
+      'Add account',
+      name: 'addAccountLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continueLabel {
+    return Intl.message(
+      'Continue',
+      name: 'continueLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are already logged in with this account.`
+  String get alreadyLoggedInMessage {
+    return Intl.message(
+      'You are already logged in with this account.',
+      name: 'alreadyLoggedInMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not connect to the server.`
+  String get connectionErrorMessage {
+    return Intl.message(
+      'Could not connect to the server.',
+      name: 'connectionErrorMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
