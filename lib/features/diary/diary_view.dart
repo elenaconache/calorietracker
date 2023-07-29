@@ -47,135 +47,136 @@ class _DiaryViewState extends State<DiaryView> {
           actions: const [UserAvatarAction()],
         ),
         body: RefreshIndicator(
-          onRefresh: _diaryService.fetchDiary,
-          child: CustomScrollView(
-            slivers: [
-              const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              SliverToBoxAdapter(
-                  child: Text(
-                AppStrings.todayTitle,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium,
-              )),
-              const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              const SliverToBoxAdapter(
-                child: AppDivider(),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  sliver: SliverToBoxAdapter(
+            onRefresh: _diaryService.fetchDiary,
+            child: Builder(
+              builder: (context) => CustomScrollView(
+                slivers: [
+                  const SliverPadding(padding: EdgeInsets.only(top: 12)),
+                  SliverToBoxAdapter(
                       child: Text(
-                    AppStrings.nutrientsLabel,
+                    AppStrings.todayTitle,
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium,
-                  ))),
-              const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              const SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                sliver: SliverToBoxAdapter(
-                  child: DayNutritionSummary(),
-                ),
+                  )),
+                  const SliverPadding(padding: EdgeInsets.only(top: 12)),
+                  const SliverToBoxAdapter(
+                    child: AppDivider(),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.only(top: 12)),
+                  SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      sliver: SliverToBoxAdapter(
+                          child: Text(
+                        AppStrings.nutrientsLabel,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ))),
+                  const SliverPadding(padding: EdgeInsets.only(top: 12)),
+                  const SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverToBoxAdapter(
+                      child: DayNutritionSummary(),
+                    ),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.only(top: 12)),
+                  SliverToBoxAdapter(
+                      child: ValueListenableBuilder(
+                          valueListenable: _controller.enabledMacrosPercentageMode,
+                          builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                                meal: Meal.breakfast,
+                                enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                                onTap: _controller.toggleMacrosMode,
+                              ))),
+                  ValueListenableBuilder(
+                      valueListenable: _diaryService.selectedDayMealEntries,
+                      builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                            entries: _diaryService.getSelectedDayMealEntries(meal: Meal.breakfast),
+                            error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                          )),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverToBoxAdapter(
+                        child: Center(
+                            child: TextButton(
+                      onPressed: () => _openSearchFoodScreen(context, Meal.breakfast),
+                      child: Text(AppStrings.addFoodLabel.toUpperCase()),
+                    ))),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.only(top: 12)),
+                  SliverToBoxAdapter(
+                      child: ValueListenableBuilder(
+                          valueListenable: _controller.enabledMacrosPercentageMode,
+                          builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                                meal: Meal.lunch,
+                                enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                                onTap: _controller.toggleMacrosMode,
+                              ))),
+                  ValueListenableBuilder(
+                      valueListenable: _diaryService.selectedDayMealEntries,
+                      builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                            entries: _diaryService.getSelectedDayMealEntries(meal: Meal.lunch),
+                            error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                          )),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverToBoxAdapter(
+                        child: Center(
+                            child: TextButton(
+                      onPressed: () => _openSearchFoodScreen(context, Meal.lunch),
+                      child: Text(AppStrings.addFoodLabel.toUpperCase()),
+                    ))),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.only(top: 12)),
+                  SliverToBoxAdapter(
+                      child: ValueListenableBuilder(
+                          valueListenable: _controller.enabledMacrosPercentageMode,
+                          builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                                meal: Meal.dinner,
+                                enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                                onTap: _controller.toggleMacrosMode,
+                              ))),
+                  ValueListenableBuilder(
+                      valueListenable: _diaryService.selectedDayMealEntries,
+                      builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                            entries: _diaryService.getSelectedDayMealEntries(meal: Meal.dinner),
+                            error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                          )),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverToBoxAdapter(
+                        child: Center(
+                            child: TextButton(
+                      onPressed: () => _openSearchFoodScreen(context, Meal.dinner),
+                      child: Text(AppStrings.addFoodLabel.toUpperCase()),
+                    ))),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.only(top: 12)),
+                  SliverToBoxAdapter(
+                      child: ValueListenableBuilder(
+                          valueListenable: _controller.enabledMacrosPercentageMode,
+                          builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                                meal: Meal.snacks,
+                                enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                                onTap: _controller.toggleMacrosMode,
+                              ))),
+                  ValueListenableBuilder(
+                      valueListenable: _diaryService.selectedDayMealEntries,
+                      builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                            entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
+                            error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                          )),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverToBoxAdapter(
+                        child: Center(
+                            child: TextButton(
+                      onPressed: () => _openSearchFoodScreen(context, Meal.snacks),
+                      child: Text(AppStrings.addFoodLabel.toUpperCase()),
+                    ))),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.only(top: 32)),
+                ],
               ),
-              const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              SliverToBoxAdapter(
-                  child: ValueListenableBuilder(
-                      valueListenable: _controller.enabledMacrosPercentageMode,
-                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
-                            meal: Meal.breakfast,
-                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
-                            onTap: _controller.toggleMacrosMode,
-                          ))),
-              ValueListenableBuilder(
-                  valueListenable: _diaryService.selectedDayMealEntries,
-                  builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
-                        entries: _diaryService.getSelectedDayMealEntries(meal: Meal.breakfast),
-                        error: selectedDayMealEntries.status == ApiResponseStatus.error,
-                      )),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                sliver: SliverToBoxAdapter(
-                    child: Center(
-                        child: TextButton(
-                  onPressed: () => _openSearchFoodScreen(context, Meal.breakfast),
-                  child: Text(AppStrings.addFoodLabel.toUpperCase()),
-                ))),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              SliverToBoxAdapter(
-                  child: ValueListenableBuilder(
-                      valueListenable: _controller.enabledMacrosPercentageMode,
-                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
-                            meal: Meal.lunch,
-                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
-                            onTap: _controller.toggleMacrosMode,
-                          ))),
-              ValueListenableBuilder(
-                  valueListenable: _diaryService.selectedDayMealEntries,
-                  builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
-                        entries: _diaryService.getSelectedDayMealEntries(meal: Meal.lunch),
-                        error: selectedDayMealEntries.status == ApiResponseStatus.error,
-                      )),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                sliver: SliverToBoxAdapter(
-                    child: Center(
-                        child: TextButton(
-                  onPressed: () => _openSearchFoodScreen(context, Meal.lunch),
-                  child: Text(AppStrings.addFoodLabel.toUpperCase()),
-                ))),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              SliverToBoxAdapter(
-                  child: ValueListenableBuilder(
-                      valueListenable: _controller.enabledMacrosPercentageMode,
-                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
-                            meal: Meal.dinner,
-                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
-                            onTap: _controller.toggleMacrosMode,
-                          ))),
-              ValueListenableBuilder(
-                  valueListenable: _diaryService.selectedDayMealEntries,
-                  builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
-                        entries: _diaryService.getSelectedDayMealEntries(meal: Meal.dinner),
-                        error: selectedDayMealEntries.status == ApiResponseStatus.error,
-                      )),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                sliver: SliverToBoxAdapter(
-                    child: Center(
-                        child: TextButton(
-                  onPressed: () => _openSearchFoodScreen(context, Meal.dinner),
-                  child: Text(AppStrings.addFoodLabel.toUpperCase()),
-                ))),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(top: 12)),
-              SliverToBoxAdapter(
-                  child: ValueListenableBuilder(
-                      valueListenable: _controller.enabledMacrosPercentageMode,
-                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
-                            meal: Meal.snacks,
-                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
-                            onTap: _controller.toggleMacrosMode,
-                          ))),
-              ValueListenableBuilder(
-                  valueListenable: _diaryService.selectedDayMealEntries,
-                  builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
-                        entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
-                        error: selectedDayMealEntries.status == ApiResponseStatus.error,
-                      )),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                sliver: SliverToBoxAdapter(
-                    child: Center(
-                        child: TextButton(
-                  onPressed: () => _openSearchFoodScreen(context, Meal.snacks),
-                  child: Text(AppStrings.addFoodLabel.toUpperCase()),
-                ))),
-              ),
-              const SliverPadding(padding: EdgeInsets.only(top: 32)),
-            ],
-          ),
-        ));
+            )));
   }
 
   void _openSearchFoodScreen(BuildContext context, Meal meal) {

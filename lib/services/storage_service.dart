@@ -24,6 +24,12 @@ class StorageService {
         iOptions: _iosOptions,
       );
 
+  Future<void> delete({required String key}) => locator<FlutterSecureStorage>().delete(
+        key: key,
+        aOptions: _androidOptions,
+        iOptions: _iosOptions,
+      );
+
   Future<void> saveObject<T>({required String key, required T object, required Map<String, dynamic> Function(T) toJson}) async {
     final jsonString = json.encode(toJson(object));
     await save(key: key, value: jsonString);

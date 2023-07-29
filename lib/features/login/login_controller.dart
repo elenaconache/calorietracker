@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/login/login_error.dart';
 import 'package:calorietracker/features/login/login_state.dart';
 import 'package:calorietracker/models/user.dart';
@@ -43,7 +44,7 @@ class LoginController {
         final LoginError loginError;
         locator<LoggingService>().handle(error, stackTrace);
         if (error is DioError) {
-          if (error.type == DioErrorType.connectionError) {
+          if (error.isConnectionError) {
             loginError = LoginError.connection;
           } else if (error.response?.statusCode == HttpStatus.notFound) {
             loginError = LoginError.notFound;

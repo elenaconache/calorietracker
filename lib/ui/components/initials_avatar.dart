@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-const _defaultSize = 36.0;
+const defaultAvatarSize = 36.0;
 
 class InitialsAvatar extends StatelessWidget {
   final String text;
   final double size;
 
-  const InitialsAvatar({super.key, required this.text, this.size = _defaultSize});
+  const InitialsAvatar({super.key, required this.text, this.size = defaultAvatarSize});
 
   @override
   Widget build(BuildContext context) {

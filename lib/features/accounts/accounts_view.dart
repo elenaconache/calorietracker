@@ -10,19 +10,29 @@ class AccountsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userService = locator<UserService>();
     return Scaffold(
       appBar: AppBar(title: Text(AppStrings.accountsTitle)),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          ValueListenableBuilder(
+            valueListenable: userService.selectedUser,
+            builder: (_, user, __) => user == null ? const SizedBox.shrink() : UserItem.large(user: user),
+          ),
           Expanded(
               child: ValueListenableBuilder(
-            valueListenable: locator<UserService>().users,
-            builder: (_, users, __) => ListView.builder(
-              itemBuilder: (context, index) => UserItem(user: users[index]),
-              itemCount: users.length,
-            ),
-          )),
+                  valueListenable: userService.users,
+                  builder: (_, users, ___) => ValueListenableBuilder(
+                        valueListenable: userService.selectedUser,
+                        builder: (_, selectedUser, ___) {
+                          final unselectedUsers = users.where((user) => selectedUser?.id != user.id).toList();
+                          return ListView.builder(
+                            itemBuilder: (context, index) => UserItem(user: unselectedUsers[index]),
+                            itemCount: unselectedUsers.length,
+                          );
+                        },
+                      ))),
           ColoredBox(
             color: Theme.of(context).canvasColor,
             child: Padding(
