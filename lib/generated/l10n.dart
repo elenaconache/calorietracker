@@ -621,6 +621,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Food name`
+  String get foodNameLabel {
+    return Intl.message(
+      'Food name',
+      name: 'foodNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Brand name (optional)`
+  String get brandNameLabel {
+    return Intl.message(
+      'Brand name (optional)',
+      name: 'brandNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Food name can't be empty.`
+  String get emptyFoodNameError {
+    return Intl.message(
+      'Food name can\'t be empty.',
+      name: 'emptyFoodNameError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save food`
+  String get saveFoodLabel {
+    return Intl.message(
+      'Save food',
+      name: 'saveFoodLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

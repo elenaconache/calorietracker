@@ -118,5 +118,9 @@
   "continueLabel": "Continue",
   "alreadyLoggedInMessage": "You are already logged in with this account.",
   "connectionErrorMessage": "Could not connect to the server.",
-  "createFoodLabel": "Create food"
+  "createFoodLabel": "Create food",
+  "foodNameLabel": "Food name",
+  "brandNameLabel": "Brand name (optional)",
+  "emptyFoodNameError": "Food name can't be empty.",
+  "saveFoodLabel": "Save food"
 }

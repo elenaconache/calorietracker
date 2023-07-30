@@ -10,6 +10,7 @@ import 'package:calorietracker/generated/l10n.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/user_service.dart';
+import 'package:calorietracker/ui/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -25,9 +26,16 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static final _defaultLightColorScheme = ColorScheme.fromSeed(seedColor: primaryColor, brightness: Brightness.light);
+  static final _defaultLightColorScheme = ColorScheme.fromSeed(
+    seedColor: primaryColor,
+    brightness: Brightness.light,
+  );
 
-  static final _defaultDarkColorScheme = ColorScheme.fromSeed(seedColor: primaryColor, brightness: Brightness.dark);
+  static final _defaultDarkColorScheme = ColorScheme.fromSeed(
+    seedColor: primaryColor,
+    brightness: Brightness.dark,
+    error: bittersweetRed,
+  );
 
   @override
   Widget build(BuildContext context) {

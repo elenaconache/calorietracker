@@ -117,4 +117,12 @@ class AppStrings {
   static String get connectionErrorMessage => S.current.connectionErrorMessage;
 
   static String get createFoodLabel => S.current.createFoodLabel;
+
+  static String get foodNameLabel => S.current.foodNameLabel;
+
+  static String get brandNameLabel => S.current.brandNameLabel;
+
+  static String get emptyFoodNameError => S.current.emptyFoodNameError;
+
+  static String get saveFoodLabel => S.current.saveFoodLabel;
 }

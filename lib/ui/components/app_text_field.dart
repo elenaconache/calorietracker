@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-// TODO: on tap outside, should clear focus from this text field
-class AppTextField extends StatelessWidget {
+const _height = 48.0;
+const _borderRadius = 4.0;
+
+class AppTextField extends StatefulWidget {
   final IconData? suffixIcon;
   final IconData? prefixIcon;
   final VoidCallback? onSuffixIconPressed;
@@ -13,6 +15,7 @@ class AppTextField extends StatelessWidget {
   final int? maxLength;
   final bool autofocus;
   final bool enabled;
+  final String? Function(String? text)? validate;
 
   const AppTextField({
     super.key,
@@ -27,44 +30,128 @@ class AppTextField extends StatelessWidget {
     this.maxLength,
     this.autofocus = false,
     this.enabled = true,
+    this.validate,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(
-          border: _defaultBorder,
-          focusedBorder: _buildFocusedBorder(context),
-          contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: prefixIcon != null ? 0 : 16, right: suffixIcon != null ? 0 : 16),
-          prefixIcon: prefixIcon != null
-              ? Icon(
-                  prefixIcon,
-                  size: 24,
-                )
-              : null,
-          suffixIcon: IconButton(
-            icon: Icon(
-              suffixIcon,
-              size: 24,
-            ),
-            onPressed: onSuffixIconPressed,
-          ),
-          labelText: labelText,
-          counter: const SizedBox.shrink()),
-      controller: controller,
-      cursorWidth: 1,
-      textInputAction: action,
-      onSubmitted: onSubmitted,
-      keyboardType: inputType,
-      maxLength: maxLength,
-      autofocus: autofocus,
-      enabled: enabled,
-    );
+  State<AppTextField> createState() => _AppTextFieldState();
+}
+
+class _AppTextFieldState extends State<AppTextField> {
+  late final TextEditingController _textController;
+  late final bool _hasInitialTextController;
+  final ValueNotifier<String?> _error = ValueNotifier(null);
+
+  @override
+  void initState() {
+    _hasInitialTextController = widget.controller != null;
+    _textController = widget.controller ?? TextEditingController();
+    _textController.addListener(_onTextChange);
+    super.initState();
   }
 
-  OutlineInputBorder get _defaultBorder =>
-      OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: const BorderSide(color: Colors.blueGrey, width: 1));
+  @override
+  void dispose() {
+    _textController.removeListener(_onTextChange);
+    if (!_hasInitialTextController) {
+      _textController.dispose();
+    }
+    _error.dispose();
+    super.dispose();
+  }
 
-  OutlineInputBorder _buildFocusedBorder(BuildContext context) =>
-      OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1));
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+        valueListenable: _error,
+        builder: (context, error, child) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              SizedBox(
+                  height: _height,
+                  child: TextFormField(
+                    decoration: _getDecoration(context, error),
+                    controller: widget.controller,
+                    cursorWidth: 1,
+                    textInputAction: widget.action,
+                    onFieldSubmitted: widget.onSubmitted,
+                    keyboardType: widget.inputType,
+                    maxLength: widget.maxLength,
+                    autofocus: widget.autofocus,
+                    enabled: widget.enabled,
+                    validator: (value) => _validateField(value, error),
+                  )),
+              if (error != null)
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      error,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                    ))
+            ]));
+  }
+
+  InputDecoration _getDecoration(BuildContext context, String? error) => InputDecoration(
+        enabledBorder: _defaultBorder,
+        focusedBorder: _getFocusedBorder(context),
+        focusedErrorBorder: error != null
+            ? _getErrorBorder(context)
+            : FocusScope.of(context).hasFocus
+                ? _getFocusedBorder(context)
+                : _defaultBorder,
+        errorBorder: error != null ? _getErrorBorder(context) : _defaultBorder,
+        contentPadding: EdgeInsets.only(
+          top: 12,
+          bottom: 12,
+          left: widget.prefixIcon != null ? 0 : 16,
+          right: widget.suffixIcon != null ? 0 : 16,
+        ),
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(
+                widget.prefixIcon,
+                size: 24,
+              )
+            : null,
+        suffixIcon: IconButton(
+          icon: Icon(
+            widget.suffixIcon,
+            size: 24,
+          ),
+          onPressed: widget.onSuffixIconPressed,
+        ),
+        labelText: widget.labelText,
+        labelStyle: Theme.of(context)
+            .textTheme
+            .labelLarge
+            ?.copyWith(color: error != null ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
+        counter: const SizedBox.shrink(),
+        errorText: null,
+        errorStyle: const TextStyle(height: 0),
+      );
+
+  OutlineInputBorder get _defaultBorder =>
+      OutlineInputBorder(borderRadius: BorderRadius.circular(_borderRadius), borderSide: const BorderSide(color: Colors.grey, width: 1));
+
+  OutlineInputBorder _getFocusedBorder(BuildContext context) => OutlineInputBorder(
+      borderRadius: BorderRadius.circular(_borderRadius), borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1));
+
+  void _onTextChange() {
+    final error = widget.validate?.call(_textController.text);
+    if ((_hasError && error != _error.value) || error == null) {
+      _error.value = error;
+    }
+  }
+
+  bool get _hasError => _error.value != null;
+
+  OutlineInputBorder _getErrorBorder(BuildContext context) => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(_borderRadius),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.error, width: 2),
+      );
+
+  String? _validateField(String? value, String? error) {
+    final validationResult = widget.validate?.call(value);
+    if (error != validationResult) {
+      _error.value = validationResult;
+    }
+    return validationResult != null ? '' : null;
+  }
 }
