@@ -4,7 +4,8 @@ enum Routes {
   addFood('addFood'),
   unknown('/unknown'),
   login('/login'),
-  accounts('accounts');
+  accounts('accounts'),
+  createFood('createFood');
 
   final String path;
 

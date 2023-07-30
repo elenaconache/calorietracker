@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "connectionErrorMessage": MessageLookupByLibrary.simpleMessage("Could not connect to the server."),
         "continueLabel": MessageLookupByLibrary.simpleMessage("Continue"),
+        "createFoodLabel": MessageLookupByLibrary.simpleMessage("Create food"),
         "diaryTitle": MessageLookupByLibrary.simpleMessage("Diary"),
         "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dinner"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
@@ -75,16 +76,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "noFoodLoggedMessage": MessageLookupByLibrary.simpleMessage("You didn\'t log foods for this meal yet."),
         "noResultsTitle": MessageLookupByLibrary.simpleMessage("There were no results matching your search"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
-        "polyunsaturatedFatLabel":
-            MessageLookupByLibrary.simpleMessage("Polyunsaturated fat"),
+        "polyunsaturatedFatLabel": MessageLookupByLibrary.simpleMessage("Polyunsaturated fat"),
         "potassiumLabel": MessageLookupByLibrary.simpleMessage("Potassium"),
-        "poweredByNutritionixLabel":
-            MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
+        "poweredByNutritionixLabel": MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
         "proteinPercentageValue": m6,
         "proteinValue": m7,
-        "saturatedFatLabel":
-            MessageLookupByLibrary.simpleMessage("Saturated fat"),
+        "saturatedFatLabel": MessageLookupByLibrary.simpleMessage("Saturated fat"),
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
         "searchForFoodLabel":
             MessageLookupByLibrary.simpleMessage("Search for a food"),

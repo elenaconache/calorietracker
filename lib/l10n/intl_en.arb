@@ -117,5 +117,6 @@
   "addAccountLabel": "Add account",
   "continueLabel": "Continue",
   "alreadyLoggedInMessage": "You are already logged in with this account.",
-  "connectionErrorMessage": "Could not connect to the server."
+  "connectionErrorMessage": "Could not connect to the server.",
+  "createFoodLabel": "Create food"
 }

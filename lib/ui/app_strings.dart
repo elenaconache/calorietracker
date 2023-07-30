@@ -115,4 +115,6 @@ class AppStrings {
   static String get alreadyLoggedInMessage => S.current.alreadyLoggedInMessage;
 
   static String get connectionErrorMessage => S.current.connectionErrorMessage;
+
+  static String get createFoodLabel => S.current.createFoodLabel;
 }

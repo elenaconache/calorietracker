@@ -3,6 +3,7 @@ import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
 import 'package:calorietracker/features/food_search/search_results_section.dart';
 import 'package:calorietracker/models/meal.dart';
+import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +47,8 @@ class _FoodSearchViewState extends State<FoodSearchView> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Row(children: [
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 4),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Expanded(
                     child: AppTextField(
                   prefixIcon: Icons.search,
@@ -58,15 +59,23 @@ class _FoodSearchViewState extends State<FoodSearchView> {
                   action: TextInputAction.search,
                   onSubmitted: (query) => _foodSearchService.searchNutritionix(query: query),
                 )),
-                const SizedBox(width: 12),
+                const SizedBox(width: 4),
                 IconButton(
                   icon: SvgPicture.asset(
                     'assets/icons/barcode_scanner.svg',
-                    width: 32,
-                    height: 32,
+                    width: 28,
+                    height: 28,
                     colorFilter: ColorFilter.mode(Theme.of(context).iconTheme.color ?? primaryColor, BlendMode.srcIn),
                   ),
                   onPressed: () {},
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.add,
+                    size: 28,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  onPressed: () => _navigateToCreateFood(context),
                 )
               ])),
           Expanded(child: SearchResultsSection(meal: widget.meal)),
@@ -79,4 +88,6 @@ class _FoodSearchViewState extends State<FoodSearchView> {
     _searchQueryTextController.clear();
     _foodSearchService.clearResults();
   }
+
+  void _navigateToCreateFood(BuildContext context) => Navigator.of(context).pushNamed(Routes.createFood.path);
 }
