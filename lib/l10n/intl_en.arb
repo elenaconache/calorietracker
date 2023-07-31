@@ -119,8 +119,12 @@
   "alreadyLoggedInMessage": "You are already logged in with this account.",
   "connectionErrorMessage": "Could not connect to the server.",
   "createFoodLabel": "Create food",
-  "foodNameLabel": "Food name",
+  "foodLabel": "Food",
   "brandNameLabel": "Brand name (optional)",
   "emptyFoodNameError": "Food name can't be empty.",
-  "saveFoodLabel": "Save food"
+  "nutritionPerServingMessage": "Note: The nutritional information should be entered for the specified serving size.",
+  "emptyServingError": "Serving size can't be empty.",
+  "invalidServingError": "Invalid serving size.",
+  "requiredError": "Required",
+  "invalidError": "Invalid"
 }

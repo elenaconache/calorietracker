@@ -118,11 +118,19 @@ class AppStrings {
 
   static String get createFoodLabel => S.current.createFoodLabel;
 
-  static String get foodNameLabel => S.current.foodNameLabel;
+  static String get foodLabel => S.current.foodLabel;
 
   static String get brandNameLabel => S.current.brandNameLabel;
 
   static String get emptyFoodNameError => S.current.emptyFoodNameError;
 
-  static String get saveFoodLabel => S.current.saveFoodLabel;
+  static String get nutritionPerServingMessage => S.current.nutritionPerServingMessage;
+
+  static String get emptyServingError => S.current.emptyServingError;
+
+  static String get invalidServingError => S.current.invalidServingError;
+
+  static String get requiredError => S.current.requiredError;
+
+  static String get invalidError => S.current.invalidError;
 }

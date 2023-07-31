@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-const _height = 48.0;
 const _borderRadius = 4.0;
 
 class AppTextField extends StatefulWidget {
@@ -65,20 +64,18 @@ class _AppTextFieldState extends State<AppTextField> {
     return ValueListenableBuilder(
         valueListenable: _error,
         builder: (context, error, child) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(
-                  height: _height,
-                  child: TextFormField(
-                    decoration: _getDecoration(context, error),
-                    controller: widget.controller,
-                    cursorWidth: 1,
-                    textInputAction: widget.action,
-                    onFieldSubmitted: widget.onSubmitted,
-                    keyboardType: widget.inputType,
-                    maxLength: widget.maxLength,
-                    autofocus: widget.autofocus,
-                    enabled: widget.enabled,
-                    validator: (value) => _validateField(value, error),
-                  )),
+              TextFormField(
+                decoration: _getDecoration(context, error),
+                controller: widget.controller,
+                cursorWidth: 1,
+                textInputAction: widget.action,
+                onFieldSubmitted: widget.onSubmitted,
+                keyboardType: widget.inputType,
+                maxLength: widget.maxLength,
+                autofocus: widget.autofocus,
+                enabled: widget.enabled,
+                validator: (value) => _validateField(value, error),
+              ),
               if (error != null)
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -110,13 +107,15 @@ class _AppTextFieldState extends State<AppTextField> {
                 size: 24,
               )
             : null,
-        suffixIcon: IconButton(
-          icon: Icon(
-            widget.suffixIcon,
-            size: 24,
-          ),
-          onPressed: widget.onSuffixIconPressed,
-        ),
+        suffixIcon: widget.suffixIcon != null
+            ? IconButton(
+                icon: Icon(
+                  widget.suffixIcon,
+                  size: 24,
+                ),
+                onPressed: widget.onSuffixIconPressed,
+              )
+            : null,
         labelText: widget.labelText,
         labelStyle: Theme.of(context)
             .textTheme

@@ -622,11 +622,11 @@ class S {
     );
   }
 
-  /// `Food name`
-  String get foodNameLabel {
+  /// `Food`
+  String get foodLabel {
     return Intl.message(
-      'Food name',
-      name: 'foodNameLabel',
+      'Food',
+      name: 'foodLabel',
       desc: '',
       args: [],
     );
@@ -652,11 +652,51 @@ class S {
     );
   }
 
-  /// `Save food`
-  String get saveFoodLabel {
+  /// `Note: The nutritional information should be entered for the specified serving size.`
+  String get nutritionPerServingMessage {
     return Intl.message(
-      'Save food',
-      name: 'saveFoodLabel',
+      'Note: The nutritional information should be entered for the specified serving size.',
+      name: 'nutritionPerServingMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Serving size can't be empty.`
+  String get emptyServingError {
+    return Intl.message(
+      'Serving size can\'t be empty.',
+      name: 'emptyServingError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid serving size.`
+  String get invalidServingError {
+    return Intl.message(
+      'Invalid serving size.',
+      name: 'invalidServingError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required`
+  String get requiredError {
+    return Intl.message(
+      'Required',
+      name: 'requiredError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid`
+  String get invalidError {
+    return Intl.message(
+      'Invalid',
+      name: 'invalidError',
       desc: '',
       args: [],
     );
