@@ -652,16 +652,6 @@ class S {
     );
   }
 
-  /// `Note: The nutritional information should be entered for the specified serving size.`
-  String get nutritionPerServingMessage {
-    return Intl.message(
-      'Note: The nutritional information should be entered for the specified serving size.',
-      name: 'nutritionPerServingMessage',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Serving size can't be empty.`
   String get emptyServingError {
     return Intl.message(
@@ -697,6 +687,36 @@ class S {
     return Intl.message(
       'Invalid',
       name: 'invalidError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mono fat`
+  String get monoFatShortLabel {
+    return Intl.message(
+      'Mono fat',
+      name: 'monoFatShortLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poly fat`
+  String get polyFatShortLabel {
+    return Intl.message(
+      'Poly fat',
+      name: 'polyFatShortLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Salt`
+  String get saltLabel {
+    return Intl.message(
+      'Salt',
+      name: 'saltLabel',
       desc: '',
       args: [],
     );

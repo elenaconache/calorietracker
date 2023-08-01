@@ -15,6 +15,7 @@ class AppTextField extends StatefulWidget {
   final bool autofocus;
   final bool enabled;
   final String? Function(String? text)? validate;
+  final bool? isDense;
 
   const AppTextField({
     super.key,
@@ -30,10 +31,14 @@ class AppTextField extends StatefulWidget {
     this.autofocus = false,
     this.enabled = true,
     this.validate,
+    this.isDense,
   });
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
+
+  static const maxTextInputLength = 100;
+  static const maxNumericInputLength = 9;
 }
 
 class _AppTextFieldState extends State<AppTextField> {
@@ -78,7 +83,7 @@ class _AppTextFieldState extends State<AppTextField> {
               ),
               if (error != null)
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.only(bottom: 8, left: 16),
                     child: Text(
                       error,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
@@ -87,7 +92,7 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   InputDecoration _getDecoration(BuildContext context, String? error) => InputDecoration(
-        enabledBorder: _defaultBorder,
+    enabledBorder: _defaultBorder,
         focusedBorder: _getFocusedBorder(context),
         focusedErrorBorder: error != null
             ? _getErrorBorder(context)
@@ -95,12 +100,7 @@ class _AppTextFieldState extends State<AppTextField> {
                 ? _getFocusedBorder(context)
                 : _defaultBorder,
         errorBorder: error != null ? _getErrorBorder(context) : _defaultBorder,
-        contentPadding: EdgeInsets.only(
-          top: 12,
-          bottom: 12,
-          left: widget.prefixIcon != null ? 0 : 16,
-          right: widget.suffixIcon != null ? 0 : 16,
-        ),
+        contentPadding: _contentPadding,
         prefixIcon: widget.prefixIcon != null
             ? Icon(
                 widget.prefixIcon,
@@ -124,7 +124,17 @@ class _AppTextFieldState extends State<AppTextField> {
         counter: const SizedBox.shrink(),
         errorText: null,
         errorStyle: const TextStyle(height: 0),
+        isDense: widget.isDense,
       );
+
+  EdgeInsets get _contentPadding {
+    return EdgeInsets.only(
+      top: 12,
+      bottom: 0,
+      left: widget.prefixIcon != null ? 0 : 16,
+      right: widget.suffixIcon != null ? 0 : 16,
+    );
+  }
 
   OutlineInputBorder get _defaultBorder =>
       OutlineInputBorder(borderRadius: BorderRadius.circular(_borderRadius), borderSide: const BorderSide(color: Colors.grey, width: 1));

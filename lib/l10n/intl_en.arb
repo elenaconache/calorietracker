@@ -122,9 +122,11 @@
   "foodLabel": "Food",
   "brandNameLabel": "Brand name (optional)",
   "emptyFoodNameError": "Food name can't be empty.",
-  "nutritionPerServingMessage": "Note: The nutritional information should be entered for the specified serving size.",
   "emptyServingError": "Serving size can't be empty.",
   "invalidServingError": "Invalid serving size.",
   "requiredError": "Required",
-  "invalidError": "Invalid"
+  "invalidError": "Invalid",
+  "monoFatShortLabel": "Mono fat",
+  "polyFatShortLabel": "Poly fat",
+  "saltLabel": "Salt"
 }

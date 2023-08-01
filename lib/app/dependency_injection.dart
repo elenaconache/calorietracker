@@ -14,6 +14,7 @@ import 'package:calorietracker/services/nutritionix_api_service.dart';
 import 'package:calorietracker/services/storage_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_controller.dart';
+import 'package:calorietracker/validators/food_validator.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
@@ -34,6 +35,7 @@ void setupLocator() {
   locator.registerLazySingleton<DioProvider>(() => DioProvider());
   locator.registerLazySingleton<FlutterSecureStorage>(() => const FlutterSecureStorage());
   locator.registerLazySingleton<FoodSearchService>(() => FoodSearchService());
+  locator.registerLazySingleton<FoodValidator>(() => FoodValidator());
   locator.registerLazySingleton<LoggingInterceptor>(() => LoggingInterceptor());
   locator.registerLazySingleton<LoggingService>(() => LoggingService());
   locator.registerLazySingleton<NumericFormattingService>(() => NumericFormattingService());

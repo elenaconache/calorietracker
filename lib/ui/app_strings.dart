@@ -124,8 +124,6 @@ class AppStrings {
 
   static String get emptyFoodNameError => S.current.emptyFoodNameError;
 
-  static String get nutritionPerServingMessage => S.current.nutritionPerServingMessage;
-
   static String get emptyServingError => S.current.emptyServingError;
 
   static String get invalidServingError => S.current.invalidServingError;
@@ -133,4 +131,10 @@ class AppStrings {
   static String get requiredError => S.current.requiredError;
 
   static String get invalidError => S.current.invalidError;
+
+  static String get monoFatShortLabel => S.current.monoFatShortLabel;
+
+  static String get polyFatShortLabel => S.current.polyFatShortLabel;
+
+  static String get saltLabel => S.current.saltLabel;
 }
