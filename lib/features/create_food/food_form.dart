@@ -60,7 +60,6 @@ class FoodForm extends StatelessWidget {
     final validator = locator<FoodValidator>();
     return ListView(
       children: [
-        const SizedBox(height: 20),
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: AppTextField(

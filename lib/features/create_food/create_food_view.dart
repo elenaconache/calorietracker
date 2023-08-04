@@ -1,5 +1,10 @@
-import 'package:calorietracker/features/create_food/create_food_form.dart';
+import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/features/create_food/create_food_controller.dart';
+import 'package:calorietracker/features/create_food/food_error.dart';
+import 'package:calorietracker/features/create_food/food_form.dart';
+import 'package:calorietracker/features/create_food/nutrition_input.dart';
 import 'package:calorietracker/ui/app_strings.dart';
+import 'package:calorietracker/ui/components/error_box.dart';
 import 'package:flutter/material.dart';
 
 class CreateFoodView extends StatefulWidget {
@@ -9,7 +14,7 @@ class CreateFoodView extends StatefulWidget {
   State<CreateFoodView> createState() => _CreateFoodViewState();
 }
 
-class _CreateFoodViewState extends State<CreateFoodView> {
+class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStateMixin {
   late final TextEditingController _foodNameController;
   late final TextEditingController _brandNameController;
   late final TextEditingController _servingSizeController;
@@ -32,10 +37,14 @@ class _CreateFoodViewState extends State<CreateFoodView> {
   late final TextEditingController _vitaminCController;
   late final TextEditingController _vitaminDController;
 
+  late final CreateFoodController _controller;
+  late final AnimationController _errorAnimationController;
+
   final _formKey = GlobalKey<FormState>(debugLabel: 'createFoodForm');
 
   @override
   void initState() {
+    super.initState();
     _foodNameController = TextEditingController();
     _brandNameController = TextEditingController();
     _servingSizeController = TextEditingController();
@@ -60,7 +69,14 @@ class _CreateFoodViewState extends State<CreateFoodView> {
 
     _servingSizeController.text = 100.toString();
 
-    super.initState();
+    _controller = locator<CreateFoodController>();
+
+    _errorAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+      lowerBound: 0.0,
+      upperBound: 1.0,
+    );
   }
 
   @override
@@ -105,39 +121,104 @@ class _CreateFoodViewState extends State<CreateFoodView> {
                   ))
             ],
           ),
-          body: Form(
-              key: _formKey,
-              child: FoodForm(
-                brandNameController: _brandNameController,
-                caloriesController: _caloriesController,
-                carbsController: _carbsController,
-                fatController: _fatController,
-                foodNameController: _foodNameController,
-                proteinController: _proteinController,
-                servingSizeController: _servingSizeController,
-                sugarController: _sugarController,
-                fiberController: _fiberController,
-                fatSaturatedController: _fatSaturatedController,
-                fatTransController: _fatTransController,
-                fatMonounsaturatedController: _fatMonounsaturatedController,
-                fatPolyunsaturatedController: _fatPolyunsaturatedController,
-                cholesterolController: _cholesterolController,
-                ironController: _ironController,
-                potassiumController: _potassiumController,
-                saltController: _saltController,
-                calciumController: _calciumController,
-                vitaminAController: _vitaminAController,
-                vitaminCController: _vitaminCController,
-                vitaminDController: _vitaminDController,
-              )),
+          body: Column(
+            children: [
+              ValueListenableBuilder(
+                  valueListenable: _controller.foodError,
+                  builder: (_, foodError, __) {
+                    if (foodError == null && _errorAnimationController.status == AnimationStatus.dismissed) {
+                      return const SizedBox.shrink();
+                    } else {
+                      _animateErrorBox(foodError);
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                        child: ErrorBox(
+                            message: _getErrorMessage(foodError),
+                            animationController: _errorAnimationController,
+                            onErrorDismissed: () => _errorAnimationController.reverse().then((value) => _controller.hideError())),
+                      );
+                    }
+                  }),
+              const SizedBox(height: 20),
+              Expanded(
+                  child: Form(
+                      key: _formKey,
+                      child: FoodForm(
+                        brandNameController: _brandNameController,
+                        caloriesController: _caloriesController,
+                        carbsController: _carbsController,
+                        fatController: _fatController,
+                        foodNameController: _foodNameController,
+                        proteinController: _proteinController,
+                        servingSizeController: _servingSizeController,
+                        sugarController: _sugarController,
+                        fiberController: _fiberController,
+                        fatSaturatedController: _fatSaturatedController,
+                        fatTransController: _fatTransController,
+                        fatMonounsaturatedController: _fatMonounsaturatedController,
+                        fatPolyunsaturatedController: _fatPolyunsaturatedController,
+                        cholesterolController: _cholesterolController,
+                        ironController: _ironController,
+                        potassiumController: _potassiumController,
+                        saltController: _saltController,
+                        calciumController: _calciumController,
+                        vitaminAController: _vitaminAController,
+                        vitaminCController: _vitaminCController,
+                        vitaminDController: _vitaminDController,
+                      )))
+            ],
+          ),
         ));
+  }
+
+  String _getErrorMessage(FoodErrorType? foodError) => foodError == null
+      ? ''
+      : _getGroupErrorMessage(
+          foodError: foodError,
+          calories: _controller.expectedCalories,
+        );
+
+  void _animateErrorBox(FoodErrorType? foodError) {
+    if (foodError == null) {
+      _errorAnimationController.reverse();
+    } else {
+      _errorAnimationController.forward();
+    }
   }
 
   void _onDonePressed() {
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: call API to save food
+      final isNutritionValid = _controller.validateNutrition(
+          nutritionInput: NutritionInput(
+              servingSize: _servingSizeController.text,
+              calories: _caloriesController.text,
+              carbs: _carbsController.text,
+              protein: _proteinController.text,
+              fat: _fatController.text,
+              sugar: _sugarController.text,
+              fiber: _fiberController.text,
+              saturatedFat: _fatSaturatedController.text,
+              transFat: _fatTransController.text,
+              monoFat: _fatMonounsaturatedController.text,
+              polyFat: _fatPolyunsaturatedController.text,
+              cholesterol: _cholesterolController.text,
+              salt: _saltController.text,
+              iron: _ironController.text,
+              potassium: _potassiumController.text,
+              calcium: _calciumController.text,
+              vitaminA: _vitaminAController.text,
+              vitaminC: _vitaminCController.text,
+              vitaminD: _vitaminDController.text));
+      if (isNutritionValid) {
+        // TODO: call API to save food
+      }
     }
   }
 
-// TODO: calculate if number of calories and macros make sense, if not, show an error message above calories
+  String _getGroupErrorMessage({required FoodErrorType foodError, int? calories}) {
+    switch (foodError) {
+      case FoodErrorType.macrosSumNotMatchingCalories:
+        return AppStrings.macrosOrCaloriesError(calories ?? 0);
+    }
+  }
 }

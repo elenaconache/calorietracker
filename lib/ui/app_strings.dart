@@ -137,4 +137,6 @@ class AppStrings {
   static String get polyFatShortLabel => S.current.polyFatShortLabel;
 
   static String get saltLabel => S.current.saltLabel;
+
+  static String macrosOrCaloriesError(int calories) => S.current.macrosOrCaloriesError(calories);
 }

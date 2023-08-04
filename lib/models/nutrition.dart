@@ -3,30 +3,29 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'nutrition.g.dart';
 
-const _unknownNutrientValue = '-';
-
 @JsonSerializable()
 class Nutrition {
-  final double? calories;
-  final double? fat;
-  final double? fatSaturated;
-  final double? fatTrans;
-  final double? fatPolyunsaturated;
-  final double? fatMonounsaturated;
-  final double? cholesterol;
+  final double calories;
+  final double fat;
+  final double fatSaturated;
+  final double fatTrans;
+  final double fatPolyunsaturated;
+  final double fatMonounsaturated;
+  final double cholesterol;
 
-  final double? carbohydrates;
-  final double? fiber;
-  final double? sugar;
+  final double carbohydrates;
+  final double fiber;
+  final double insolubleFiber;
+  final double sugar;
 
-  final double? protein;
-  final double? sodium;
-  final double? potassium;
-  final double? calcium;
-  final double? iron;
-  final double? vitaminA;
-  final double? vitaminC;
-  final double? vitaminD;
+  final double protein;
+  final double sodium;
+  final double potassium;
+  final double calcium;
+  final double iron;
+  final double vitaminA;
+  final double vitaminC;
+  final double vitaminD;
 
   const Nutrition({
     this.fatSaturated = 0,
@@ -41,12 +40,13 @@ class Nutrition {
     this.vitaminA = 0,
     this.vitaminC = 0,
     this.vitaminD = 0,
-    this.carbohydrates,
-    this.fat,
-    this.protein,
-    this.calories,
+    this.carbohydrates = 0,
+    this.fat = 0,
+    this.protein = 0,
+    this.calories = 0,
     this.sugar = 0,
     this.fiber = 0,
+    this.insolubleFiber = 0,
   });
 
   Nutrition.perServing({
@@ -69,7 +69,8 @@ class Nutrition {
         protein = _getNutrientPerServing(nutritionPer100Grams.protein, servingSizeGrams),
         calories = _getNutrientPerServing(nutritionPer100Grams.calories, servingSizeGrams),
         sugar = _getNutrientPerServing(nutritionPer100Grams.sugar, servingSizeGrams),
-        fiber = _getNutrientPerServing(nutritionPer100Grams.fiber, servingSizeGrams);
+        fiber = _getNutrientPerServing(nutritionPer100Grams.fiber, servingSizeGrams),
+        insolubleFiber = _getNutrientPerServing(nutritionPer100Grams.insolubleFiber, servingSizeGrams);
 
   factory Nutrition.fromJson(Map<String, dynamic> json) => _$NutritionFromJson(json);
 
@@ -77,41 +78,41 @@ class Nutrition {
 
   static double _getNutrientPerServing(double? nutrientPer100Grams, int servingSizeGrams) => (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
 
-  String get formattedCalories => calories == null ? _unknownNutrientValue : '${calories!.toStringAsFixed(1)} g';
+  String get formattedCalories => '${calories.toStringAsFixed(1)} g';
 
-  String get formattedFat => fat == null ? _unknownNutrientValue : '${fat!.toStringAsFixed(1)} g';
+  String get formattedFat => '${fat.toStringAsFixed(1)} g';
 
-  String get formattedSaturatedFat => fatSaturated == null ? _unknownNutrientValue : '${fatSaturated!.toStringAsFixed(1)} g';
+  String get formattedSaturatedFat => '${fatSaturated.toStringAsFixed(1)} g';
 
-  String get formattedPolyunsaturatedFat => fatPolyunsaturated == null ? _unknownNutrientValue : '${fatPolyunsaturated!.toStringAsFixed(1)} g';
+  String get formattedPolyunsaturatedFat => '${fatPolyunsaturated.toStringAsFixed(1)} g';
 
-  String get formattedMonounsaturatedFat => fatMonounsaturated == null ? _unknownNutrientValue : '${fatMonounsaturated!.toStringAsFixed(1)} g';
+  String get formattedMonounsaturatedFat => '${fatMonounsaturated.toStringAsFixed(1)} g';
 
-  String get formattedTransFat => fatTrans == null ? _unknownNutrientValue : '${fatTrans!.toStringAsFixed(1)} g';
+  String get formattedTransFat => '${fatTrans.toStringAsFixed(1)} g';
 
-  String get formattedCholesterol => cholesterol == null ? _unknownNutrientValue : '${cholesterol!.toStringAsFixed(1)} mg';
+  String get formattedCholesterol => '${cholesterol.toStringAsFixed(1)} mg';
 
-  String get formattedSodium => sodium == null ? _unknownNutrientValue : '${sodium!.toStringAsFixed(1)} mg';
+  String get formattedSodium => '${sodium.toStringAsFixed(1)} mg';
 
-  String get formattedPotassium => potassium == null ? _unknownNutrientValue : '${potassium!.toStringAsFixed(1)} mg';
+  String get formattedPotassium => '${potassium.toStringAsFixed(1)} mg';
 
-  String get formattedCarbs => carbohydrates == null ? _unknownNutrientValue : '${carbohydrates!.toStringAsFixed(1)} g';
+  String get formattedCarbs => '${carbohydrates.toStringAsFixed(1)} g';
 
-  String get formattedFiber => fiber == null ? _unknownNutrientValue : '${fiber!.toStringAsFixed(1)} g';
+  String get formattedFiber => '${fiber.toStringAsFixed(1)} g';
 
-  String get formattedSugar => sugar == null ? _unknownNutrientValue : '${sugar!.toStringAsFixed(1)} g';
+  String get formattedSugar => '${sugar.toStringAsFixed(1)} g';
 
-  String get formattedProtein => protein == null ? _unknownNutrientValue : '${protein!.toStringAsFixed(1)} g';
+  String get formattedProtein => '${protein.toStringAsFixed(1)} g';
 
-  String get formattedVitaminA => vitaminA == null ? _unknownNutrientValue : '${vitaminA!.toStringAsFixed(1)} IU';
+  String get formattedVitaminA => '${vitaminA.toStringAsFixed(1)} IU';
 
-  String get formattedVitaminC => vitaminC == null ? _unknownNutrientValue : '${vitaminC!.toStringAsFixed(1)} mg';
+  String get formattedVitaminC => '${vitaminC.toStringAsFixed(1)} mg';
 
-  String get formattedCalcium => calcium == null ? _unknownNutrientValue : '${vitaminC!.toStringAsFixed(1)} mg';
+  String get formattedCalcium => '${vitaminC.toStringAsFixed(1)} mg';
 
-  String get formattedIron => iron == null ? _unknownNutrientValue : '${iron!.toStringAsFixed(1)} mg';
+  String get formattedIron => '${iron.toStringAsFixed(1)} mg';
 
-  String get formattedVitaminD => vitaminD == null ? _unknownNutrientValue : '${vitaminD!.toStringAsFixed(1)} IU';
+  String get formattedVitaminD => '${vitaminD.toStringAsFixed(1)} IU';
 
   @override
   String toString() {
@@ -119,31 +120,38 @@ class Nutrition {
   }
 
   Nutrition round() => Nutrition(
-        fat: fat?.toPrecision(2),
-        fatSaturated: fatSaturated?.toPrecision(2),
-        fatTrans: fatTrans?.toPrecision(2),
-        fatPolyunsaturated: fatPolyunsaturated?.toPrecision(2),
-        fatMonounsaturated: fatMonounsaturated?.toPrecision(2),
-        cholesterol: cholesterol?.toPrecision(2),
-        sodium: sodium?.toPrecision(2),
-        potassium: potassium?.toPrecision(2),
-        calcium: calcium?.toPrecision(2),
-        iron: iron?.toPrecision(2),
-        vitaminA: vitaminA?.toPrecision(2),
-        vitaminC: vitaminC?.toPrecision(2),
-        vitaminD: vitaminD?.toPrecision(2),
-        carbohydrates: carbohydrates?.toPrecision(2),
-        protein: protein?.toPrecision(2),
-        calories: calories?.toPrecision(2),
-        sugar: sugar?.toPrecision(2),
-        fiber: fiber?.toPrecision(2),
+        fat: fat.toPrecision(2),
+        fatSaturated: fatSaturated.toPrecision(2),
+        fatTrans: fatTrans.toPrecision(2),
+        fatPolyunsaturated: fatPolyunsaturated.toPrecision(2),
+        fatMonounsaturated: fatMonounsaturated.toPrecision(2),
+        cholesterol: cholesterol.toPrecision(2),
+        sodium: sodium.toPrecision(2),
+        potassium: potassium.toPrecision(2),
+        calcium: calcium.toPrecision(2),
+        iron: iron.toPrecision(2),
+        vitaminA: vitaminA.toPrecision(2),
+        vitaminC: vitaminC.toPrecision(2),
+        vitaminD: vitaminD.toPrecision(2),
+        carbohydrates: carbohydrates.toPrecision(2),
+        protein: protein.toPrecision(2),
+        calories: calories.toPrecision(2),
+        sugar: sugar.toPrecision(2),
+        fiber: fiber.toPrecision(2),
+        insolubleFiber: insolubleFiber.toPrecision(2),
       );
 
-  double get _totalMacros => (carbohydrates ?? 0) * 4 + (protein ?? 0) * 4 + (fat ?? 0) * 9;
+  double get totalMacrosFromPercentages => carbohydrates * 4 + protein * 4 + fat * 9;
 
-  int get carbsPercentage => _totalMacros == 0 ? 0 : ((carbohydrates ?? 0) * 4 / _totalMacros * 100).toInt();
+  int get carbsPercentage => totalMacrosFromPercentages == 0 ? 0 : (carbohydrates * 4 / totalMacrosFromPercentages * 100).toInt();
 
-  int get fatPercentage => _totalMacros == 0 ? 0 : ((fat ?? 0) * 9 / _totalMacros * 100).toInt();
+  int get fatPercentage => totalMacrosFromPercentages == 0 ? 0 : (fat * 9 / totalMacrosFromPercentages * 100).toInt();
 
-  int get proteinPercentage => _totalMacros == 0 ? 0 : ((protein ?? 0) * 4 / _totalMacros * 100).toInt();
+  int get proteinPercentage => totalMacrosFromPercentages == 0 ? 0 : (protein * 4 / totalMacrosFromPercentages * 100).toInt();
+
+  double get _solubleFiber => fiber - insolubleFiber;
+
+  double get expectedCalories {
+    return (carbohydrates - _solubleFiber) * 4 + _solubleFiber * 2 + protein * 4 + fat * 9;
+  }
 }

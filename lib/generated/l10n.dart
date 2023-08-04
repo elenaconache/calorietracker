@@ -721,6 +721,16 @@ class S {
       args: [],
     );
   }
+
+  /// `These macronutrients are equivalent to {calories} calories.`
+  String macrosOrCaloriesError(Object calories) {
+    return Intl.message(
+      'These macronutrients are equivalent to $calories calories.',
+      name: 'macrosOrCaloriesError',
+      desc: '',
+      args: [calories],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

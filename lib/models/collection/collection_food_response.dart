@@ -16,57 +16,14 @@ class CollectionFoodResponse {
   final String? brand;
 
   @JsonKey(required: true)
-  final int calories;
-
-  @JsonKey(required: true)
-  final double fat;
-
-  final double? fatSaturated;
-  final double? fatTrans;
-  final double? fatPolyunsaturated;
-  final double? fatMonounsaturated;
-  final double? cholesterol;
-
-  @JsonKey(required: true)
-  final double carbohydrates;
-
-  final double? fiber;
-  final double? sugar;
-
-  @JsonKey(required: true)
-  final double protein;
-
-  final double? sodium;
-  final double? potassium;
-  final double? calcium;
-  final double? iron;
-  final double? vitaminA;
-  final double? vitaminC;
-  final double? vitaminD;
+  final Nutrition nutritionInfo;
 
   const CollectionFoodResponse({
     required this.id,
     this.barcode,
     required this.name,
     required this.brand,
-    required this.calories,
-    required this.fat,
-    this.fatSaturated,
-    this.fatTrans,
-    this.fatPolyunsaturated,
-    this.fatMonounsaturated,
-    this.cholesterol,
-    required this.carbohydrates,
-    this.fiber,
-    this.sugar,
-    required this.protein,
-    this.sodium,
-    this.potassium,
-    this.calcium,
-    this.iron,
-    this.vitaminA,
-    this.vitaminC,
-    this.vitaminD,
+    required this.nutritionInfo,
   });
 
   factory CollectionFoodResponse.fromJson(Map<String, dynamic> json) => _$CollectionFoodResponseFromJson(json);
@@ -76,26 +33,7 @@ class CollectionFoodResponse {
   @override
   String toString() => toJson().toString();
 
-  Nutrition get nutrition => Nutrition(
-    calories: calories.toDouble(),
-    fat: fat,
-    fatSaturated: fatSaturated,
-    fatTrans: fatTrans,
-    fatPolyunsaturated: fatPolyunsaturated,
-    fatMonounsaturated: fatMonounsaturated,
-    cholesterol: cholesterol,
-    carbohydrates: carbohydrates,
-    fiber: fiber,
-    sugar: sugar,
-    protein: protein,
-    sodium: sodium,
-    potassium: potassium,
-    calcium: calcium,
-    iron: iron,
-    vitaminA: vitaminA,
-    vitaminC: vitaminC,
-    vitaminD: vitaminD,
-  );
+  Nutrition get nutrition => nutritionInfo;
 }
 
 List<CollectionFoodResponse> deserializeCollectionFoodResponseList(List<Map<String, dynamic>> json) =>

@@ -19,12 +19,13 @@ Nutrition _$NutritionFromJson(Map<String, dynamic> json) => Nutrition(
       vitaminA: (json['vitaminA'] as num?)?.toDouble() ?? 0,
       vitaminC: (json['vitaminC'] as num?)?.toDouble() ?? 0,
       vitaminD: (json['vitaminD'] as num?)?.toDouble() ?? 0,
-      carbohydrates: (json['carbohydrates'] as num?)?.toDouble(),
-      fat: (json['fat'] as num?)?.toDouble(),
-      protein: (json['protein'] as num?)?.toDouble(),
-      calories: (json['calories'] as num?)?.toDouble(),
+      carbohydrates: (json['carbohydrates'] as num?)?.toDouble() ?? 0,
+      fat: (json['fat'] as num?)?.toDouble() ?? 0,
+      protein: (json['protein'] as num?)?.toDouble() ?? 0,
+      calories: (json['calories'] as num?)?.toDouble() ?? 0,
       sugar: (json['sugar'] as num?)?.toDouble() ?? 0,
       fiber: (json['fiber'] as num?)?.toDouble() ?? 0,
+      insolubleFiber: (json['insolubleFiber'] as num?)?.toDouble() ?? 0,
     );
 
 Map<String, dynamic> _$NutritionToJson(Nutrition instance) => <String, dynamic>{
@@ -37,6 +38,7 @@ Map<String, dynamic> _$NutritionToJson(Nutrition instance) => <String, dynamic>{
       'cholesterol': instance.cholesterol,
       'carbohydrates': instance.carbohydrates,
       'fiber': instance.fiber,
+      'insolubleFiber': instance.insolubleFiber,
       'sugar': instance.sugar,
       'protein': instance.protein,
       'sodium': instance.sodium,

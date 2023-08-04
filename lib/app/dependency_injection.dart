@@ -1,4 +1,5 @@
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
+import 'package:calorietracker/features/create_food/create_food_controller.dart';
 import 'package:calorietracker/features/diary/diary_controller.dart';
 import 'package:calorietracker/features/food_search/food_search_service.dart';
 import 'package:calorietracker/features/login/login_controller.dart';
@@ -27,6 +28,7 @@ const _nutritionixApiBaseUrl = 'https://trackapi.nutritionix.com/';
 void setupLocator() {
   locator.registerFactory<AddFoodController>(() => AddFoodController());
   locator.registerFactory<AppDropdownButtonController>(() => AppDropdownButtonController());
+  locator.registerFactory<CreateFoodController>(() => CreateFoodController());
   locator.registerFactory<DiaryController>(() => DiaryController());
   locator.registerFactory<LoginController>(() => LoginController());
 

@@ -34,7 +34,7 @@ class FoodFormRow extends StatelessWidget {
             child: AppTextField(
           labelText: firstLabel,
           controller: firstController,
-          inputType: TextInputType.number,
+          inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
           validate: firstValidation,
           maxLength: AppTextField.maxNumericInputLength,
           isDense: true,
@@ -55,7 +55,7 @@ class FoodFormRow extends StatelessWidget {
               child: AppTextField(
             labelText: thirdLabel,
             controller: thirdController,
-            inputType: TextInputType.number,
+            inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
             validate: thirdValidation,
             maxLength: AppTextField.maxNumericInputLength,
             isDense: true,

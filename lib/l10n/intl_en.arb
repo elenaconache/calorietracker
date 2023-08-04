@@ -128,5 +128,13 @@
   "invalidError": "Invalid",
   "monoFatShortLabel": "Mono fat",
   "polyFatShortLabel": "Poly fat",
-  "saltLabel": "Salt"
+  "saltLabel": "Salt",
+  "macrosOrCaloriesError": "These macronutrients are equivalent to {calories} calories.",
+  "@macrosOrCaloriesError": {
+    "placeholder": {
+      "calories": {
+        "type": "int"
+      }
+    }
+  }
 }
