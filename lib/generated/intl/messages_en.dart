@@ -81,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "foodLabel": MessageLookupByLibrary.simpleMessage("Food"),
         "generalErrorMessage":
             MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "insolubleFiberLabel":
+            MessageLookupByLibrary.simpleMessage("Insoluble fiber"),
         "invalidError": MessageLookupByLibrary.simpleMessage("Invalid"),
         "invalidServingError":
             MessageLookupByLibrary.simpleMessage("Invalid serving size."),

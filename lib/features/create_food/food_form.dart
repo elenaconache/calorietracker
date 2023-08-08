@@ -17,6 +17,7 @@ class FoodForm extends StatelessWidget {
   final TextEditingController proteinController;
   final TextEditingController sugarController;
   final TextEditingController fiberController;
+  final TextEditingController insolubleFiberController;
   final TextEditingController fatSaturatedController;
   final TextEditingController fatTransController;
   final TextEditingController fatPolyunsaturatedController;
@@ -53,12 +54,14 @@ class FoodForm extends StatelessWidget {
     required this.vitaminAController,
     required this.vitaminCController,
     required this.vitaminDController,
+    required this.insolubleFiberController,
   });
 
   @override
   Widget build(BuildContext context) {
     final validator = locator<FoodValidator>();
     return ListView(
+      padding: const EdgeInsets.only(top: 20),
       children: [
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -103,11 +106,22 @@ class FoodForm extends StatelessWidget {
         const SizedBox(height: 12),
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: AppTextField(
+              labelText: AppStrings.sugarLabel,
+              controller: sugarController,
+              inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
+              validate: validator.validateMicronutrient,
+              maxLength: AppTextField.maxNumericInputLength,
+              isDense: true,
+            )),
+        const SizedBox(height: 8),
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FoodFormRow(
-              firstLabel: AppStrings.sugarLabel,
-              firstController: sugarController,
-              secondLabel: AppStrings.fiberLabel,
-              secondController: fiberController,
+              firstLabel: AppStrings.fiberLabel,
+              firstController: fiberController,
+              secondLabel: AppStrings.insolubleFiberLabel,
+              secondController: insolubleFiberController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
             )),

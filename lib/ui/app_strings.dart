@@ -139,4 +139,6 @@ class AppStrings {
   static String get saltLabel => S.current.saltLabel;
 
   static String macrosOrCaloriesError(int calories) => S.current.macrosOrCaloriesError(calories);
+
+  static String get insolubleFiberLabel => S.current.insolubleFiberLabel;
 }

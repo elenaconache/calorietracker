@@ -16,11 +16,11 @@ class ErrorBox extends StatelessWidget {
         ),
         axis: Axis.vertical,
         child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.errorContainer,
-              borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-            ),
-            child: Padding(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.errorContainer,
+            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+          ),
+          child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
               child: Row(children: [
                 Expanded(
@@ -29,14 +29,18 @@ class ErrorBox extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
                   ),
                 ),
-                IconButton(
-                    onPressed: onErrorDismissed,
-                    icon: const Icon(
-                      Icons.close_rounded,
-                      color: Colors.white,
-                      size: 24,
-                    )),
-              ]),
-            )));
+                AnimatedBuilder(
+                    animation: animationController,
+                    builder: (context, child) => Opacity(
+                        opacity: animationController.status == AnimationStatus.forward ? 1.0 - animationController.value : animationController.value,
+                        child: IconButton(
+                            onPressed: onErrorDismissed,
+                            icon: const Icon(
+                              Icons.close_rounded,
+                              color: Colors.white,
+                              size: 24,
+                            )))),
+              ])),
+        ));
   }
 }

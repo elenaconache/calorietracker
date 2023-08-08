@@ -2,7 +2,7 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/create_food/create_food_controller.dart';
 import 'package:calorietracker/features/create_food/food_error.dart';
 import 'package:calorietracker/features/create_food/food_form.dart';
-import 'package:calorietracker/features/create_food/nutrition_input.dart';
+import 'package:calorietracker/features/create_food/food_input.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/error_box.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +24,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   late final TextEditingController _proteinController;
   late final TextEditingController _sugarController;
   late final TextEditingController _fiberController;
+  late final TextEditingController _insolubleFiberController;
   late final TextEditingController _fatSaturatedController;
   late final TextEditingController _fatTransController;
   late final TextEditingController _fatPolyunsaturatedController;
@@ -45,31 +46,11 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   @override
   void initState() {
     super.initState();
-    _foodNameController = TextEditingController();
-    _brandNameController = TextEditingController();
-    _servingSizeController = TextEditingController();
-    _caloriesController = TextEditingController();
-    _carbsController = TextEditingController();
-    _fatController = TextEditingController();
-    _proteinController = TextEditingController();
-    _fiberController = TextEditingController();
-    _sugarController = TextEditingController();
-    _fatSaturatedController = TextEditingController();
-    _fatTransController = TextEditingController();
-    _fatMonounsaturatedController = TextEditingController();
-    _fatPolyunsaturatedController = TextEditingController();
-    _cholesterolController = TextEditingController();
-    _saltController = TextEditingController();
-    _potassiumController = TextEditingController();
-    _calciumController = TextEditingController();
-    _ironController = TextEditingController();
-    _vitaminAController = TextEditingController();
-    _vitaminCController = TextEditingController();
-    _vitaminDController = TextEditingController();
+    _controller = locator<CreateFoodController>();
+    _initTextControllers();
+    _addTextListeners();
 
     _servingSizeController.text = 100.toString();
-
-    _controller = locator<CreateFoodController>();
 
     _errorAnimationController = AnimationController(
       duration: const Duration(milliseconds: 200),
@@ -81,27 +62,8 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
 
   @override
   void dispose() {
-    _foodNameController.dispose();
-    _brandNameController.dispose();
-    _servingSizeController.dispose();
-    _caloriesController.dispose();
-    _carbsController.dispose();
-    _fatController.dispose();
-    _proteinController.dispose();
-    _fiberController.dispose();
-    _sugarController.dispose();
-    _fatSaturatedController.dispose();
-    _fatTransController.dispose();
-    _fatPolyunsaturatedController.dispose();
-    _fatMonounsaturatedController.dispose();
-    _cholesterolController.dispose();
-    _saltController.dispose();
-    _potassiumController.dispose();
-    _calciumController.dispose();
-    _ironController.dispose();
-    _vitaminAController.dispose();
-    _vitaminCController.dispose();
-    _vitaminDController.dispose();
+    _removeTextListeners();
+    _disposeTextControllers();
     super.dispose();
   }
 
@@ -139,7 +101,6 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                       );
                     }
                   }),
-              const SizedBox(height: 20),
               Expanded(
                   child: Form(
                       key: _formKey,
@@ -165,6 +126,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                         vitaminAController: _vitaminAController,
                         vitaminCController: _vitaminCController,
                         vitaminDController: _vitaminDController,
+                        insolubleFiberController: _insolubleFiberController,
                       )))
             ],
           ),
@@ -189,7 +151,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   void _onDonePressed() {
     if (_formKey.currentState?.validate() ?? false) {
       final isNutritionValid = _controller.validateNutrition(
-          nutritionInput: NutritionInput(
+          nutritionInput: FoodInput(
               servingSize: _servingSizeController.text,
               calories: _caloriesController.text,
               carbs: _carbsController.text,
@@ -197,6 +159,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
               fat: _fatController.text,
               sugar: _sugarController.text,
               fiber: _fiberController.text,
+              insolubleFiber: _insolubleFiberController.text,
               saturatedFat: _fatSaturatedController.text,
               transFat: _fatTransController.text,
               monoFat: _fatMonounsaturatedController.text,
@@ -220,5 +183,105 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
       case FoodErrorType.macrosSumNotMatchingCalories:
         return AppStrings.macrosOrCaloriesError(calories ?? 0);
     }
+  }
+
+  void _initTextControllers() {
+    _foodNameController = TextEditingController();
+    _brandNameController = TextEditingController();
+    _servingSizeController = TextEditingController();
+    _caloriesController = TextEditingController();
+    _carbsController = TextEditingController();
+    _fatController = TextEditingController();
+    _proteinController = TextEditingController();
+    _fiberController = TextEditingController();
+    _insolubleFiberController = TextEditingController();
+    _sugarController = TextEditingController();
+    _fatSaturatedController = TextEditingController();
+    _fatTransController = TextEditingController();
+    _fatMonounsaturatedController = TextEditingController();
+    _fatPolyunsaturatedController = TextEditingController();
+    _cholesterolController = TextEditingController();
+    _saltController = TextEditingController();
+    _potassiumController = TextEditingController();
+    _calciumController = TextEditingController();
+    _ironController = TextEditingController();
+    _vitaminAController = TextEditingController();
+    _vitaminCController = TextEditingController();
+    _vitaminDController = TextEditingController();
+  }
+
+  void _addTextListeners() {
+    _foodNameController.addListener(_controller.hideError);
+    _brandNameController.addListener(_controller.hideError);
+    _servingSizeController.addListener(_controller.hideError);
+    _caloriesController.addListener(_controller.hideError);
+    _carbsController.addListener(_controller.hideError);
+    _fatController.addListener(_controller.hideError);
+    _proteinController.addListener(_controller.hideError);
+    _fiberController.addListener(_controller.hideError);
+    _insolubleFiberController.addListener(_controller.hideError);
+    _sugarController.addListener(_controller.hideError);
+    _fatSaturatedController.addListener(_controller.hideError);
+    _fatTransController.addListener(_controller.hideError);
+    _fatMonounsaturatedController.addListener(_controller.hideError);
+    _fatPolyunsaturatedController.addListener(_controller.hideError);
+    _cholesterolController.addListener(_controller.hideError);
+    _saltController.addListener(_controller.hideError);
+    _potassiumController.addListener(_controller.hideError);
+    _calciumController.addListener(_controller.hideError);
+    _ironController.addListener(_controller.hideError);
+    _vitaminAController.addListener(_controller.hideError);
+    _vitaminCController.addListener(_controller.hideError);
+    _vitaminDController.addListener(_controller.hideError);
+  }
+
+  void _removeTextListeners() {
+    _foodNameController.removeListener(_controller.hideError);
+    _brandNameController.removeListener(_controller.hideError);
+    _servingSizeController.removeListener(_controller.hideError);
+    _caloriesController.removeListener(_controller.hideError);
+    _carbsController.removeListener(_controller.hideError);
+    _fatController.removeListener(_controller.hideError);
+    _proteinController.removeListener(_controller.hideError);
+    _fiberController.removeListener(_controller.hideError);
+    _insolubleFiberController.removeListener(_controller.hideError);
+    _sugarController.removeListener(_controller.hideError);
+    _fatSaturatedController.removeListener(_controller.hideError);
+    _fatTransController.removeListener(_controller.hideError);
+    _fatMonounsaturatedController.removeListener(_controller.hideError);
+    _fatPolyunsaturatedController.removeListener(_controller.hideError);
+    _cholesterolController.removeListener(_controller.hideError);
+    _saltController.removeListener(_controller.hideError);
+    _potassiumController.removeListener(_controller.hideError);
+    _calciumController.removeListener(_controller.hideError);
+    _ironController.removeListener(_controller.hideError);
+    _vitaminAController.removeListener(_controller.hideError);
+    _vitaminCController.removeListener(_controller.hideError);
+    _vitaminDController.removeListener(_controller.hideError);
+  }
+
+  void _disposeTextControllers() {
+    _foodNameController.dispose();
+    _brandNameController.dispose();
+    _servingSizeController.dispose();
+    _caloriesController.dispose();
+    _carbsController.dispose();
+    _fatController.dispose();
+    _proteinController.dispose();
+    _fiberController.dispose();
+    _insolubleFiberController.dispose();
+    _sugarController.dispose();
+    _fatSaturatedController.dispose();
+    _fatTransController.dispose();
+    _fatPolyunsaturatedController.dispose();
+    _fatMonounsaturatedController.dispose();
+    _cholesterolController.dispose();
+    _saltController.dispose();
+    _potassiumController.dispose();
+    _calciumController.dispose();
+    _ironController.dispose();
+    _vitaminAController.dispose();
+    _vitaminCController.dispose();
+    _vitaminDController.dispose();
   }
 }

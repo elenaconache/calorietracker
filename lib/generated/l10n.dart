@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -729,6 +728,16 @@ class S {
       name: 'macrosOrCaloriesError',
       desc: '',
       args: [calories],
+    );
+  }
+
+  /// `Insoluble fiber`
+  String get insolubleFiberLabel {
+    return Intl.message(
+      'Insoluble fiber',
+      name: 'insolubleFiberLabel',
+      desc: '',
+      args: [],
     );
   }
 }
