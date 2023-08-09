@@ -721,10 +721,10 @@ class S {
     );
   }
 
-  /// `These macronutrients are equivalent to {calories} calories.`
+  /// `The macronutrients and calories values do not match. Expected calories for these macros: {calories}.`
   String macrosOrCaloriesError(Object calories) {
     return Intl.message(
-      'These macronutrients are equivalent to $calories calories.',
+      'The macronutrients and calories values do not match. Expected calories for these macros: $calories.',
       name: 'macrosOrCaloriesError',
       desc: '',
       args: [calories],
@@ -738,6 +738,46 @@ class S {
       name: 'insolubleFiberLabel',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Sugar must be less than or equal to net carbs.`
+  String get sugarsExceedNetCarbsError {
+    return Intl.message(
+      'Sugar must be less than or equal to net carbs.',
+      name: 'sugarsExceedNetCarbsError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The sum of saturated, trans, mono and polyunsaturated fats must not exceed the total fat. Expected minimum fat: {fat}.`
+  String sumFatsExceedsTotalFatError(Object fat) {
+    return Intl.message(
+      'The sum of saturated, trans, mono and polyunsaturated fats must not exceed the total fat. Expected minimum fat: $fat.',
+      name: 'sumFatsExceedsTotalFatError',
+      desc: '',
+      args: [fat],
+    );
+  }
+
+  /// `Cholesterol in grams must be less than or equal to total fat in grams.`
+  String get cholesterolExceedsFatError {
+    return Intl.message(
+      'Cholesterol in grams must be less than or equal to total fat in grams.',
+      name: 'cholesterolExceedsFatError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The sum of macronutrients must not exceed the serving size in grams. Expected serving size of at least {servingSize}g.`
+  String macrosExceedServingSizeError(Object servingSize) {
+    return Intl.message(
+      'The sum of macronutrients must not exceed the serving size in grams. Expected serving size of at least ${servingSize}g.',
+      name: 'macrosExceedServingSizeError',
+      desc: '',
+      args: [servingSize],
     );
   }
 }

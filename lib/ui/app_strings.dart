@@ -141,4 +141,12 @@ class AppStrings {
   static String macrosOrCaloriesError(int calories) => S.current.macrosOrCaloriesError(calories);
 
   static String get insolubleFiberLabel => S.current.insolubleFiberLabel;
+
+  static String get sugarsExceedNetCarbsLabel => S.current.sugarsExceedNetCarbsError;
+
+  static String sumFatsExceedsTotalFatError(int fat) => S.current.sumFatsExceedsTotalFatError(fat);
+
+  static String get cholesterolExceedsFatError => S.current.cholesterolExceedsFatError;
+
+  static String macrosExceedServingSizeError(int servingSize) => S.current.macrosExceedServingSizeError(servingSize);
 }

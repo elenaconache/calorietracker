@@ -16,6 +16,7 @@ import 'package:calorietracker/services/storage_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_controller.dart';
 import 'package:calorietracker/validators/food_validator.dart';
+import 'package:calorietracker/validators/nutrition_validator.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
@@ -41,6 +42,7 @@ void setupLocator() {
   locator.registerLazySingleton<LoggingInterceptor>(() => LoggingInterceptor());
   locator.registerLazySingleton<LoggingService>(() => LoggingService());
   locator.registerLazySingleton<NumericFormattingService>(() => NumericFormattingService());
+  locator.registerLazySingleton<NutritionValidator>(() => NutritionValidator());
   locator.registerLazySingleton<StorageService>(() => StorageService());
   locator.registerLazySingleton<UserService>(() => UserService());
 

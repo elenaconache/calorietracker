@@ -151,7 +151,7 @@ class Nutrition {
 
   double get _solubleFiber => fiber - insolubleFiber;
 
-  double get expectedCalories {
-    return (carbohydrates - _solubleFiber) * 4 + _solubleFiber * 2 + protein * 4 + fat * 9;
-  }
+  double get expectedCalories => (carbohydrates - _solubleFiber) * 4 + _solubleFiber * 2 + protein * 4 + fat * 9;
+
+  double get netCarbs => carbohydrates - fiber;
 }

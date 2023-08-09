@@ -1,23 +1,14 @@
+import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/create_food/food_error.dart';
 import 'package:calorietracker/features/create_food/food_input.dart';
+import 'package:calorietracker/validators/nutrition_validator.dart';
 import 'package:flutter/cupertino.dart';
 
-const _acceptableMacrosCaloriesOffset = 20;
-
 class CreateFoodController {
-  final ValueNotifier<FoodErrorType?> foodError = ValueNotifier(null);
-  int expectedCalories = 0;
+  final ValueNotifier<FoodError?> foodError = ValueNotifier(null);
 
   bool validateNutrition({required FoodInput nutritionInput}) {
-    final userSubmittedNutrition = nutritionInput.nutrition;
-    expectedCalories = userSubmittedNutrition.expectedCalories.toInt();
-    final difference = (expectedCalories - (int.tryParse(nutritionInput.calories ?? '') ?? 0)).abs();
-
-    if (difference > _acceptableMacrosCaloriesOffset) {
-      foodError.value = FoodErrorType.macrosSumNotMatchingCalories;
-    } else {
-      foodError.value = null;
-    }
+    foodError.value = locator<NutritionValidator>().validateNutrition(nutritionInput: nutritionInput);
     return foodError.value == null;
   }
 

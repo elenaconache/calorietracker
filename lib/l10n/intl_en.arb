@@ -129,7 +129,7 @@
   "monoFatShortLabel": "Mono fat",
   "polyFatShortLabel": "Poly fat",
   "saltLabel": "Salt",
-  "macrosOrCaloriesError": "These macronutrients are equivalent to {calories} calories.",
+  "macrosOrCaloriesError": "The macronutrients and calories values do not match. Expected calories for these macros: {calories}.",
   "@macrosOrCaloriesError": {
     "placeholder": {
       "calories": {
@@ -137,5 +137,23 @@
       }
     }
   },
-  "insolubleFiberLabel": "Insoluble fiber"
+  "insolubleFiberLabel": "Insoluble fiber",
+  "sugarsExceedNetCarbsError": "Sugar must be less than or equal to net carbs.",
+  "sumFatsExceedsTotalFatError": "The sum of saturated, trans, mono and polyunsaturated fats must not exceed the total fat. Expected minimum fat: {fat}.",
+  "@sumFatsExceedsTotalFatError": {
+    "placeholder": {
+      "fat": {
+        "type": "int"
+      }
+    }
+  },
+  "cholesterolExceedsFatError": "Cholesterol in grams must be less than or equal to total fat in grams.",
+  "macrosExceedServingSizeError": "The sum of macronutrients must not exceed the serving size in grams. Expected serving size of at least {servingSize}g.",
+  "@macrosExceedServingSizeError": {
+    "placeholder": {
+      "servingSize": {
+        "type": "int"
+      }
+    }
+  }
 }

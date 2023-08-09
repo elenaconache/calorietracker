@@ -81,4 +81,6 @@ class FoodInput {
   }
 
   double _parseInput(String? input) => double.tryParse(input ?? '') ?? 0;
+
+  double get servingSizeValue => _parseInput(servingSize);
 }

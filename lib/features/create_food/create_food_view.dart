@@ -133,14 +133,13 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
         ));
   }
 
-  String _getErrorMessage(FoodErrorType? foodError) => foodError == null
+  String _getErrorMessage(FoodError? foodError) => foodError == null
       ? ''
       : _getGroupErrorMessage(
           foodError: foodError,
-          calories: _controller.expectedCalories,
         );
 
-  void _animateErrorBox(FoodErrorType? foodError) {
+  void _animateErrorBox(FoodError? foodError) {
     if (foodError == null) {
       _errorAnimationController.reverse();
     } else {
@@ -178,11 +177,14 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     }
   }
 
-  String _getGroupErrorMessage({required FoodErrorType foodError, int? calories}) {
-    switch (foodError) {
-      case FoodErrorType.macrosSumNotMatchingCalories:
-        return AppStrings.macrosOrCaloriesError(calories ?? 0);
-    }
+  String _getGroupErrorMessage({required FoodError foodError}) {
+    return switch (foodError) {
+      MacrosNotMatchingCaloriesError _ => AppStrings.macrosOrCaloriesError(foodError.expectedCalories),
+      MacrosNotMatchingServingSizeError _ => AppStrings.macrosExceedServingSizeError(foodError.expectedServingSize),
+      SugarsExceedNetCarbsError _ => AppStrings.sugarsExceedNetCarbsLabel,
+      FatsSumExceedsTotalFat _ => AppStrings.sumFatsExceedsTotalFatError(foodError.expectedFat),
+      CholesterolExceedsTotalFat _ => AppStrings.cholesterolExceedsFatError,
+    };
   }
 
   void _initTextControllers() {
