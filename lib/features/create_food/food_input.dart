@@ -71,9 +71,8 @@ class FoodInput {
     final double totalCarbsValue;
     final carbsValue = _parseInput(carbs);
     final fiberValue = _parseInput(fiber);
-    final insolubleFiberValue = _parseInput(insolubleFiber);
     if (carbsValue < fiberValue) {
-      totalCarbsValue = carbsValue + fiberValue - insolubleFiberValue;
+      totalCarbsValue = carbsValue + fiberValue;
     } else {
       totalCarbsValue = carbsValue;
     }

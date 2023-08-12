@@ -155,5 +155,14 @@
         "type": "int"
       }
     }
-  }
+  },
+  "cholesterolExceedsMaxPerServingError": "Cholesterol must be less than or equal to {cholesterol}mg for this serving size.",
+  "@cholesterolExceedsMaxPerServingError": {
+    "placeholder": {
+      "cholesterol": {
+        "type": "int"
+      }
+    }
+  },
+  "insolubleFiberExceedsFiberError": "Insoluble fiber must be less than or equal to fiber."
 }

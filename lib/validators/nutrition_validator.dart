@@ -2,6 +2,7 @@ import 'package:calorietracker/features/create_food/food_error.dart';
 import 'package:calorietracker/features/create_food/food_input.dart';
 
 const _acceptableMacrosCaloriesOffset = 20;
+const _maxCholesterolPer100Grams = 10000;
 
 class NutritionValidator {
   FoodError? validateNutrition({required FoodInput nutritionInput}) {
@@ -12,12 +13,18 @@ class NutritionValidator {
     } else if (nutritionInput.nutrition.sugar > nutritionInput.nutrition.netCarbs) {
       return SugarsExceedNetCarbsError();
     } else if (!_hasValidFats(nutritionInput).match) {
-      return FatsSumExceedsTotalFat(_hasValidFats(nutritionInput).expectedFat);
+      return FatsSumExceedsTotalFatError(_hasValidFats(nutritionInput).expectedFat);
     } else if (nutritionInput.nutrition.cholesterol > nutritionInput.nutrition.fat * 1000) {
-      return CholesterolExceedsTotalFat();
+      return CholesterolExceedsTotalFatError();
+    } else if (nutritionInput.nutrition.cholesterol > _getMaxCholesterol(nutritionInput)) {
+      return CholesterolExceedsMaxPerServingError(_getMaxCholesterol(nutritionInput).toInt());
+    } else if (nutritionInput.nutrition.insolubleFiber > nutritionInput.nutrition.fiber) {
+      return InsolubleFiberExceedsFiberError();
     }
     return null;
   }
+
+  double _getMaxCholesterol(FoodInput nutritionInput) => nutritionInput.servingSizeValue / 100 * _maxCholesterolPer100Grams;
 
   ({int expectedCalories, bool match}) _macrosMatchCalories(FoodInput nutritionInput) {
     final userSubmittedNutrition = nutritionInput.nutrition;

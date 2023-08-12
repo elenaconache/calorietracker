@@ -29,21 +29,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(value) => "Carbs ${value}g";
 
-  static String m4(percentage) => "Fat ${percentage}%";
+  static String m4(cholesterol) =>
+      "Cholesterol must be less than or equal to ${cholesterol}mg for this serving size.";
 
-  static String m5(value) => "Fat ${value}g";
+  static String m5(percentage) => "Fat ${percentage}%";
 
-  static String m6(servingSize) =>
+  static String m6(value) => "Fat ${value}g";
+
+  static String m7(servingSize) =>
       "The sum of macronutrients must not exceed the serving size in grams. Expected serving size of at least ${servingSize}g.";
 
-  static String m7(calories) =>
+  static String m8(calories) =>
       "The macronutrients and calories values do not match. Expected calories for these macros: ${calories}.";
 
-  static String m8(percentage) => "Protein ${percentage}%";
+  static String m9(percentage) => "Protein ${percentage}%";
 
-  static String m9(value) => "Protein ${value}g";
+  static String m10(value) => "Protein ${value}g";
 
-  static String m10(fat) =>
+  static String m11(fat) =>
       "The sum of saturated, trans, mono and polyunsaturated fats must not exceed the total fat. Expected minimum fat: ${fat}.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -70,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "carbsValue": m3,
         "cholesterolExceedsFatError": MessageLookupByLibrary.simpleMessage(
             "Cholesterol in grams must be less than or equal to total fat in grams."),
+        "cholesterolExceedsMaxPerServingError": m4,
         "cholesterolLabel": MessageLookupByLibrary.simpleMessage("Cholesterol"),
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "connectionErrorMessage": MessageLookupByLibrary.simpleMessage(
@@ -83,12 +87,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "emptyServingError": MessageLookupByLibrary.simpleMessage(
             "Serving size can\'t be empty."),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
-        "fatPercentageValue": m4,
-        "fatValue": m5,
+        "fatPercentageValue": m5,
+        "fatValue": m6,
         "fiberLabel": MessageLookupByLibrary.simpleMessage("Fiber"),
         "foodLabel": MessageLookupByLibrary.simpleMessage("Food"),
         "generalErrorMessage":
             MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "insolubleFiberExceedsFiberError": MessageLookupByLibrary.simpleMessage(
+            "Insoluble fiber must be less than or equal to fiber."),
         "insolubleFiberLabel":
             MessageLookupByLibrary.simpleMessage("Insoluble fiber"),
         "invalidError": MessageLookupByLibrary.simpleMessage("Invalid"),
@@ -98,8 +104,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutLabel": MessageLookupByLibrary.simpleMessage("Logout"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
-        "macrosExceedServingSizeError": m6,
-        "macrosOrCaloriesError": m7,
+        "macrosExceedServingSizeError": m7,
+        "macrosOrCaloriesError": m8,
         "mealLabel": MessageLookupByLibrary.simpleMessage("Meal"),
         "mealsLabel": MessageLookupByLibrary.simpleMessage("Meals"),
         "monoFatShortLabel": MessageLookupByLibrary.simpleMessage("Mono fat"),
@@ -117,8 +123,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "poweredByNutritionixLabel":
             MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
-        "proteinPercentageValue": m8,
-        "proteinValue": m9,
+        "proteinPercentageValue": m9,
+        "proteinValue": m10,
         "requiredError": MessageLookupByLibrary.simpleMessage("Required"),
         "saltLabel": MessageLookupByLibrary.simpleMessage("Salt"),
         "saturatedFatLabel":
@@ -133,7 +139,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugarLabel": MessageLookupByLibrary.simpleMessage("Sugar"),
         "sugarsExceedNetCarbsError": MessageLookupByLibrary.simpleMessage(
             "Sugar must be less than or equal to net carbs."),
-        "sumFatsExceedsTotalFatError": m10,
+        "sumFatsExceedsTotalFatError": m11,
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today"),
         "transFatLabel": MessageLookupByLibrary.simpleMessage("Trans fat"),
         "userNotFoundError": MessageLookupByLibrary.simpleMessage(

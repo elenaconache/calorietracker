@@ -182,8 +182,10 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
       MacrosNotMatchingCaloriesError _ => AppStrings.macrosOrCaloriesError(foodError.expectedCalories),
       MacrosNotMatchingServingSizeError _ => AppStrings.macrosExceedServingSizeError(foodError.expectedServingSize),
       SugarsExceedNetCarbsError _ => AppStrings.sugarsExceedNetCarbsLabel,
-      FatsSumExceedsTotalFat _ => AppStrings.sumFatsExceedsTotalFatError(foodError.expectedFat),
-      CholesterolExceedsTotalFat _ => AppStrings.cholesterolExceedsFatError,
+      FatsSumExceedsTotalFatError _ => AppStrings.sumFatsExceedsTotalFatError(foodError.expectedFat),
+      CholesterolExceedsTotalFatError _ => AppStrings.cholesterolExceedsFatError,
+      CholesterolExceedsMaxPerServingError _ => AppStrings.cholesterolExceedsMaxPerServingError(foodError.expectedCholesterolMg),
+      InsolubleFiberExceedsFiberError _ => AppStrings.insolubleFiberExceedsFiberError,
     };
   }
 

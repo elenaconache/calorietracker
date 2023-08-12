@@ -780,6 +780,26 @@ class S {
       args: [servingSize],
     );
   }
+
+  /// `Cholesterol must be less than or equal to {cholesterol}mg for this serving size.`
+  String cholesterolExceedsMaxPerServingError(Object cholesterol) {
+    return Intl.message(
+      'Cholesterol must be less than or equal to ${cholesterol}mg for this serving size.',
+      name: 'cholesterolExceedsMaxPerServingError',
+      desc: '',
+      args: [cholesterol],
+    );
+  }
+
+  /// `Insoluble fiber must be less than or equal to fiber.`
+  String get insolubleFiberExceedsFiberError {
+    return Intl.message(
+      'Insoluble fiber must be less than or equal to fiber.',
+      name: 'insolubleFiberExceedsFiberError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

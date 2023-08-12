@@ -14,13 +14,18 @@ class MacrosNotMatchingServingSizeError extends FoodError {
 
 class SugarsExceedNetCarbsError extends FoodError {}
 
-class FatsSumExceedsTotalFat extends FoodError {
+class FatsSumExceedsTotalFatError extends FoodError {
   final int expectedFat;
 
-  FatsSumExceedsTotalFat(this.expectedFat);
+  FatsSumExceedsTotalFatError(this.expectedFat);
 }
 
-class CholesterolExceedsTotalFat extends FoodError {}
+class CholesterolExceedsTotalFatError extends FoodError {}
 
-// TODO: error if insoluble fiber > fiber
-// TODO: error if cholesterol > 10.000mg per 100g serving size
+class CholesterolExceedsMaxPerServingError extends FoodError {
+  final int expectedCholesterolMg;
+
+  CholesterolExceedsMaxPerServingError(this.expectedCholesterolMg);
+}
+
+class InsolubleFiberExceedsFiberError extends FoodError {}

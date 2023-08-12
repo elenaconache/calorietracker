@@ -149,4 +149,8 @@ class AppStrings {
   static String get cholesterolExceedsFatError => S.current.cholesterolExceedsFatError;
 
   static String macrosExceedServingSizeError(int servingSize) => S.current.macrosExceedServingSizeError(servingSize);
+
+  static String cholesterolExceedsMaxPerServingError(int expectedCholesterol) => S.current.cholesterolExceedsMaxPerServingError(expectedCholesterol);
+
+  static String get insolubleFiberExceedsFiberError => S.current.insolubleFiberExceedsFiberError;
 }
