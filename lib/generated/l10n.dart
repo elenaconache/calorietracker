@@ -800,6 +800,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Salt must be less than or equal to serving size.`
+  String get saltExceedsServingSizeError {
+    return Intl.message(
+      'Salt must be less than or equal to serving size.',
+      name: 'saltExceedsServingSizeError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Iron must be less than or equal to {iron}mg for this serving size.`
+  String ironExceedsMaxPerServingError(Object iron) {
+    return Intl.message(
+      'Iron must be less than or equal to ${iron}mg for this serving size.',
+      name: 'ironExceedsMaxPerServingError',
+      desc: '',
+      args: [iron],
+    );
+  }
+
+  /// `Potassium must be less than or equal to {potassium}mg for this serving size.`
+  String potassiumExceedsMaxPerServingError(Object potassium) {
+    return Intl.message(
+      'Potassium must be less than or equal to ${potassium}mg for this serving size.',
+      name: 'potassiumExceedsMaxPerServingError',
+      desc: '',
+      args: [potassium],
+    );
+  }
+
+  /// `Calcium must be less than or equal to {calcium}mg for this serving size.`
+  String calciumExceedsMaxPerServingError(Object calcium) {
+    return Intl.message(
+      'Calcium must be less than or equal to ${calcium}mg for this serving size.',
+      name: 'calciumExceedsMaxPerServingError',
+      desc: '',
+      args: [calcium],
+    );
+  }
+
+  /// `Vitamin A must be less than or equal to {vitaminA} IU for this serving size.`
+  String vitaminAExceedsMaxPerServingError(Object vitaminA) {
+    return Intl.message(
+      'Vitamin A must be less than or equal to $vitaminA IU for this serving size.',
+      name: 'vitaminAExceedsMaxPerServingError',
+      desc: '',
+      args: [vitaminA],
+    );
+  }
+
+  /// `Vitamin C must be less than or equal to {vitaminC}mg for this serving size.`
+  String vitaminCExceedsMaxPerServingError(Object vitaminC) {
+    return Intl.message(
+      'Vitamin C must be less than or equal to ${vitaminC}mg for this serving size.',
+      name: 'vitaminCExceedsMaxPerServingError',
+      desc: '',
+      args: [vitaminC],
+    );
+  }
+
+  /// `Vitamin D must be less than or equal to {vitaminD} IU for this serving size.`
+  String vitaminDExceedsMaxPerServingError(Object vitaminD) {
+    return Intl.message(
+      'Vitamin D must be less than or equal to $vitaminD IU for this serving size.',
+      name: 'vitaminDExceedsMaxPerServingError',
+      desc: '',
+      args: [vitaminD],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

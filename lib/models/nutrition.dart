@@ -149,7 +149,7 @@ class Nutrition {
 
   int get proteinPercentage => totalMacrosFromPercentages == 0 ? 0 : (protein * 4 / totalMacrosFromPercentages * 100).toInt();
 
-  double get _solubleFiber => fiber - insolubleFiber;
+  double get _solubleFiber => fiber > insolubleFiber ? fiber - insolubleFiber : 0;
 
   double get expectedCalories => (carbohydrates - _solubleFiber) * 4 + _solubleFiber * 2 + protein * 4 + fat * 9;
 

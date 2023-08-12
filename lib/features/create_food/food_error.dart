@@ -29,3 +29,41 @@ class CholesterolExceedsMaxPerServingError extends FoodError {
 }
 
 class InsolubleFiberExceedsFiberError extends FoodError {}
+
+class SaltExceedsServingSizeError extends FoodError {}
+
+class IronExceedsMaxIronPerServingError extends FoodError {
+  final int expectedIronMg;
+
+  IronExceedsMaxIronPerServingError(this.expectedIronMg);
+}
+
+class PotassiumExceedsMaxPotassiumPerServingError extends FoodError {
+  final int expectedPotassiumMg;
+
+  PotassiumExceedsMaxPotassiumPerServingError(this.expectedPotassiumMg);
+}
+
+class CalciumExceedsMaxCalciumPerServingError extends FoodError {
+  final int expectedCalciumMg;
+
+  CalciumExceedsMaxCalciumPerServingError(this.expectedCalciumMg);
+}
+
+class VitaminAExceedsMaxPerServingError extends FoodError {
+  final int expectedVitaminAIU;
+
+  VitaminAExceedsMaxPerServingError(this.expectedVitaminAIU);
+}
+
+class VitaminCExceedsMaxPerServingError extends FoodError {
+  final int expectedVitaminCMg;
+
+  VitaminCExceedsMaxPerServingError(this.expectedVitaminCMg);
+}
+
+class VitaminDExceedsMaxPerServingError extends FoodError {
+  final int expectedVitaminDIU;
+
+  VitaminDExceedsMaxPerServingError(this.expectedVitaminDIU);
+}

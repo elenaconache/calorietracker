@@ -164,5 +164,54 @@
       }
     }
   },
-  "insolubleFiberExceedsFiberError": "Insoluble fiber must be less than or equal to fiber."
+  "insolubleFiberExceedsFiberError": "Insoluble fiber must be less than or equal to fiber.",
+  "saltExceedsServingSizeError": "Salt must be less than or equal to serving size.",
+  "ironExceedsMaxPerServingError": "Iron must be less than or equal to {iron}mg for this serving size.",
+  "@ironExceedsMaxPerServingError": {
+    "placeholder": {
+      "iron": {
+        "type": "int"
+      }
+    }
+  },
+  "potassiumExceedsMaxPerServingError": "Potassium must be less than or equal to {potassium}mg for this serving size.",
+  "@potassiumExceedsMaxPerServingError": {
+    "placeholder": {
+      "potassium": {
+        "type": "int"
+      }
+    }
+  },
+  "calciumExceedsMaxPerServingError": "Calcium must be less than or equal to {calcium}mg for this serving size.",
+  "@calciumExceedsMaxPerServingError": {
+    "placeholder": {
+      "calcium": {
+        "type": "int"
+      }
+    }
+  },
+  "vitaminAExceedsMaxPerServingError": "Vitamin A must be less than or equal to {vitaminA} IU for this serving size.",
+  "@vitaminAExceedsMaxPerServingError": {
+    "placeholder": {
+      "vitaminA": {
+        "type": "int"
+      }
+    }
+  },
+  "vitaminCExceedsMaxPerServingError": "Vitamin C must be less than or equal to {vitaminC}mg for this serving size.",
+  "@vitaminCExceedsMaxPerServingError": {
+    "placeholder": {
+      "vitaminC": {
+        "type": "int"
+      }
+    }
+  },
+  "vitaminDExceedsMaxPerServingError": "Vitamin D must be less than or equal to {vitaminD} IU for this serving size.",
+  "@vitaminDExceedsMaxPerServingError": {
+    "placeholder": {
+      "vitaminD": {
+        "type": "int"
+      }
+    }
+  }
 }

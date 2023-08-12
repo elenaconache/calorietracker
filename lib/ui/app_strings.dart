@@ -153,4 +153,18 @@ class AppStrings {
   static String cholesterolExceedsMaxPerServingError(int expectedCholesterol) => S.current.cholesterolExceedsMaxPerServingError(expectedCholesterol);
 
   static String get insolubleFiberExceedsFiberError => S.current.insolubleFiberExceedsFiberError;
+
+  static String get saltExceedsServingSizeError => S.current.saltExceedsServingSizeError;
+
+  static String ironExceedsMaxPerServingError(int expectedIron) => S.current.ironExceedsMaxPerServingError(expectedIron);
+
+  static String potassiumExceedsMaxPerServingError(int expectedPotassium) => S.current.potassiumExceedsMaxPerServingError(expectedPotassium);
+
+  static String calciumExceedsMaxPerServingError(int expectedCalcium) => S.current.calciumExceedsMaxPerServingError(expectedCalcium);
+
+  static String vitaminAExceedsMaxPerServingError(int expectedVitaminA) => S.current.vitaminAExceedsMaxPerServingError(expectedVitaminA);
+
+  static String vitaminCExceedsMaxPerServingError(int expectedVitaminC) => S.current.vitaminCExceedsMaxPerServingError(expectedVitaminC);
+
+  static String vitaminDExceedsMaxPerServingError(int expectedVitaminD) => S.current.vitaminDExceedsMaxPerServingError(expectedVitaminD);
 }

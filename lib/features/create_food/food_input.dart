@@ -58,7 +58,7 @@ class FoodInput {
         fatMonounsaturated: _parseInput(monoFat),
         fatPolyunsaturated: _parseInput(polyFat),
         cholesterol: _parseInput(cholesterol),
-        sodium: 0.393 * _parseInput(salt) * 1000,
+        sodium: 0.393 * saltValue * 1000,
         iron: _parseInput(iron),
         potassium: _parseInput(potassium),
         calcium: _parseInput(calcium),
@@ -82,4 +82,6 @@ class FoodInput {
   double _parseInput(String? input) => double.tryParse(input ?? '') ?? 0;
 
   double get servingSizeValue => _parseInput(servingSize);
+
+  double get saltValue => _parseInput(salt);
 }

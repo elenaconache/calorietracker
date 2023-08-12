@@ -3,6 +3,12 @@ import 'package:calorietracker/features/create_food/food_input.dart';
 
 const _acceptableMacrosCaloriesOffset = 20;
 const _maxCholesterolPer100Grams = 10000;
+const _maxIronPer100Grams = 20;
+const _maxPotassiumPer100Grams = 900;
+const _maxCalciumPer100Grams = 500;
+const _maxVitaminAPer100Grams = 14000;
+const _maxVitaminCPer100Grams = 5000;
+const _maxVitaminDPer100Grams = 21000;
 
 class NutritionValidator {
   FoodError? validateNutrition({required FoodInput nutritionInput}) {
@@ -20,11 +26,37 @@ class NutritionValidator {
       return CholesterolExceedsMaxPerServingError(_getMaxCholesterol(nutritionInput).toInt());
     } else if (nutritionInput.nutrition.insolubleFiber > nutritionInput.nutrition.fiber) {
       return InsolubleFiberExceedsFiberError();
+    } else if (nutritionInput.saltValue > nutritionInput.servingSizeValue) {
+      return SaltExceedsServingSizeError();
+    } else if (nutritionInput.nutrition.iron > _getMaxIron(nutritionInput)) {
+      return IronExceedsMaxIronPerServingError(_getMaxIron(nutritionInput).toInt());
+    } else if (nutritionInput.nutrition.potassium > _getMaxPotassium(nutritionInput)) {
+      return PotassiumExceedsMaxPotassiumPerServingError(_getMaxPotassium(nutritionInput).toInt());
+    } else if (nutritionInput.nutrition.calcium > _getMaxCalcium(nutritionInput)) {
+      return CalciumExceedsMaxCalciumPerServingError(_getMaxCalcium(nutritionInput).toInt());
+    } else if (nutritionInput.nutrition.vitaminA > _getMaxVitaminA(nutritionInput)) {
+      return VitaminAExceedsMaxPerServingError(_getMaxVitaminA(nutritionInput).toInt());
+    } else if (nutritionInput.nutrition.vitaminC > _getMaxVitaminC(nutritionInput)) {
+      return VitaminCExceedsMaxPerServingError(_getMaxVitaminC(nutritionInput).toInt());
+    } else if (nutritionInput.nutrition.vitaminD > _getMaxVitaminD(nutritionInput)) {
+      return VitaminDExceedsMaxPerServingError(_getMaxVitaminD(nutritionInput).toInt());
     }
     return null;
   }
 
   double _getMaxCholesterol(FoodInput nutritionInput) => nutritionInput.servingSizeValue / 100 * _maxCholesterolPer100Grams;
+
+  double _getMaxIron(FoodInput nutritionInput) => nutritionInput.servingSizeValue / 100 * _maxIronPer100Grams;
+
+  double _getMaxPotassium(FoodInput nutritionInput) => nutritionInput.servingSizeValue / 100 * _maxPotassiumPer100Grams;
+
+  double _getMaxCalcium(FoodInput nutritionInput) => nutritionInput.servingSizeValue / 100 * _maxCalciumPer100Grams;
+
+  double _getMaxVitaminA(FoodInput nutritionInput) => nutritionInput.servingSizeValue / 100 * _maxVitaminAPer100Grams;
+
+  double _getMaxVitaminC(FoodInput nutritionInput) => nutritionInput.servingSizeValue / 100 * _maxVitaminCPer100Grams;
+
+  double _getMaxVitaminD(FoodInput nutritionInput) => nutritionInput.servingSizeValue / 100 * _maxVitaminDPer100Grams;
 
   ({int expectedCalories, bool match}) _macrosMatchCalories(FoodInput nutritionInput) {
     final userSubmittedNutrition = nutritionInput.nutrition;

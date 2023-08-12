@@ -186,6 +186,13 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
       CholesterolExceedsTotalFatError _ => AppStrings.cholesterolExceedsFatError,
       CholesterolExceedsMaxPerServingError _ => AppStrings.cholesterolExceedsMaxPerServingError(foodError.expectedCholesterolMg),
       InsolubleFiberExceedsFiberError _ => AppStrings.insolubleFiberExceedsFiberError,
+      SaltExceedsServingSizeError _ => AppStrings.saltExceedsServingSizeError,
+      IronExceedsMaxIronPerServingError _ => AppStrings.ironExceedsMaxPerServingError(foodError.expectedIronMg),
+      PotassiumExceedsMaxPotassiumPerServingError _ => AppStrings.potassiumExceedsMaxPerServingError(foodError.expectedPotassiumMg),
+      CalciumExceedsMaxCalciumPerServingError _ => AppStrings.calciumExceedsMaxPerServingError(foodError.expectedCalciumMg),
+      VitaminAExceedsMaxPerServingError _ => AppStrings.vitaminAExceedsMaxPerServingError(foodError.expectedVitaminAIU),
+      VitaminCExceedsMaxPerServingError _ => AppStrings.vitaminCExceedsMaxPerServingError(foodError.expectedVitaminCMg),
+      VitaminDExceedsMaxPerServingError _ => AppStrings.vitaminDExceedsMaxPerServingError(foodError.expectedVitaminDIU),
     };
   }
 
