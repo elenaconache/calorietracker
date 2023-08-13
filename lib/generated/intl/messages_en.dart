@@ -39,32 +39,34 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(value) => "Fat ${value}g";
 
-  static String m8(iron) =>
+  static String m8(grams) => "${grams}g";
+
+  static String m9(iron) =>
       "Iron must be less than or equal to ${iron}mg for this serving size.";
 
-  static String m9(servingSize) =>
+  static String m10(servingSize) =>
       "The sum of macronutrients must not exceed the serving size in grams. Expected serving size of at least ${servingSize}g.";
 
-  static String m10(calories) =>
+  static String m11(calories) =>
       "The macronutrients and calories values do not match. Expected calories for these macros: ${calories}.";
 
-  static String m11(potassium) =>
+  static String m12(potassium) =>
       "Potassium must be less than or equal to ${potassium}mg for this serving size.";
 
-  static String m12(percentage) => "Protein ${percentage}%";
+  static String m13(percentage) => "Protein ${percentage}%";
 
-  static String m13(value) => "Protein ${value}g";
+  static String m14(value) => "Protein ${value}g";
 
-  static String m14(fat) =>
+  static String m15(fat) =>
       "The sum of saturated, trans, mono and polyunsaturated fats must not exceed the total fat. Expected minimum fat: ${fat}.";
 
-  static String m15(vitaminA) =>
+  static String m16(vitaminA) =>
       "Vitamin A must be less than or equal to ${vitaminA} IU for this serving size.";
 
-  static String m16(vitaminC) =>
+  static String m17(vitaminC) =>
       "Vitamin C must be less than or equal to ${vitaminC}mg for this serving size.";
 
-  static String m17(vitaminD) =>
+  static String m18(vitaminD) =>
       "Vitamin D must be less than or equal to ${vitaminD} IU for this serving size.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -80,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
         "calciumExceedsMaxPerServingError": m0,
         "calciumLabel": MessageLookupByLibrary.simpleMessage("Calcium"),
+        "calciumMgLabel": MessageLookupByLibrary.simpleMessage("Calcium (mg)"),
         "caloriesLabel": MessageLookupByLibrary.simpleMessage("Calories"),
         "caloriesServingShortLabel": m1,
         "caloriesShortGenericLabel":
@@ -87,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "caloriesShortLabel": m2,
         "carbohydratesLabel":
             MessageLookupByLibrary.simpleMessage("Carbohydrates"),
+        "carbsGramsLabel": MessageLookupByLibrary.simpleMessage("Carbs (g)"),
         "carbsLabel": MessageLookupByLibrary.simpleMessage("Carbs"),
         "carbsPercentageValue": m3,
         "carbsValue": m4,
@@ -94,6 +98,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Cholesterol in grams must be less than or equal to total fat in grams."),
         "cholesterolExceedsMaxPerServingError": m5,
         "cholesterolLabel": MessageLookupByLibrary.simpleMessage("Cholesterol"),
+        "cholesterolMgLabel":
+            MessageLookupByLibrary.simpleMessage("Cholesterol (mg)"),
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "connectionErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Could not connect to the server."),
@@ -105,30 +111,37 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Food name can\'t be empty."),
         "emptyServingError": MessageLookupByLibrary.simpleMessage(
             "Serving size can\'t be empty."),
+        "fatGramsLabel": MessageLookupByLibrary.simpleMessage("Fat (g)"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
         "fatPercentageValue": m6,
         "fatValue": m7,
+        "fiberGramsLabel": MessageLookupByLibrary.simpleMessage("Fiber (g)"),
         "fiberLabel": MessageLookupByLibrary.simpleMessage("Fiber"),
         "foodLabel": MessageLookupByLibrary.simpleMessage("Food"),
         "generalErrorMessage":
             MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "gramsValue": m8,
         "insolubleFiberExceedsFiberError": MessageLookupByLibrary.simpleMessage(
             "Insoluble fiber must be less than or equal to fiber."),
+        "insolubleFiberGramsLabel":
+            MessageLookupByLibrary.simpleMessage("Insoluble fiber (g)"),
         "insolubleFiberLabel":
             MessageLookupByLibrary.simpleMessage("Insoluble fiber"),
         "invalidError": MessageLookupByLibrary.simpleMessage("Invalid"),
         "invalidServingError":
             MessageLookupByLibrary.simpleMessage("Invalid serving size."),
-        "ironExceedsMaxPerServingError": m8,
+        "ironExceedsMaxPerServingError": m9,
         "ironLabel": MessageLookupByLibrary.simpleMessage("Iron"),
+        "ironMgLabel": MessageLookupByLibrary.simpleMessage("Iron (mg)"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutLabel": MessageLookupByLibrary.simpleMessage("Logout"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
-        "macrosExceedServingSizeError": m9,
-        "macrosOrCaloriesError": m10,
+        "macrosExceedServingSizeError": m10,
+        "macrosOrCaloriesError": m11,
         "mealLabel": MessageLookupByLibrary.simpleMessage("Meal"),
         "mealsLabel": MessageLookupByLibrary.simpleMessage("Meals"),
-        "monoFatShortLabel": MessageLookupByLibrary.simpleMessage("Mono fat"),
+        "monoFatGramsLabel":
+            MessageLookupByLibrary.simpleMessage("Mono fat (g)"),
         "monounsaturatedFatLabel":
             MessageLookupByLibrary.simpleMessage("Monounsaturated fat"),
         "noFoodLoggedMessage": MessageLookupByLibrary.simpleMessage(
@@ -136,43 +149,59 @@ class MessageLookup extends MessageLookupByLibrary {
         "noResultsTitle": MessageLookupByLibrary.simpleMessage(
             "There were no results matching your search"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
-        "polyFatShortLabel": MessageLookupByLibrary.simpleMessage("Poly fat"),
+        "polyFatGramsLabel":
+            MessageLookupByLibrary.simpleMessage("Poly fat (g)"),
         "polyunsaturatedFatLabel":
             MessageLookupByLibrary.simpleMessage("Polyunsaturated fat"),
-        "potassiumExceedsMaxPerServingError": m11,
+        "potassiumExceedsMaxPerServingError": m12,
         "potassiumLabel": MessageLookupByLibrary.simpleMessage("Potassium"),
+        "potassiumMgLabel":
+            MessageLookupByLibrary.simpleMessage("Potassium (mg)"),
         "poweredByNutritionixLabel":
             MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
+        "proteinGramsLabel":
+            MessageLookupByLibrary.simpleMessage("Protein (g)"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
-        "proteinPercentageValue": m12,
-        "proteinValue": m13,
+        "proteinPercentageValue": m13,
+        "proteinValue": m14,
         "requiredError": MessageLookupByLibrary.simpleMessage("Required"),
         "saltExceedsServingSizeError": MessageLookupByLibrary.simpleMessage(
             "Salt must be less than or equal to serving size."),
-        "saltLabel": MessageLookupByLibrary.simpleMessage("Salt"),
+        "saltGramsLabel": MessageLookupByLibrary.simpleMessage("Salt (g)"),
+        "saturatedFatGramsLabel":
+            MessageLookupByLibrary.simpleMessage("Saturated fat (g)"),
         "saturatedFatLabel":
             MessageLookupByLibrary.simpleMessage("Saturated fat"),
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
         "searchForFoodLabel":
             MessageLookupByLibrary.simpleMessage("Search for a food"),
         "servingsLabel":
-            MessageLookupByLibrary.simpleMessage("Serving size (grams)"),
+            MessageLookupByLibrary.simpleMessage("Serving size (g)"),
         "snacksLabel": MessageLookupByLibrary.simpleMessage("Snacks"),
         "sodiumLabel": MessageLookupByLibrary.simpleMessage("Sodium"),
+        "sugarGramsLabel": MessageLookupByLibrary.simpleMessage("Sugar (g)"),
         "sugarLabel": MessageLookupByLibrary.simpleMessage("Sugar"),
         "sugarsExceedNetCarbsError": MessageLookupByLibrary.simpleMessage(
             "Sugar must be less than or equal to net carbs."),
-        "sumFatsExceedsTotalFatError": m14,
+        "sumFatsExceedsTotalFatError": m15,
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today"),
+        "transFatGramsLabel":
+            MessageLookupByLibrary.simpleMessage("Trans fat (g)"),
         "transFatLabel": MessageLookupByLibrary.simpleMessage("Trans fat"),
         "userNotFoundError": MessageLookupByLibrary.simpleMessage(
             "The username you entered was not found."),
         "usernameLabel": MessageLookupByLibrary.simpleMessage("Username"),
-        "vitaminAExceedsMaxPerServingError": m15,
+        "vitaminAExceedsMaxPerServingError": m16,
+        "vitaminAIULabel":
+            MessageLookupByLibrary.simpleMessage("Vitamin A (IU)"),
         "vitaminALabel": MessageLookupByLibrary.simpleMessage("Vitamin A"),
-        "vitaminCExceedsMaxPerServingError": m16,
+        "vitaminCExceedsMaxPerServingError": m17,
         "vitaminCLabel": MessageLookupByLibrary.simpleMessage("Vitamin C"),
-        "vitaminDExceedsMaxPerServingError": m17,
+        "vitaminCMgLabel":
+            MessageLookupByLibrary.simpleMessage("Vitamin C (mg)"),
+        "vitaminDExceedsMaxPerServingError": m18,
+        "vitaminDIULabel":
+            MessageLookupByLibrary.simpleMessage("Vitamin D (IU)"),
         "vitaminDLabel": MessageLookupByLibrary.simpleMessage("Vitamin D")
       };
 }

@@ -1,5 +1,6 @@
 import 'package:calorietracker/models/collection/add_diary_entry_with_food_request.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
+import 'package:calorietracker/models/collection/user_response.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter/foundation.dart';
 import 'package:retrofit/retrofit.dart';
@@ -17,5 +18,5 @@ abstract class CollectionApiService {
   Future<List<MealEntriesResponse>> getDiaryEntries({@Path('userId') required String userId, @Path('date') required String date});
 
   @GET('users/{username}')
-  Future<String> getUserId({@Path('username') required String username});
+  Future<UserResponse> getUserId({@Path('username') required String username});
 }

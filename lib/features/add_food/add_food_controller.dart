@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:calorietracker/app/constants.dart';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/collection/add_diary_entry_with_food_request.dart';
+import 'package:calorietracker/models/collection/collection_food.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
@@ -26,7 +27,7 @@ class AddFoodController {
     currentServingSizeNutrients = ValueNotifier(nutrition);
   }
 
-  int get calories => currentServingSizeNutrients.value?.calories?.toInt() ?? 0;
+  int get calories => currentServingSizeNutrients.value?.calories.toInt() ?? 0;
 
   double get carbsInGrams => currentServingSizeNutrients.value?.carbohydrates ?? 0;
 
@@ -63,11 +64,13 @@ class AddFoodController {
         userId: userId!,
         unitId: gramsUnitId,
         meal: meal,
-        name: food.name,
-        nutritionInfo: food.nutrition.round(),
-        brand: food.brandName,
+        food: CollectionFood(
+          name: food.name,
+          nutritionInfo: food.nutrition.round(),
+          brand: food.brandName,
+          barcode: null,
+        ),
         servingQuantity: servingQuantity,
-        barcode: barcode,
       ))
           .then((_) {
         unawaited(locator<DiaryService>().fetchDiary());

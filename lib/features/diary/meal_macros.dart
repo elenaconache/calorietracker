@@ -29,7 +29,7 @@ class MealMacros extends StatelessWidget {
                   child: Text(
                     enabledPercentageMode
                         ? AppStrings.carbsPercentageValue(mealNutrition.carbsPercentage)
-                        : AppStrings.carbsValue(mealNutrition.carbohydrates?.toInt() ?? 0),
+                        : AppStrings.carbsValue(mealNutrition.carbohydrates.toInt()),
                     style: Theme.of(context).textTheme.labelMedium,
                   )),
               const SizedBox(width: 8),
@@ -40,7 +40,7 @@ class MealMacros extends StatelessWidget {
                   child: Text(
                     enabledPercentageMode
                         ? AppStrings.fatPercentageValue(mealNutrition.fatPercentage)
-                        : AppStrings.fatValue(mealNutrition.fat?.toInt() ?? 0),
+                        : AppStrings.fatValue(mealNutrition.fat.toInt()),
                     style: Theme.of(context).textTheme.labelMedium,
                   )),
               const SizedBox(width: 8),
@@ -51,7 +51,7 @@ class MealMacros extends StatelessWidget {
                   child: Text(
                     enabledPercentageMode
                         ? AppStrings.proteinPercentageValue(mealNutrition.proteinPercentage)
-                        : AppStrings.proteinValue(mealNutrition.protein?.toInt() ?? 0),
+                        : AppStrings.proteinValue(mealNutrition.protein.toInt()),
                     style: Theme.of(context).textTheme.labelMedium,
                   )),
             ],

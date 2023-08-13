@@ -21,10 +21,10 @@ class MealTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final diaryService = locator<DiaryService>();
-    return InkWell(
-        onTap: onTap,
-        child: Ink(
-            color: Theme.of(context).cardColor,
+    return Material(
+        color: Theme.of(context).cardColor,
+        child: InkWell(
+            onTap: onTap,
             child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
                 child: Column(
@@ -43,7 +43,7 @@ class MealTitle extends StatelessWidget {
                             }
                             final mealNutrition = diaryService.getSelectedDayMealNutrients(meal: meal);
                             return Text(
-                              AppStrings.caloriesShortLabel(mealNutrition.calories?.toInt() ?? 0),
+                              AppStrings.caloriesShortLabel(mealNutrition.calories.toInt()),
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                             );
                           })

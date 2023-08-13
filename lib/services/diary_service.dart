@@ -23,29 +23,35 @@ class DiaryService {
     if (allDiaryEntries.isEmpty) {
       return const Nutrition();
     } else {
-      return allDiaryEntries.fold(
-          const Nutrition(),
-          (previousValue, element) => Nutrition(
-                calories: (previousValue.calories ?? 0) + element.calories,
-                fat: (previousValue.fat ?? 0) + element.fat,
-                fatSaturated: (previousValue.fatSaturated ?? 0) + (element.fatSaturated ?? 0),
-                fatTrans: (previousValue.fatTrans ?? 0) + (element.fatTrans ?? 0),
-                fatPolyunsaturated: (previousValue.fatPolyunsaturated ?? 0) + (element.fatPolyunsaturated ?? 0),
-                fatMonounsaturated: (previousValue.fatMonounsaturated ?? 0) + (element.fatMonounsaturated ?? 0),
-                cholesterol: (previousValue.cholesterol ?? 0) + (element.cholesterol ?? 0),
-                carbohydrates: (previousValue.carbohydrates ?? 0) + element.carbohydrates,
-                fiber: (previousValue.fiber ?? 0) + (element.fiber ?? 0),
-                sugar: (previousValue.sugar ?? 0) + (element.sugar ?? 0),
-                protein: (previousValue.protein ?? 0) + element.protein,
-                sodium: (previousValue.sodium ?? 0) + (element.sodium ?? 0),
-                potassium: (previousValue.potassium ?? 0) + (element.potassium ?? 0),
-                calcium: (previousValue.calcium ?? 0) + (element.calcium ?? 0),
-                iron: (previousValue.iron ?? 0) + (element.iron ?? 0),
-                vitaminA: (previousValue.vitaminA ?? 0) + (element.vitaminA ?? 0),
-                vitaminC: (previousValue.vitaminC ?? 0) + (element.vitaminC ?? 0),
-                vitaminD: (previousValue.vitaminD ?? 0) + (element.vitaminD ?? 0),
-              ));
+      return _getTotalNutrition(allDiaryEntries);
     }
+  }
+
+  Nutrition _getTotalNutrition(List<DiaryEntryResponse> allDiaryEntries) {
+    return allDiaryEntries.fold(const Nutrition(), (previousValue, element) {
+      final nutritionPerServing =
+          Nutrition.perServing(nutritionPer100Grams: element.food.nutritionInfo, servingSizeGrams: element.servingQuantity.toInt());
+      return Nutrition(
+        calories: previousValue.calories + nutritionPerServing.calories,
+        fat: previousValue.fat + nutritionPerServing.fat,
+        fatSaturated: previousValue.fatSaturated + nutritionPerServing.fatSaturated,
+        fatTrans: previousValue.fatTrans + nutritionPerServing.fatTrans,
+        fatPolyunsaturated: previousValue.fatPolyunsaturated + nutritionPerServing.fatPolyunsaturated,
+        fatMonounsaturated: previousValue.fatMonounsaturated + nutritionPerServing.fatMonounsaturated,
+        cholesterol: previousValue.cholesterol + nutritionPerServing.cholesterol,
+        carbohydrates: previousValue.carbohydrates + nutritionPerServing.carbohydrates,
+        fiber: previousValue.fiber + nutritionPerServing.fiber,
+        sugar: previousValue.sugar + nutritionPerServing.sugar,
+        protein: previousValue.protein + nutritionPerServing.protein,
+        sodium: previousValue.sodium + nutritionPerServing.sodium,
+        potassium: previousValue.potassium + nutritionPerServing.potassium,
+        calcium: previousValue.calcium + nutritionPerServing.calcium,
+        iron: previousValue.iron + nutritionPerServing.iron,
+        vitaminA: previousValue.vitaminA + nutritionPerServing.vitaminA,
+        vitaminC: previousValue.vitaminC + nutritionPerServing.vitaminC,
+        vitaminD: previousValue.vitaminD + nutritionPerServing.vitaminD,
+      );
+    });
   }
 
   Future<void> fetchDiary({DateTime? date}) async {
@@ -70,28 +76,7 @@ class DiaryService {
     if (diaryEntries == null) {
       return const Nutrition();
     } else {
-      return diaryEntries.fold(
-          const Nutrition(),
-          (previousValue, element) => Nutrition(
-                calories: (previousValue.calories ?? 0) + element.calories,
-                fat: (previousValue.fat ?? 0) + element.fat,
-                fatSaturated: (previousValue.fatSaturated ?? 0) + (element.fatSaturated ?? 0),
-                fatTrans: (previousValue.fatTrans ?? 0) + (element.fatTrans ?? 0),
-                fatPolyunsaturated: (previousValue.fatPolyunsaturated ?? 0) + (element.fatPolyunsaturated ?? 0),
-                fatMonounsaturated: (previousValue.fatMonounsaturated ?? 0) + (element.fatMonounsaturated ?? 0),
-                cholesterol: (previousValue.cholesterol ?? 0) + (element.cholesterol ?? 0),
-                carbohydrates: (previousValue.carbohydrates ?? 0) + element.carbohydrates,
-                fiber: (previousValue.fiber ?? 0) + (element.fiber ?? 0),
-                sugar: (previousValue.sugar ?? 0) + (element.sugar ?? 0),
-                protein: (previousValue.protein ?? 0) + element.protein,
-                sodium: (previousValue.sodium ?? 0) + (element.sodium ?? 0),
-                potassium: (previousValue.potassium ?? 0) + (element.potassium ?? 0),
-                calcium: (previousValue.calcium ?? 0) + (element.calcium ?? 0),
-                iron: (previousValue.iron ?? 0) + (element.iron ?? 0),
-                vitaminA: (previousValue.vitaminA ?? 0) + (element.vitaminA ?? 0),
-                vitaminC: (previousValue.vitaminC ?? 0) + (element.vitaminC ?? 0),
-                vitaminD: (previousValue.vitaminD ?? 0) + (element.vitaminD ?? 0),
-              ));
+      return _getTotalNutrition(diaryEntries);
     }
   }
 

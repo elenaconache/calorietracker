@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/login/login_error.dart';
@@ -33,7 +31,7 @@ class LoginController {
     } else {
       final apiService = await locator.getAsync<CollectionApiService>();
       await apiService.getUserId(username: username).then((response) async {
-        final userId = jsonDecode(response);
+        final userId = response.id;
         if (userId.isNotEmpty) {
           await _saveUser(userId, username);
           onSuccess();

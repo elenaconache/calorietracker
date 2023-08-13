@@ -44,7 +44,7 @@
     }
   },
   "mealLabel": "Meal",
-  "servingsLabel": "Serving size (grams)",
+  "servingsLabel": "Serving size (g)",
   "caloriesShortGenericLabel": "cal",
   "saturatedFatLabel": "Saturated fat",
   "polyunsaturatedFatLabel": "Polyunsaturated fat",
@@ -126,9 +126,6 @@
   "invalidServingError": "Invalid serving size.",
   "requiredError": "Required",
   "invalidError": "Invalid",
-  "monoFatShortLabel": "Mono fat",
-  "polyFatShortLabel": "Poly fat",
-  "saltLabel": "Salt",
   "macrosOrCaloriesError": "The macronutrients and calories values do not match. Expected calories for these macros: {calories}.",
   "@macrosOrCaloriesError": {
     "placeholder": {
@@ -210,6 +207,32 @@
   "@vitaminDExceedsMaxPerServingError": {
     "placeholder": {
       "vitaminD": {
+        "type": "int"
+      }
+    }
+  },
+  "carbsGramsLabel": "Carbs (g)",
+  "fatGramsLabel": "Fat (g)",
+  "proteinGramsLabel": "Protein (g)",
+  "saturatedFatGramsLabel": "Saturated fat (g)",
+  "polyFatGramsLabel": "Poly fat (g)",
+  "monoFatGramsLabel": "Mono fat (g)",
+  "transFatGramsLabel": "Trans fat (g)",
+  "cholesterolMgLabel": "Cholesterol (mg)",
+  "saltGramsLabel": "Salt (g)",
+  "potassiumMgLabel": "Potassium (mg)",
+  "calciumMgLabel": "Calcium (mg)",
+  "ironMgLabel": "Iron (mg)",
+  "fiberGramsLabel": "Fiber (g)",
+  "sugarGramsLabel": "Sugar (g)",
+  "vitaminAIULabel": "Vitamin A (IU)",
+  "vitaminCMgLabel": "Vitamin C (mg)",
+  "vitaminDIULabel": "Vitamin D (IU)",
+  "insolubleFiberGramsLabel": "Insoluble fiber (g)",
+  "gramsValue": "{grams}g",
+  "@gramsValue": {
+    "placeholder": {
+      "grams": {
         "type": "int"
       }
     }

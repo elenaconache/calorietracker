@@ -291,10 +291,10 @@ class S {
     );
   }
 
-  /// `Serving size (grams)`
+  /// `Serving size (g)`
   String get servingsLabel {
     return Intl.message(
-      'Serving size (grams)',
+      'Serving size (g)',
       name: 'servingsLabel',
       desc: '',
       args: [],
@@ -691,36 +691,6 @@ class S {
     );
   }
 
-  /// `Mono fat`
-  String get monoFatShortLabel {
-    return Intl.message(
-      'Mono fat',
-      name: 'monoFatShortLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Poly fat`
-  String get polyFatShortLabel {
-    return Intl.message(
-      'Poly fat',
-      name: 'polyFatShortLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Salt`
-  String get saltLabel {
-    return Intl.message(
-      'Salt',
-      name: 'saltLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `The macronutrients and calories values do not match. Expected calories for these macros: {calories}.`
   String macrosOrCaloriesError(Object calories) {
     return Intl.message(
@@ -868,6 +838,196 @@ class S {
       name: 'vitaminDExceedsMaxPerServingError',
       desc: '',
       args: [vitaminD],
+    );
+  }
+
+  /// `Carbs (g)`
+  String get carbsGramsLabel {
+    return Intl.message(
+      'Carbs (g)',
+      name: 'carbsGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fat (g)`
+  String get fatGramsLabel {
+    return Intl.message(
+      'Fat (g)',
+      name: 'fatGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Protein (g)`
+  String get proteinGramsLabel {
+    return Intl.message(
+      'Protein (g)',
+      name: 'proteinGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saturated fat (g)`
+  String get saturatedFatGramsLabel {
+    return Intl.message(
+      'Saturated fat (g)',
+      name: 'saturatedFatGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poly fat (g)`
+  String get polyFatGramsLabel {
+    return Intl.message(
+      'Poly fat (g)',
+      name: 'polyFatGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mono fat (g)`
+  String get monoFatGramsLabel {
+    return Intl.message(
+      'Mono fat (g)',
+      name: 'monoFatGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trans fat (g)`
+  String get transFatGramsLabel {
+    return Intl.message(
+      'Trans fat (g)',
+      name: 'transFatGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cholesterol (mg)`
+  String get cholesterolMgLabel {
+    return Intl.message(
+      'Cholesterol (mg)',
+      name: 'cholesterolMgLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Salt (g)`
+  String get saltGramsLabel {
+    return Intl.message(
+      'Salt (g)',
+      name: 'saltGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Potassium (mg)`
+  String get potassiumMgLabel {
+    return Intl.message(
+      'Potassium (mg)',
+      name: 'potassiumMgLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calcium (mg)`
+  String get calciumMgLabel {
+    return Intl.message(
+      'Calcium (mg)',
+      name: 'calciumMgLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Iron (mg)`
+  String get ironMgLabel {
+    return Intl.message(
+      'Iron (mg)',
+      name: 'ironMgLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fiber (g)`
+  String get fiberGramsLabel {
+    return Intl.message(
+      'Fiber (g)',
+      name: 'fiberGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sugar (g)`
+  String get sugarGramsLabel {
+    return Intl.message(
+      'Sugar (g)',
+      name: 'sugarGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vitamin A (IU)`
+  String get vitaminAIULabel {
+    return Intl.message(
+      'Vitamin A (IU)',
+      name: 'vitaminAIULabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vitamin C (mg)`
+  String get vitaminCMgLabel {
+    return Intl.message(
+      'Vitamin C (mg)',
+      name: 'vitaminCMgLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vitamin D (IU)`
+  String get vitaminDIULabel {
+    return Intl.message(
+      'Vitamin D (IU)',
+      name: 'vitaminDIULabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insoluble fiber (g)`
+  String get insolubleFiberGramsLabel {
+    return Intl.message(
+      'Insoluble fiber (g)',
+      name: 'insolubleFiberGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{grams}g`
+  String gramsValue(Object grams) {
+    return Intl.message(
+      '${grams}g',
+      name: 'gramsValue',
+      desc: '',
+      args: [grams],
     );
   }
 }

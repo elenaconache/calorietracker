@@ -47,7 +47,7 @@ class FoodItem extends StatelessWidget {
                             ),
                           const SizedBox(height: 2),
                           Text(
-                            AppStrings.caloriesServingShortLabel(foodResponse.nutrition.calories?.toStringAsFixed(0) ?? '0',
+                            AppStrings.caloriesServingShortLabel(foodResponse.nutrition.calories.toStringAsFixed(0),
                                 numericFormatter.formatDecimals(value: foodResponse.servingQuantity ?? 1), foodResponse.servingUnit ?? ''),
                             style: Theme.of(context).textTheme.bodyMedium,
                           )

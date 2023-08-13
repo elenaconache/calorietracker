@@ -107,7 +107,7 @@ class FoodForm extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: AppTextField(
-              labelText: AppStrings.sugarLabel,
+              labelText: AppStrings.sugarGramsLabel,
               controller: sugarController,
               inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
               validate: validator.validateMicronutrient,
@@ -118,9 +118,9 @@ class FoodForm extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FoodFormRow(
-              firstLabel: AppStrings.fiberLabel,
+              firstLabel: AppStrings.fiberGramsLabel,
               firstController: fiberController,
-              secondLabel: AppStrings.insolubleFiberLabel,
+              secondLabel: AppStrings.insolubleFiberGramsLabel,
               secondController: insolubleFiberController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
@@ -129,9 +129,9 @@ class FoodForm extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FoodFormRow(
-              firstLabel: AppStrings.saturatedFatLabel,
+              firstLabel: AppStrings.saturatedFatGramsLabel,
               firstController: fatSaturatedController,
-              secondLabel: AppStrings.transFatLabel,
+              secondLabel: AppStrings.transFatGramsLabel,
               secondController: fatTransController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
@@ -140,9 +140,9 @@ class FoodForm extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FoodFormRow(
-              firstLabel: AppStrings.monoFatShortLabel,
+              firstLabel: AppStrings.monoFatGramsLabel,
               firstController: fatMonounsaturatedController,
-              secondLabel: AppStrings.polyFatShortLabel,
+              secondLabel: AppStrings.polyFatGramsLabel,
               secondController: fatPolyunsaturatedController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
@@ -151,9 +151,9 @@ class FoodForm extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FoodFormRow(
-              firstLabel: AppStrings.cholesterolLabel,
+              firstLabel: AppStrings.cholesterolMgLabel,
               firstController: cholesterolController,
-              secondLabel: AppStrings.saltLabel,
+              secondLabel: AppStrings.saltGramsLabel,
               secondController: saltController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
@@ -162,29 +162,34 @@ class FoodForm extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FoodFormRow(
-              firstLabel: AppStrings.ironLabel,
+              firstLabel: AppStrings.ironMgLabel,
               firstController: ironController,
-              secondLabel: AppStrings.potassiumLabel,
+              secondLabel: AppStrings.potassiumMgLabel,
               secondController: potassiumController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
-              thirdLabel: AppStrings.calciumLabel,
-              thirdValidation: validator.validateMicronutrient,
-              thirdController: calciumController,
             )),
         const SizedBox(height: 8),
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FoodFormRow(
-              firstLabel: AppStrings.vitaminALabel,
-              firstController: vitaminAController,
-              secondLabel: AppStrings.vitaminCLabel,
-              secondController: vitaminCController,
-              thirdLabel: AppStrings.vitaminDLabel,
-              thirdController: vitaminDController,
+              firstLabel: AppStrings.calciumMgLabel,
+              firstController: calciumController,
+              secondLabel: AppStrings.vitaminDIULabel,
+              secondController: vitaminDController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
-              thirdValidation: validator.validateMicronutrient,
+            )),
+        const SizedBox(height: 8),
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: FoodFormRow(
+              firstLabel: AppStrings.vitaminAIULabel,
+              firstController: vitaminAController,
+              secondLabel: AppStrings.vitaminCMgLabel,
+              secondController: vitaminCController,
+              firstValidation: validator.validateMicronutrient,
+              secondValidation: validator.validateMicronutrient,
             )),
       ],
     );

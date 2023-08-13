@@ -132,12 +132,6 @@ class AppStrings {
 
   static String get invalidError => S.current.invalidError;
 
-  static String get monoFatShortLabel => S.current.monoFatShortLabel;
-
-  static String get polyFatShortLabel => S.current.polyFatShortLabel;
-
-  static String get saltLabel => S.current.saltLabel;
-
   static String macrosOrCaloriesError(int calories) => S.current.macrosOrCaloriesError(calories);
 
   static String get insolubleFiberLabel => S.current.insolubleFiberLabel;
@@ -167,4 +161,42 @@ class AppStrings {
   static String vitaminCExceedsMaxPerServingError(int expectedVitaminC) => S.current.vitaminCExceedsMaxPerServingError(expectedVitaminC);
 
   static String vitaminDExceedsMaxPerServingError(int expectedVitaminD) => S.current.vitaminDExceedsMaxPerServingError(expectedVitaminD);
+
+  static String get carbsGramsLabel => S.current.carbsGramsLabel;
+
+  static String get fatGramsLabel => S.current.fatGramsLabel;
+
+  static String get proteinGramsLabel => S.current.proteinGramsLabel;
+
+  static String get monoFatGramsLabel => S.current.monoFatGramsLabel;
+
+  static String get polyFatGramsLabel => S.current.polyFatGramsLabel;
+
+  static String get saltGramsLabel => S.current.saltGramsLabel;
+
+  static String get saturatedFatGramsLabel => S.current.saturatedFatGramsLabel;
+
+  static String get transFatGramsLabel => S.current.transFatGramsLabel;
+
+  static String get cholesterolMgLabel => S.current.cholesterolMgLabel;
+
+  static String get potassiumMgLabel => S.current.potassiumMgLabel;
+
+  static String get calciumMgLabel => S.current.calciumMgLabel;
+
+  static String get ironMgLabel => S.current.ironMgLabel;
+
+  static String get fiberGramsLabel => S.current.fiberGramsLabel;
+
+  static String get sugarGramsLabel => S.current.sugarGramsLabel;
+
+  static String get vitaminAIULabel => S.current.vitaminAIULabel;
+
+  static String get vitaminCMgLabel => S.current.vitaminCMgLabel;
+
+  static String get vitaminDIULabel => S.current.vitaminDIULabel;
+
+  static String get insolubleFiberGramsLabel => S.current.insolubleFiberGramsLabel;
+
+  static String gramsValue(int grams) => S.current.gramsValue(grams);
 }

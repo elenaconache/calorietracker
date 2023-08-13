@@ -22,7 +22,7 @@ class MacrosInputSection extends StatelessWidget {
           children: [
             Expanded(
                 child: AppTextField(
-              labelText: AppStrings.carbsLabel,
+              labelText: AppStrings.carbsGramsLabel,
               controller: carbsController,
               inputType: const TextInputType.numberWithOptions(
                 decimal: true,
@@ -35,7 +35,7 @@ class MacrosInputSection extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
                 child: AppTextField(
-              labelText: AppStrings.fatLabel,
+              labelText: AppStrings.fatGramsLabel,
               controller: fatController,
               inputType: const TextInputType.numberWithOptions(
                 decimal: true,
@@ -48,7 +48,7 @@ class MacrosInputSection extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
                 child: AppTextField(
-              labelText: AppStrings.proteinLabel,
+              labelText: AppStrings.proteinGramsLabel,
               controller: proteinController,
               inputType: const TextInputType.numberWithOptions(
                 decimal: true,

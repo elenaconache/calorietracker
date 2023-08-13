@@ -7,10 +7,8 @@ class FoodFormRow extends StatelessWidget {
   final String? thirdLabel;
   final TextEditingController firstController;
   final TextEditingController secondController;
-  final TextEditingController? thirdController;
   final String? Function(String? text) firstValidation;
   final String? Function(String? text) secondValidation;
-  final String? Function(String? text)? thirdValidation;
 
   const FoodFormRow({
     super.key,
@@ -19,10 +17,8 @@ class FoodFormRow extends StatelessWidget {
     this.thirdLabel,
     required this.firstController,
     required this.secondController,
-    this.thirdController,
     required this.firstValidation,
     required this.secondValidation,
-    this.thirdValidation,
   });
 
   @override
@@ -49,18 +45,6 @@ class FoodFormRow extends StatelessWidget {
           maxLength: AppTextField.maxNumericInputLength,
           isDense: true,
         )),
-        if (thirdLabel != null) ...[
-          const SizedBox(width: 12),
-          Expanded(
-              child: AppTextField(
-            labelText: thirdLabel,
-            controller: thirdController,
-            inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-            validate: thirdValidation,
-            maxLength: AppTextField.maxNumericInputLength,
-            isDense: true,
-          )),
-        ]
       ],
     );
   }

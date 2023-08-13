@@ -13,26 +13,19 @@ AddDiaryEntryWithFoodRequest _$AddDiaryEntryWithFoodRequestFromJson(
       userId: json['userId'] as String,
       unitId: json['unitId'] as String,
       meal: $enumDecode(_$MealEnumMap, json['meal']),
-      name: json['name'] as String,
-      brand: json['brand'] as String?,
-      nutritionInfo:
-          Nutrition.fromJson(json['nutritionInfo'] as Map<String, dynamic>),
-      barcode: json['barcode'] as String?,
       servingQuantity: json['servingQuantity'] as int,
+      food: CollectionFood.fromJson(json['food'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AddDiaryEntryWithFoodRequestToJson(
         AddDiaryEntryWithFoodRequest instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'brand': instance.brand,
       'entryDate': instance.entryDate,
       'userId': instance.userId,
       'unitId': instance.unitId,
       'meal': _$MealEnumMap[instance.meal]!,
-      'nutritionInfo': instance.nutritionInfo,
-      'barcode': instance.barcode,
       'servingQuantity': instance.servingQuantity,
+      'food': instance.food,
     };
 
 const _$MealEnumMap = {
