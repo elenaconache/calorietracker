@@ -1,7 +1,7 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/app/main.dart';
-import 'package:calorietracker/features/food_search/food_search_service.dart';
-import 'package:calorietracker/features/food_search/search_results_section.dart';
+import 'package:calorietracker/features/search_food/search_food_service.dart';
+import 'package:calorietracker/features/search_food/search_results_section.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
@@ -19,12 +19,12 @@ class FoodSearchView extends StatefulWidget {
 }
 
 class _FoodSearchViewState extends State<FoodSearchView> {
-  late final FoodSearchService _foodSearchService;
+  late final SearchFoodService _foodSearchService;
   late final TextEditingController _searchQueryTextController;
 
   @override
   void initState() {
-    _foodSearchService = locator<FoodSearchService>();
+    _foodSearchService = locator<SearchFoodService>();
     _searchQueryTextController = TextEditingController();
     super.initState();
   }

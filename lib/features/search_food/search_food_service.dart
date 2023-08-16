@@ -7,7 +7,7 @@ import 'package:calorietracker/models/nutritionix/nutritionix_search_response.da
 import 'package:calorietracker/services/nutritionix_api_service.dart';
 import 'package:flutter/material.dart';
 
-class FoodSearchService {
+class SearchFoodService {
   final ValueNotifier<ApiResponse<NutritionixSearchResponse>> nutritionixSearchResponse = ValueNotifier(ApiResponse.success(null));
 
   void searchNutritionix({required String query}) async {
