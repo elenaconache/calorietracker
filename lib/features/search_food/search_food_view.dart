@@ -9,16 +9,16 @@ import 'package:calorietracker/ui/components/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class FoodSearchView extends StatefulWidget {
+class SearchFoodView extends StatefulWidget {
   final Meal meal;
 
-  const FoodSearchView({super.key, required this.meal});
+  const SearchFoodView({super.key, required this.meal});
 
   @override
-  State<FoodSearchView> createState() => _FoodSearchViewState();
+  State<SearchFoodView> createState() => _SearchFoodViewState();
 }
 
-class _FoodSearchViewState extends State<FoodSearchView> {
+class _SearchFoodViewState extends State<SearchFoodView> {
   late final SearchFoodService _foodSearchService;
   late final TextEditingController _searchQueryTextController;
 
@@ -57,7 +57,7 @@ class _FoodSearchViewState extends State<FoodSearchView> {
                   labelText: AppStrings.searchForFoodLabel,
                   controller: _searchQueryTextController,
                   action: TextInputAction.search,
-                  onSubmitted: (query) => _foodSearchService.searchNutritionix(query: query),
+                  onSubmitted: (query) => _foodSearchService.search(query: query),
                 )),
                 const SizedBox(width: 4),
                 IconButton(

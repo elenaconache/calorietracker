@@ -9,16 +9,16 @@ class PoweredByNutritionixWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+    return SafeArea(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Expanded(child: child),
       const AppDivider(),
       const SizedBox(height: 12),
       Center(
           child: Text(
-            AppStrings.poweredByNutritionixLabel,
-            style: Theme.of(context).textTheme.bodySmall,
-          )),
-      const SizedBox(height: 16),
-    ]);
+        AppStrings.poweredByNutritionixLabel,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w300),
+      )),
+    ]));
   }
 }

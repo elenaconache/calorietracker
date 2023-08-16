@@ -31,3 +31,5 @@ class CollectionFood {
   @override
   String toString() => toJson().toString();
 }
+
+List<CollectionFood> deserializeCollectionFoodList(List<Map<String, dynamic>> json) => json.map((e) => CollectionFood.fromJson(e)).toList();

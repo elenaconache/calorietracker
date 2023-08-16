@@ -199,4 +199,8 @@ class AppStrings {
   static String get insolubleFiberGramsLabel => S.current.insolubleFiberGramsLabel;
 
   static String gramsValue(int grams) => S.current.gramsValue(grams);
+
+  static String get collectionLabel => S.current.collectionLabel;
+
+  static String get gramsShortLabel => S.current.gramsShortLabel;
 }

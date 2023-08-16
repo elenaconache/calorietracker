@@ -1030,6 +1030,26 @@ class S {
       args: [grams],
     );
   }
+
+  /// `Collection`
+  String get collectionLabel {
+    return Intl.message(
+      'Collection',
+      name: 'collectionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `g`
+  String get gramsShortLabel {
+    return Intl.message(
+      'g',
+      name: 'gramsShortLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

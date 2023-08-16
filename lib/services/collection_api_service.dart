@@ -1,5 +1,6 @@
 import 'package:calorietracker/models/collection/add_diary_entry_with_food_request.dart';
 import 'package:calorietracker/models/collection/add_food_request.dart';
+import 'package:calorietracker/models/collection/collection_food.dart';
 import 'package:calorietracker/models/collection/created_food_response.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
 import 'package:calorietracker/models/collection/user_response.dart';
@@ -24,4 +25,7 @@ abstract class CollectionApiService {
 
   @POST('foods/add')
   Future<CreatedFoodResponse?> createFood({@Body() required AddFoodRequest body});
+
+  @GET('foods/find-by/{query}')
+  Future<List<CollectionFood>> searchFood({@Path('query') required String query});
 }

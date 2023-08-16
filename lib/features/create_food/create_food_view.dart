@@ -299,6 +299,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
 
   FoodInput get _foodInput => FoodInput(
         name: _foodNameController.text,
+        brand: _brandNameController.text,
         servingSize: _servingSizeController.text,
         calories: _caloriesController.text,
         carbs: _carbsController.text,

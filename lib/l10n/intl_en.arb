@@ -236,5 +236,7 @@
         "type": "int"
       }
     }
-  }
+  },
+  "collectionLabel": "Collection",
+  "gramsShortLabel": "g"
 }

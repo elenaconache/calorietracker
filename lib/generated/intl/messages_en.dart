@@ -99,6 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cholesterolLabel": MessageLookupByLibrary.simpleMessage("Cholesterol"),
         "cholesterolMgLabel":
             MessageLookupByLibrary.simpleMessage("Cholesterol (mg)"),
+        "collectionLabel": MessageLookupByLibrary.simpleMessage("Collection"),
         "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "connectionErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Could not connect to the server."),
@@ -119,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "foodLabel": MessageLookupByLibrary.simpleMessage("Food"),
         "generalErrorMessage":
             MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "gramsShortLabel": MessageLookupByLibrary.simpleMessage("g"),
         "gramsValue": m8,
         "insolubleFiberExceedsFiberError": MessageLookupByLibrary.simpleMessage(
             "Insoluble fiber must be less than or equal to fiber."),

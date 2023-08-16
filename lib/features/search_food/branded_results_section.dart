@@ -2,6 +2,7 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/search_food/empty_view.dart';
 import 'package:calorietracker/features/search_food/food_item.dart';
 import 'package:calorietracker/features/search_food/search_food_service.dart';
+import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/helpers/api_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/components/general_error_view.dart';
@@ -36,10 +37,15 @@ class _BrandedResultsSectionState extends State<BrandedResultsSection> with Auto
                   : searchResponse.data!.brandedFoods.isEmpty
                       ? const EmptyView()
                       : ListView.builder(
-                          itemBuilder: (context, index) => FoodItem(
-                            foodResponse: searchResponse.data!.brandedFoods[index],
-                            meal: widget.meal,
-                          ),
+                          itemBuilder: (context, index) {
+                            final item = searchResponse.data!.brandedFoods[index];
+                            return FoodItem(
+                              foodResponse: Food.nutritionix(nutritionixFoodResponse: item),
+                              meal: widget.meal,
+                              servingQuantity: item.servingQuantity ?? 1,
+                              unitName: item.servingUnit ?? '',
+                            );
+                          },
                           itemCount: searchResponse.data!.brandedFoods.length,
                         );
             default:

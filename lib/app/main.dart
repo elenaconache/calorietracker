@@ -5,7 +5,7 @@ import 'package:calorietracker/features/add_food/add_food_view.dart';
 import 'package:calorietracker/features/create_food/create_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/login/login_view.dart';
-import 'package:calorietracker/features/search_food/food_search_view.dart';
+import 'package:calorietracker/features/search_food/search_food_view.dart';
 import 'package:calorietracker/generated/l10n.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
       case Routes.diary:
         return MaterialPageRoute(builder: (context) => const DiaryView());
       case Routes.foodSearch:
-        return MaterialPageRoute(builder: (context) => FoodSearchView(meal: args as Meal));
+        return MaterialPageRoute(builder: (context) => SearchFoodView(meal: args as Meal));
       case Routes.addFood:
         return MaterialPageRoute(builder: (context) => AddFoodView(args: args as AddFoodArguments));
       case Routes.login:

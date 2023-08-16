@@ -2,7 +2,6 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
-import 'package:calorietracker/models/nutritionix/nutritionix_food_response.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/numeric_formatting_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
@@ -10,10 +9,18 @@ import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:flutter/material.dart';
 
 class FoodItem extends StatelessWidget {
-  final NutritionixFoodResponse foodResponse;
+  final Food foodResponse;
   final Meal meal;
+  final double servingQuantity;
+  final String unitName;
 
-  const FoodItem({super.key, required this.foodResponse, required this.meal});
+  const FoodItem({
+    super.key,
+    required this.foodResponse,
+    required this.meal,
+    required this.servingQuantity,
+    required this.unitName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +54,13 @@ class FoodItem extends StatelessWidget {
                             ),
                           const SizedBox(height: 2),
                           Text(
-                            AppStrings.caloriesServingShortLabel(foodResponse.nutrition.calories.toStringAsFixed(0),
-                                numericFormatter.formatDecimals(value: foodResponse.servingQuantity ?? 1), foodResponse.servingUnit ?? ''),
+                            AppStrings.caloriesServingShortLabel(
+                              foodResponse.nutrition.calories.toStringAsFixed(0),
+                              numericFormatter.formatDecimals(
+                                value: servingQuantity,
+                              ),
+                              unitName,
+                            ),
                             style: Theme.of(context).textTheme.bodyMedium,
                           )
                         ])),
@@ -67,6 +79,9 @@ class FoodItem extends StatelessWidget {
                     ])))));
   }
 
-  void _navigateToAddFood(BuildContext context) => Navigator.pushNamed(context, Routes.addFood.path,
-      arguments: AddFoodArguments(meal: meal, food: Food.nutritionix(nutritionixFoodResponse: foodResponse)));
+  void _navigateToAddFood(BuildContext context) => Navigator.pushNamed(
+        context,
+        Routes.addFood.path,
+        arguments: AddFoodArguments(meal: meal, food: foodResponse),
+      );
 }
