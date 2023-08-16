@@ -42,7 +42,7 @@ class AddFoodController {
   int get proteinPercentage => _nutrition.proteinPercentage;
 
   void recalculateNutrition({required String servingSizeGrams}) {
-    final serving = int.tryParse(servingSizeGrams) ?? 100;
+    final serving = double.tryParse(servingSizeGrams) ?? 100;
     currentServingSizeNutrients.value = Nutrition.perServing(nutritionPer100Grams: _nutrition, servingSizeGrams: serving);
   }
 

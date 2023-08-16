@@ -130,11 +130,11 @@ class S {
     );
   }
 
-  /// `Add food`
-  String get addFoodLabel {
+  /// `Log food`
+  String get logFoodLabel {
     return Intl.message(
-      'Add food',
-      name: 'addFoodLabel',
+      'Log food',
+      name: 'logFoodLabel',
       desc: '',
       args: [],
     );

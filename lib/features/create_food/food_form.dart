@@ -30,6 +30,7 @@ class FoodForm extends StatelessWidget {
   final TextEditingController vitaminAController;
   final TextEditingController vitaminCController;
   final TextEditingController vitaminDController;
+  final bool enabled;
 
   const FoodForm({
     super.key,
@@ -55,6 +56,7 @@ class FoodForm extends StatelessWidget {
     required this.vitaminCController,
     required this.vitaminDController,
     required this.insolubleFiberController,
+    required this.enabled,
   });
 
   @override
@@ -73,6 +75,7 @@ class FoodForm extends StatelessWidget {
               labelText: AppStrings.foodLabel,
               validate: validator.validateFoodName,
               isDense: true,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -83,6 +86,7 @@ class FoodForm extends StatelessWidget {
               maxLength: AppTextField.maxTextInputLength,
               labelText: AppStrings.brandNameLabel,
               isDense: true,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -94,12 +98,14 @@ class FoodForm extends StatelessWidget {
               secondController: caloriesController,
               secondValidation: validator.validateCalories,
               firstValidation: validator.validateServingSize,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         MacrosInputSection(
           carbsController: carbsController,
           fatController: fatController,
           proteinController: proteinController,
+          enabled: enabled,
         ),
         const SizedBox(height: 8),
         const AppDivider(),
@@ -113,6 +119,7 @@ class FoodForm extends StatelessWidget {
               validate: validator.validateMicronutrient,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -124,6 +131,7 @@ class FoodForm extends StatelessWidget {
               secondController: insolubleFiberController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -135,6 +143,7 @@ class FoodForm extends StatelessWidget {
               secondController: fatTransController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -146,6 +155,7 @@ class FoodForm extends StatelessWidget {
               secondController: fatPolyunsaturatedController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -157,6 +167,7 @@ class FoodForm extends StatelessWidget {
               secondController: saltController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -168,6 +179,7 @@ class FoodForm extends StatelessWidget {
               secondController: potassiumController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -179,6 +191,7 @@ class FoodForm extends StatelessWidget {
               secondController: vitaminDController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
+              enabled: enabled,
             )),
         const SizedBox(height: 8),
         Padding(
@@ -190,6 +203,7 @@ class FoodForm extends StatelessWidget {
               secondController: vitaminCController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
+              enabled: enabled,
             )),
       ],
     );

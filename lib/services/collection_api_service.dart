@@ -1,4 +1,6 @@
 import 'package:calorietracker/models/collection/add_diary_entry_with_food_request.dart';
+import 'package:calorietracker/models/collection/add_food_request.dart';
+import 'package:calorietracker/models/collection/created_food_response.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
 import 'package:calorietracker/models/collection/user_response.dart';
 import 'package:dio/dio.dart' hide Headers;
@@ -19,4 +21,7 @@ abstract class CollectionApiService {
 
   @GET('users/{username}')
   Future<UserResponse> getUserId({@Path('username') required String username});
+
+  @POST('foods/add')
+  Future<CreatedFoodResponse?> createFood({@Body() required AddFoodRequest body});
 }

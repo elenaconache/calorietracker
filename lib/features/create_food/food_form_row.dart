@@ -9,6 +9,7 @@ class FoodFormRow extends StatelessWidget {
   final TextEditingController secondController;
   final String? Function(String? text) firstValidation;
   final String? Function(String? text) secondValidation;
+  final bool enabled;
 
   const FoodFormRow({
     super.key,
@@ -19,6 +20,7 @@ class FoodFormRow extends StatelessWidget {
     required this.secondController,
     required this.firstValidation,
     required this.secondValidation,
+    required this.enabled,
   });
 
   @override
@@ -34,6 +36,7 @@ class FoodFormRow extends StatelessWidget {
           validate: firstValidation,
           maxLength: AppTextField.maxNumericInputLength,
           isDense: true,
+          enabled: enabled,
         )),
         const SizedBox(width: 12),
         Expanded(
@@ -44,6 +47,7 @@ class FoodFormRow extends StatelessWidget {
           validate: secondValidation,
           maxLength: AppTextField.maxNumericInputLength,
           isDense: true,
+          enabled: enabled,
         )),
       ],
     );

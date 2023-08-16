@@ -92,6 +92,33 @@ class _CollectionApiService implements CollectionApiService {
     return value;
   }
 
+  @override
+  Future<CreatedFoodResponse?> createFood(
+      {required AddFoodRequest body}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(await compute(serializeAddFoodRequest, body));
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<CreatedFoodResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'foods/add',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : await compute(deserializeCreatedFoodResponse, _result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

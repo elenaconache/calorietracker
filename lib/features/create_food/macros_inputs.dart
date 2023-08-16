@@ -8,8 +8,15 @@ class MacrosInputSection extends StatelessWidget {
   final TextEditingController carbsController;
   final TextEditingController fatController;
   final TextEditingController proteinController;
+  final bool enabled;
 
-  const MacrosInputSection({super.key, required this.carbsController, required this.fatController, required this.proteinController});
+  const MacrosInputSection({
+    super.key,
+    required this.carbsController,
+    required this.fatController,
+    required this.proteinController,
+    required this.enabled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +38,7 @@ class MacrosInputSection extends StatelessWidget {
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
+              enabled: enabled,
             )),
             const SizedBox(width: 12),
             Expanded(
@@ -44,6 +52,7 @@ class MacrosInputSection extends StatelessWidget {
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
+              enabled: enabled,
             )),
             const SizedBox(width: 12),
             Expanded(
@@ -57,6 +66,7 @@ class MacrosInputSection extends StatelessWidget {
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
+              enabled: enabled,
             ))
           ],
         ));

@@ -1,48 +1,52 @@
 import 'package:calorietracker/models/nutrition.dart';
 
 class FoodInput {
-  final String? servingSize;
-  final String? calories;
-  final String? carbs;
-  final String? protein;
-  final String? fat;
-  final String? sugar;
-  final String? fiber;
-  final String? insolubleFiber;
-  final String? saturatedFat;
-  final String? transFat;
-  final String? monoFat;
-  final String? polyFat;
-  final String? cholesterol;
-  final String? salt;
-  final String? iron;
-  final String? potassium;
-  final String? calcium;
-  final String? vitaminA;
-  final String? vitaminC;
-  final String? vitaminD;
+  final String name;
+  final String? brand;
+  final String servingSize;
+  final String calories;
+  final String carbs;
+  final String protein;
+  final String fat;
+  final String sugar;
+  final String fiber;
+  final String insolubleFiber;
+  final String saturatedFat;
+  final String transFat;
+  final String monoFat;
+  final String polyFat;
+  final String cholesterol;
+  final String salt;
+  final String iron;
+  final String potassium;
+  final String calcium;
+  final String vitaminA;
+  final String vitaminC;
+  final String vitaminD;
 
   const FoodInput({
-    this.servingSize,
-    this.calories,
-    this.carbs,
-    this.protein,
-    this.fat,
-    this.sugar,
-    this.fiber,
-    this.insolubleFiber,
-    this.saturatedFat,
-    this.transFat,
-    this.monoFat,
-    this.polyFat,
-    this.cholesterol,
-    this.salt,
-    this.iron,
-    this.potassium,
-    this.calcium,
-    this.vitaminA,
-    this.vitaminC,
-    this.vitaminD,
+    required this.name,
+    this.brand,
+    required this.servingSize,
+    required this.calories,
+    required this.carbs,
+    required this.protein,
+    required this.fat,
+    required this.sugar,
+    required this.fiber,
+    required this.insolubleFiber,
+    required this.saturatedFat,
+    required this.transFat,
+    required this.monoFat,
+    required this.polyFat,
+    required this.cholesterol,
+    required this.salt,
+    required this.iron,
+    required this.potassium,
+    required this.calcium,
+    required this.vitaminA,
+    required this.vitaminC,
+    required this.vitaminD,
   });
 
   Nutrition get nutrition => Nutrition(
@@ -79,7 +83,7 @@ class FoodInput {
     return totalCarbsValue;
   }
 
-  double _parseInput(String? input) => double.tryParse(input ?? '') ?? 0;
+  double _parseInput(String input) => double.tryParse(input) ?? 0;
 
   double get servingSizeValue => _parseInput(servingSize);
 

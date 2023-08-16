@@ -52,7 +52,7 @@ class _AddFoodViewState extends State<AddFoodView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppStrings.addFoodLabel),
+          title: Text(AppStrings.logFoodLabel),
           actions: [
             ValueListenableBuilder(
                 valueListenable: _controller.isLoading,

@@ -97,7 +97,7 @@ class _DiaryViewState extends State<DiaryView> {
                       child: Center(
                           child: TextButton(
                     onPressed: () => _openSearchFoodScreen(context, Meal.breakfast),
-                    child: Text(AppStrings.addFoodLabel.toUpperCase()),
+                    child: Text(AppStrings.logFoodLabel.toUpperCase()),
                   ))),
                 ),
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),
@@ -121,7 +121,7 @@ class _DiaryViewState extends State<DiaryView> {
                       child: Center(
                           child: TextButton(
                     onPressed: () => _openSearchFoodScreen(context, Meal.lunch),
-                    child: Text(AppStrings.addFoodLabel.toUpperCase()),
+                    child: Text(AppStrings.logFoodLabel.toUpperCase()),
                   ))),
                 ),
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),
@@ -145,7 +145,7 @@ class _DiaryViewState extends State<DiaryView> {
                       child: Center(
                           child: TextButton(
                     onPressed: () => _openSearchFoodScreen(context, Meal.dinner),
-                    child: Text(AppStrings.addFoodLabel.toUpperCase()),
+                    child: Text(AppStrings.logFoodLabel.toUpperCase()),
                   ))),
                 ),
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),
@@ -169,7 +169,7 @@ class _DiaryViewState extends State<DiaryView> {
                       child: Center(
                           child: TextButton(
                     onPressed: () => _openSearchFoodScreen(context, Meal.snacks),
-                    child: Text(AppStrings.addFoodLabel.toUpperCase()),
+                    child: Text(AppStrings.logFoodLabel.toUpperCase()),
                   ))),
                 ),
                 const SliverPadding(padding: EdgeInsets.only(top: 32)),

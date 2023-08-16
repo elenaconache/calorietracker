@@ -56,8 +56,8 @@ class DiaryEntry extends StatelessWidget {
             ])));
   }
 
-  String get _diaryEntryCalories => AppStrings.caloriesShortLabel(
-      Nutrition.perServing(nutritionPer100Grams: diaryEntryResponse.food.nutritionInfo, servingSizeGrams: diaryEntryResponse.servingQuantity.toInt())
-          .calories
-          .toInt());
+  String get _diaryEntryCalories => AppStrings.caloriesShortLabel(Nutrition.perServing(
+          nutritionPer100Grams: diaryEntryResponse.food.nutritionInfo, servingSizeGrams: diaryEntryResponse.servingQuantity.toDouble())
+      .calories
+      .toInt());
 }

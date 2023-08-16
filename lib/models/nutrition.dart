@@ -51,7 +51,7 @@ class Nutrition {
 
   Nutrition.perServing({
     required Nutrition nutritionPer100Grams,
-    required int servingSizeGrams,
+    required double servingSizeGrams,
   })  : fat = _getNutrientPerServing(nutritionPer100Grams.fat, servingSizeGrams),
         carbohydrates = _getNutrientPerServing(nutritionPer100Grams.carbohydrates, servingSizeGrams),
         fatSaturated = _getNutrientPerServing(nutritionPer100Grams.fatSaturated, servingSizeGrams),
@@ -72,11 +72,36 @@ class Nutrition {
         fiber = _getNutrientPerServing(nutritionPer100Grams.fiber, servingSizeGrams),
         insolubleFiber = _getNutrientPerServing(nutritionPer100Grams.insolubleFiber, servingSizeGrams);
 
+  Nutrition.fromServing({
+    required Nutrition nutritionPerServing,
+    required double servingSizeGrams,
+  })  : fat = _getNutrientFromServing(nutritionPerServing.fat, servingSizeGrams),
+        carbohydrates = _getNutrientFromServing(nutritionPerServing.carbohydrates, servingSizeGrams),
+        fatSaturated = _getNutrientFromServing(nutritionPerServing.fatSaturated, servingSizeGrams),
+        fatTrans = _getNutrientFromServing(nutritionPerServing.fatTrans, servingSizeGrams),
+        fatPolyunsaturated = _getNutrientFromServing(nutritionPerServing.fatPolyunsaturated, servingSizeGrams),
+        fatMonounsaturated = _getNutrientFromServing(nutritionPerServing.fatMonounsaturated, servingSizeGrams),
+        cholesterol = _getNutrientFromServing(nutritionPerServing.cholesterol, servingSizeGrams),
+        sodium = _getNutrientFromServing(nutritionPerServing.sodium, servingSizeGrams),
+        potassium = _getNutrientFromServing(nutritionPerServing.potassium, servingSizeGrams),
+        calcium = _getNutrientFromServing(nutritionPerServing.calcium, servingSizeGrams),
+        iron = _getNutrientFromServing(nutritionPerServing.iron, servingSizeGrams),
+        vitaminA = _getNutrientFromServing(nutritionPerServing.vitaminA, servingSizeGrams),
+        vitaminC = _getNutrientFromServing(nutritionPerServing.vitaminC, servingSizeGrams),
+        vitaminD = _getNutrientFromServing(nutritionPerServing.vitaminD, servingSizeGrams),
+        protein = _getNutrientFromServing(nutritionPerServing.protein, servingSizeGrams),
+        calories = _getNutrientFromServing(nutritionPerServing.calories, servingSizeGrams),
+        sugar = _getNutrientFromServing(nutritionPerServing.sugar, servingSizeGrams),
+        fiber = _getNutrientFromServing(nutritionPerServing.fiber, servingSizeGrams),
+        insolubleFiber = _getNutrientFromServing(nutritionPerServing.insolubleFiber, servingSizeGrams);
+
   factory Nutrition.fromJson(Map<String, dynamic> json) => _$NutritionFromJson(json);
 
   Map<String, dynamic> toJson() => _$NutritionToJson(this);
 
-  static double _getNutrientPerServing(double? nutrientPer100Grams, int servingSizeGrams) => (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
+  static double _getNutrientPerServing(double? nutrientPer100Grams, double servingSizeGrams) => (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
+
+  static double _getNutrientFromServing(double? nutrientPerServing, double servingSizeGrams) => (nutrientPerServing ?? 0) / servingSizeGrams * 100;
 
   String get formattedCalories => '${calories.toStringAsFixed(1)} g';
 

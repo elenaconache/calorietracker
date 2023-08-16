@@ -29,8 +29,10 @@ class DiaryService {
 
   Nutrition _getTotalNutrition(List<DiaryEntryResponse> allDiaryEntries) {
     return allDiaryEntries.fold(const Nutrition(), (previousValue, element) {
-      final nutritionPerServing =
-          Nutrition.perServing(nutritionPer100Grams: element.food.nutritionInfo, servingSizeGrams: element.servingQuantity.toInt());
+      final nutritionPerServing = Nutrition.perServing(
+        nutritionPer100Grams: element.food.nutritionInfo,
+        servingSizeGrams: element.servingQuantity.toDouble(),
+      );
       return Nutrition(
         calories: previousValue.calories + nutritionPerServing.calories,
         fat: previousValue.fat + nutritionPerServing.fat,

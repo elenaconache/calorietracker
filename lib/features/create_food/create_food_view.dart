@@ -1,14 +1,22 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/create_food/create_food_controller.dart';
 import 'package:calorietracker/features/create_food/food_error.dart';
 import 'package:calorietracker/features/create_food/food_form.dart';
 import 'package:calorietracker/features/create_food/food_input.dart';
+import 'package:calorietracker/models/food.dart';
+import 'package:calorietracker/models/meal.dart';
+import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/error_box.dart';
 import 'package:flutter/material.dart';
 
 class CreateFoodView extends StatefulWidget {
-  const CreateFoodView({super.key});
+  final Meal meal;
+
+  const CreateFoodView({super.key, required this.meal});
 
   @override
   State<CreateFoodView> createState() => _CreateFoodViewState();
@@ -75,12 +83,17 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
           appBar: AppBar(
             title: Text(AppStrings.createFoodLabel),
             actions: [
-              IconButton(
-                  onPressed: _onDonePressed,
-                  icon: const Icon(
-                    Icons.check,
-                    size: 32,
-                  ))
+              ValueListenableBuilder(
+                  valueListenable: _controller.isLoading,
+                  builder: (_, isLoading, __) => isLoading
+                      ? const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16), child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()))
+                      : IconButton(
+                          onPressed: () => _onDonePressed(context),
+                          icon: const Icon(
+                            Icons.check,
+                            size: 32,
+                          )))
             ],
           ),
           body: Column(
@@ -104,30 +117,33 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
               Expanded(
                   child: Form(
                       key: _formKey,
-                      child: FoodForm(
-                        brandNameController: _brandNameController,
-                        caloriesController: _caloriesController,
-                        carbsController: _carbsController,
-                        fatController: _fatController,
-                        foodNameController: _foodNameController,
-                        proteinController: _proteinController,
-                        servingSizeController: _servingSizeController,
-                        sugarController: _sugarController,
-                        fiberController: _fiberController,
-                        fatSaturatedController: _fatSaturatedController,
-                        fatTransController: _fatTransController,
-                        fatMonounsaturatedController: _fatMonounsaturatedController,
-                        fatPolyunsaturatedController: _fatPolyunsaturatedController,
-                        cholesterolController: _cholesterolController,
-                        ironController: _ironController,
-                        potassiumController: _potassiumController,
-                        saltController: _saltController,
-                        calciumController: _calciumController,
-                        vitaminAController: _vitaminAController,
-                        vitaminCController: _vitaminCController,
-                        vitaminDController: _vitaminDController,
-                        insolubleFiberController: _insolubleFiberController,
-                      )))
+                      child: ValueListenableBuilder(
+                          valueListenable: _controller.isLoading,
+                          builder: (_, isLoading, __) => FoodForm(
+                                brandNameController: _brandNameController,
+                                caloriesController: _caloriesController,
+                                carbsController: _carbsController,
+                                fatController: _fatController,
+                                foodNameController: _foodNameController,
+                                proteinController: _proteinController,
+                                servingSizeController: _servingSizeController,
+                                sugarController: _sugarController,
+                                fiberController: _fiberController,
+                                fatSaturatedController: _fatSaturatedController,
+                                fatTransController: _fatTransController,
+                                fatMonounsaturatedController: _fatMonounsaturatedController,
+                                fatPolyunsaturatedController: _fatPolyunsaturatedController,
+                                cholesterolController: _cholesterolController,
+                                ironController: _ironController,
+                                potassiumController: _potassiumController,
+                                saltController: _saltController,
+                                calciumController: _calciumController,
+                                vitaminAController: _vitaminAController,
+                                vitaminCController: _vitaminCController,
+                                vitaminDController: _vitaminDController,
+                                insolubleFiberController: _insolubleFiberController,
+                                enabled: !isLoading,
+                              ))))
             ],
           ),
         ));
@@ -147,32 +163,17 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     }
   }
 
-  void _onDonePressed() {
+  void _onDonePressed(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      final isNutritionValid = _controller.validateNutrition(
-          nutritionInput: FoodInput(
-              servingSize: _servingSizeController.text,
-              calories: _caloriesController.text,
-              carbs: _carbsController.text,
-              protein: _proteinController.text,
-              fat: _fatController.text,
-              sugar: _sugarController.text,
-              fiber: _fiberController.text,
-              insolubleFiber: _insolubleFiberController.text,
-              saturatedFat: _fatSaturatedController.text,
-              transFat: _fatTransController.text,
-              monoFat: _fatMonounsaturatedController.text,
-              polyFat: _fatPolyunsaturatedController.text,
-              cholesterol: _cholesterolController.text,
-              salt: _saltController.text,
-              iron: _ironController.text,
-              potassium: _potassiumController.text,
-              calcium: _calciumController.text,
-              vitaminA: _vitaminAController.text,
-              vitaminC: _vitaminCController.text,
-              vitaminD: _vitaminDController.text));
+      final isNutritionValid = _controller.validateNutrition(foodInput: _foodInput);
       if (isNutritionValid) {
-        // TODO: call API to save food
+        unawaited(_controller.createFood(foodInput: _foodInput).then((createdFoodId) {
+          Navigator.of(context).pushReplacementNamed(Routes.addFood.path,
+              arguments: AddFoodArguments(
+                meal: widget.meal,
+                food: Food.input(foodInput: _foodInput, id: createdFoodId),
+              ));
+        }));
       }
     }
   }
@@ -295,4 +296,28 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     _vitaminCController.dispose();
     _vitaminDController.dispose();
   }
+
+  FoodInput get _foodInput => FoodInput(
+        name: _foodNameController.text,
+        servingSize: _servingSizeController.text,
+        calories: _caloriesController.text,
+        carbs: _carbsController.text,
+        protein: _proteinController.text,
+        fat: _fatController.text,
+        sugar: _sugarController.text,
+        fiber: _fiberController.text,
+        insolubleFiber: _insolubleFiberController.text,
+        saturatedFat: _fatSaturatedController.text,
+        transFat: _fatTransController.text,
+        monoFat: _fatMonounsaturatedController.text,
+        polyFat: _fatPolyunsaturatedController.text,
+        cholesterol: _cholesterolController.text,
+        salt: _saltController.text,
+        iron: _ironController.text,
+        potassium: _potassiumController.text,
+        calcium: _calciumController.text,
+        vitaminA: _vitaminAController.text,
+        vitaminC: _vitaminCController.text,
+        vitaminD: _vitaminDController.text,
+      );
 }

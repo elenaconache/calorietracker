@@ -19,7 +19,7 @@ class AppStrings {
 
   static String get mealsLabel => S.current.mealsLabel;
 
-  static String get addFoodLabel => S.current.addFoodLabel;
+  static String get logFoodLabel => S.current.logFoodLabel;
 
   static String get searchFoodsLabel => S.current.searchFoodsLabel;
 

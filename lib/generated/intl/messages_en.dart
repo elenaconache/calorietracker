@@ -73,7 +73,6 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountsTitle": MessageLookupByLibrary.simpleMessage("Accounts"),
         "addAccountLabel": MessageLookupByLibrary.simpleMessage("Add account"),
-        "addFoodLabel": MessageLookupByLibrary.simpleMessage("Add food"),
         "alreadyLoggedInMessage": MessageLookupByLibrary.simpleMessage(
             "You are already logged in with this account."),
         "brandNameLabel":
@@ -133,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ironExceedsMaxPerServingError": m9,
         "ironLabel": MessageLookupByLibrary.simpleMessage("Iron"),
         "ironMgLabel": MessageLookupByLibrary.simpleMessage("Iron (mg)"),
+        "logFoodLabel": MessageLookupByLibrary.simpleMessage("Log food"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutLabel": MessageLookupByLibrary.simpleMessage("Logout"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),

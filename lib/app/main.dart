@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
       case Routes.accounts:
         return MaterialPageRoute(builder: (context) => const AccountsView());
       case Routes.createFood:
-        return MaterialPageRoute(builder: (context) => const CreateFoodView());
+        return MaterialPageRoute(builder: (context) => CreateFoodView(meal: args as Meal));
       default:
         return null;
     }

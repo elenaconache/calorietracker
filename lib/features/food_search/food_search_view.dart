@@ -89,5 +89,8 @@ class _FoodSearchViewState extends State<FoodSearchView> {
     _foodSearchService.clearResults();
   }
 
-  void _navigateToCreateFood(BuildContext context) => Navigator.of(context).pushNamed(Routes.createFood.path);
+  void _navigateToCreateFood(BuildContext context) => Navigator.of(context).pushNamed(
+        Routes.createFood.path,
+        arguments: widget.meal,
+      );
 }

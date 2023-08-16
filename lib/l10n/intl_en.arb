@@ -8,7 +8,7 @@
   "proteinLabel": "Protein",
   "caloriesLabel": "Calories",
   "mealsLabel": "Meals",
-  "addFoodLabel": "Add food",
+  "logFoodLabel": "Log food",
   "searchFoodsLabel": "Search food",
   "searchForFoodLabel": "Search for a food",
   "generalErrorMessage": "An error occurred.",
