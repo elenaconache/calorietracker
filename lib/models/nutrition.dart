@@ -179,4 +179,6 @@ class Nutrition {
   double get expectedCalories => (carbohydrates - _solubleFiber) * 4 + _solubleFiber * 2 + protein * 4 + fat * 9;
 
   double get netCarbs => carbohydrates - fiber;
+
+  String get formattedNetCarbs => '${netCarbs.toStringAsFixed(1)} g';
 }

@@ -203,4 +203,6 @@ class AppStrings {
   static String get collectionLabel => S.current.collectionLabel;
 
   static String get gramsShortLabel => S.current.gramsShortLabel;
+
+  static String get netCarbsLabel => S.current.netCarbsLabel;
 }

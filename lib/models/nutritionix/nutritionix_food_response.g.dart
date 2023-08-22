@@ -10,8 +10,8 @@ NutritionixFoodResponse _$NutritionixFoodResponseFromJson(
         Map<String, dynamic> json) =>
     NutritionixFoodResponse(
       brandName: json['brand_name'] as String?,
-      nutrients: (json['full_nutrients'] as List<dynamic>)
-          .map((e) => NutritionixNutrient.fromJson(e as Map<String, dynamic>))
+      nutrients: (json['full_nutrients'] as List<dynamic>?)
+          ?.map((e) => NutritionixNutrient.fromJson(e as Map<String, dynamic>))
           .toList(),
       servingWeightGrams: (json['serving_weight_grams'] as num?)?.toDouble(),
       servingUnit: json['serving_unit'] as String?,

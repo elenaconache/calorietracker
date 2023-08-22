@@ -14,7 +14,7 @@ class NutritionixFoodResponse {
   final String? brandName;
 
   @JsonKey(name: 'full_nutrients')
-  final List<NutritionixNutrient> nutrients;
+  final List<NutritionixNutrient>? nutrients;
 
   @JsonKey(name: 'serving_weight_grams')
   final double? servingWeightGrams;
@@ -80,16 +80,16 @@ class NutritionixFoodResponse {
   double _getNutrientValuePer100Grams(Nutrient nutrient) => !hasMeasurementInfo
       ? 0
       : nutrients
-              .firstWhere((element) => element.matchesNutrient(nutrient: nutrient), orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0))
-              .value /
-          servingWeightGrams! *
-          100;
+              ?.firstWhere((element) => element.matchesNutrient(nutrient: nutrient), orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0))
+              .value ??
+          0 / servingWeightGrams! * 100;
 
   double _getNutrientValue(Nutrient nutrient) => !hasMeasurementInfo
       ? 0
       : nutrients
-          .firstWhere((element) => element.matchesNutrient(nutrient: nutrient), orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0))
-          .value;
+              ?.firstWhere((element) => element.matchesNutrient(nutrient: nutrient), orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0))
+              .value ??
+          0;
 
   bool get hasMeasurementInfo => servingWeightGrams != null && servingQuantity != null && servingUnit != null;
 }

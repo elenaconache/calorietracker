@@ -1050,6 +1050,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Net carbs`
+  String get netCarbsLabel {
+    return Intl.message(
+      'Net carbs',
+      name: 'netCarbsLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

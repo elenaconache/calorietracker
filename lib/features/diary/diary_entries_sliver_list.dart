@@ -24,7 +24,9 @@ class DiaryEntriesSliverList extends StatelessWidget {
       );
     } else {
       return const SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 6), sliver: SliverToBoxAdapter(child: NoLoggedFoodsMessage()));
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        sliver: SliverToBoxAdapter(child: NoLoggedFoodsMessage()),
+      );
     }
   }
 }

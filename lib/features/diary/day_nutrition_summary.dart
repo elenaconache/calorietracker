@@ -12,7 +12,6 @@ class DayNutritionSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final diaryService = locator<DiaryService>();
     return ValueListenableBuilder(
-        // TODO: handle selected day when navigation between days is supported
         valueListenable: diaryService.selectedDayMealEntries,
         builder: (context, todayMealEntries, _) => todayMealEntries.status == ApiResponseStatus.loading
             ? const Padding(

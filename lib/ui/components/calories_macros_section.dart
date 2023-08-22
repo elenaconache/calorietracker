@@ -1,4 +1,4 @@
-import 'package:calorietracker/features/add_food/calories_macros_pie_chart.dart';
+import 'package:calorietracker/ui/components/calories_macros_pie_chart.dart';
 import 'package:calorietracker/features/add_food/macro_item.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/colors.dart';

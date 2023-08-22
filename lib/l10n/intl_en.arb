@@ -238,5 +238,6 @@
     }
   },
   "collectionLabel": "Collection",
-  "gramsShortLabel": "g"
+  "gramsShortLabel": "g",
+  "netCarbsLabel": "Net carbs"
 }

@@ -26,8 +26,9 @@ class MealTitle extends StatelessWidget {
         child: InkWell(
             onTap: onTap,
             child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(children: [
                       Expanded(

@@ -10,50 +10,52 @@ class DiaryEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-        decoration: BoxDecoration(
-            border: Border(
-          bottom: BorderSide(
-            width: 0.1,
-            color: Theme.of(context).dividerColor,
-          ),
-        )),
-        child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-            child: Row(mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Expanded(
-                flex: 4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      diaryEntryResponse.food.name,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    Row(
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: DecoratedBox(
+            decoration: BoxDecoration(
+                border: Border(
+              bottom: BorderSide(
+                width: 0.4,
+                color: Theme.of(context).dividerColor,
+              ),
+            )),
+            child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                child: Row(mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        if (diaryEntryResponse.food.brand != null)
-                          Text(
-                            '${diaryEntryResponse.food.brand!}, ',
-                            style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300),
-                          ),
                         Text(
-                          AppStrings.gramsValue(diaryEntryResponse.servingQuantity.toInt()),
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300),
+                          diaryEntryResponse.food.name,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        Row(
+                          children: [
+                            if (diaryEntryResponse.food.brand != null)
+                              Text(
+                                '${diaryEntryResponse.food.brand!}, ',
+                                style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300),
+                              ),
+                            Text(
+                              AppStrings.gramsValue(diaryEntryResponse.servingQuantity.toInt()),
+                              style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300),
+                            )
+                          ],
                         )
                       ],
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                  flex: 1,
-                  child: Text(
-                    _diaryEntryCalories,
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w300),
-                  ))
-            ])));
+                    ),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        _diaryEntryCalories,
+                        textAlign: TextAlign.right,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w300),
+                      ))
+                ]))));
   }
 
   String get _diaryEntryCalories => AppStrings.caloriesShortLabel(Nutrition.perServing(

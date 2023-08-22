@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
-import 'package:calorietracker/features/add_food/calories_macros_section.dart';
+import 'package:calorietracker/ui/components/calories_macros_section.dart';
 import 'package:calorietracker/features/add_food/nutrition_section.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/services/logging_service.dart';
