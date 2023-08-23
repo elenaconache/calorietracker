@@ -38,13 +38,15 @@ dependencies:
   dio: ^5.1.2
   json_annotation: ^4.8.1
   dio_cache_interceptor: ^3.3.1
-  path_provider: ^2.0.11
+  path_provider: ^2.1.0
   dio_cache_interceptor_hive_store: ^3.1.0
   flutter_svg: ^2.0.7
   fl_chart: ^0.63.0
-  collection: ^1.17.1
+  collection: ^1.17.2
   flutter_secure_storage: ^8.0.0
   smooth_page_indicator: ^1.1.0
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
 
 dev_dependencies:
   flutter_test:
@@ -52,8 +54,9 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   json_serializable: ^6.6.2
-  build_runner: ^2.4.4
-  retrofit_generator: ^6.0.0
+  build_runner: ^2.4.6
+  retrofit_generator: ^7.0.8
+  isar_generator: ^3.1.0+1
 
 flutter:
   # The following line ensures that the Material Icons font is

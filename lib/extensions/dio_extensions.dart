@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
 
-extension DioErrorExtension on DioError {
-  bool get isConnectionError => type == DioErrorType.connectionError || toString().contains('SocketException');
+extension DioErrorExtension on DioException {
+  bool get isConnectionError => type == DioExceptionType.connectionError || toString().contains('SocketException');
 }

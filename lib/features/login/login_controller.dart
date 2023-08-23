@@ -41,7 +41,7 @@ class LoginController {
       }).catchError((error, stackTrace) {
         final LoginError loginError;
         locator<LoggingService>().handle(error, stackTrace);
-        if (error is DioError) {
+        if (error is DioException) {
           if (error.isConnectionError) {
             loginError = LoginError.connection;
           } else if (error.response?.statusCode == HttpStatus.notFound) {
