@@ -1,4 +1,4 @@
-import 'package:calorietracker/models/local/local_diary_entry.dart';
+import 'package:calorietracker/models/local/local_nutrition.dart';
 
 class LocalFoodBase {
   String? barcode;

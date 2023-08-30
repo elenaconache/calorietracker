@@ -1,3 +1,5 @@
+import 'package:calorietracker/models/collection/add_food_request.dart';
+import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/nutrition.dart';
 
 class FoodInput {
@@ -82,6 +84,25 @@ class FoodInput {
     }
     return totalCarbsValue;
   }
+
+  AddFoodRequest get addFoodRequest => AddFoodRequest(
+        barcode: null,
+        name: name,
+        brand: brand,
+        nutritionInfo: Nutrition.fromServing(
+          nutritionPerServing: nutrition,
+          servingSizeGrams: servingSizeValue,
+        ).round(),
+      );
+
+  LocalFood get localFood => LocalFood()
+    ..barcode = null
+    ..name = name
+    ..brand = brand
+    ..nutritionInfo = Nutrition.fromServing(
+      nutritionPerServing: nutrition,
+      servingSizeGrams: servingSizeValue,
+    ).round().localNutrition;
 
   double _parseInput(String input) => double.tryParse(input) ?? 0;
 

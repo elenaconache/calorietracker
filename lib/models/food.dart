@@ -1,5 +1,6 @@
 import 'package:calorietracker/features/create_food/food_input.dart';
 import 'package:calorietracker/models/collection/collection_food.dart';
+import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_food_response.dart';
 
@@ -40,4 +41,11 @@ class Food {
         barcode = food.barcode,
         brandName = food.brand,
         id = food.id;
+
+  Food.local({required LocalFood localFood})
+      : name = localFood.name,
+        nutrition = Nutrition.local(localNutrition: localFood.nutritionInfo),
+        brandName = localFood.brand,
+        id = null,
+        barcode = localFood.barcode;
 }

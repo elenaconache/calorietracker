@@ -6,7 +6,7 @@ import 'package:calorietracker/features/login/login_state.dart';
 import 'package:calorietracker/models/user.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
-import 'package:calorietracker/services/storage_service.dart';
+import 'package:calorietracker/services/secure_storage_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,7 +59,7 @@ class LoginController {
   }
 
   Future<void> _saveUser(String userId, String username) async {
-    final storageService = locator<StorageService>();
+    final storageService = locator<SecureStorageService>();
     await storageService.save(key: selectedUserIdKey, value: userId).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
     });
@@ -77,7 +77,7 @@ class LoginController {
   }
 
   Future<bool> _isUserAlreadySaved(String username) async {
-    final storageService = locator<StorageService>();
+    final storageService = locator<SecureStorageService>();
     final storedUsers = await storageService.getList<User>(
       key: usersKey,
       fromJson: (userJson) => User.fromJson(userJson),

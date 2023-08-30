@@ -48,6 +48,7 @@ class AddFoodController {
 
   // TODO: if the user is logging a food from the collection tab, call the API to log diary entry without adding a food and pass the food id
   // TODO: handle logging a food for a different date, not just for today
+  // TODO: if widget.args.isLocal [from view], then just insert this diary entry locally
   Future<void> logFood(
       {required Meal meal, required Food food, required int servingQuantity, String? barcode, required VoidCallback onSuccess}) async {
     isLoading.value = true;

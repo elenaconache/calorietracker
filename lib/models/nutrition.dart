@@ -1,4 +1,5 @@
 import 'package:calorietracker/extensions/numeric_extensions.dart';
+import 'package:calorietracker/models/local/local_nutrition.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'nutrition.g.dart';
@@ -49,6 +50,27 @@ class Nutrition {
     this.insolubleFiber = 0,
   });
 
+  Nutrition.local({required LocalNutrition localNutrition})
+      : fatSaturated = localNutrition.fatSaturated,
+        fatTrans = localNutrition.fatTrans,
+        fatPolyunsaturated = localNutrition.fatPolyunsaturated,
+        fatMonounsaturated = localNutrition.fatMonounsaturated,
+        cholesterol = localNutrition.cholesterol,
+        sodium = localNutrition.sodium,
+        potassium = localNutrition.potassium,
+        calcium = localNutrition.calcium,
+        iron = localNutrition.iron,
+        vitaminA = localNutrition.vitaminA,
+        vitaminC = localNutrition.vitaminC,
+        vitaminD = localNutrition.vitaminD,
+        carbohydrates = localNutrition.carbohydrates,
+        fat = localNutrition.fat,
+        protein = localNutrition.protein,
+        calories = localNutrition.calories,
+        sugar = localNutrition.sugar,
+        fiber = localNutrition.fiber,
+        insolubleFiber = localNutrition.insolubleFiber;
+
   Nutrition.perServing({
     required Nutrition nutritionPer100Grams,
     required double servingSizeGrams,
@@ -96,6 +118,27 @@ class Nutrition {
         insolubleFiber = _getNutrientFromServing(nutritionPerServing.insolubleFiber, servingSizeGrams);
 
   factory Nutrition.fromJson(Map<String, dynamic> json) => _$NutritionFromJson(json);
+
+  LocalNutrition get localNutrition => LocalNutrition()
+    ..fatSaturated = fatSaturated
+    ..fatTrans = fatTrans
+    ..fatPolyunsaturated = fatPolyunsaturated
+    ..fatMonounsaturated = fatMonounsaturated
+    ..cholesterol = cholesterol
+    ..sodium = sodium
+    ..potassium = potassium
+    ..calcium = calcium
+    ..iron = iron
+    ..vitaminA = vitaminA
+    ..vitaminC = vitaminC
+    ..vitaminD = vitaminD
+    ..carbohydrates = carbohydrates
+    ..fat = fat
+    ..protein = protein
+    ..calories = calories
+    ..sugar = sugar
+    ..fiber = fiber
+    ..insolubleFiber = insolubleFiber;
 
   Map<String, dynamic> toJson() => _$NutritionToJson(this);
 

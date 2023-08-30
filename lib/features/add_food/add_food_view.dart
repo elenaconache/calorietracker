@@ -159,7 +159,13 @@ class _AddFoodViewState extends State<AddFoodView> {
         servingQuantity: servingQuantity,
         food: widget.args.food,
         meal: widget.args.meal,
-        onSuccess: () => Navigator.pop(context),
+        onSuccess: () {
+          if (context.mounted) {
+            Navigator.pop(context);
+          } else {
+            locator<LoggingService>().info('Could not pop add food screen. Context unmounted.');
+          }
+        },
       ));
     }
   }

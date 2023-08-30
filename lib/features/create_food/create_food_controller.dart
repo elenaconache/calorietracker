@@ -1,11 +1,12 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/create_food/food_error.dart';
 import 'package:calorietracker/features/create_food/food_input.dart';
-import 'package:calorietracker/models/collection/add_food_request.dart';
-import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/database_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/validators/nutrition_validator.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 class CreateFoodController {
@@ -19,24 +20,23 @@ class CreateFoodController {
 
   void hideError() => foodError.value = null;
 
-  Future<String?> createFood({required FoodInput foodInput}) async {
+  Future<({bool isLocal, String? createdFoodId})> createFood({required FoodInput foodInput}) async {
     isLoading.value = true;
-    final createdFood = await locator<CollectionApiService>()
-        .createFood(
-            body: AddFoodRequest(
-      barcode: null,
-      name: foodInput.name,
-      brand: foodInput.brand,
-      nutritionInfo: Nutrition.fromServing(
-        nutritionPerServing: foodInput.nutrition,
-        servingSizeGrams: foodInput.servingSizeValue,
-      ).round(),
-    ))
-        .catchError((error, stackTrace) {
+    var isLocal = false;
+    final createdFood = await locator<CollectionApiService>().createFood(body: foodInput.addFoodRequest).catchError((error, stackTrace) async {
+      if (error is DioException) {
+        if (error.isConnectionError) {
+          final dbService = await locator.getAsync<DatabaseService>();
+          await dbService.insertFood(localFood: foodInput.localFood);
+          isLocal = true;
+          return null;
+          // TODO: return id from local db to use; send flag to next screen so that it does not attempt to log until food is created
+        }
+      }
       locator<LoggingService>().handle(error, stackTrace);
       return null;
     });
     isLoading.value = false;
-    return createdFood?.id;
+    return (isLocal: isLocal, createdFoodId: createdFood?.id);
   }
 }

@@ -4,7 +4,7 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/user.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
-import 'package:calorietracker/services/storage_service.dart';
+import 'package:calorietracker/services/secure_storage_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -14,7 +14,7 @@ class UserService {
   final ValueNotifier<List<User>> users = ValueNotifier([]);
 
   Future<void> fetchLoggedInState() async {
-    final storageService = locator<StorageService>();
+    final storageService = locator<SecureStorageService>();
     final userId = await storageService.get(key: selectedUserIdKey);
     if (userId != null) {
       final users = await storageService.getList(key: usersKey, fromJson: (json) => User.fromJson(json));
@@ -32,7 +32,7 @@ class UserService {
       locator<LoggingService>().info('Could not select user with id $id. There is no user stored locally with the given id.');
     } else {
       selectedUser.value = selection;
-      unawaited(locator<StorageService>().save(key: selectedUserIdKey, value: id));
+      unawaited(locator<SecureStorageService>().save(key: selectedUserIdKey, value: id));
       unawaited(fetchUserData());
     }
   }
@@ -43,7 +43,7 @@ class UserService {
     final updatedUsers = List<User>.from(users.value);
     updatedUsers.removeWhere((user) => user.id == userId);
     users.value = updatedUsers;
-    final storageService = locator<StorageService>();
+    final storageService = locator<SecureStorageService>();
     if (users.value.isEmpty) {
       unawaited(storageService.delete(key: usersKey));
     } else {

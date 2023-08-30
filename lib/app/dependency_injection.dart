@@ -7,12 +7,13 @@ import 'package:calorietracker/interceptors/logging_interceptor.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:calorietracker/providers/dio_provider.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/database_service.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/numeric_formatting_service.dart';
 import 'package:calorietracker/services/nutritionix_api_service.dart';
-import 'package:calorietracker/services/storage_service.dart';
+import 'package:calorietracker/services/secure_storage_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_controller.dart';
 import 'package:calorietracker/validators/food_validator.dart';
@@ -43,7 +44,7 @@ void setupLocator() {
   locator.registerLazySingleton<LoggingService>(() => LoggingService());
   locator.registerLazySingleton<NumericFormattingService>(() => NumericFormattingService());
   locator.registerLazySingleton<NutritionValidator>(() => NutritionValidator());
-  locator.registerLazySingleton<StorageService>(() => StorageService());
+  locator.registerLazySingleton<SecureStorageService>(() => SecureStorageService());
   locator.registerLazySingleton<UserService>(() => UserService());
 
   locator.registerLazySingletonAsync<AppPathProvider>(() async {
@@ -53,6 +54,12 @@ void setupLocator() {
   });
   locator.registerLazySingletonAsync<CollectionApiService>(
       () async => CollectionApiService(await locator<DioProvider>().buildDio(baseUrl: _collectionApiBaseUrl)));
+  locator.registerLazySingletonAsync<DatabaseService>(() async {
+    final database = DatabaseService();
+    final pathProvider = await locator.getAsync<AppPathProvider>();
+    await getDatabase(pathProvider.path);
+    return database;
+  });
   locator.registerLazySingletonAsync<NutritionixApiService>(() async {
     return NutritionixApiService(await locator<DioProvider>().buildDio(baseUrl: _nutritionixApiBaseUrl, headers: {
       'x-app-id': 'f8384da2', //TODO: store in environment variable using dotenv

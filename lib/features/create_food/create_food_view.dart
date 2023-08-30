@@ -9,6 +9,7 @@ import 'package:calorietracker/features/create_food/food_input.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
+import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/error_box.dart';
 import 'package:flutter/material.dart';
@@ -163,16 +164,26 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     }
   }
 
+  // TODO: show error snack bars
   void _onDonePressed(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
       final isNutritionValid = _controller.validateNutrition(foodInput: _foodInput);
       if (isNutritionValid) {
-        unawaited(_controller.createFood(foodInput: _foodInput).then((createdFoodId) {
-          Navigator.of(context).pushReplacementNamed(Routes.addFood.path,
-              arguments: AddFoodArguments(
-                meal: widget.meal,
-                food: Food.input(foodInput: _foodInput, id: createdFoodId),
-              ));
+        unawaited(_controller.createFood(foodInput: _foodInput).then((response) {
+          if (!response.isLocal && response.createdFoodId == null) {
+            locator<LoggingService>().info('Could not save food locally neither on the API.');
+          } else {
+            if (context.mounted) {
+              Navigator.of(context).pushReplacementNamed(Routes.addFood.path,
+                  arguments: AddFoodArguments(
+                    meal: widget.meal,
+                    food: Food.input(foodInput: _foodInput, id: response.createdFoodId),
+                    isLocal: response.isLocal,
+                  ));
+            } else {
+              locator<LoggingService>().info('Could not navigate to add food screen. Context unmounted.');
+            }
+          }
         }));
       }
     }

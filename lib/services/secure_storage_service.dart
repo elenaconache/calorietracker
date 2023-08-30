@@ -10,7 +10,7 @@ const _iosOptions = IOSOptions(
 const selectedUserIdKey = 'selectedUserId';
 const usersKey = 'users';
 
-class StorageService {
+class SecureStorageService {
   Future<String?> get({required String key}) => locator<FlutterSecureStorage>().read(
         key: key,
         aOptions: _androidOptions,
