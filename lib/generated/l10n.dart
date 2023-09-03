@@ -1060,6 +1060,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Could not save food to diary. Please try again later.`
+  String get errorAddFood {
+    return Intl.message(
+      'Could not save food to diary. Please try again later.',
+      name: 'errorAddFood',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

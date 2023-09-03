@@ -170,7 +170,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
       final isNutritionValid = _controller.validateNutrition(foodInput: _foodInput);
       if (isNutritionValid) {
         unawaited(_controller.createFood(foodInput: _foodInput).then((response) {
-          if (!response.isLocal && response.createdFoodId == null) {
+          if (response.localId == null && response.createdFoodId == null) {
             locator<LoggingService>().info('Could not save food locally neither on the API.');
           } else {
             if (context.mounted) {
@@ -178,7 +178,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                   arguments: AddFoodArguments(
                     meal: widget.meal,
                     food: Food.input(foodInput: _foodInput, id: response.createdFoodId),
-                    isLocal: response.isLocal,
+                    localId: response.localId,
                   ));
             } else {
               locator<LoggingService>().info('Could not navigate to add food screen. Context unmounted.');

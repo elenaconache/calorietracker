@@ -7,9 +7,9 @@ import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 
 class DatabaseService {
-  Future<void> insertFood({required LocalFood localFood}) async {
+  Future<int?> insertFood({required LocalFood localFood}) async {
     final pathProvider = await locator.getAsync<AppPathProvider>();
-    await (compute(_writeFood, MapEntry(pathProvider.path, localFood))
+    final id = await (compute(_writeFood, MapEntry(pathProvider.path, localFood))
       ..then((_) {
         locator<LoggingService>().info('inserted food ${localFood.name}');
         compute(_readFoods, pathProvider.path)
@@ -20,20 +20,48 @@ class DatabaseService {
             locator<LoggingService>().handle(error, stackTrace);
             return <LocalFood>[];
           });
-      })
-      ..catchError((error, stackTrace) {
-        locator<LoggingService>().handle(error, stackTrace);
       }));
+    return id;
   }
 
-  Future<void> _writeFood(MapEntry<String, LocalFood> pair) async {
+  Future<int?> _writeFood(MapEntry<String, LocalFood> pair) async {
     final db = await getDatabase(pair.key);
-    db.writeTxnSync(() => db.localFoods.putSync(pair.value));
+    return db.writeTxnSync(() => db.localFoods.putSync(pair.value));
   }
 
   Future<List<LocalFood>> _readFoods(String path) async {
     final db = await getDatabase(path);
     return db.localFoods.where().findAll();
+  }
+
+  Future<int?> insertDiaryEntry({required LocalDiaryEntry localDiaryEntry}) async {
+    final pathProvider = await locator.getAsync<AppPathProvider>();
+    final id = await (compute(_writeDiaryEntry, MapEntry(pathProvider.path, localDiaryEntry))
+      ..then((_) {
+        locator<LoggingService>().info(
+            'inserted diary entry ${localDiaryEntry.entryDate}, food name ${localDiaryEntry.food?.name}, food id ${localDiaryEntry.food?.foodId}');
+        compute(_readDiaryEntries, pathProvider.path)
+          ..then((entries) {
+            locator<LoggingService>().info('read diary entries: ${entries.map((diaryEntry) => '${localDiaryEntry.entryDate}, '
+                '${localDiaryEntry.food?.name}, '
+                '${localDiaryEntry.food?.foodId}')}');
+          })
+          ..catchError((error, stackTrace) {
+            locator<LoggingService>().handle(error, stackTrace);
+            return <LocalDiaryEntry>[];
+          });
+      }));
+    return id;
+  }
+
+  Future<int?> _writeDiaryEntry(MapEntry<String, LocalDiaryEntry> pair) async {
+    final db = await getDatabase(pair.key);
+    return db.writeTxnSync(() => db.localDiaryEntrys.putSync(pair.value));
+  }
+
+  Future<List<LocalDiaryEntry>> _readDiaryEntries(String path) async {
+    final db = await getDatabase(path);
+    return db.localDiaryEntrys.where().findAll();
   }
 }
 

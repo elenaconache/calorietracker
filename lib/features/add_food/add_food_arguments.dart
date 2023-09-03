@@ -4,7 +4,7 @@ import 'package:calorietracker/models/meal.dart';
 class AddFoodArguments {
   final Meal meal;
   final Food food;
-  final bool isLocal;
+  final int? localId;
 
-  const AddFoodArguments({required this.meal, required this.food, this.isLocal = false});
+  const AddFoodArguments({required this.meal, required this.food, this.localId});
 }

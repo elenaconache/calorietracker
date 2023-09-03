@@ -20,23 +20,21 @@ class CreateFoodController {
 
   void hideError() => foodError.value = null;
 
-  Future<({bool isLocal, String? createdFoodId})> createFood({required FoodInput foodInput}) async {
+  Future<({int? localId, String? createdFoodId})> createFood({required FoodInput foodInput}) async {
     isLoading.value = true;
-    var isLocal = false;
+    int? localId;
     final createdFood = await locator<CollectionApiService>().createFood(body: foodInput.addFoodRequest).catchError((error, stackTrace) async {
       if (error is DioException) {
         if (error.isConnectionError) {
           final dbService = await locator.getAsync<DatabaseService>();
-          await dbService.insertFood(localFood: foodInput.localFood);
-          isLocal = true;
+          localId = await dbService.insertFood(localFood: foodInput.localFood);
           return null;
-          // TODO: return id from local db to use; send flag to next screen so that it does not attempt to log until food is created
         }
       }
       locator<LoggingService>().handle(error, stackTrace);
       return null;
     });
     isLoading.value = false;
-    return (isLocal: isLocal, createdFoodId: createdFood?.id);
+    return (localId: localId, createdFoodId: createdFood?.id);
   }
 }
