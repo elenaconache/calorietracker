@@ -48,4 +48,10 @@ class Food {
         brandName = localFood.brand,
         id = null,
         barcode = localFood.barcode;
+
+  LocalFood get localFood => LocalFood()
+    ..nutritionInfo = nutrition.localNutrition
+    ..name = name
+    ..brand = brandName
+    ..barcode = barcode;
 }

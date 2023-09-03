@@ -27,35 +27,39 @@ const LocalDiaryEntrySchema = CollectionSchema(
       name: r'entryDate',
       type: IsarType.string,
     ),
-    r'food': PropertySchema(
+    r'foodId': PropertySchema(
       id: 2,
-      name: r'food',
-      type: IsarType.object,
-      target: r'LocalDiaryFood',
+      name: r'foodId',
+      type: IsarType.string,
+    ),
+    r'localFoodId': PropertySchema(
+      id: 3,
+      name: r'localFoodId',
+      type: IsarType.long,
     ),
     r'meal': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'meal',
       type: IsarType.byte,
       enumMap: _LocalDiaryEntrymealEnumValueMap,
     ),
     r'pushed': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'pushed',
       type: IsarType.bool,
     ),
     r'servingQuantity': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'servingQuantity',
       type: IsarType.long,
     ),
     r'unitId': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'unitId',
       type: IsarType.string,
     ),
     r'userId': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'userId',
       type: IsarType.string,
     )
@@ -67,10 +71,7 @@ const LocalDiaryEntrySchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {},
-  embeddedSchemas: {
-    r'LocalDiaryFood': LocalDiaryFoodSchema,
-    r'LocalNutrition': LocalNutritionSchema
-  },
+  embeddedSchemas: {},
   getId: _localDiaryEntryGetId,
   getLinks: _localDiaryEntryGetLinks,
   attach: _localDiaryEntryAttach,
@@ -90,11 +91,9 @@ int _localDiaryEntryEstimateSize(
     }
   }
   {
-    final value = object.food;
+    final value = object.foodId;
     if (value != null) {
-      bytesCount += 3 +
-          LocalDiaryFoodSchema.estimateSize(
-              value, allOffsets[LocalDiaryFood]!, allOffsets);
+      bytesCount += 3 + value.length * 3;
     }
   }
   bytesCount += 3 + object.unitId.length * 3;
@@ -110,17 +109,13 @@ void _localDiaryEntrySerialize(
 ) {
   writer.writeBool(offsets[0], object.deleted);
   writer.writeString(offsets[1], object.entryDate);
-  writer.writeObject<LocalDiaryFood>(
-    offsets[2],
-    allOffsets,
-    LocalDiaryFoodSchema.serialize,
-    object.food,
-  );
-  writer.writeByte(offsets[3], object.meal.index);
-  writer.writeBool(offsets[4], object.pushed);
-  writer.writeLong(offsets[5], object.servingQuantity);
-  writer.writeString(offsets[6], object.unitId);
-  writer.writeString(offsets[7], object.userId);
+  writer.writeString(offsets[2], object.foodId);
+  writer.writeLong(offsets[3], object.localFoodId);
+  writer.writeByte(offsets[4], object.meal.index);
+  writer.writeBool(offsets[5], object.pushed);
+  writer.writeLong(offsets[6], object.servingQuantity);
+  writer.writeString(offsets[7], object.unitId);
+  writer.writeString(offsets[8], object.userId);
 }
 
 LocalDiaryEntry _localDiaryEntryDeserialize(
@@ -132,19 +127,16 @@ LocalDiaryEntry _localDiaryEntryDeserialize(
   final object = LocalDiaryEntry();
   object.deleted = reader.readBool(offsets[0]);
   object.entryDate = reader.readStringOrNull(offsets[1]);
-  object.food = reader.readObjectOrNull<LocalDiaryFood>(
-    offsets[2],
-    LocalDiaryFoodSchema.deserialize,
-    allOffsets,
-  );
+  object.foodId = reader.readStringOrNull(offsets[2]);
   object.id = id;
+  object.localFoodId = reader.readLongOrNull(offsets[3]);
   object.meal =
-      _LocalDiaryEntrymealValueEnumMap[reader.readByteOrNull(offsets[3])] ??
+      _LocalDiaryEntrymealValueEnumMap[reader.readByteOrNull(offsets[4])] ??
           Meal.breakfast;
-  object.pushed = reader.readBool(offsets[4]);
-  object.servingQuantity = reader.readLong(offsets[5]);
-  object.unitId = reader.readString(offsets[6]);
-  object.userId = reader.readString(offsets[7]);
+  object.pushed = reader.readBool(offsets[5]);
+  object.servingQuantity = reader.readLong(offsets[6]);
+  object.unitId = reader.readString(offsets[7]);
+  object.userId = reader.readString(offsets[8]);
   return object;
 }
 
@@ -160,21 +152,19 @@ P _localDiaryEntryDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readObjectOrNull<LocalDiaryFood>(
-        offset,
-        LocalDiaryFoodSchema.deserialize,
-        allOffsets,
-      )) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readLongOrNull(offset)) as P;
+    case 4:
       return (_LocalDiaryEntrymealValueEnumMap[reader.readByteOrNull(offset)] ??
           Meal.breakfast) as P;
-    case 4:
-      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -454,19 +444,155 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      foodIsNull() {
+      foodIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'food',
+        property: r'foodId',
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      foodIsNotNull() {
+      foodIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'food',
+        property: r'foodId',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'foodId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'foodId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'foodId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      foodIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'foodId',
+        value: '',
       ));
     });
   }
@@ -537,6 +663,80 @@ extension LocalDiaryEntryQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      localFoodIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'localFoodId',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      localFoodIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'localFoodId',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      localFoodIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'localFoodId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      localFoodIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'localFoodId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      localFoodIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'localFoodId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      localFoodIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'localFoodId',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -941,14 +1141,7 @@ extension LocalDiaryEntryQueryFilter
 }
 
 extension LocalDiaryEntryQueryObject
-    on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QFilterCondition> {
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition> food(
-      FilterQuery<LocalDiaryFood> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'food');
-    });
-  }
-}
+    on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QFilterCondition> {}
 
 extension LocalDiaryEntryQueryLinks
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QFilterCondition> {}
@@ -979,6 +1172,33 @@ extension LocalDiaryEntryQuerySortBy
       sortByEntryDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'entryDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> sortByFoodId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'foodId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      sortByFoodIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'foodId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      sortByLocalFoodId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localFoodId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      sortByLocalFoodIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localFoodId', Sort.desc);
     });
   }
 
@@ -1078,6 +1298,19 @@ extension LocalDiaryEntryQuerySortThenBy
     });
   }
 
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenByFoodId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'foodId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      thenByFoodIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'foodId', Sort.desc);
+    });
+  }
+
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1087,6 +1320,20 @@ extension LocalDiaryEntryQuerySortThenBy
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      thenByLocalFoodId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localFoodId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      thenByLocalFoodIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'localFoodId', Sort.desc);
     });
   }
 
@@ -1173,6 +1420,20 @@ extension LocalDiaryEntryQueryWhereDistinct
     });
   }
 
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByFoodId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'foodId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct>
+      distinctByLocalFoodId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'localFoodId');
+    });
+  }
+
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByMeal() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'meal');
@@ -1227,10 +1488,15 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryFood?, QQueryOperations>
-      foodProperty() {
+  QueryBuilder<LocalDiaryEntry, String?, QQueryOperations> foodIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'food');
+      return query.addPropertyName(r'foodId');
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, int?, QQueryOperations> localFoodIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'localFoodId');
     });
   }
 
@@ -1262,757 +1528,6 @@ extension LocalDiaryEntryQueryProperty
   QueryBuilder<LocalDiaryEntry, String, QQueryOperations> userIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'userId');
-    });
-  }
-}
-
-// **************************************************************************
-// IsarEmbeddedGenerator
-// **************************************************************************
-
-// coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
-
-const LocalDiaryFoodSchema = Schema(
-  name: r'LocalDiaryFood',
-  id: -5155966677480490508,
-  properties: {
-    r'barcode': PropertySchema(
-      id: 0,
-      name: r'barcode',
-      type: IsarType.string,
-    ),
-    r'brand': PropertySchema(
-      id: 1,
-      name: r'brand',
-      type: IsarType.string,
-    ),
-    r'foodId': PropertySchema(
-      id: 2,
-      name: r'foodId',
-      type: IsarType.string,
-    ),
-    r'name': PropertySchema(
-      id: 3,
-      name: r'name',
-      type: IsarType.string,
-    ),
-    r'nutritionInfo': PropertySchema(
-      id: 4,
-      name: r'nutritionInfo',
-      type: IsarType.object,
-      target: r'LocalNutrition',
-    )
-  },
-  estimateSize: _localDiaryFoodEstimateSize,
-  serialize: _localDiaryFoodSerialize,
-  deserialize: _localDiaryFoodDeserialize,
-  deserializeProp: _localDiaryFoodDeserializeProp,
-);
-
-int _localDiaryFoodEstimateSize(
-  LocalDiaryFood object,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  var bytesCount = offsets.last;
-  {
-    final value = object.barcode;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.brand;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.foodId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 +
-      LocalNutritionSchema.estimateSize(
-          object.nutritionInfo, allOffsets[LocalNutrition]!, allOffsets);
-  return bytesCount;
-}
-
-void _localDiaryFoodSerialize(
-  LocalDiaryFood object,
-  IsarWriter writer,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  writer.writeString(offsets[0], object.barcode);
-  writer.writeString(offsets[1], object.brand);
-  writer.writeString(offsets[2], object.foodId);
-  writer.writeString(offsets[3], object.name);
-  writer.writeObject<LocalNutrition>(
-    offsets[4],
-    allOffsets,
-    LocalNutritionSchema.serialize,
-    object.nutritionInfo,
-  );
-}
-
-LocalDiaryFood _localDiaryFoodDeserialize(
-  Id id,
-  IsarReader reader,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  final object = LocalDiaryFood();
-  object.barcode = reader.readStringOrNull(offsets[0]);
-  object.brand = reader.readStringOrNull(offsets[1]);
-  object.foodId = reader.readStringOrNull(offsets[2]);
-  object.name = reader.readString(offsets[3]);
-  object.nutritionInfo = reader.readObjectOrNull<LocalNutrition>(
-        offsets[4],
-        LocalNutritionSchema.deserialize,
-        allOffsets,
-      ) ??
-      LocalNutrition();
-  return object;
-}
-
-P _localDiaryFoodDeserializeProp<P>(
-  IsarReader reader,
-  int propertyId,
-  int offset,
-  Map<Type, List<int>> allOffsets,
-) {
-  switch (propertyId) {
-    case 0:
-      return (reader.readStringOrNull(offset)) as P;
-    case 1:
-      return (reader.readStringOrNull(offset)) as P;
-    case 2:
-      return (reader.readStringOrNull(offset)) as P;
-    case 3:
-      return (reader.readString(offset)) as P;
-    case 4:
-      return (reader.readObjectOrNull<LocalNutrition>(
-            offset,
-            LocalNutritionSchema.deserialize,
-            allOffsets,
-          ) ??
-          LocalNutrition()) as P;
-    default:
-      throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-extension LocalDiaryFoodQueryFilter
-    on QueryBuilder<LocalDiaryFood, LocalDiaryFood, QFilterCondition> {
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'barcode',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'barcode',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'barcode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'barcode',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'barcode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'barcode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'brand',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'brand',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'brand',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'brand',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'brand',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'brand',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'foodId',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'foodId',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'foodId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'foodId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'foodId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'foodId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
-        value: '',
-      ));
-    });
-  }
-}
-
-extension LocalDiaryFoodQueryObject
-    on QueryBuilder<LocalDiaryFood, LocalDiaryFood, QFilterCondition> {
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nutritionInfo(FilterQuery<LocalNutrition> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'nutritionInfo');
     });
   }
 }

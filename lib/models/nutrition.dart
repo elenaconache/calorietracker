@@ -1,5 +1,5 @@
 import 'package:calorietracker/extensions/numeric_extensions.dart';
-import 'package:calorietracker/models/local/local_nutrition.dart';
+import 'package:calorietracker/models/local/local_food.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'nutrition.g.dart';

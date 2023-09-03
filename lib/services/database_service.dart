@@ -39,12 +39,12 @@ class DatabaseService {
     final id = await (compute(_writeDiaryEntry, MapEntry(pathProvider.path, localDiaryEntry))
       ..then((_) {
         locator<LoggingService>().info(
-            'inserted diary entry ${localDiaryEntry.entryDate}, food name ${localDiaryEntry.food?.name}, food id ${localDiaryEntry.food?.foodId}');
+            'inserted diary entry ${localDiaryEntry.entryDate}, food id ${localDiaryEntry.foodId}, local food id ${localDiaryEntry.localFoodId}');
         compute(_readDiaryEntries, pathProvider.path)
           ..then((entries) {
-            locator<LoggingService>().info('read diary entries: ${entries.map((diaryEntry) => '${localDiaryEntry.entryDate}, '
-                '${localDiaryEntry.food?.name}, '
-                '${localDiaryEntry.food?.foodId}')}');
+            locator<LoggingService>().info('read diary entries: ${entries.map((diaryEntry) => '${localDiaryEntry.entryDate}, food id:'
+                '${localDiaryEntry.foodId}, '
+                'local food id: ${localDiaryEntry.localFoodId}')}');
           })
           ..catchError((error, stackTrace) {
             locator<LoggingService>().handle(error, stackTrace);
