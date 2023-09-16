@@ -13,7 +13,7 @@ AddDiaryEntryRequest _$AddDiaryEntryRequestFromJson(
       userId: json['userId'] as String,
       unitId: json['unitId'] as String,
       foodId: json['foodId'] as String,
-      servingQuantity: json['servingQuantity'] as int,
+      servingQuantity: (json['servingQuantity'] as num).toDouble(),
       meal: $enumDecode(_$MealEnumMap, json['meal']),
     );
 

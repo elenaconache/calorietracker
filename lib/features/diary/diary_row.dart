@@ -1,12 +1,13 @@
-import 'package:calorietracker/models/collection/diary_entry_response.dart';
+import 'package:calorietracker/extensions/numeric_extensions.dart';
+import 'package:calorietracker/models/diary_entry.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 
-class DiaryEntry extends StatelessWidget {
-  final DiaryEntryResponse diaryEntryResponse;
+class DiaryRow extends StatelessWidget {
+  final DiaryEntry diaryEntry;
 
-  const DiaryEntry({super.key, required this.diaryEntryResponse});
+  const DiaryRow({super.key, required this.diaryEntry});
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +30,18 @@ class DiaryEntry extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          diaryEntryResponse.food.name,
+                          diaryEntry.food.name,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         Row(
                           children: [
-                            if (diaryEntryResponse.food.brand != null)
+                            if (diaryEntry.food.brandName != null)
                               Text(
-                                '${diaryEntryResponse.food.brand!}, ',
+                                '${diaryEntry.food.brandName!}, ',
                                 style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300),
                               ),
                             Text(
-                              AppStrings.gramsValue(diaryEntryResponse.servingQuantity.toInt()),
+                              AppStrings.gramsValue(diaryEntry.servingQuantity.toDouble().toPrecision(2)),
                               style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300),
                             )
                           ],
@@ -58,8 +59,8 @@ class DiaryEntry extends StatelessWidget {
                 ]))));
   }
 
-  String get _diaryEntryCalories => AppStrings.caloriesShortLabel(Nutrition.perServing(
-          nutritionPer100Grams: diaryEntryResponse.food.nutritionInfo, servingSizeGrams: diaryEntryResponse.servingQuantity.toDouble())
-      .calories
-      .toInt());
+  String get _diaryEntryCalories => AppStrings.caloriesShortLabel(
+      Nutrition.perServing(nutritionPer100Grams: diaryEntry.food.nutrition, servingSizeGrams: diaryEntry.servingQuantity.toDouble())
+          .calories
+          .toInt());
 }

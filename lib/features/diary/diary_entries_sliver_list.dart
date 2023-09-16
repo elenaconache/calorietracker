@@ -1,10 +1,10 @@
-import 'package:calorietracker/features/diary/diary_entry.dart';
+import 'package:calorietracker/features/diary/diary_row.dart';
 import 'package:calorietracker/features/diary/no_logged_foods_message.dart';
-import 'package:calorietracker/models/collection/diary_entry_response.dart';
+import 'package:calorietracker/models/diary_entry.dart';
 import 'package:flutter/material.dart';
 
 class DiaryEntriesSliverList extends StatelessWidget {
-  final List<DiaryEntryResponse> entries;
+  final List<DiaryEntry> entries;
   final bool error;
 
   const DiaryEntriesSliverList({super.key, required this.entries, required this.error});
@@ -18,7 +18,7 @@ class DiaryEntriesSliverList extends StatelessWidget {
       return SliverList(
         key: UniqueKey(),
         delegate: SliverChildBuilderDelegate(
-          (context, index) => DiaryEntry(diaryEntryResponse: entries[index]),
+          (context, index) => DiaryRow(diaryEntry: entries[index]),
           childCount: entries.length,
         ),
       );

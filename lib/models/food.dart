@@ -3,7 +3,11 @@ import 'package:calorietracker/models/collection/collection_food.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_food_response.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'food.g.dart';
+
+@JsonSerializable()
 class Food {
   final String name;
   final Nutrition nutrition;
@@ -32,7 +36,7 @@ class Food {
           nutritionPerServing: foodInput.nutrition,
           servingSizeGrams: foodInput.servingSizeValue,
         ),
-        brandName = foodInput.brand,
+        brandName = (foodInput.brand?.isEmpty ?? true) ? null : foodInput.brand,
         barcode = null;
 
   Food.collection({required CollectionFood food})
@@ -54,4 +58,11 @@ class Food {
     ..name = name
     ..brand = brandName
     ..barcode = barcode;
+
+  factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FoodToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

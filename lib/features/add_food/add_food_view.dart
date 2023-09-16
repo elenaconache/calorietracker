@@ -147,33 +147,34 @@ class _AddFoodViewState extends State<AddFoodView> {
   }
 
   void _logFood(BuildContext context) {
-    final servingQuantity = int.tryParse(_servingsCountController.text);
+    final servingQuantity = double.tryParse(_servingsCountController.text);
     if (servingQuantity == null) {
       locator<LoggingService>().handle(
         Exception('Could not log food with null serving quantity.'),
         StackTrace.current,
       );
     } else {
-      unawaited(_controller.logFood(
-          barcode: null,
-          servingQuantity: servingQuantity,
-          food: widget.args.food,
-          meal: widget.args.meal,
-          localId: widget.args.localId,
-          onSuccess: () {
-            if (context.mounted) {
-              Navigator.pop(context);
-            } else {
-              locator<LoggingService>().info('Could not pop add food screen. Context unmounted.');
-            }
-          },
-          onError: () {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.errorAddFood)));
-            } else {
-              locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
-            }
-          }));
+      unawaited(_controller
+          .logFood(
+        barcode: null,
+        servingQuantity: servingQuantity,
+        food: widget.args.food,
+        meal: widget.args.meal,
+        localId: widget.args.localId,
+      )
+          .then((_) {
+        if (context.mounted) {
+          Navigator.pop(context);
+        } else {
+          locator<LoggingService>().info('Could not pop add food screen. Context unmounted.');
+        }
+      }).catchError((_, __) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.errorAddFood)));
+        } else {
+          locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
+        }
+      }));
     }
   }
 

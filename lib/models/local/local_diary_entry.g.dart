@@ -51,7 +51,7 @@ const LocalDiaryEntrySchema = CollectionSchema(
     r'servingQuantity': PropertySchema(
       id: 6,
       name: r'servingQuantity',
-      type: IsarType.long,
+      type: IsarType.double,
     ),
     r'unitId': PropertySchema(
       id: 7,
@@ -113,7 +113,7 @@ void _localDiaryEntrySerialize(
   writer.writeLong(offsets[3], object.localFoodId);
   writer.writeByte(offsets[4], object.meal.index);
   writer.writeBool(offsets[5], object.pushed);
-  writer.writeLong(offsets[6], object.servingQuantity);
+  writer.writeDouble(offsets[6], object.servingQuantity);
   writer.writeString(offsets[7], object.unitId);
   writer.writeString(offsets[8], object.userId);
 }
@@ -134,7 +134,7 @@ LocalDiaryEntry _localDiaryEntryDeserialize(
       _LocalDiaryEntrymealValueEnumMap[reader.readByteOrNull(offsets[4])] ??
           Meal.breakfast;
   object.pushed = reader.readBool(offsets[5]);
-  object.servingQuantity = reader.readLong(offsets[6]);
+  object.servingQuantity = reader.readDouble(offsets[6]);
   object.unitId = reader.readString(offsets[7]);
   object.userId = reader.readString(offsets[8]);
   return object;
@@ -161,7 +161,7 @@ P _localDiaryEntryDeserializeProp<P>(
     case 5:
       return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 7:
       return (reader.readString(offset)) as P;
     case 8:
@@ -812,49 +812,58 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      servingQuantityEqualTo(int value) {
+      servingQuantityEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'servingQuantity',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       servingQuantityGreaterThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'servingQuantity',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       servingQuantityLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'servingQuantity',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       servingQuantityBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -863,6 +872,7 @@ extension LocalDiaryEntryQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        epsilon: epsilon,
       ));
     });
   }
@@ -1512,7 +1522,7 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, int, QQueryOperations>
+  QueryBuilder<LocalDiaryEntry, double, QQueryOperations>
       servingQuantityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'servingQuantity');

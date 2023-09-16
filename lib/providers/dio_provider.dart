@@ -36,7 +36,7 @@ class DioProvider {
 
   Future<Dio> buildDio({required String baseUrl, Map<String, String> headers = const {}}) async {
     _cacheInterceptor ??= await cacheInterceptor;
-    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 9), receiveTimeout: const Duration(seconds: 9), baseUrl: baseUrl));
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 2), receiveTimeout: const Duration(seconds: 2), baseUrl: baseUrl));
     dio.interceptors.add(_cacheInterceptor!);
     dio.interceptors.add(locator<LoggingInterceptor>());
     dio.options.headers = headers;

@@ -1,5 +1,6 @@
 import 'package:calorietracker/models/collection/diary_entry_response.dart';
 import 'package:calorietracker/models/meal.dart';
+import 'package:calorietracker/models/meal_entries_list.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'meal_entries_response.g.dart';
@@ -23,6 +24,11 @@ class MealEntriesResponse {
 
   @override
   String toString() => toJson().toString();
+
+  MealEntriesList get mealEntriesList => MealEntriesList(
+        meal: meal,
+        diaryEntries: diaryEntries.map((entry) => entry.diaryEntry).toList(),
+      );
 }
 
 List<MealEntriesResponse> deserializeMealEntriesResponseList(List<Map<String, dynamic>> json) =>

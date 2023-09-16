@@ -1,6 +1,6 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/diary/nutrient_item.dart';
-import 'package:calorietracker/models/helpers/api_response_status.dart';
+import 'package:calorietracker/models/helpers/future_response_status.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +12,13 @@ class DayNutritionSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final diaryService = locator<DiaryService>();
     return ValueListenableBuilder(
-        valueListenable: diaryService.selectedDayMealEntries,
-        builder: (context, todayMealEntries, _) => todayMealEntries.status == ApiResponseStatus.loading
+        valueListenable: diaryService.dayMealEntries,
+        builder: (context, todayMealEntries, _) => todayMealEntries.status == FutureResponseStatus.loading
             ? const Padding(
                 padding: EdgeInsets.all(12),
                 child: Center(child: CircularProgressIndicator()),
               )
-            : todayMealEntries.status == ApiResponseStatus.error
+            : todayMealEntries.status == FutureResponseStatus.error
                 ? Text(
                     AppStrings.generalErrorMessage,
                     style: Theme.of(context).textTheme.bodyLarge,

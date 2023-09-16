@@ -9,7 +9,7 @@ class AddDiaryEntryRequest {
   final String userId;
   final String unitId;
   final String foodId;
-  final int servingQuantity;
+  final double servingQuantity;
   final Meal meal;
 
   const AddDiaryEntryRequest({

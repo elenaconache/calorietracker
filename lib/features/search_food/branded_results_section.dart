@@ -3,7 +3,7 @@ import 'package:calorietracker/features/search_food/empty_view.dart';
 import 'package:calorietracker/features/search_food/food_item.dart';
 import 'package:calorietracker/features/search_food/search_food_service.dart';
 import 'package:calorietracker/models/food.dart';
-import 'package:calorietracker/models/helpers/api_response_status.dart';
+import 'package:calorietracker/models/helpers/future_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/components/general_error_view.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +29,9 @@ class _BrandedResultsSectionState extends State<BrandedResultsSection> with Auto
         valueListenable: foodSearchService.nutritionixSearchResponse,
         builder: (context, searchResponse, child) {
           switch (searchResponse.status) {
-            case ApiResponseStatus.loading:
+            case FutureResponseStatus.loading:
               return const Center(child: CircularProgressIndicator());
-            case ApiResponseStatus.success:
+            case FutureResponseStatus.success:
               return searchResponse.data == null
                   ? const SizedBox.shrink()
                   : searchResponse.data!.brandedFoods.isEmpty

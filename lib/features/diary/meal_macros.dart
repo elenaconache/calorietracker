@@ -1,5 +1,5 @@
 import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/models/helpers/api_response_status.dart';
+import 'package:calorietracker/models/helpers/future_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
@@ -16,9 +16,9 @@ class MealMacros extends StatelessWidget {
   Widget build(BuildContext context) {
     final diaryService = locator<DiaryService>();
     return ValueListenableBuilder(
-        valueListenable: diaryService.selectedDayMealEntries,
-        builder: (context, _, __) {
-          if (diaryService.selectedDayMealEntries.value.status == ApiResponseStatus.error) {
+        valueListenable: diaryService.dayMealEntries,
+        builder: (context, dayMealEntries, __) {
+          if (dayMealEntries.status == FutureResponseStatus.error) {
             return const SizedBox.shrink();
           }
           final mealNutrition = diaryService.getSelectedDayMealNutrients(meal: meal);

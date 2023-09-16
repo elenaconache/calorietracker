@@ -10,7 +10,7 @@ class LocalDiaryEntry {
   String? entryDate;
   late String userId;
   late String unitId;
-  late int servingQuantity;
+  late double servingQuantity;
 
   @enumerated
   late Meal meal;

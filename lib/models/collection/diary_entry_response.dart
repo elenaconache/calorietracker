@@ -1,4 +1,6 @@
 import 'package:calorietracker/models/collection/collection_food.dart';
+import 'package:calorietracker/models/diary_entry.dart';
+import 'package:calorietracker/models/food.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'diary_entry_response.g.dart';
@@ -34,4 +36,13 @@ class DiaryEntryResponse {
 
   @override
   String toString() => toJson().toString();
+
+  DiaryEntry get diaryEntry => DiaryEntry(
+        collectionId: id,
+        localId: null,
+        food: Food.collection(food: food),
+        date: entryDate,
+        unitId: unitId,
+        servingQuantity: servingQuantity,
+      );
 }

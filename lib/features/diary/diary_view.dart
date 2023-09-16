@@ -4,7 +4,7 @@ import 'package:calorietracker/features/diary/diary_entries_sliver_list.dart';
 import 'package:calorietracker/features/diary/diary_overview_carousel.dart';
 import 'package:calorietracker/features/diary/meal_title.dart';
 import 'package:calorietracker/features/diary/user_avatar_action.dart';
-import 'package:calorietracker/models/helpers/api_response_status.dart';
+import 'package:calorietracker/models/helpers/future_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/diary_service.dart';
@@ -70,10 +70,10 @@ class _DiaryViewState extends State<DiaryView> {
                                   onTap: _controller.toggleMacrosMode,
                                 )))),
                 ValueListenableBuilder(
-                    valueListenable: _diaryService.selectedDayMealEntries,
-                    builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                    valueListenable: _diaryService.dayMealEntries,
+                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.breakfast),
-                          error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                          error: dayMealEntries.status == FutureResponseStatus.error,
                         )),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -96,10 +96,10 @@ class _DiaryViewState extends State<DiaryView> {
                                   onTap: _controller.toggleMacrosMode,
                                 )))),
                 ValueListenableBuilder(
-                    valueListenable: _diaryService.selectedDayMealEntries,
-                    builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                    valueListenable: _diaryService.dayMealEntries,
+                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.lunch),
-                          error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                          error: dayMealEntries.status == FutureResponseStatus.error,
                         )),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -122,10 +122,10 @@ class _DiaryViewState extends State<DiaryView> {
                                   onTap: _controller.toggleMacrosMode,
                                 )))),
                 ValueListenableBuilder(
-                    valueListenable: _diaryService.selectedDayMealEntries,
-                    builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                    valueListenable: _diaryService.dayMealEntries,
+                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.dinner),
-                          error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                          error: dayMealEntries.status == FutureResponseStatus.error,
                         )),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -148,10 +148,10 @@ class _DiaryViewState extends State<DiaryView> {
                                   onTap: _controller.toggleMacrosMode,
                                 )))),
                 ValueListenableBuilder(
-                    valueListenable: _diaryService.selectedDayMealEntries,
-                    builder: (context, selectedDayMealEntries, __) => DiaryEntriesSliverList(
+                    valueListenable: _diaryService.dayMealEntries,
+                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
-                          error: selectedDayMealEntries.status == ApiResponseStatus.error,
+                          error: dayMealEntries.status == FutureResponseStatus.error,
                         )),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),

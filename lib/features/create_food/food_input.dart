@@ -88,7 +88,7 @@ class FoodInput {
   AddFoodRequest get addFoodRequest => AddFoodRequest(
         barcode: null,
         name: name,
-        brand: brand,
+        brand: (brand?.isEmpty ?? true) ? null : brand,
         nutritionInfo: Nutrition.fromServing(
           nutritionPerServing: nutrition,
           servingSizeGrams: servingSizeValue,
@@ -98,7 +98,7 @@ class FoodInput {
   LocalFood get localFood => LocalFood()
     ..barcode = null
     ..name = name
-    ..brand = brand
+    ..brand = (brand?.isEmpty ?? true) ? null : brand
     ..nutritionInfo = Nutrition.fromServing(
       nutritionPerServing: nutrition,
       servingSizeGrams: servingSizeValue,
