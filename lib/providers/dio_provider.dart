@@ -16,43 +16,27 @@ class DioProvider {
     _cacheStore = HiveCacheStore('${pathProvider.path}/cache/api');
     final cacheOptions = CacheOptions(
       store: _cacheStore,
-      hitCacheOnErrorExcept: [HttpStatus.notFound, HttpStatus.unauthorized, HttpStatus.badRequest, HttpStatus.internalServerError],
-      policy: CachePolicy.refreshForceCache,
+      hitCacheOnErrorExcept: [
+        HttpStatus.notFound,
+        HttpStatus.unauthorized,
+        HttpStatus.badRequest,
+      ],
+      policy: CachePolicy.refresh,
       maxStale: const Duration(days: 7),
-      cipher: CacheCipher(
-        decrypt: (bytes) async {
-          return bytes.toList();
-        },
-        encrypt: (bytes) async {
-          return bytes.toList();
-        },
-      ),
-      keyBuilder: (request) {
-        return _keyBuilder(urlPath: request.path, baseUrl: request.baseUrl);
-      },
     );
     return DioCacheInterceptor(options: cacheOptions);
   }
 
   Future<Dio> buildDio({required String baseUrl, Map<String, String> headers = const {}}) async {
     _cacheInterceptor ??= await cacheInterceptor;
-    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 2), receiveTimeout: const Duration(seconds: 2), baseUrl: baseUrl));
+    final dio = Dio(BaseOptions(
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 2),
+      baseUrl: baseUrl,
+    ));
     dio.interceptors.add(_cacheInterceptor!);
     dio.interceptors.add(locator<LoggingInterceptor>());
     dio.options.headers = headers;
     return dio;
-  }
-
-  Future deleteEntry({required String urlPath, required String baseUrl}) async {
-    final key = _keyBuilder(urlPath: urlPath, baseUrl: baseUrl);
-    await _cacheStore?.delete(key);
-  }
-
-  Future clearCachedRequests() async {
-    await _cacheStore?.clean();
-  }
-
-  String _keyBuilder({required String urlPath, required String baseUrl}) {
-    return CacheOptions.defaultCacheKeyBuilder(RequestOptions(path: urlPath, baseUrl: baseUrl));
   }
 }

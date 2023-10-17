@@ -1,35 +1,23 @@
+import 'package:calorietracker/models/collection/add_local_food_request.dart';
+import 'package:calorietracker/models/local/local_food_base.dart';
+import 'package:calorietracker/models/local/local_nutrition_base.dart';
+import 'package:calorietracker/models/nutrition.dart';
 import 'package:isar/isar.dart';
 
 part 'local_food.g.dart';
 
 @collection
-class LocalFood {
-  Id? id;
-  String? barcode;
-  late String name;
-  String? brand;
-  late LocalNutrition nutritionInfo;
+class LocalFood extends LocalFoodBase {
+  Id id = Isar.autoIncrement;
+  late LocalFoodNutrition nutritionInfo;
+
+  @ignore
+  AddLocalFoodRequest get addLocalFoodRequest => AddLocalFoodRequest(
+        localId: id,
+        name: name,
+        nutritionInfo: Nutrition.local(localNutrition: nutritionInfo),
+      );
 }
 
 @embedded
-class LocalNutrition {
-  late double calories;
-  late double fat;
-  late double fatSaturated;
-  late double fatTrans;
-  late double fatPolyunsaturated;
-  late double fatMonounsaturated;
-  late double cholesterol;
-  late double carbohydrates;
-  late double fiber;
-  late double insolubleFiber;
-  late double sugar;
-  late double protein;
-  late double sodium;
-  late double potassium;
-  late double calcium;
-  late double iron;
-  late double vitaminA;
-  late double vitaminC;
-  late double vitaminD;
-}
+class LocalFoodNutrition extends LocalNutritionBase {}

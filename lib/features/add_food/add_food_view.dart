@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
+import 'package:calorietracker/features/add_food/food_log.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
 import 'package:calorietracker/features/add_food/nutrition_section.dart';
 import 'package:calorietracker/models/meal.dart';
@@ -58,7 +59,12 @@ class _AddFoodViewState extends State<AddFoodView> {
                 valueListenable: _controller.isLoading,
                 builder: (context, isLoading, _) => isLoading
                     ? const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16), child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()))
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(),
+                        ))
                     : IconButton(
                         // TODO: send barcode as parameter to this view if the user scanned a barcode.
                         onPressed: () => _logFood(context),
@@ -138,8 +144,9 @@ class _AddFoodViewState extends State<AddFoodView> {
               const AppDivider(),
               ValueListenableBuilder(
                   valueListenable: _controller.currentServingSizeNutrients,
-                  builder: (context, currentServingSizeNutrients, child) =>
-                      currentServingSizeNutrients != null ? NutritionSection(nutrition: currentServingSizeNutrients) : const SizedBox.shrink()),
+                  builder: (context, currentServingSizeNutrients, child) => currentServingSizeNutrients != null
+                      ? NutritionSection(nutrition: currentServingSizeNutrients)
+                      : const SizedBox.shrink()),
               const SizedBox(height: 24),
             ],
           ),
@@ -156,12 +163,11 @@ class _AddFoodViewState extends State<AddFoodView> {
     } else {
       unawaited(_controller
           .logFood(
-        barcode: null,
-        servingQuantity: servingQuantity,
-        food: widget.args.food,
-        meal: widget.args.meal,
-        localId: widget.args.localId,
-      )
+              foodLog: FoodLog(
+                  meal: widget.args.meal,
+                  food: widget.args.food,
+                  servingQuantity: servingQuantity,
+                  localFoodId: widget.args.localId))
           .then((_) {
         if (context.mounted) {
           Navigator.pop(context);

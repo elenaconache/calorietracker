@@ -7,6 +7,7 @@ import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/meal_entries_list.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/database_service.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/user_service.dart';
@@ -65,29 +66,45 @@ class DiaryService {
   }
 
   Future<void> fetchDiary({DateTime? date}) async {
-    final fetchedDate = _dateFormattingService.format(dateTime: (date ?? DateTime.now()).toString(), format: collectionApiDateFormat);
+    final fetchedDate = _dateFormattingService.format(
+      dateTime: (date ?? DateTime.now()).toString(),
+      format: collectionApiDateFormat,
+    );
     selectedDay.value = fetchedDate;
-    var diary = dayMealEntries.value;
-    final selectedDayDiary = diary;
     dayMealEntries.value = FutureResponse.loading();
     final apiService = await locator.getAsync<CollectionApiService>();
     final userId = locator<UserService>().selectedUser.value?.id;
     if (userId?.isEmpty ?? true) {
       // TODO: navigate to login and show error snack bar
     } else {
-      await apiService.getDiaryEntries(userId: userId!, date: fetchedDate).then((response) {
-        //TODO: apply local changes over fetched content if not synced
-        diary = FutureResponse.success(response.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList());
-      }).catchError((error, stackTrace) {
+      final diary = await (apiService.getDiaryEntries(userId: userId!, date: fetchedDate).then((response) async {
+        var updatedDiary = response.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
+        final dbService = await locator.getAsync<DatabaseService>();
+        final localDiary = await dbService.getDisplayDiaryEntries(
+          date: fetchedDate,
+          filterPending: true,
+        );
+        // TODO: unawaited: save locally the diary entries
+        //  with pushed = true for the entries that were not locally
+        //  but were in collection API response
+        return <MealEntriesList>[
+          ...updatedDiary,
+          ...localDiary,
+        ];
+      }).catchError((error, stackTrace) async {
         locator<LoggingService>().handle(error, stackTrace);
-        diary = selectedDayDiary;
-      });
-      dayMealEntries.value = diary;
+        final dbService = await locator.getAsync<DatabaseService>();
+        final localDiary = await dbService.getDisplayDiaryEntries(date: fetchedDate);
+
+        return localDiary;
+      }));
+      dayMealEntries.value = FutureResponse.success(diary);
     }
   }
 
   Nutrition getSelectedDayMealNutrients({required Meal meal}) {
-    final diaryEntries = dayMealEntries.value.data?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)?.diaryEntries;
+    final diaryEntries =
+        dayMealEntries.value.data?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)?.diaryEntries;
     if (diaryEntries == null) {
       return const Nutrition();
     } else {
@@ -96,14 +113,27 @@ class DiaryService {
   }
 
   List<DiaryEntry> getSelectedDayMealEntries({required Meal meal}) =>
-      dayMealEntries.value.data?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)?.diaryEntries.toList() ?? [];
+      dayMealEntries.value.data?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)?.diaryEntries.toList() ??
+      [];
 
-  void logDiaryEntrySync({required DateTime date, required Meal meal, required Food food, required int? localId, required double servingQuantity}) {
+  void logDiaryEntrySync({
+    required DateTime date,
+    required Meal meal,
+    required Food food,
+    required int? localId,
+    required double servingQuantity,
+  }) {
     final formattedDate = _dateFormattingService.format(dateTime: date.toString(), format: collectionApiDateFormat);
     if (selectedDay.value == formattedDate) {
-      var mealEntries = dayMealEntries.value.data?.firstWhereOrNull((entry) => entry.meal == meal) ?? MealEntriesList(meal: meal, diaryEntries: []);
+      var mealEntries = dayMealEntries.value.data?.firstWhereOrNull((entry) => entry.meal == meal) ??
+          MealEntriesList(meal: meal, diaryEntries: []);
       mealEntries.diaryEntries.add(DiaryEntry(
-          collectionId: food.id, localId: localId, food: food, date: formattedDate, unitId: gramsUnitId, servingQuantity: servingQuantity));
+          collectionId: food.id,
+          localId: localId,
+          food: food,
+          date: formattedDate,
+          unitId: gramsUnitId,
+          servingQuantity: servingQuantity));
       final otherMealsEntries = dayMealEntries.value.data?.where((mealEntries) => mealEntries.meal != meal) ?? [];
       var diary = dayMealEntries.value;
       diary = FutureResponse.success([...otherMealsEntries, mealEntries]);

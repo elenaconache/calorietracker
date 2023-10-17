@@ -26,7 +26,6 @@ class _DiaryViewState extends State<DiaryView> {
   void initState() {
     _diaryService = locator<DiaryService>();
     _controller = locator<DiaryController>();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _diaryService.fetchDiary());
     super.initState();
   }
 

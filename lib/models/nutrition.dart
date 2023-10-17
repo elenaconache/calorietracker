@@ -1,5 +1,7 @@
 import 'package:calorietracker/extensions/numeric_extensions.dart';
+import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
+import 'package:calorietracker/models/local/local_nutrition_base.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'nutrition.g.dart';
@@ -50,26 +52,26 @@ class Nutrition {
     this.insolubleFiber = 0,
   });
 
-  Nutrition.local({required LocalNutrition localNutrition})
-      : fatSaturated = localNutrition.fatSaturated,
-        fatTrans = localNutrition.fatTrans,
-        fatPolyunsaturated = localNutrition.fatPolyunsaturated,
-        fatMonounsaturated = localNutrition.fatMonounsaturated,
-        cholesterol = localNutrition.cholesterol,
-        sodium = localNutrition.sodium,
-        potassium = localNutrition.potassium,
-        calcium = localNutrition.calcium,
-        iron = localNutrition.iron,
-        vitaminA = localNutrition.vitaminA,
-        vitaminC = localNutrition.vitaminC,
-        vitaminD = localNutrition.vitaminD,
-        carbohydrates = localNutrition.carbohydrates,
-        fat = localNutrition.fat,
-        protein = localNutrition.protein,
-        calories = localNutrition.calories,
-        sugar = localNutrition.sugar,
-        fiber = localNutrition.fiber,
-        insolubleFiber = localNutrition.insolubleFiber;
+  Nutrition.local({required LocalNutritionBase localNutrition})
+      : fatSaturated = localNutrition.fatSaturated.toPrecision(2),
+        fatTrans = localNutrition.fatTrans.toPrecision(2),
+        fatPolyunsaturated = localNutrition.fatPolyunsaturated.toPrecision(2),
+        fatMonounsaturated = localNutrition.fatMonounsaturated.toPrecision(2),
+        cholesterol = localNutrition.cholesterol.toPrecision(2),
+        sodium = localNutrition.sodium.toPrecision(2),
+        potassium = localNutrition.potassium.toPrecision(2),
+        calcium = localNutrition.calcium.toPrecision(2),
+        iron = localNutrition.iron.toPrecision(2),
+        vitaminA = localNutrition.vitaminA.toPrecision(2),
+        vitaminC = localNutrition.vitaminC.toPrecision(2),
+        vitaminD = localNutrition.vitaminD.toPrecision(2),
+        carbohydrates = localNutrition.carbohydrates.toPrecision(2),
+        fat = localNutrition.fat.toPrecision(2),
+        protein = localNutrition.protein.toPrecision(2),
+        calories = localNutrition.calories.toPrecision(2),
+        sugar = localNutrition.sugar.toPrecision(2),
+        fiber = localNutrition.fiber.toPrecision(2),
+        insolubleFiber = localNutrition.insolubleFiber.toPrecision(2);
 
   Nutrition.perServing({
     required Nutrition nutritionPer100Grams,
@@ -119,7 +121,28 @@ class Nutrition {
 
   factory Nutrition.fromJson(Map<String, dynamic> json) => _$NutritionFromJson(json);
 
-  LocalNutrition get localNutrition => LocalNutrition()
+  LocalFoodNutrition get localFoodNutrition => LocalFoodNutrition()
+    ..fatSaturated = fatSaturated
+    ..fatTrans = fatTrans
+    ..fatPolyunsaturated = fatPolyunsaturated
+    ..fatMonounsaturated = fatMonounsaturated
+    ..cholesterol = cholesterol
+    ..sodium = sodium
+    ..potassium = potassium
+    ..calcium = calcium
+    ..iron = iron
+    ..vitaminA = vitaminA
+    ..vitaminC = vitaminC
+    ..vitaminD = vitaminD
+    ..carbohydrates = carbohydrates
+    ..fat = fat
+    ..protein = protein
+    ..calories = calories
+    ..sugar = sugar
+    ..fiber = fiber
+    ..insolubleFiber = insolubleFiber;
+
+  LocalDiaryNutrition get localDiaryNutrition => LocalDiaryNutrition()
     ..fatSaturated = fatSaturated
     ..fatTrans = fatTrans
     ..fatPolyunsaturated = fatPolyunsaturated
@@ -142,9 +165,11 @@ class Nutrition {
 
   Map<String, dynamic> toJson() => _$NutritionToJson(this);
 
-  static double _getNutrientPerServing(double? nutrientPer100Grams, double servingSizeGrams) => (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
+  static double _getNutrientPerServing(double? nutrientPer100Grams, double servingSizeGrams) =>
+      (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
 
-  static double _getNutrientFromServing(double? nutrientPerServing, double servingSizeGrams) => (nutrientPerServing ?? 0) / servingSizeGrams * 100;
+  static double _getNutrientFromServing(double? nutrientPerServing, double servingSizeGrams) =>
+      (nutrientPerServing ?? 0) / servingSizeGrams * 100;
 
   String get formattedCalories => '${calories.toStringAsFixed(1)} g';
 
@@ -211,11 +236,13 @@ class Nutrition {
 
   double get totalMacrosFromPercentages => carbohydrates * 4 + protein * 4 + fat * 9;
 
-  int get carbsPercentage => totalMacrosFromPercentages == 0 ? 0 : (carbohydrates * 4 / totalMacrosFromPercentages * 100).toInt();
+  int get carbsPercentage =>
+      totalMacrosFromPercentages == 0 ? 0 : (carbohydrates * 4 / totalMacrosFromPercentages * 100).toInt();
 
   int get fatPercentage => totalMacrosFromPercentages == 0 ? 0 : (fat * 9 / totalMacrosFromPercentages * 100).toInt();
 
-  int get proteinPercentage => totalMacrosFromPercentages == 0 ? 0 : (protein * 4 / totalMacrosFromPercentages * 100).toInt();
+  int get proteinPercentage =>
+      totalMacrosFromPercentages == 0 ? 0 : (protein * 4 / totalMacrosFromPercentages * 100).toInt();
 
   double get _solubleFiber => fiber > insolubleFiber ? fiber - insolubleFiber : 0;
 

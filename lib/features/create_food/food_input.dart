@@ -102,7 +102,7 @@ class FoodInput {
     ..nutritionInfo = Nutrition.fromServing(
       nutritionPerServing: nutrition,
       servingSizeGrams: servingSizeValue,
-    ).round().localNutrition;
+    ).round().localFoodNutrition;
 
   double _parseInput(String input) => double.tryParse(input) ?? 0;
 

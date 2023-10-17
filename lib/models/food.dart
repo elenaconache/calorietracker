@@ -1,5 +1,6 @@
 import 'package:calorietracker/features/create_food/food_input.dart';
 import 'package:calorietracker/models/collection/collection_food.dart';
+import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_food_response.dart';
@@ -46,6 +47,13 @@ class Food {
         brandName = food.brand,
         id = food.id;
 
+  Food.localDiary({required LocalDiaryFood localFood})
+      : name = localFood.name,
+        nutrition = Nutrition.local(localNutrition: localFood.nutritionInfo),
+        brandName = localFood.brand,
+        id = null,
+        barcode = localFood.barcode;
+
   Food.local({required LocalFood localFood})
       : name = localFood.name,
         nutrition = Nutrition.local(localNutrition: localFood.nutritionInfo),
@@ -54,10 +62,18 @@ class Food {
         barcode = localFood.barcode;
 
   LocalFood get localFood => LocalFood()
-    ..nutritionInfo = nutrition.localNutrition
+    ..nutritionInfo = nutrition.localFoodNutrition
     ..name = name
     ..brand = brandName
-    ..barcode = barcode;
+    ..barcode = barcode
+    ..pushed = id != null;
+
+  LocalDiaryFood get localDiaryFood => LocalDiaryFood()
+    ..nutritionInfo = nutrition.localDiaryNutrition
+    ..name = name
+    ..brand = brandName
+    ..barcode = barcode
+    ..pushed = id != null;
 
   factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
 

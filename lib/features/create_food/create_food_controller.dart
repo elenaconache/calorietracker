@@ -23,11 +23,13 @@ class CreateFoodController {
   Future<({int? localId, String? createdFoodId})> createFood({required FoodInput foodInput}) async {
     isLoading.value = true;
     int? localId;
-    final createdFood = await locator<CollectionApiService>().createFood(body: foodInput.addFoodRequest).catchError((error, stackTrace) async {
+    final createdFood = await locator<CollectionApiService>()
+        .createFood(body: foodInput.addFoodRequest)
+        .catchError((error, stackTrace) async {
       if (error is DioException) {
         if (error.isConnectionError) {
           final dbService = await locator.getAsync<DatabaseService>();
-          localId = await dbService.insertFood(localFood: foodInput.localFood);
+          localId = await dbService.upsertFood(localFood: foodInput.localFood);
           return null;
         }
       }

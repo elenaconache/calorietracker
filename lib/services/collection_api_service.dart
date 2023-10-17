@@ -1,5 +1,8 @@
 import 'package:calorietracker/models/collection/add_diary_entry_with_food_request.dart';
 import 'package:calorietracker/models/collection/add_food_request.dart';
+import 'package:calorietracker/models/collection/add_local_diary_entry_request.dart';
+import 'package:calorietracker/models/collection/add_local_food_request.dart';
+import 'package:calorietracker/models/collection/add_local_data_response.dart';
 import 'package:calorietracker/models/collection/collection_food.dart';
 import 'package:calorietracker/models/collection/created_food_response.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
@@ -14,11 +17,13 @@ part 'collection_api_service.g.dart';
 abstract class CollectionApiService {
   factory CollectionApiService(Dio dio, {String baseUrl}) = _CollectionApiService;
 
+  //TODO: replace with create food + create diary entry calls
   @POST('diary-entries/add-with-food')
   Future<void> createDiaryEntryWithFood({@Body() required AddDiaryEntryWithFoodRequest body});
 
   @GET('diary-entries/{userId}/{date}')
-  Future<List<MealEntriesResponse>> getDiaryEntries({@Path('userId') required String userId, @Path('date') required String date});
+  Future<List<MealEntriesResponse>> getDiaryEntries(
+      {@Path('userId') required String userId, @Path('date') required String date});
 
   @GET('users/{username}')
   Future<UserResponse> getUserId({@Path('username') required String username});
@@ -28,4 +33,11 @@ abstract class CollectionApiService {
 
   @GET('foods/find-by/{query}')
   Future<List<CollectionFood>> searchFood({@Path('query') required String query});
+
+  @POST('foods/add-list')
+  Future<List<AddLocalDataResponse>> createFoods({@Body() required List<AddLocalFoodRequest> localFoods});
+
+  @POST('diary-entries/add-list')
+  Future<List<AddLocalDataResponse>> createDiaryEntries(
+      {@Body() required List<AddLocalDiaryEntryRequest> localDiaryEntries});
 }

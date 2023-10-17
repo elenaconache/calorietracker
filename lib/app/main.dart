@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/accounts/accounts_view.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
@@ -9,6 +11,7 @@ import 'package:calorietracker/features/search_food/search_food_view.dart';
 import 'package:calorietracker/generated/l10n.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
+import 'package:calorietracker/services/data_sync_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:calorietracker/ui/colors.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +23,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
   await locator<UserService>().fetchLoggedInState();
+
+  unawaited(locator<DataSyncService>().uploadLocalData());
+  //TODO: periodic job for upload
+
   runApp(const MyApp());
 }
 
@@ -60,7 +67,8 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.black,
           snackBarTheme: SnackBarThemeData(
               backgroundColor: _defaultDarkColorScheme.background,
-              contentTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: _defaultDarkColorScheme.tertiary))),
+              contentTextStyle:
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(color: _defaultDarkColorScheme.tertiary))),
       themeMode: ThemeMode.dark,
     );
   }
@@ -68,7 +76,8 @@ class MyApp extends StatelessWidget {
   String get _initialRoutePath => locator<UserService>().isLoggedIn.value ? Routes.diary.path : Routes.login.path;
 
   Route? _onGenerateRoute(RouteSettings settings) {
-    final matchingRoute = Routes.values.firstWhere((route) => route.path == settings.name, orElse: () => Routes.unknown);
+    final matchingRoute =
+        Routes.values.firstWhere((route) => route.path == settings.name, orElse: () => Routes.unknown);
     final args = settings.arguments;
     switch (matchingRoute) {
       case Routes.diary:

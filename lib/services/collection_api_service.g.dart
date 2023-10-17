@@ -165,6 +165,69 @@ class _CollectionApiService implements CollectionApiService {
     return value;
   }
 
+  @override
+  Future<List<AddLocalDataResponse>> createFoods(
+      {required List<AddLocalFoodRequest> localFoods}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = await compute(serializeAddLocalFoodRequestList, localFoods);
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<AddLocalDataResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'foods/add-list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = await compute(
+      deserializeAddLocalDataResponseList,
+      _result.data!.cast<Map<String, dynamic>>(),
+    );
+    return value;
+  }
+
+  @override
+  Future<List<AddLocalDataResponse>> createDiaryEntries(
+      {required List<AddLocalDiaryEntryRequest> localDiaryEntries}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = await compute(
+        serializeAddLocalDiaryEntryRequestList, localDiaryEntries);
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<AddLocalDataResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'diary-entries/add-list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = await compute(
+      deserializeAddLocalDataResponseList,
+      _result.data!.cast<Map<String, dynamic>>(),
+    );
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

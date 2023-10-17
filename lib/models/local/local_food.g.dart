@@ -27,16 +27,36 @@ const LocalFoodSchema = CollectionSchema(
       name: r'brand',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(
+    r'deleted': PropertySchema(
       id: 2,
+      name: r'deleted',
+      type: IsarType.bool,
+    ),
+    r'errorPushing': PropertySchema(
+      id: 3,
+      name: r'errorPushing',
+      type: IsarType.bool,
+    ),
+    r'foodId': PropertySchema(
+      id: 4,
+      name: r'foodId',
+      type: IsarType.string,
+    ),
+    r'name': PropertySchema(
+      id: 5,
       name: r'name',
       type: IsarType.string,
     ),
     r'nutritionInfo': PropertySchema(
-      id: 3,
+      id: 6,
       name: r'nutritionInfo',
       type: IsarType.object,
-      target: r'LocalNutrition',
+      target: r'LocalFoodNutrition',
+    ),
+    r'pushed': PropertySchema(
+      id: 7,
+      name: r'pushed',
+      type: IsarType.bool,
     )
   },
   estimateSize: _localFoodEstimateSize,
@@ -46,7 +66,7 @@ const LocalFoodSchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {},
-  embeddedSchemas: {r'LocalNutrition': LocalNutritionSchema},
+  embeddedSchemas: {r'LocalFoodNutrition': LocalFoodNutritionSchema},
   getId: _localFoodGetId,
   getLinks: _localFoodGetLinks,
   attach: _localFoodAttach,
@@ -71,10 +91,16 @@ int _localFoodEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.foodId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 +
-      LocalNutritionSchema.estimateSize(
-          object.nutritionInfo, allOffsets[LocalNutrition]!, allOffsets);
+      LocalFoodNutritionSchema.estimateSize(
+          object.nutritionInfo, allOffsets[LocalFoodNutrition]!, allOffsets);
   return bytesCount;
 }
 
@@ -86,13 +112,17 @@ void _localFoodSerialize(
 ) {
   writer.writeString(offsets[0], object.barcode);
   writer.writeString(offsets[1], object.brand);
-  writer.writeString(offsets[2], object.name);
-  writer.writeObject<LocalNutrition>(
-    offsets[3],
+  writer.writeBool(offsets[2], object.deleted);
+  writer.writeBool(offsets[3], object.errorPushing);
+  writer.writeString(offsets[4], object.foodId);
+  writer.writeString(offsets[5], object.name);
+  writer.writeObject<LocalFoodNutrition>(
+    offsets[6],
     allOffsets,
-    LocalNutritionSchema.serialize,
+    LocalFoodNutritionSchema.serialize,
     object.nutritionInfo,
   );
+  writer.writeBool(offsets[7], object.pushed);
 }
 
 LocalFood _localFoodDeserialize(
@@ -104,14 +134,18 @@ LocalFood _localFoodDeserialize(
   final object = LocalFood();
   object.barcode = reader.readStringOrNull(offsets[0]);
   object.brand = reader.readStringOrNull(offsets[1]);
+  object.deleted = reader.readBool(offsets[2]);
+  object.errorPushing = reader.readBool(offsets[3]);
+  object.foodId = reader.readStringOrNull(offsets[4]);
   object.id = id;
-  object.name = reader.readString(offsets[2]);
-  object.nutritionInfo = reader.readObjectOrNull<LocalNutrition>(
-        offsets[3],
-        LocalNutritionSchema.deserialize,
+  object.name = reader.readString(offsets[5]);
+  object.nutritionInfo = reader.readObjectOrNull<LocalFoodNutrition>(
+        offsets[6],
+        LocalFoodNutritionSchema.deserialize,
         allOffsets,
       ) ??
-      LocalNutrition();
+      LocalFoodNutrition();
+  object.pushed = reader.readBool(offsets[7]);
   return object;
 }
 
@@ -127,21 +161,29 @@ P _localFoodDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 3:
-      return (reader.readObjectOrNull<LocalNutrition>(
+      return (reader.readBool(offset)) as P;
+    case 4:
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readObjectOrNull<LocalFoodNutrition>(
             offset,
-            LocalNutritionSchema.deserialize,
+            LocalFoodNutritionSchema.deserialize,
             allOffsets,
           ) ??
-          LocalNutrition()) as P;
+          LocalFoodNutrition()) as P;
+    case 7:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 Id _localFoodGetId(LocalFood object) {
-  return object.id ?? Isar.autoIncrement;
+  return object.id;
 }
 
 List<IsarLinkBase<dynamic>> _localFoodGetLinks(LocalFood object) {
@@ -524,24 +566,174 @@ extension LocalFoodQueryFilter
     });
   }
 
-  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> idIsNull() {
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> deletedEqualTo(
+      bool value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'id',
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'deleted',
+        value: value,
       ));
     });
   }
 
-  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> idIsNotNull() {
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> errorPushingEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'errorPushing',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'foodId',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'id',
+        property: r'foodId',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'foodId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'foodId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'foodId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'foodId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'foodId',
+        value: '',
       ));
     });
   }
 
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> idEqualTo(
-      Id? value) {
+      Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -551,7 +743,7 @@ extension LocalFoodQueryFilter
   }
 
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> idGreaterThan(
-    Id? value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -564,7 +756,7 @@ extension LocalFoodQueryFilter
   }
 
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> idLessThan(
-    Id? value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -577,8 +769,8 @@ extension LocalFoodQueryFilter
   }
 
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> idBetween(
-    Id? lower,
-    Id? upper, {
+    Id lower,
+    Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -722,12 +914,22 @@ extension LocalFoodQueryFilter
       ));
     });
   }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> pushedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'pushed',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension LocalFoodQueryObject
     on QueryBuilder<LocalFood, LocalFood, QFilterCondition> {
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> nutritionInfo(
-      FilterQuery<LocalNutrition> q) {
+      FilterQuery<LocalFoodNutrition> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'nutritionInfo');
     });
@@ -762,6 +964,42 @@ extension LocalFoodQuerySortBy on QueryBuilder<LocalFood, LocalFood, QSortBy> {
     });
   }
 
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deleted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByDeletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deleted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByErrorPushing() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorPushing', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByErrorPushingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorPushing', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByFoodId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'foodId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByFoodIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'foodId', Sort.desc);
+    });
+  }
+
   QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -771,6 +1009,18 @@ extension LocalFoodQuerySortBy on QueryBuilder<LocalFood, LocalFood, QSortBy> {
   QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByPushed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pushed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByPushedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pushed', Sort.desc);
     });
   }
 }
@@ -801,6 +1051,42 @@ extension LocalFoodQuerySortThenBy
     });
   }
 
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deleted', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByDeletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'deleted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByErrorPushing() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorPushing', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByErrorPushingDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorPushing', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByFoodId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'foodId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByFoodIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'foodId', Sort.desc);
+    });
+  }
+
   QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -824,6 +1110,18 @@ extension LocalFoodQuerySortThenBy
       return query.addSortBy(r'name', Sort.desc);
     });
   }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByPushed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pushed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByPushedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'pushed', Sort.desc);
+    });
+  }
 }
 
 extension LocalFoodQueryWhereDistinct
@@ -842,10 +1140,35 @@ extension LocalFoodQueryWhereDistinct
     });
   }
 
+  QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByDeleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'deleted');
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByErrorPushing() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'errorPushing');
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByFoodId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'foodId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByPushed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'pushed');
     });
   }
 }
@@ -870,16 +1193,40 @@ extension LocalFoodQueryProperty
     });
   }
 
+  QueryBuilder<LocalFood, bool, QQueryOperations> deletedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'deleted');
+    });
+  }
+
+  QueryBuilder<LocalFood, bool, QQueryOperations> errorPushingProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'errorPushing');
+    });
+  }
+
+  QueryBuilder<LocalFood, String?, QQueryOperations> foodIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'foodId');
+    });
+  }
+
   QueryBuilder<LocalFood, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
     });
   }
 
-  QueryBuilder<LocalFood, LocalNutrition, QQueryOperations>
+  QueryBuilder<LocalFood, LocalFoodNutrition, QQueryOperations>
       nutritionInfoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nutritionInfo');
+    });
+  }
+
+  QueryBuilder<LocalFood, bool, QQueryOperations> pushedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'pushed');
     });
   }
 }
@@ -891,9 +1238,9 @@ extension LocalFoodQueryProperty
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-const LocalNutritionSchema = Schema(
-  name: r'LocalNutrition',
-  id: 711503537225180010,
+const LocalFoodNutritionSchema = Schema(
+  name: r'LocalFoodNutrition',
+  id: -2132336367375358205,
   properties: {
     r'calcium': PropertySchema(
       id: 0,
@@ -991,14 +1338,14 @@ const LocalNutritionSchema = Schema(
       type: IsarType.double,
     )
   },
-  estimateSize: _localNutritionEstimateSize,
-  serialize: _localNutritionSerialize,
-  deserialize: _localNutritionDeserialize,
-  deserializeProp: _localNutritionDeserializeProp,
+  estimateSize: _localFoodNutritionEstimateSize,
+  serialize: _localFoodNutritionSerialize,
+  deserialize: _localFoodNutritionDeserialize,
+  deserializeProp: _localFoodNutritionDeserializeProp,
 );
 
-int _localNutritionEstimateSize(
-  LocalNutrition object,
+int _localFoodNutritionEstimateSize(
+  LocalFoodNutrition object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -1006,8 +1353,8 @@ int _localNutritionEstimateSize(
   return bytesCount;
 }
 
-void _localNutritionSerialize(
-  LocalNutrition object,
+void _localFoodNutritionSerialize(
+  LocalFoodNutrition object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -1033,13 +1380,13 @@ void _localNutritionSerialize(
   writer.writeDouble(offsets[18], object.vitaminD);
 }
 
-LocalNutrition _localNutritionDeserialize(
+LocalFoodNutrition _localFoodNutritionDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = LocalNutrition();
+  final object = LocalFoodNutrition();
   object.calcium = reader.readDouble(offsets[0]);
   object.calories = reader.readDouble(offsets[1]);
   object.carbohydrates = reader.readDouble(offsets[2]);
@@ -1062,7 +1409,7 @@ LocalNutrition _localNutritionDeserialize(
   return object;
 }
 
-P _localNutritionDeserializeProp<P>(
+P _localFoodNutritionDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -1112,9 +1459,9 @@ P _localNutritionDeserializeProp<P>(
   }
 }
 
-extension LocalNutritionQueryFilter
-    on QueryBuilder<LocalNutrition, LocalNutrition, QFilterCondition> {
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+extension LocalFoodNutritionQueryFilter
+    on QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QFilterCondition> {
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       calciumEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1128,7 +1475,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       calciumGreaterThan(
     double value, {
     bool include = false,
@@ -1144,7 +1491,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       calciumLessThan(
     double value, {
     bool include = false,
@@ -1160,7 +1507,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       calciumBetween(
     double lower,
     double upper, {
@@ -1180,7 +1527,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       caloriesEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1194,7 +1541,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       caloriesGreaterThan(
     double value, {
     bool include = false,
@@ -1210,7 +1557,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       caloriesLessThan(
     double value, {
     bool include = false,
@@ -1226,7 +1573,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       caloriesBetween(
     double lower,
     double upper, {
@@ -1246,7 +1593,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       carbohydratesEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1260,7 +1607,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       carbohydratesGreaterThan(
     double value, {
     bool include = false,
@@ -1276,7 +1623,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       carbohydratesLessThan(
     double value, {
     bool include = false,
@@ -1292,7 +1639,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       carbohydratesBetween(
     double lower,
     double upper, {
@@ -1312,7 +1659,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       cholesterolEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1326,7 +1673,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       cholesterolGreaterThan(
     double value, {
     bool include = false,
@@ -1342,7 +1689,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       cholesterolLessThan(
     double value, {
     bool include = false,
@@ -1358,7 +1705,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       cholesterolBetween(
     double lower,
     double upper, {
@@ -1378,7 +1725,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1392,7 +1739,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatGreaterThan(
     double value, {
     bool include = false,
@@ -1408,7 +1755,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatLessThan(
     double value, {
     bool include = false,
@@ -1424,7 +1771,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatBetween(
     double lower,
     double upper, {
@@ -1444,7 +1791,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatMonounsaturatedEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1458,7 +1805,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatMonounsaturatedGreaterThan(
     double value, {
     bool include = false,
@@ -1474,7 +1821,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatMonounsaturatedLessThan(
     double value, {
     bool include = false,
@@ -1490,7 +1837,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatMonounsaturatedBetween(
     double lower,
     double upper, {
@@ -1510,7 +1857,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatPolyunsaturatedEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1524,7 +1871,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatPolyunsaturatedGreaterThan(
     double value, {
     bool include = false,
@@ -1540,7 +1887,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatPolyunsaturatedLessThan(
     double value, {
     bool include = false,
@@ -1556,7 +1903,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatPolyunsaturatedBetween(
     double lower,
     double upper, {
@@ -1576,7 +1923,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatSaturatedEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1590,7 +1937,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatSaturatedGreaterThan(
     double value, {
     bool include = false,
@@ -1606,7 +1953,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatSaturatedLessThan(
     double value, {
     bool include = false,
@@ -1622,7 +1969,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatSaturatedBetween(
     double lower,
     double upper, {
@@ -1642,7 +1989,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatTransEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1656,7 +2003,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatTransGreaterThan(
     double value, {
     bool include = false,
@@ -1672,7 +2019,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatTransLessThan(
     double value, {
     bool include = false,
@@ -1688,7 +2035,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fatTransBetween(
     double lower,
     double upper, {
@@ -1708,7 +2055,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fiberEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1722,7 +2069,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fiberGreaterThan(
     double value, {
     bool include = false,
@@ -1738,7 +2085,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fiberLessThan(
     double value, {
     bool include = false,
@@ -1754,7 +2101,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       fiberBetween(
     double lower,
     double upper, {
@@ -1774,7 +2121,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       insolubleFiberEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1788,7 +2135,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       insolubleFiberGreaterThan(
     double value, {
     bool include = false,
@@ -1804,7 +2151,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       insolubleFiberLessThan(
     double value, {
     bool include = false,
@@ -1820,7 +2167,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       insolubleFiberBetween(
     double lower,
     double upper, {
@@ -1840,7 +2187,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       ironEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1854,7 +2201,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       ironGreaterThan(
     double value, {
     bool include = false,
@@ -1870,7 +2217,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       ironLessThan(
     double value, {
     bool include = false,
@@ -1886,7 +2233,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       ironBetween(
     double lower,
     double upper, {
@@ -1906,7 +2253,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       potassiumEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1920,7 +2267,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       potassiumGreaterThan(
     double value, {
     bool include = false,
@@ -1936,7 +2283,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       potassiumLessThan(
     double value, {
     bool include = false,
@@ -1952,7 +2299,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       potassiumBetween(
     double lower,
     double upper, {
@@ -1972,7 +2319,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       proteinEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -1986,7 +2333,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       proteinGreaterThan(
     double value, {
     bool include = false,
@@ -2002,7 +2349,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       proteinLessThan(
     double value, {
     bool include = false,
@@ -2018,7 +2365,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       proteinBetween(
     double lower,
     double upper, {
@@ -2038,7 +2385,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       sodiumEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -2052,7 +2399,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       sodiumGreaterThan(
     double value, {
     bool include = false,
@@ -2068,7 +2415,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       sodiumLessThan(
     double value, {
     bool include = false,
@@ -2084,7 +2431,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       sodiumBetween(
     double lower,
     double upper, {
@@ -2104,7 +2451,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       sugarEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -2118,7 +2465,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       sugarGreaterThan(
     double value, {
     bool include = false,
@@ -2134,7 +2481,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       sugarLessThan(
     double value, {
     bool include = false,
@@ -2150,7 +2497,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       sugarBetween(
     double lower,
     double upper, {
@@ -2170,7 +2517,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminAEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -2184,7 +2531,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminAGreaterThan(
     double value, {
     bool include = false,
@@ -2200,7 +2547,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminALessThan(
     double value, {
     bool include = false,
@@ -2216,7 +2563,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminABetween(
     double lower,
     double upper, {
@@ -2236,7 +2583,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminCEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -2250,7 +2597,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminCGreaterThan(
     double value, {
     bool include = false,
@@ -2266,7 +2613,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminCLessThan(
     double value, {
     bool include = false,
@@ -2282,7 +2629,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminCBetween(
     double lower,
     double upper, {
@@ -2302,7 +2649,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminDEqualTo(
     double value, {
     double epsilon = Query.epsilon,
@@ -2316,7 +2663,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminDGreaterThan(
     double value, {
     bool include = false,
@@ -2332,7 +2679,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminDLessThan(
     double value, {
     bool include = false,
@@ -2348,7 +2695,7 @@ extension LocalNutritionQueryFilter
     });
   }
 
-  QueryBuilder<LocalNutrition, LocalNutrition, QAfterFilterCondition>
+  QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QAfterFilterCondition>
       vitaminDBetween(
     double lower,
     double upper, {
@@ -2369,5 +2716,5 @@ extension LocalNutritionQueryFilter
   }
 }
 
-extension LocalNutritionQueryObject
-    on QueryBuilder<LocalNutrition, LocalNutrition, QFilterCondition> {}
+extension LocalFoodNutritionQueryObject
+    on QueryBuilder<LocalFoodNutrition, LocalFoodNutrition, QFilterCondition> {}
