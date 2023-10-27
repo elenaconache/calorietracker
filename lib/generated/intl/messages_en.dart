@@ -166,6 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Potassium (mg)"),
         "poweredByNutritionixLabel":
             MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
+        "profileTitle": MessageLookupByLibrary.simpleMessage("Profile"),
         "proteinGramsLabel":
             MessageLookupByLibrary.simpleMessage("Protein (g)"),
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
@@ -191,6 +192,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugarsExceedNetCarbsError": MessageLookupByLibrary.simpleMessage(
             "Sugar must be less than or equal to net carbs."),
         "sumFatsExceedsTotalFatError": m15,
+        "switchAccountLabel":
+            MessageLookupByLibrary.simpleMessage("Switch account"),
+        "syncDataLabel": MessageLookupByLibrary.simpleMessage("Sync data"),
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today"),
         "transFatGramsLabel":
             MessageLookupByLibrary.simpleMessage("Trans fat (g)"),

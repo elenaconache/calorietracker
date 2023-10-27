@@ -1080,6 +1080,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Profile`
+  String get profileTitle {
+    return Intl.message(
+      'Profile',
+      name: 'profileTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switch account`
+  String get switchAccountLabel {
+    return Intl.message(
+      'Switch account',
+      name: 'switchAccountLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync data`
+  String get syncDataLabel {
+    return Intl.message(
+      'Sync data',
+      name: 'syncDataLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

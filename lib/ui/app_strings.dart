@@ -144,23 +144,30 @@ class AppStrings {
 
   static String macrosExceedServingSizeError(int servingSize) => S.current.macrosExceedServingSizeError(servingSize);
 
-  static String cholesterolExceedsMaxPerServingError(int expectedCholesterol) => S.current.cholesterolExceedsMaxPerServingError(expectedCholesterol);
+  static String cholesterolExceedsMaxPerServingError(int expectedCholesterol) =>
+      S.current.cholesterolExceedsMaxPerServingError(expectedCholesterol);
 
   static String get insolubleFiberExceedsFiberError => S.current.insolubleFiberExceedsFiberError;
 
   static String get saltExceedsServingSizeError => S.current.saltExceedsServingSizeError;
 
-  static String ironExceedsMaxPerServingError(int expectedIron) => S.current.ironExceedsMaxPerServingError(expectedIron);
+  static String ironExceedsMaxPerServingError(int expectedIron) =>
+      S.current.ironExceedsMaxPerServingError(expectedIron);
 
-  static String potassiumExceedsMaxPerServingError(int expectedPotassium) => S.current.potassiumExceedsMaxPerServingError(expectedPotassium);
+  static String potassiumExceedsMaxPerServingError(int expectedPotassium) =>
+      S.current.potassiumExceedsMaxPerServingError(expectedPotassium);
 
-  static String calciumExceedsMaxPerServingError(int expectedCalcium) => S.current.calciumExceedsMaxPerServingError(expectedCalcium);
+  static String calciumExceedsMaxPerServingError(int expectedCalcium) =>
+      S.current.calciumExceedsMaxPerServingError(expectedCalcium);
 
-  static String vitaminAExceedsMaxPerServingError(int expectedVitaminA) => S.current.vitaminAExceedsMaxPerServingError(expectedVitaminA);
+  static String vitaminAExceedsMaxPerServingError(int expectedVitaminA) =>
+      S.current.vitaminAExceedsMaxPerServingError(expectedVitaminA);
 
-  static String vitaminCExceedsMaxPerServingError(int expectedVitaminC) => S.current.vitaminCExceedsMaxPerServingError(expectedVitaminC);
+  static String vitaminCExceedsMaxPerServingError(int expectedVitaminC) =>
+      S.current.vitaminCExceedsMaxPerServingError(expectedVitaminC);
 
-  static String vitaminDExceedsMaxPerServingError(int expectedVitaminD) => S.current.vitaminDExceedsMaxPerServingError(expectedVitaminD);
+  static String vitaminDExceedsMaxPerServingError(int expectedVitaminD) =>
+      S.current.vitaminDExceedsMaxPerServingError(expectedVitaminD);
 
   static String get carbsGramsLabel => S.current.carbsGramsLabel;
 
@@ -209,4 +216,10 @@ class AppStrings {
   static String get errorAddFood => S.current.errorAddFood;
 
   static String get errorSavingEntry => S.current.errorSavingEntry;
+
+  static String get profileTitle => S.current.profileTitle;
+
+  static String get switchAccountLabel => S.current.switchAccountLabel;
+
+  static String get syncDataLabel => S.current.syncDataLabel;
 }
