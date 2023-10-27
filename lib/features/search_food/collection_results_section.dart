@@ -41,6 +41,7 @@ class _CollectionResultsSectionState extends State<CollectionResultsSection> wit
                           itemBuilder: (context, index) {
                             final item = searchResponse.data![index];
                             return FoodItem(
+                              nutritionPerServingQuantity: item.nutritionInfo,
                               foodResponse: Food.collection(food: item),
                               meal: widget.meal,
                               unitName: AppStrings.gramsShortLabel,

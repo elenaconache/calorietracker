@@ -2,6 +2,7 @@ import 'package:calorietracker/models/nutrient.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_nutrient.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:collection/collection.dart';
 
 part 'nutritionix_food_response.g.dart';
 
@@ -26,7 +27,12 @@ class NutritionixFoodResponse {
   final double? servingQuantity;
 
   const NutritionixFoodResponse(
-      {this.brandName, required this.nutrients, required this.servingWeightGrams, this.servingUnit, this.servingQuantity, required this.name});
+      {this.brandName,
+      required this.nutrients,
+      required this.servingWeightGrams,
+      this.servingUnit,
+      this.servingQuantity,
+      required this.name});
 
   factory NutritionixFoodResponse.fromJson(Map<String, dynamic> json) => _$NutritionixFoodResponseFromJson(json);
 
@@ -77,19 +83,11 @@ class NutritionixFoodResponse {
         vitaminD: _getNutrientValuePer100Grams(Nutrient.vitaminD),
       );
 
-  double _getNutrientValuePer100Grams(Nutrient nutrient) => !hasMeasurementInfo
-      ? 0
-      : nutrients
-              ?.firstWhere((element) => element.matchesNutrient(nutrient: nutrient), orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0))
-              .value ??
-          0 / servingWeightGrams! * 100;
+  double _getNutrientValuePer100Grams(Nutrient nutrient) => _getNutrientValue(nutrient) / servingWeightGrams! * 100;
 
   double _getNutrientValue(Nutrient nutrient) => !hasMeasurementInfo
       ? 0
-      : nutrients
-              ?.firstWhere((element) => element.matchesNutrient(nutrient: nutrient), orElse: () => const NutritionixNutrient(value: 0, nutrientId: 0))
-              .value ??
-          0;
+      : nutrients?.firstWhereOrNull((attribute) => attribute.matchesNutrient(nutrient: nutrient))?.value ?? 0;
 
   bool get hasMeasurementInfo => servingWeightGrams != null && servingQuantity != null && servingUnit != null;
 }

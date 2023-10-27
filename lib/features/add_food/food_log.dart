@@ -6,12 +6,14 @@ class FoodLog {
   final Food food;
   final double servingQuantity;
   final int? localFoodId;
+  final DateTime date;
 
-  FoodLog({
+  const FoodLog({
     required this.meal,
     required this.food,
     required this.servingQuantity,
     required this.localFoodId,
+    required this.date,
   });
 
   FoodLog copyWith({
@@ -19,11 +21,13 @@ class FoodLog {
     Food? food,
     double? servingQuantity,
     int? localFoodId,
+    DateTime? date,
   }) =>
       FoodLog(
         meal: meal ?? this.meal,
         food: food ?? this.food,
         servingQuantity: servingQuantity ?? this.servingQuantity,
         localFoodId: localFoodId ?? this.localFoodId,
+        date: date ?? this.date,
       );
 }

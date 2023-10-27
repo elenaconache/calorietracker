@@ -240,5 +240,6 @@
   "collectionLabel": "Collection",
   "gramsShortLabel": "g",
   "netCarbsLabel": "Net carbs",
-  "errorAddFood": "Could not save food to diary. Please try again later."
+  "errorAddFood": "Could not save food to diary. Please try again later.",
+  "errorSavingEntry": "Error saving entry."
 }

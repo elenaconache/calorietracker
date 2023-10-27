@@ -202,15 +202,23 @@ class DataSyncService {
       return;
     }
 
-    final errorFoodsSet = Set<AddLocalDataResponse>.from(errors);
+    final errorFoodsSet = Set<AddLocalDataError>.from(errors);
     final foodsToUpdate = pendingFoods.where(
-      (pendingFood) => errorFoodsSet.any((error) => error.localResourceId == pendingFood.id),
+      (pendingFood) => errorFoodsSet.any((error) => error.localId == pendingFood.id),
     );
     for (final food in foodsToUpdate) {
       food.errorPushing = true;
     }
 
     final dbService = await locator.getAsync<DatabaseService>();
+    final pendingDiaryEntries = await dbService.getDiaryEntries(filterPending: true);
+    final diaryEntriesWithFoodError = pendingDiaryEntries
+        .where((entry) => foodsToUpdate.any((localFood) => entry.localFood.localId == localFood.id))
+        .toList();
+    for (final entry in diaryEntriesWithFoodError) {
+      entry.errorPushing = true;
+    }
+    await dbService.upsertDiaryEntries(localEntries: diaryEntriesWithFoodError);
     await dbService.upsertFoods(localFoods: foodsToUpdate.toList());
   }
 
@@ -222,9 +230,9 @@ class DataSyncService {
       return;
     }
 
-    final errorDiaryEntries = Set<AddLocalDataResponse>.from(errors);
+    final errorDiaryEntries = Set<AddLocalDataError>.from(errors);
     final entriesToUpdate = pendingEntries.where(
-      (pendingEntry) => errorDiaryEntries.any((error) => error.localResourceId == pendingEntry.id),
+      (pendingEntry) => errorDiaryEntries.any((error) => error.localId == pendingEntry.id),
     );
     for (final entry in entriesToUpdate) {
       entry.errorPushing = true;

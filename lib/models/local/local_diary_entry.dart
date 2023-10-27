@@ -43,7 +43,7 @@ class LocalDiaryEntry {
 
 @embedded
 class LocalDiaryFood extends LocalFoodBase {
-  late int localId;
+  int? localId;
   late LocalDiaryNutrition nutritionInfo;
 }
 

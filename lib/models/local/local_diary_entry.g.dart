@@ -1611,7 +1611,7 @@ LocalDiaryFood _localDiaryFoodDeserialize(
   object.deleted = reader.readBool(offsets[2]);
   object.errorPushing = reader.readBool(offsets[3]);
   object.foodId = reader.readStringOrNull(offsets[4]);
-  object.localId = reader.readLong(offsets[5]);
+  object.localId = reader.readLongOrNull(offsets[5]);
   object.name = reader.readString(offsets[6]);
   object.nutritionInfo = reader.readObjectOrNull<LocalDiaryNutrition>(
         offsets[7],
@@ -1641,7 +1641,7 @@ P _localDiaryFoodDeserializeProp<P>(
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
@@ -2143,7 +2143,25 @@ extension LocalDiaryFoodQueryFilter
   }
 
   QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      localIdEqualTo(int value) {
+      localIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'localId',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
+      localIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'localId',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
+      localIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'localId',
@@ -2154,7 +2172,7 @@ extension LocalDiaryFoodQueryFilter
 
   QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
       localIdGreaterThan(
-    int value, {
+    int? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -2168,7 +2186,7 @@ extension LocalDiaryFoodQueryFilter
 
   QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
       localIdLessThan(
-    int value, {
+    int? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -2182,8 +2200,8 @@ extension LocalDiaryFoodQueryFilter
 
   QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
       localIdBetween(
-    int lower,
-    int upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {

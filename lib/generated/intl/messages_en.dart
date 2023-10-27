@@ -113,6 +113,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Serving size can\'t be empty."),
         "errorAddFood": MessageLookupByLibrary.simpleMessage(
             "Could not save food to diary. Please try again later."),
+        "errorSavingEntry":
+            MessageLookupByLibrary.simpleMessage("Error saving entry."),
         "fatGramsLabel": MessageLookupByLibrary.simpleMessage("Fat (g)"),
         "fatLabel": MessageLookupByLibrary.simpleMessage("Fat"),
         "fatPercentageValue": m6,

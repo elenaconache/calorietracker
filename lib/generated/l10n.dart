@@ -1070,6 +1070,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Error saving entry.`
+  String get errorSavingEntry {
+    return Intl.message(
+      'Error saving entry.',
+      name: 'errorSavingEntry',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

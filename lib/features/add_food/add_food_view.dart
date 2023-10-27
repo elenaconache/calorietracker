@@ -161,14 +161,14 @@ class _AddFoodViewState extends State<AddFoodView> {
         StackTrace.current,
       );
     } else {
-      unawaited(_controller
-          .logFood(
-              foodLog: FoodLog(
-                  meal: widget.args.meal,
-                  food: widget.args.food,
-                  servingQuantity: servingQuantity,
-                  localFoodId: widget.args.localId))
-          .then((_) {
+      final foodLog = FoodLog(
+        meal: widget.args.meal,
+        food: widget.args.food,
+        servingQuantity: servingQuantity,
+        localFoodId: widget.args.localId,
+        date: DateTime.now(), // TODO: handle logging a food for a different date too, not just for today
+      );
+      unawaited(_controller.logFood(foodLog: foodLog).then((_) {
         if (context.mounted) {
           Navigator.pop(context);
         } else {

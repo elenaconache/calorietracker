@@ -61,7 +61,7 @@ class DatabaseService {
 
   Future<List<LocalFood>> _readPendingFoods(String path) async {
     final db = await getDatabase(path);
-    return db.localFoods.where().filter().pushedEqualTo(false).findAll();
+    return db.localFoods.where().filter().pushedEqualTo(false).errorPushingEqualTo(false).findAll();
   }
 
   Future<int?> upsertDiaryEntry({required LocalDiaryEntry localDiaryEntry}) async {
@@ -95,8 +95,14 @@ class DatabaseService {
         .where()
         .filter()
         .pushedEqualTo(false)
+        .errorPushingEqualTo(false)
         .localFood((food) => food.foodIdIsNotNull())
         .findAll();
+  }
+
+  Future<List<LocalDiaryEntry>> _readPushedDiaryEntries(String path) async {
+    final db = await getDatabase(path);
+    return db.localDiaryEntrys.where().filter().pushedEqualTo(true).findAll();
   }
 
   Future<List<LocalDiaryEntry>> _readPendingDiaryEntries(String path) async {
@@ -114,14 +120,20 @@ class DatabaseService {
     return db.localDiaryEntrys.where().filter().pushedEqualTo(false).entryDateStartsWith(pathDateEntry.value).findAll();
   }
 
-  Future<List<LocalDiaryEntry>> getDiaryEntries({bool filterPending = false, bool filterUploadReady = false}) async {
+  Future<List<LocalDiaryEntry>> getDiaryEntries({
+    bool filterPending = false,
+    bool filterUploadReady = false,
+    bool filterPushed = false,
+  }) async {
     final pathProvider = await locator.getAsync<AppPathProvider>();
     final entries = await compute(
-            filterUploadReady
-                ? _readUploadReadyDiaryEntries
-                : filterPending
-                    ? _readPendingDiaryEntries
-                    : _readDiaryEntries,
+            filterPushed
+                ? _readPushedDiaryEntries
+                : filterUploadReady
+                    ? _readUploadReadyDiaryEntries
+                    : filterPending
+                        ? _readPendingDiaryEntries
+                        : _readDiaryEntries,
             pathProvider.path)
         .catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);

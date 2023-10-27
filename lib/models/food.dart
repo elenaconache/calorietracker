@@ -1,4 +1,5 @@
 import 'package:calorietracker/features/create_food/food_input.dart';
+import 'package:calorietracker/models/collection/add_food_request.dart';
 import 'package:calorietracker/models/collection/collection_food.dart';
 import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
@@ -74,6 +75,13 @@ class Food {
     ..brand = brandName
     ..barcode = barcode
     ..pushed = id != null;
+
+  AddFoodRequest get addFoodRequest => AddFoodRequest(
+        barcode: null,
+        name: name,
+        brand: brandName,
+        nutritionInfo: nutrition.round(),
+      );
 
   factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
 

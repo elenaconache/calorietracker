@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 
 class LoggingService {
@@ -5,6 +7,6 @@ class LoggingService {
 
   void handle(dynamic error, StackTrace stackTrace) {
     debugPrint(error.toString());
-    debugPrint(stackTrace.toString());
+    log(stackTrace.toString());
   }
 }

@@ -40,6 +40,7 @@ class _CommonResultsSectionState extends State<CommonResultsSection> with Automa
                           itemBuilder: (context, index) {
                             final item = searchResponse.data!.commonFoods[index];
                             return FoodItem(
+                              nutritionPerServingQuantity: item.nutrition,
                               foodResponse: Food.nutritionix(nutritionixFoodResponse: item),
                               meal: widget.meal,
                               servingQuantity: item.servingQuantity ?? 1,

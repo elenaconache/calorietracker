@@ -41,6 +41,7 @@ class _BrandedResultsSectionState extends State<BrandedResultsSection> with Auto
                             final item = searchResponse.data!.brandedFoods[index];
                             return FoodItem(
                               foodResponse: Food.nutritionix(nutritionixFoodResponse: item),
+                              nutritionPerServingQuantity: item.nutrition,
                               meal: widget.meal,
                               servingQuantity: item.servingQuantity ?? 1,
                               unitName: item.servingUnit ?? '',

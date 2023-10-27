@@ -12,6 +12,7 @@ class DiaryEntry {
   final String date;
   final String unitId;
   final double servingQuantity;
+  final bool errorPushing;
 
   const DiaryEntry({
     required this.collectionId,
@@ -20,6 +21,7 @@ class DiaryEntry {
     required this.date,
     required this.unitId,
     required this.servingQuantity,
+    this.errorPushing = false,
   });
 
   DiaryEntry.local({required LocalDiaryEntry localEntry})
@@ -28,7 +30,8 @@ class DiaryEntry {
         food = Food.localDiary(localFood: localEntry.localFood),
         date = localEntry.entryDate,
         unitId = localEntry.unitId,
-        servingQuantity = localEntry.servingQuantity;
+        servingQuantity = localEntry.servingQuantity,
+        errorPushing = localEntry.errorPushing;
 
   factory DiaryEntry.fromJson(Map<String, dynamic> json) => _$DiaryEntryFromJson(json);
 

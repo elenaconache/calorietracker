@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/constants.dart';
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/models/collection/meal_entries_response.dart';
 import 'package:calorietracker/models/diary_entry.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/helpers/future_response.dart';
+import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/meal_entries_list.dart';
 import 'package:calorietracker/models/nutrition.dart';
@@ -78,24 +82,11 @@ class DiaryService {
       // TODO: navigate to login and show error snack bar
     } else {
       final diary = await (apiService.getDiaryEntries(userId: userId!, date: fetchedDate).then((response) async {
-        var updatedDiary = response.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
-        final dbService = await locator.getAsync<DatabaseService>();
-        final localDiary = await dbService.getDisplayDiaryEntries(
-          date: fetchedDate,
-          filterPending: true,
-        );
-        // TODO: unawaited: save locally the diary entries
-        //  with pushed = true for the entries that were not locally
-        //  but were in collection API response
-        return <MealEntriesList>[
-          ...updatedDiary,
-          ...localDiary,
-        ];
+        return _mergeRemoteAndLocalDiaries(collectionDiary: response, diaryDate: fetchedDate, userId: userId);
       }).catchError((error, stackTrace) async {
         locator<LoggingService>().handle(error, stackTrace);
         final dbService = await locator.getAsync<DatabaseService>();
         final localDiary = await dbService.getDisplayDiaryEntries(date: fetchedDate);
-
         return localDiary;
       }));
       dayMealEntries.value = FutureResponse.success(diary);
@@ -140,5 +131,63 @@ class DiaryService {
       dayMealEntries.value = diary;
       locator<LoggingService>().info(dayMealEntries.value.toString());
     }
+  }
+
+  Future<List<MealEntriesList>> _mergeRemoteAndLocalDiaries({
+    required List<MealEntriesResponse> collectionDiary,
+    required String diaryDate,
+    required String userId,
+  }) async {
+    var remoteDiary = collectionDiary.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
+    final dbService = await locator.getAsync<DatabaseService>();
+    final localDisplayDiary = await dbService.getDisplayDiaryEntries(
+      date: diaryDate,
+      filterPending: true,
+    );
+
+    unawaited(_pullRemoteDiary(dbService, remoteDiary, userId));
+
+    var result = <MealEntriesList>[];
+    for (final meal in Meal.values) {
+      final remoteDiaryEntries = remoteDiary
+          .where((list) => list.meal == meal)
+          .map((element) => element.diaryEntries)
+          .expand((element) => element)
+          .toList();
+      final localDiaryEntries = localDisplayDiary
+          .where((list) => list.meal == meal)
+          .map((element) => element.diaryEntries)
+          .expand((element) => element)
+          .toList();
+      result.add(MealEntriesList(
+        meal: meal,
+        diaryEntries: [
+          ...remoteDiaryEntries,
+          ...localDiaryEntries,
+        ],
+      ));
+    }
+    return result;
+  }
+
+  Future<void> _pullRemoteDiary(DatabaseService dbService, List<MealEntriesList> remoteDiary, String userId) async {
+    final pushedLocalEntries = await dbService.getDiaryEntries(filterPushed: true);
+    var pulledDiaryEntries = <LocalDiaryEntry>[];
+    for (final remoteMealEntriesList in remoteDiary) {
+      for (final entry in remoteMealEntriesList.diaryEntries) {
+        if (!pushedLocalEntries.any((localEntry) => localEntry.entryId == entry.collectionId)) {
+          pulledDiaryEntries.add(LocalDiaryEntry()
+            ..entryId = entry.collectionId
+            ..meal = remoteMealEntriesList.meal
+            ..pushed = true
+            ..servingQuantity = entry.servingQuantity
+            ..unitId = entry.unitId
+            ..entryDate = entry.date
+            ..localFood = entry.food.localDiaryFood
+            ..userId = userId);
+        }
+      }
+    }
+    dbService.upsertDiaryEntries(localEntries: pulledDiaryEntries);
   }
 }

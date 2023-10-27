@@ -207,4 +207,6 @@ class AppStrings {
   static String get netCarbsLabel => S.current.netCarbsLabel;
 
   static String get errorAddFood => S.current.errorAddFood;
+
+  static String get errorSavingEntry => S.current.errorSavingEntry;
 }

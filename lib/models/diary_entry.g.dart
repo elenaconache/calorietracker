@@ -13,6 +13,7 @@ DiaryEntry _$DiaryEntryFromJson(Map<String, dynamic> json) => DiaryEntry(
       date: json['date'] as String,
       unitId: json['unitId'] as String,
       servingQuantity: (json['servingQuantity'] as num).toDouble(),
+      errorPushing: json['errorPushing'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$DiaryEntryToJson(DiaryEntry instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$DiaryEntryToJson(DiaryEntry instance) =>
       'date': instance.date,
       'unitId': instance.unitId,
       'servingQuantity': instance.servingQuantity,
+      'errorPushing': instance.errorPushing,
     };

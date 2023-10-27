@@ -19,29 +19,32 @@ class _CollectionApiService implements CollectionApiService {
   String? baseUrl;
 
   @override
-  Future<void> createDiaryEntryWithFood(
-      {required AddDiaryEntryWithFoodRequest body}) async {
+  Future<IdResponse> createDiaryEntry(
+      {required AddDiaryEntryRequest body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(await compute(serializeAddDiaryEntryWithFoodRequest, body));
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    _data.addAll(await compute(serializeAddDiaryEntryRequest, body));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<IdResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          'diary-entries/add-with-food',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
+            .compose(
+              _dio.options,
+              'diary-entries/add',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = await compute(deserializeIdResponse, _result.data!);
+    return value;
   }
 
   @override
