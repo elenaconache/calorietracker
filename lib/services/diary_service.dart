@@ -182,7 +182,10 @@ class DiaryService {
             ..pushed = true
             ..servingQuantity = entry.servingQuantity
             ..unitId = entry.unitId
-            ..entryDate = entry.date
+            ..entryDate = locator<DateFormattingService>().parse(
+              formattedDate: entry.date,
+              format: collectionApiDateFormat,
+            )
             ..localFood = entry.food.localDiaryFood
             ..userId = userId);
         }

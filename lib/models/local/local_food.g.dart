@@ -27,34 +27,39 @@ const LocalFoodSchema = CollectionSchema(
       name: r'brand',
       type: IsarType.string,
     ),
-    r'deleted': PropertySchema(
+    r'createdAtDate': PropertySchema(
       id: 2,
+      name: r'createdAtDate',
+      type: IsarType.dateTime,
+    ),
+    r'deleted': PropertySchema(
+      id: 3,
       name: r'deleted',
       type: IsarType.bool,
     ),
     r'errorPushing': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'errorPushing',
       type: IsarType.bool,
     ),
     r'foodId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'foodId',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'name',
       type: IsarType.string,
     ),
     r'nutritionInfo': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'nutritionInfo',
       type: IsarType.object,
       target: r'LocalFoodNutrition',
     ),
     r'pushed': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'pushed',
       type: IsarType.bool,
     )
@@ -112,17 +117,18 @@ void _localFoodSerialize(
 ) {
   writer.writeString(offsets[0], object.barcode);
   writer.writeString(offsets[1], object.brand);
-  writer.writeBool(offsets[2], object.deleted);
-  writer.writeBool(offsets[3], object.errorPushing);
-  writer.writeString(offsets[4], object.foodId);
-  writer.writeString(offsets[5], object.name);
+  writer.writeDateTime(offsets[2], object.createdAtDate);
+  writer.writeBool(offsets[3], object.deleted);
+  writer.writeBool(offsets[4], object.errorPushing);
+  writer.writeString(offsets[5], object.foodId);
+  writer.writeString(offsets[6], object.name);
   writer.writeObject<LocalFoodNutrition>(
-    offsets[6],
+    offsets[7],
     allOffsets,
     LocalFoodNutritionSchema.serialize,
     object.nutritionInfo,
   );
-  writer.writeBool(offsets[7], object.pushed);
+  writer.writeBool(offsets[8], object.pushed);
 }
 
 LocalFood _localFoodDeserialize(
@@ -134,18 +140,19 @@ LocalFood _localFoodDeserialize(
   final object = LocalFood();
   object.barcode = reader.readStringOrNull(offsets[0]);
   object.brand = reader.readStringOrNull(offsets[1]);
-  object.deleted = reader.readBool(offsets[2]);
-  object.errorPushing = reader.readBool(offsets[3]);
-  object.foodId = reader.readStringOrNull(offsets[4]);
+  object.createdAtDate = reader.readDateTime(offsets[2]);
+  object.deleted = reader.readBool(offsets[3]);
+  object.errorPushing = reader.readBool(offsets[4]);
+  object.foodId = reader.readStringOrNull(offsets[5]);
   object.id = id;
-  object.name = reader.readString(offsets[5]);
+  object.name = reader.readString(offsets[6]);
   object.nutritionInfo = reader.readObjectOrNull<LocalFoodNutrition>(
-        offsets[6],
+        offsets[7],
         LocalFoodNutritionSchema.deserialize,
         allOffsets,
       ) ??
       LocalFoodNutrition();
-  object.pushed = reader.readBool(offsets[7]);
+  object.pushed = reader.readBool(offsets[8]);
   return object;
 }
 
@@ -161,21 +168,23 @@ P _localFoodDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (reader.readObjectOrNull<LocalFoodNutrition>(
             offset,
             LocalFoodNutritionSchema.deserialize,
             allOffsets,
           ) ??
           LocalFoodNutrition()) as P;
-    case 7:
+    case 8:
       return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -562,6 +571,62 @@ extension LocalFoodQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'brand',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition>
+      createdAtDateEqualTo(DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAtDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition>
+      createdAtDateGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdAtDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition>
+      createdAtDateLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdAtDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition>
+      createdAtDateBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdAtDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -964,6 +1029,18 @@ extension LocalFoodQuerySortBy on QueryBuilder<LocalFood, LocalFood, QSortBy> {
     });
   }
 
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByCreatedAtDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAtDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByCreatedAtDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAtDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<LocalFood, LocalFood, QAfterSortBy> sortByDeleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deleted', Sort.asc);
@@ -1048,6 +1125,18 @@ extension LocalFoodQuerySortThenBy
   QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByBrandDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'brand', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByCreatedAtDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAtDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LocalFood, LocalFood, QAfterSortBy> thenByCreatedAtDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAtDate', Sort.desc);
     });
   }
 
@@ -1140,6 +1229,12 @@ extension LocalFoodQueryWhereDistinct
     });
   }
 
+  QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByCreatedAtDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdAtDate');
+    });
+  }
+
   QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByDeleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'deleted');
@@ -1190,6 +1285,12 @@ extension LocalFoodQueryProperty
   QueryBuilder<LocalFood, String?, QQueryOperations> brandProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'brand');
+    });
+  }
+
+  QueryBuilder<LocalFood, DateTime, QQueryOperations> createdAtDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdAtDate');
     });
   }
 

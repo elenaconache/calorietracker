@@ -7,7 +7,6 @@ import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/general_error_view.dart';
 import 'package:flutter/material.dart';
-import 'package:calorietracker/models/food.dart';
 
 class CollectionResultsSection extends StatefulWidget {
   final Meal meal;
@@ -41,8 +40,8 @@ class _CollectionResultsSectionState extends State<CollectionResultsSection> wit
                           itemBuilder: (context, index) {
                             final item = searchResponse.data![index];
                             return FoodItem(
-                              nutritionPerServingQuantity: item.nutritionInfo,
-                              foodResponse: Food.collection(food: item),
+                              nutritionPerServingQuantity: item.nutrition,
+                              foodResponse: item,
                               meal: widget.meal,
                               unitName: AppStrings.gramsShortLabel,
                               servingQuantity: 100,

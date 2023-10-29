@@ -67,14 +67,16 @@ class Food {
     ..name = name
     ..brand = brandName
     ..barcode = barcode
-    ..pushed = id != null;
+    ..pushed = id != null
+    ..createdAtDate = DateTime.now();
 
   LocalDiaryFood get localDiaryFood => LocalDiaryFood()
     ..nutritionInfo = nutrition.localDiaryNutrition
     ..name = name
     ..brand = brandName
     ..barcode = barcode
-    ..pushed = id != null;
+    ..pushed = id != null
+    ..createdAtDate = DateTime.now();
 
   AddFoodRequest get addFoodRequest => AddFoodRequest(
         barcode: null,

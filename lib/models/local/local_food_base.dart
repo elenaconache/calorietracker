@@ -6,4 +6,5 @@ class LocalFoodBase {
   bool deleted = false;
   bool errorPushing = false;
   String? foodId;
+  late DateTime createdAtDate;
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/features/search_food/search_food_service.dart';
@@ -25,13 +27,14 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   @override
   void initState() {
     _foodSearchService = locator<SearchFoodService>();
-    _searchQueryTextController = TextEditingController();
+    _searchQueryTextController = TextEditingController()..addListener(_onSearchQueryChanged);
     super.initState();
   }
 
   @override
   void dispose() {
     _foodSearchService.clearResults();
+    _searchQueryTextController.removeListener(_onSearchQueryChanged);
     _searchQueryTextController.dispose();
     super.dispose();
   }
@@ -57,7 +60,7 @@ class _SearchFoodViewState extends State<SearchFoodView> {
                   labelText: AppStrings.searchForFoodLabel,
                   controller: _searchQueryTextController,
                   action: TextInputAction.search,
-                  onSubmitted: (query) => _foodSearchService.search(query: query),
+                  onSubmitted: (query) => _foodSearchService.searchRemotely(query: query),
                 )),
                 const SizedBox(width: 4),
                 IconButton(
@@ -93,4 +96,12 @@ class _SearchFoodViewState extends State<SearchFoodView> {
         Routes.createFood.path,
         arguments: widget.meal,
       );
+
+  void _onSearchQueryChanged() {
+    if (_searchQueryTextController.text.length < 3) {
+      _foodSearchService.clearResults();
+      return;
+    }
+    unawaited(_foodSearchService.searchLocally(query: _searchQueryTextController.text));
+  }
 }

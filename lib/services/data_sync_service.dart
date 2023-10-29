@@ -14,7 +14,13 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 
 class DataSyncService {
+  bool isUploadInProgress = false;
+
   Future<void> uploadLocalData() async {
+    if (isUploadInProgress) {
+      return;
+    }
+    isUploadInProgress = true;
     locator<LoggingService>().info('Local data upload started: ${DateTime.now()}');
     final dbService = await locator.getAsync<DatabaseService>();
 
@@ -31,6 +37,7 @@ class DataSyncService {
     locator<LoggingService>().info('Local data upload done: ${DateTime.now()}');
 
     unawaited(locator<DiaryService>().fetchDiary());
+    isUploadInProgress = false;
   }
 
   Future<void> _markPushedLocalFoods({

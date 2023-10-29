@@ -1,7 +1,9 @@
 import 'package:calorietracker/app/constants.dart';
+import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/collection/add_local_diary_entry_request.dart';
 import 'package:calorietracker/models/local/local_food_base.dart';
 import 'package:calorietracker/models/meal.dart';
+import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:isar/isar.dart';
 import 'local_nutrition_base.dart';
 
@@ -11,8 +13,7 @@ part 'local_diary_entry.g.dart';
 class LocalDiaryEntry {
   Id id = Isar.autoIncrement;
 
-  //TODO: refactor as DateTime object
-  late String entryDate;
+  late DateTime entryDate;
 
   late String userId;
   String unitId = gramsUnitId;
@@ -32,7 +33,10 @@ class LocalDiaryEntry {
   @ignore
   AddLocalDiaryEntryRequest get addLocalDiaryEntryRequest => AddLocalDiaryEntryRequest(
         localId: id,
-        entryDate: entryDate,
+        entryDate: locator<DateFormattingService>().format(
+          dateTime: entryDate.toString(),
+          format: collectionApiDateFormat,
+        ),
         userId: userId,
         servingQuantity: servingQuantity,
         meal: meal,

@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 class ProfileItem extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
+  final Widget icon;
 
-  const ProfileItem({super.key, required this.onTap, required this.title});
+  const ProfileItem({
+    super.key,
+    required this.onTap,
+    required this.title,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +24,7 @@ class ProfileItem extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const Spacer(),
-            const Icon(
-              Icons.chevron_right_rounded,
-              size: 32,
-            ),
+            icon,
           ])),
     );
   }

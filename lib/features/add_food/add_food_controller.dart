@@ -93,7 +93,7 @@ class AddFoodController {
   LocalDiaryEntry _getLocalDiaryEntry(LocalDiaryFood localDiaryFood, FoodLog foodLog, String? userId) =>
       LocalDiaryEntry()
         ..localFood = localDiaryFood
-        ..entryDate = foodLog.date.toIso8601String()
+        ..entryDate = foodLog.date
         ..servingQuantity = foodLog.servingQuantity
         ..meal = foodLog.meal
         ..unitId = gramsUnitId

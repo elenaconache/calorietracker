@@ -25,7 +25,7 @@ const LocalDiaryEntrySchema = CollectionSchema(
     r'entryDate': PropertySchema(
       id: 1,
       name: r'entryDate',
-      type: IsarType.string,
+      type: IsarType.dateTime,
     ),
     r'entryId': PropertySchema(
       id: 2,
@@ -93,7 +93,6 @@ int _localDiaryEntryEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.entryDate.length * 3;
   {
     final value = object.entryId;
     if (value != null) {
@@ -115,7 +114,7 @@ void _localDiaryEntrySerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeBool(offsets[0], object.deleted);
-  writer.writeString(offsets[1], object.entryDate);
+  writer.writeDateTime(offsets[1], object.entryDate);
   writer.writeString(offsets[2], object.entryId);
   writer.writeBool(offsets[3], object.errorPushing);
   writer.writeObject<LocalDiaryFood>(
@@ -139,7 +138,7 @@ LocalDiaryEntry _localDiaryEntryDeserialize(
 ) {
   final object = LocalDiaryEntry();
   object.deleted = reader.readBool(offsets[0]);
-  object.entryDate = reader.readString(offsets[1]);
+  object.entryDate = reader.readDateTime(offsets[1]);
   object.entryId = reader.readStringOrNull(offsets[2]);
   object.errorPushing = reader.readBool(offsets[3]);
   object.id = id;
@@ -169,7 +168,7 @@ P _localDiaryEntryDeserializeProp<P>(
     case 0:
       return (reader.readBool(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
@@ -316,58 +315,49 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryDateEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      entryDateEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'entryDate',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       entryDateGreaterThan(
-    String value, {
+    DateTime value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'entryDate',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       entryDateLessThan(
-    String value, {
+    DateTime value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'entryDate',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       entryDateBetween(
-    String lower,
-    String upper, {
+    DateTime lower,
+    DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -376,77 +366,6 @@ extension LocalDiaryEntryQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryDateStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'entryDate',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryDateEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'entryDate',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryDateContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'entryDate',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryDateMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'entryDate',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryDateIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'entryDate',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryDateIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'entryDate',
-        value: '',
       ));
     });
   }
@@ -1356,10 +1275,10 @@ extension LocalDiaryEntryQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByEntryDate(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct>
+      distinctByEntryDate() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'entryDate', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'entryDate');
     });
   }
 
@@ -1425,7 +1344,8 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, String, QQueryOperations> entryDateProperty() {
+  QueryBuilder<LocalDiaryEntry, DateTime, QQueryOperations>
+      entryDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'entryDate');
     });
@@ -1503,39 +1423,44 @@ const LocalDiaryFoodSchema = Schema(
       name: r'brand',
       type: IsarType.string,
     ),
-    r'deleted': PropertySchema(
+    r'createdAtDate': PropertySchema(
       id: 2,
+      name: r'createdAtDate',
+      type: IsarType.dateTime,
+    ),
+    r'deleted': PropertySchema(
+      id: 3,
       name: r'deleted',
       type: IsarType.bool,
     ),
     r'errorPushing': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'errorPushing',
       type: IsarType.bool,
     ),
     r'foodId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'foodId',
       type: IsarType.string,
     ),
     r'localId': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'localId',
       type: IsarType.long,
     ),
     r'name': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'name',
       type: IsarType.string,
     ),
     r'nutritionInfo': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'nutritionInfo',
       type: IsarType.object,
       target: r'LocalDiaryNutrition',
     ),
     r'pushed': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'pushed',
       type: IsarType.bool,
     )
@@ -1585,18 +1510,19 @@ void _localDiaryFoodSerialize(
 ) {
   writer.writeString(offsets[0], object.barcode);
   writer.writeString(offsets[1], object.brand);
-  writer.writeBool(offsets[2], object.deleted);
-  writer.writeBool(offsets[3], object.errorPushing);
-  writer.writeString(offsets[4], object.foodId);
-  writer.writeLong(offsets[5], object.localId);
-  writer.writeString(offsets[6], object.name);
+  writer.writeDateTime(offsets[2], object.createdAtDate);
+  writer.writeBool(offsets[3], object.deleted);
+  writer.writeBool(offsets[4], object.errorPushing);
+  writer.writeString(offsets[5], object.foodId);
+  writer.writeLong(offsets[6], object.localId);
+  writer.writeString(offsets[7], object.name);
   writer.writeObject<LocalDiaryNutrition>(
-    offsets[7],
+    offsets[8],
     allOffsets,
     LocalDiaryNutritionSchema.serialize,
     object.nutritionInfo,
   );
-  writer.writeBool(offsets[8], object.pushed);
+  writer.writeBool(offsets[9], object.pushed);
 }
 
 LocalDiaryFood _localDiaryFoodDeserialize(
@@ -1608,18 +1534,19 @@ LocalDiaryFood _localDiaryFoodDeserialize(
   final object = LocalDiaryFood();
   object.barcode = reader.readStringOrNull(offsets[0]);
   object.brand = reader.readStringOrNull(offsets[1]);
-  object.deleted = reader.readBool(offsets[2]);
-  object.errorPushing = reader.readBool(offsets[3]);
-  object.foodId = reader.readStringOrNull(offsets[4]);
-  object.localId = reader.readLongOrNull(offsets[5]);
-  object.name = reader.readString(offsets[6]);
+  object.createdAtDate = reader.readDateTime(offsets[2]);
+  object.deleted = reader.readBool(offsets[3]);
+  object.errorPushing = reader.readBool(offsets[4]);
+  object.foodId = reader.readStringOrNull(offsets[5]);
+  object.localId = reader.readLongOrNull(offsets[6]);
+  object.name = reader.readString(offsets[7]);
   object.nutritionInfo = reader.readObjectOrNull<LocalDiaryNutrition>(
-        offsets[7],
+        offsets[8],
         LocalDiaryNutritionSchema.deserialize,
         allOffsets,
       ) ??
       LocalDiaryNutrition();
-  object.pushed = reader.readBool(offsets[8]);
+  object.pushed = reader.readBool(offsets[9]);
   return object;
 }
 
@@ -1635,23 +1562,25 @@ P _localDiaryFoodDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
       return (reader.readObjectOrNull<LocalDiaryNutrition>(
             offset,
             LocalDiaryNutritionSchema.deserialize,
             allOffsets,
           ) ??
           LocalDiaryNutrition()) as P;
-    case 8:
+    case 9:
       return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1964,6 +1893,62 @@ extension LocalDiaryFoodQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'brand',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
+      createdAtDateEqualTo(DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAtDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
+      createdAtDateGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdAtDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
+      createdAtDateLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdAtDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
+      createdAtDateBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdAtDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
