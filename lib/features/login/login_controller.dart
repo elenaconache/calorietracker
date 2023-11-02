@@ -4,9 +4,9 @@ import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/login/login_error.dart';
 import 'package:calorietracker/features/login/login_state.dart';
 import 'package:calorietracker/models/user.dart';
-import 'package:calorietracker/services/collection_api_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/secure_storage_service.dart';
+import 'package:calorietracker/services/user_api_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,11 +29,10 @@ class LoginController {
     if (await _isUserAlreadySaved(username)) {
       onError(LoginError.alreadyLoggedIn);
     } else {
-      final apiService = await locator.getAsync<CollectionApiService>();
-      await apiService.getUserId(username: username).then((response) async {
-        final userId = response.id;
-        if (userId.isNotEmpty) {
-          await _saveUser(userId, username);
+      final apiService = await locator.getAsync<UserApiService>();
+      await apiService.getUserId(username: username).then((user) async {
+        if (user.id.isNotEmpty) {
+          await _saveUser(user.id, user.username);
           onSuccess();
         } else {
           onError(LoginError.unknown);

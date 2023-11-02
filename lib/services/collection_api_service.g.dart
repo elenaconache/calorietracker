@@ -81,33 +81,6 @@ class _CollectionApiService implements CollectionApiService {
   }
 
   @override
-  Future<UserResponse> getUserId({required String username}) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<UserResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'users/${username}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = await compute(deserializeUserResponse, _result.data!);
-    return value;
-  }
-
-  @override
   Future<CreatedFoodResponse?> createFood(
       {required AddFoodRequest body}) async {
     const _extra = <String, dynamic>{};

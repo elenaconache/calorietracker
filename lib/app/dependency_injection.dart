@@ -15,6 +15,7 @@ import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/numeric_formatting_service.dart';
 import 'package:calorietracker/services/nutritionix_api_service.dart';
 import 'package:calorietracker/services/secure_storage_service.dart';
+import 'package:calorietracker/services/user_api_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_controller.dart';
 import 'package:calorietracker/validators/food_validator.dart';
@@ -26,6 +27,7 @@ final GetIt locator = GetIt.instance;
 
 // TODO: extract collection base url into env variable
 const _collectionApiBaseUrl = 'http://192.168.0.93:8080/';
+const _userApiBaseUrl = 'http://192.168.0.133:8080/user/';
 const _nutritionixApiBaseUrl = 'https://trackapi.nutritionix.com/';
 
 void setupLocator() {
@@ -54,8 +56,9 @@ void setupLocator() {
     await appPathProvider.initPath();
     return appPathProvider;
   });
-  locator.registerLazySingletonAsync<CollectionApiService>(
-      () async => CollectionApiService(await locator<DioProvider>().buildDio(baseUrl: _collectionApiBaseUrl)));
+  locator.registerLazySingletonAsync<CollectionApiService>(() async => CollectionApiService(
+        await locator<DioProvider>().buildDio(baseUrl: _collectionApiBaseUrl),
+      ));
   locator.registerLazySingletonAsync<DatabaseService>(() async {
     final database = DatabaseService();
     final pathProvider = await locator.getAsync<AppPathProvider>();
@@ -68,4 +71,7 @@ void setupLocator() {
       'x-app-key': '26f2d40ca353d5ece308c4db6b5d0c52'
     }));
   });
+  locator.registerLazySingletonAsync<UserApiService>(() async => UserApiService(
+        await locator<DioProvider>().buildDio(baseUrl: _userApiBaseUrl),
+      ));
 }

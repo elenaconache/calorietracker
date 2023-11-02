@@ -71,6 +71,8 @@ class AddFoodController {
     final localFoodId = foodLog.localFoodId ?? await dbService.upsertFood(localFood: foodLog.food.localFood);
     if (localFoodId == null) {
       locator<LoggingService>().info('Could not save local diary entry. Missing local food id.');
+      isLoading.value = false;
+      throw Exception('Could not save local diary entry with missing local food id.');
     } else {
       final localDiaryFood = foodLog.food.localDiaryFood..localId = localFoodId;
       await dbService
@@ -104,18 +106,19 @@ class AddFoodController {
     String? remoteFoodId;
     int? localFoodId;
     if (foodLog.food.id == null) {
-      final createdFood = await (collectionApiService.createFood(body: foodLog.food.addFoodRequest)
-        // TODO: save food locally on success as well for search in history but use unawaited
-        ..catchError((error, stackTrace) async {
-          if (error is DioException && error.isConnectionError) {
-            localFoodId = await _saveFoodLocally(foodLog, userId);
-          } else {
-            locator<LoggingService>().handle(error, stackTrace);
-            isLoading.value = false;
-            throw error;
-          }
-          return null;
-        }));
+      final createdFood = await (collectionApiService.createFood(body: foodLog.food.addFoodRequest).then((createdFood) {
+        unawaited(_saveFoodLocally(foodLog, userId));
+        return createdFood;
+      }).catchError((error, stackTrace) async {
+        if (error is DioException && error.isConnectionError) {
+          localFoodId = await _saveFoodLocally(foodLog, userId);
+        } else {
+          locator<LoggingService>().handle(error, stackTrace);
+          isLoading.value = false;
+          throw error;
+        }
+        return null;
+      }));
       remoteFoodId = createdFood?.id;
     } else {
       remoteFoodId = foodLog.food.id;
