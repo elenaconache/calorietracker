@@ -245,5 +245,6 @@
   "profileTitle": "Profile",
   "switchAccountLabel": "Switch account",
   "syncDataLabel": "Sync data",
-  "deleteEntryLabel": "Delete entry"
+  "deleteEntryLabel": "Delete entry",
+  "deleteEntriesTitle": "Delete entries"
 }

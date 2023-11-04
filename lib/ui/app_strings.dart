@@ -224,4 +224,6 @@ class AppStrings {
   static String get syncDataLabel => S.current.syncDataLabel;
 
   static String get deleteEntryLabel => S.current.deleteEntryLabel;
+
+  static String get deleteEntriesTitle => S.current.deleteEntriesTitle;
 }

@@ -24,12 +24,14 @@ class DiaryEntriesSliverList extends StatelessWidget {
         key: UniqueKey(),
         delegate: SliverChildBuilderDelegate(
           (context, index) => Dismissible(
-            key: ValueKey(entries[index]),
-            onDismissed: (direction) => _onEntryDismissed(entries[index]),
-            background: const SwipeToDeleteBackground(direction: TextDirection.ltr),
-            secondaryBackground: const SwipeToDeleteBackground(direction: TextDirection.rtl),
-            child: DiaryRow(diaryEntry: entries[index]),
-          ),
+              key: ValueKey(entries[index]),
+              onDismissed: (direction) => _onEntryDismissed(entries[index]),
+              background: const SwipeToDeleteBackground(direction: TextDirection.ltr),
+              secondaryBackground: const SwipeToDeleteBackground(direction: TextDirection.rtl),
+              child: InkWell(
+                onLongPress: locator<DiaryService>().enterEditMode,
+                child: DiaryRow(diaryEntry: entries[index]),
+              )),
           childCount: entries.length,
         ),
       );

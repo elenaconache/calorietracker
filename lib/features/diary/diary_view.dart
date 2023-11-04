@@ -1,9 +1,9 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/features/diary/diary_app_bar.dart';
 import 'package:calorietracker/features/diary/diary_controller.dart';
 import 'package:calorietracker/features/diary/diary_entries_sliver_list.dart';
 import 'package:calorietracker/features/diary/diary_overview_carousel.dart';
 import 'package:calorietracker/features/diary/meal_title.dart';
-import 'package:calorietracker/features/diary/user_avatar_action.dart';
 import 'package:calorietracker/models/helpers/future_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
@@ -39,11 +39,7 @@ class _DiaryViewState extends State<DiaryView> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: AppBar(
-          title: Text(AppStrings.diaryTitle),
-          scrolledUnderElevation: 8,
-          actions: const [UserAvatarAction()],
-        ),
+        appBar: const DiaryAppBar(),
         body: RefreshIndicator(
             onRefresh: _diaryService.fetchDiary,
             child: CustomScrollView(

@@ -20,6 +20,8 @@ import 'package:collection/collection.dart';
 
 class DiaryService {
   final ValueNotifier<FutureResponse<List<MealEntriesList>>> dayMealEntries = ValueNotifier(FutureResponse.loading());
+  final ValueNotifier<bool> diaryEditModeEnabled = ValueNotifier(false);
+
   late final ValueNotifier<String> selectedDay;
   late final DateFormattingService _dateFormattingService;
 
@@ -213,4 +215,8 @@ class DiaryService {
     }
     dbService.upsertDiaryEntries(localEntries: pulledDiaryEntries);
   }
+
+  void enterEditMode() => diaryEditModeEnabled.value = true;
+
+  void exitEditMode() => diaryEditModeEnabled.value = false;
 }
