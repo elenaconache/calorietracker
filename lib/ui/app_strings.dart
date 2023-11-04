@@ -222,4 +222,6 @@ class AppStrings {
   static String get switchAccountLabel => S.current.switchAccountLabel;
 
   static String get syncDataLabel => S.current.syncDataLabel;
+
+  static String get deleteEntryLabel => S.current.deleteEntryLabel;
 }

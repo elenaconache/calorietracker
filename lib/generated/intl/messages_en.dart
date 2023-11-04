@@ -105,6 +105,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Could not connect to the server."),
         "continueLabel": MessageLookupByLibrary.simpleMessage("Continue"),
         "createFoodLabel": MessageLookupByLibrary.simpleMessage("Create food"),
+        "deleteEntryLabel":
+            MessageLookupByLibrary.simpleMessage("Delete entry"),
         "diaryTitle": MessageLookupByLibrary.simpleMessage("Diary"),
         "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dinner"),
         "emptyFoodNameError":

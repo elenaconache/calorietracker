@@ -1110,6 +1110,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Delete entry`
+  String get deleteEntryLabel {
+    return Intl.message(
+      'Delete entry',
+      name: 'deleteEntryLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -244,5 +244,6 @@
   "errorSavingEntry": "Error saving entry.",
   "profileTitle": "Profile",
   "switchAccountLabel": "Switch account",
-  "syncDataLabel": "Sync data"
+  "syncDataLabel": "Sync data",
+  "deleteEntryLabel": "Delete entry"
 }

@@ -11,53 +11,51 @@ class DiaryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: DecoratedBox(
-            decoration: _getDecoration(context),
-            child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                child: Column(
+    return DecoratedBox(
+        decoration: _getDecoration(context),
+        child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(diaryEntry.food.name, style: Theme.of(context).textTheme.bodyLarge),
+                          Row(
                             children: [
-                              Text(diaryEntry.food.name, style: Theme.of(context).textTheme.bodyLarge),
-                              Row(
-                                children: [
-                                  if (diaryEntry.food.brandName != null)
-                                    Text('${diaryEntry.food.brandName!}, ', style: _getSecondaryTextStyle(context)),
-                                  Text(
-                                    AppStrings.gramsValue(diaryEntry.servingQuantity.toDouble().toPrecision(2)),
-                                    style: _getSecondaryTextStyle(context),
-                                  )
-                                ],
+                              if (diaryEntry.food.brandName != null)
+                                Text('${diaryEntry.food.brandName!}, ', style: _getSecondaryTextStyle(context)),
+                              Text(
+                                AppStrings.gramsValue(diaryEntry.servingQuantity.toDouble().toPrecision(2)),
+                                style: _getSecondaryTextStyle(context),
                               )
                             ],
-                          ),
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              _diaryEntryCalories,
-                              textAlign: TextAlign.right,
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w300),
-                            ))
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                    if (diaryEntry.errorPushing) ...[
-                      const SizedBox(height: 10),
-                      Text(AppStrings.errorSavingEntry, style: _getErrorTextStyle(context)),
-                    ]
+                    Expanded(
+                        flex: 1,
+                        child: Text(
+                          _diaryEntryCalories,
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w300),
+                        ))
                   ],
-                ))));
+                ),
+                if (diaryEntry.errorPushing) ...[
+                  const SizedBox(height: 10),
+                  Text(AppStrings.errorSavingEntry, style: _getErrorTextStyle(context)),
+                ]
+              ],
+            )));
   }
 
   BoxDecoration _getDecoration(BuildContext context) {

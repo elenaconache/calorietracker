@@ -68,12 +68,15 @@ class _DiaryViewState extends State<DiaryView> {
                                   enabledMacrosPercentageMode: enabledMacrosPercentageMode,
                                   onTap: _controller.toggleMacrosMode,
                                 )))),
-                ValueListenableBuilder(
-                    valueListenable: _diaryService.dayMealEntries,
-                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
-                          entries: _diaryService.getSelectedDayMealEntries(meal: Meal.breakfast),
-                          error: dayMealEntries.status == FutureResponseStatus.error,
-                        )),
+                SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    sliver: ValueListenableBuilder(
+                        valueListenable: _diaryService.dayMealEntries,
+                        builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
+                              entries: _diaryService.getSelectedDayMealEntries(meal: Meal.breakfast),
+                              error: dayMealEntries.status == FutureResponseStatus.error,
+                              meal: Meal.breakfast,
+                            ))),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   sliver: SliverToBoxAdapter(
@@ -94,12 +97,15 @@ class _DiaryViewState extends State<DiaryView> {
                                   enabledMacrosPercentageMode: enabledMacrosPercentageMode,
                                   onTap: _controller.toggleMacrosMode,
                                 )))),
-                ValueListenableBuilder(
-                    valueListenable: _diaryService.dayMealEntries,
-                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
-                          entries: _diaryService.getSelectedDayMealEntries(meal: Meal.lunch),
-                          error: dayMealEntries.status == FutureResponseStatus.error,
-                        )),
+                SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    sliver: ValueListenableBuilder(
+                        valueListenable: _diaryService.dayMealEntries,
+                        builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
+                              entries: _diaryService.getSelectedDayMealEntries(meal: Meal.lunch),
+                              error: dayMealEntries.status == FutureResponseStatus.error,
+                              meal: Meal.lunch,
+                            ))),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   sliver: SliverToBoxAdapter(
@@ -120,12 +126,15 @@ class _DiaryViewState extends State<DiaryView> {
                                   enabledMacrosPercentageMode: enabledMacrosPercentageMode,
                                   onTap: _controller.toggleMacrosMode,
                                 )))),
-                ValueListenableBuilder(
-                    valueListenable: _diaryService.dayMealEntries,
-                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
-                          entries: _diaryService.getSelectedDayMealEntries(meal: Meal.dinner),
-                          error: dayMealEntries.status == FutureResponseStatus.error,
-                        )),
+                SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    sliver: ValueListenableBuilder(
+                        valueListenable: _diaryService.dayMealEntries,
+                        builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
+                              entries: _diaryService.getSelectedDayMealEntries(meal: Meal.dinner),
+                              error: dayMealEntries.status == FutureResponseStatus.error,
+                              meal: Meal.dinner,
+                            ))),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   sliver: SliverToBoxAdapter(
@@ -146,12 +155,15 @@ class _DiaryViewState extends State<DiaryView> {
                                   enabledMacrosPercentageMode: enabledMacrosPercentageMode,
                                   onTap: _controller.toggleMacrosMode,
                                 )))),
-                ValueListenableBuilder(
-                    valueListenable: _diaryService.dayMealEntries,
-                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
-                          entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
-                          error: dayMealEntries.status == FutureResponseStatus.error,
-                        )),
+                SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    sliver: ValueListenableBuilder(
+                        valueListenable: _diaryService.dayMealEntries,
+                        builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
+                              entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
+                              error: dayMealEntries.status == FutureResponseStatus.error,
+                              meal: Meal.snacks,
+                            ))),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   sliver: SliverToBoxAdapter(

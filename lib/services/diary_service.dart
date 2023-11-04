@@ -107,6 +107,26 @@ class DiaryService {
       dayMealEntries.value.data?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)?.diaryEntries.toList() ??
       [];
 
+  void removeDiaryEntry({required Meal meal, required String? collectionId, required int? localId}) {
+    var entries = dayMealEntries.value.data?.firstWhere((mealEntries) => mealEntries.meal == meal);
+    if (entries == null) {
+      return;
+    }
+    dayMealEntries.value = FutureResponse.success(dayMealEntries.value.data
+        ?.map((mealEntriesList) => mealEntriesList.meal == meal
+            ? MealEntriesList(
+                meal: meal,
+                diaryEntries: mealEntriesList.diaryEntries
+                    .whereNot((entry) =>
+                        collectionId != null && entry.collectionId == collectionId ||
+                        localId != null && entry.localId == localId)
+                    .toList())
+            : mealEntriesList)
+        .toList());
+
+    //TODO: remove from local storage and call the API to delete OR mark as deleted true in local storage
+  }
+
   void logDiaryEntrySync({
     required DateTime date,
     required Meal meal,
