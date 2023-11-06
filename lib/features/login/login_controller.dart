@@ -6,7 +6,7 @@ import 'package:calorietracker/features/login/login_state.dart';
 import 'package:calorietracker/models/user.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/secure_storage_service.dart';
-import 'package:calorietracker/services/user_api_service.dart';
+import 'package:calorietracker/services/api/user_api_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';

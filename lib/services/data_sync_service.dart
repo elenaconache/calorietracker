@@ -6,7 +6,7 @@ import 'package:calorietracker/models/collection/add_local_data_error_response.d
 import 'package:calorietracker/models/collection/add_local_data_response.dart';
 import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
-import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/api/collection_api_service.dart';
 import 'package:calorietracker/services/database_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/services/logging_service.dart';

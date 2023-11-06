@@ -10,7 +10,7 @@ import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/meal_entries_list.dart';
 import 'package:calorietracker/models/nutrition.dart';
-import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/api/collection_api_service.dart';
 import 'package:calorietracker/services/database_service.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:calorietracker/services/logging_service.dart';

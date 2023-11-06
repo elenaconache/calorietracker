@@ -6,10 +6,10 @@ import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/helpers/future_response.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_search_request.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_search_response.dart';
-import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/api/collection_api_service.dart';
 import 'package:calorietracker/services/database_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
-import 'package:calorietracker/services/nutritionix_api_service.dart';
+import 'package:calorietracker/services/api/nutritionix_api_service.dart';
 import 'package:flutter/material.dart';
 
 class SearchFoodService {

@@ -4,7 +4,7 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/create_food/food_error.dart';
 import 'package:calorietracker/features/create_food/food_input.dart';
-import 'package:calorietracker/services/collection_api_service.dart';
+import 'package:calorietracker/services/api/collection_api_service.dart';
 import 'package:calorietracker/services/database_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/validators/nutrition_validator.dart';
