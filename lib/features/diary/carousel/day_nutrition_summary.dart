@@ -27,10 +27,22 @@ class DayNutritionSummary extends StatelessWidget {
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      NutrientItem(formattedValue: diaryService.selectedDayNutrition.carbohydrates.toStringAsFixed(1), name: AppStrings.carbsLabel),
-                      NutrientItem(formattedValue: diaryService.selectedDayNutrition.fat.toStringAsFixed(1), name: AppStrings.fatLabel),
-                      NutrientItem(formattedValue: diaryService.selectedDayNutrition.protein.toStringAsFixed(1), name: AppStrings.proteinLabel),
-                      NutrientItem(formattedValue: diaryService.selectedDayNutrition.calories.toStringAsFixed(0), name: AppStrings.caloriesLabel),
+                      NutrientItem(
+                        formattedValue: diaryService.selectedDayNutrition.carbohydrates.toStringAsFixed(1),
+                        name: AppStrings.carbsLabel,
+                      ),
+                      NutrientItem(
+                        formattedValue: diaryService.selectedDayNutrition.fat.toStringAsFixed(1),
+                        name: AppStrings.fatLabel,
+                      ),
+                      NutrientItem(
+                        formattedValue: diaryService.selectedDayNutrition.protein.toStringAsFixed(1),
+                        name: AppStrings.proteinLabel,
+                      ),
+                      NutrientItem(
+                        formattedValue: diaryService.selectedDayNutrition.calories.toStringAsFixed(0),
+                        name: AppStrings.caloriesLabel,
+                      ),
                     ],
                   ));
   }

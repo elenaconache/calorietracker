@@ -30,7 +30,8 @@ class DottedItem extends StatelessWidget {
         flex: 1,
         child: Text(
           value,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.right,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
       )
     ]);

@@ -21,6 +21,7 @@ import 'package:collection/collection.dart';
 class DiaryService {
   final ValueNotifier<FutureResponse<List<MealEntriesList>>> dayMealEntries = ValueNotifier(FutureResponse.loading());
   final ValueNotifier<bool> diaryEditModeEnabled = ValueNotifier(false);
+  final ValueNotifier<List<DiaryEntry>> checkedDiaryEntries = ValueNotifier([]);
 
   late final ValueNotifier<String> selectedDay;
   late final DateFormattingService _dateFormattingService;
@@ -34,13 +35,16 @@ class DiaryService {
   }
 
   Nutrition get selectedDayNutrition {
-    final allDiaryEntries = dayMealEntries.value.data?.expand((mealEntries) => mealEntries.diaryEntries).toList() ?? [];
+    final allDiaryEntries = _allMealsDiaryEntries;
     if (allDiaryEntries.isEmpty) {
       return const Nutrition();
     } else {
       return _getTotalNutrition(allDiaryEntries);
     }
   }
+
+  List<DiaryEntry> get _allMealsDiaryEntries =>
+      dayMealEntries.value.data?.expand((mealEntries) => mealEntries.diaryEntries).toList() ?? [];
 
   Nutrition _getTotalNutrition(List<DiaryEntry> allDiaryEntries) {
     return allDiaryEntries.fold(const Nutrition(), (previousValue, element) {
@@ -72,6 +76,7 @@ class DiaryService {
   }
 
   Future<void> fetchDiary({DateTime? date}) async {
+    exitEditMode();
     final fetchedDate = _dateFormattingService.format(
       dateTime: (date ?? DateTime.now()).toString(),
       format: collectionApiDateFormat,
@@ -109,7 +114,9 @@ class DiaryService {
       dayMealEntries.value.data?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)?.diaryEntries.toList() ??
       [];
 
-  void removeDiaryEntry({required Meal meal, required String? collectionId, required int? localId}) {
+  bool hasMealEntries({required Meal meal}) => getSelectedDayMealEntries(meal: meal).isNotEmpty;
+
+  void removeDiaryEntry({required Meal meal, required DiaryEntry diaryEntry}) {
     var entries = dayMealEntries.value.data?.firstWhere((mealEntries) => mealEntries.meal == meal);
     if (entries == null) {
       return;
@@ -118,15 +125,15 @@ class DiaryService {
         ?.map((mealEntriesList) => mealEntriesList.meal == meal
             ? MealEntriesList(
                 meal: meal,
-                diaryEntries: mealEntriesList.diaryEntries
-                    .whereNot((entry) =>
-                        collectionId != null && entry.collectionId == collectionId ||
-                        localId != null && entry.localId == localId)
-                    .toList())
+                diaryEntries: mealEntriesList.diaryEntries.whereNot((entry) => entry.matches(diaryEntry)).toList())
             : mealEntriesList)
         .toList());
 
     //TODO: remove from local storage and call the API to delete OR mark as deleted true in local storage
+
+    if (!dayMealEntries.value.data!.any((dayMealEntries) => dayMealEntries.diaryEntries.isNotEmpty)) {
+      exitEditMode();
+    }
   }
 
   void logDiaryEntrySync({
@@ -218,5 +225,77 @@ class DiaryService {
 
   void enterEditMode() => diaryEditModeEnabled.value = true;
 
-  void exitEditMode() => diaryEditModeEnabled.value = false;
+  void exitEditMode() {
+    diaryEditModeEnabled.value = false;
+    checkedDiaryEntries.value = [];
+  }
+
+  void onDayCheckChanged({required bool? checked}) {
+    if (checked ?? false) {
+      checkedDiaryEntries.value = _allMealsDiaryEntries;
+    } else {
+      checkedDiaryEntries.value = [];
+    }
+  }
+
+  bool? get isDayChecked {
+    if (checkedDiaryEntries.value.isEmpty) {
+      return false;
+    } else if (checkedDiaryEntries.value.length == _allMealsDiaryEntries.length) {
+      return true;
+    } else {
+      return null;
+    }
+  }
+
+  bool? isMealChecked({required Meal meal}) {
+    final mealEntries =
+        dayMealEntries.value.data?.firstWhereOrNull((mealEntriesList) => mealEntriesList.meal == meal)?.diaryEntries ??
+            [];
+    final mealCheckedEntriesCount = mealEntries
+        .where((entry) => checkedDiaryEntries.value.any((checkedEntry) => checkedEntry.matches(entry)))
+        .length;
+    if (mealCheckedEntriesCount == 0) {
+      return false;
+    } else if (mealCheckedEntriesCount == mealEntries.length) {
+      return true;
+    } else {
+      return null;
+    }
+  }
+
+  void onMealCheckChanged({required Meal meal, required bool? checked}) {
+    var currentlyChecked = List<DiaryEntry>.from(checkedDiaryEntries.value);
+    if (checked ?? false) {
+      final newlyChecked = dayMealEntries.value.data
+              ?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)
+              ?.diaryEntries
+              .whereNot((entry) => currentlyChecked.any((checkedEntry) => checkedEntry.matches(entry)))
+              .toList() ??
+          [];
+      currentlyChecked.addAll(newlyChecked);
+    } else {
+      final alreadyChecked = dayMealEntries.value.data
+              ?.firstWhereOrNull((mealEntries) => mealEntries.meal == meal)
+              ?.diaryEntries
+              .where((entry) => currentlyChecked.any((checkedEntry) => checkedEntry.matches(entry)))
+              .toList() ??
+          [];
+      currentlyChecked.removeWhere((checkedEntry) => alreadyChecked.any((entry) => checkedEntry.matches(entry)));
+    }
+    checkedDiaryEntries.value = currentlyChecked;
+  }
+
+  void onDiaryEntryCheckChanged({required DiaryEntry entry, required bool? checked}) {
+    var currentlyChecked = List<DiaryEntry>.from(checkedDiaryEntries.value);
+    if (checked ?? false) {
+      currentlyChecked.add(entry);
+    } else {
+      currentlyChecked.removeWhere((checkedEntry) => checkedEntry.matches(entry));
+    }
+    checkedDiaryEntries.value = currentlyChecked;
+  }
+
+  bool isEntryChecked({required DiaryEntry entry}) =>
+      checkedDiaryEntries.value.any((checkedEntry) => checkedEntry.matches(entry));
 }

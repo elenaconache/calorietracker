@@ -26,32 +26,66 @@ class MealTitle extends StatelessWidget {
         child: InkWell(
             onTap: onTap,
             child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Row(children: [
-                      Expanded(
-                          child: Text(
-                        _mealLabel,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                      )),
-                      ValueListenableBuilder(
-                          valueListenable: diaryService.dayMealEntries,
-                          builder: (context, dayMealEntries, __) {
-                            if (dayMealEntries.status == FutureResponseStatus.error) {
-                              return const SizedBox.shrink();
-                            }
-                            final mealNutrition = diaryService.getSelectedDayMealNutrients(meal: meal);
-                            return Text(
-                              AppStrings.caloriesShortLabel(mealNutrition.calories.toInt()),
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                            );
-                          })
-                    ]),
-                    MealMacros(
-                      meal: meal,
-                      enabledPercentageMode: enabledMacrosPercentageMode,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ValueListenableBuilder(
+                            valueListenable: diaryService.dayMealEntries,
+                            builder: (context, _, __) => diaryService.hasMealEntries(meal: meal)
+                                ? ValueListenableBuilder(
+                                    valueListenable: diaryService.diaryEditModeEnabled,
+                                    builder: (context, editable, _) => editable
+                                        ? ValueListenableBuilder(
+                                            valueListenable: diaryService.checkedDiaryEntries,
+                                            builder: (context, _, __) => Padding(
+                                                padding: const EdgeInsets.only(right: 8),
+                                                child: SizedBox(
+                                                    width: 24,
+                                                    height: 24,
+                                                    child: Checkbox(
+                                                      tristate: true,
+                                                      value: diaryService.isMealChecked(meal: meal),
+                                                      onChanged: (checked) =>
+                                                          diaryService.onMealCheckChanged(meal: meal, checked: checked),
+                                                    ))))
+                                        : const SizedBox.shrink())
+                                : const SizedBox.shrink()),
+                        Expanded(
+                            child: Text(
+                          _mealLabel,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                        )),
+                        ValueListenableBuilder(
+                            valueListenable: diaryService.dayMealEntries,
+                            builder: (context, dayMealEntries, __) {
+                              if (dayMealEntries.status == FutureResponseStatus.error) {
+                                return const SizedBox.shrink();
+                              }
+                              final mealNutrition = diaryService.getSelectedDayMealNutrients(meal: meal);
+                              return Text(
+                                AppStrings.caloriesShortLabel(mealNutrition.calories.toInt()),
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                              );
+                            })
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    ValueListenableBuilder(
+                      valueListenable: diaryService.dayMealEntries,
+                      builder: (context, _, __) => ValueListenableBuilder(
+                        valueListenable: diaryService.diaryEditModeEnabled,
+                        builder: (context, editable, _) => Padding(
+                          padding: EdgeInsets.only(left: editable && diaryService.hasMealEntries(meal: meal) ? 32 : 0),
+                          child: MealMacros(
+                            meal: meal,
+                            enabledPercentageMode: enabledMacrosPercentageMode,
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 ))));

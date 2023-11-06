@@ -1,4 +1,5 @@
 import 'package:calorietracker/extensions/numeric_extensions.dart';
+import 'package:calorietracker/features/diary/diary_row/diary_row_check_box.dart';
 import 'package:calorietracker/models/diary_entry.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/ui/app_strings.dart';
@@ -22,6 +23,7 @@ class DiaryRow extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    DiaryRowCheckBox(diaryEntry: diaryEntry),
                     Expanded(
                       flex: 4,
                       child: Column(

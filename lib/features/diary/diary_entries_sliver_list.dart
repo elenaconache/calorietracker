@@ -1,5 +1,5 @@
 import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/features/diary/diary_row.dart';
+import 'package:calorietracker/features/diary/diary_row/diary_row.dart';
 import 'package:calorietracker/features/diary/no_logged_foods_message.dart';
 import 'package:calorietracker/features/diary/swipe_to_delete_background.dart';
 import 'package:calorietracker/models/diary_entry.dart';
@@ -37,17 +37,11 @@ class DiaryEntriesSliverList extends StatelessWidget {
       );
     } else {
       return const SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         sliver: SliverToBoxAdapter(child: NoLoggedFoodsMessage()),
       );
     }
   }
 
-  void _onEntryDismissed(DiaryEntry entry) {
-    locator<DiaryService>().removeDiaryEntry(
-      meal: meal,
-      collectionId: entry.collectionId,
-      localId: entry.localId,
-    );
-  }
+  void _onEntryDismissed(DiaryEntry entry) => locator<DiaryService>().removeDiaryEntry(meal: meal, diaryEntry: entry);
 }
