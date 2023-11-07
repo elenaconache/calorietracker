@@ -8,7 +8,9 @@ import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:calorietracker/providers/dio_provider.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
 import 'package:calorietracker/services/data_sync_service.dart';
-import 'package:calorietracker/services/database_service.dart';
+import 'package:calorietracker/services/database/database_provider.dart';
+import 'package:calorietracker/services/database/food_service.dart';
+import 'package:calorietracker/services/database/diary_entry_service.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
@@ -38,6 +40,7 @@ void setupLocator() {
   locator.registerFactory<DiaryController>(() => DiaryController());
   locator.registerFactory<LoginController>(() => LoginController());
 
+  locator.registerLazySingleton<DatabaseProvider>(() => DatabaseProvider());
   locator.registerLazySingleton<DataSyncService>(() => DataSyncService());
   locator.registerLazySingleton<DateFormattingService>(() => DateFormattingService());
   locator.registerLazySingleton<DiaryService>(() => DiaryService());
@@ -60,11 +63,23 @@ void setupLocator() {
   locator.registerLazySingletonAsync<CollectionApiService>(() async => CollectionApiService(
         await locator<DioProvider>().buildDio(baseUrl: _collectionApiBaseUrl),
       ));
-  locator.registerLazySingletonAsync<DatabaseService>(() async {
-    final database = DatabaseService();
-    final pathProvider = await locator.getAsync<AppPathProvider>();
-    await getDatabase(pathProvider.path);
-    return database;
+  locator.registerLazySingletonAsync<DiaryEntryService>(() async {
+    final databaseService = DiaryEntryService();
+    final databaseProvider = locator<DatabaseProvider>();
+    if (!databaseProvider.isOpen) {
+      final pathProvider = await locator.getAsync<AppPathProvider>();
+      await databaseProvider.getDatabase(pathProvider.path);
+    }
+    return databaseService;
+  });
+  locator.registerLazySingletonAsync<FoodService>(() async {
+    final foodService = FoodService();
+    final databaseProvider = locator<DatabaseProvider>();
+    if (!databaseProvider.isOpen) {
+      final pathProvider = await locator.getAsync<AppPathProvider>();
+      await databaseProvider.getDatabase(pathProvider.path);
+    }
+    return foodService;
   });
   locator.registerLazySingletonAsync<NutritionixApiService>(() async {
     return NutritionixApiService(await locator<DioProvider>().buildDio(baseUrl: _nutritionixApiBaseUrl, headers: {

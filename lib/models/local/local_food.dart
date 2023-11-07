@@ -17,6 +17,8 @@ class LocalFood extends LocalFoodBase {
         name: name,
         nutritionInfo: Nutrition.local(localNutrition: nutritionInfo),
       );
+
+  int compareCreatedAtDateDesc(LocalFood second) => -createdAtDate.compareTo(second.createdAtDate);
 }
 
 @embedded

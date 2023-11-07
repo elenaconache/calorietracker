@@ -9,7 +9,8 @@ import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
-import 'package:calorietracker/services/database_service.dart';
+import 'package:calorietracker/services/database/food_service.dart';
+import 'package:calorietracker/services/database/diary_entry_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/user_service.dart';
@@ -67,23 +68,20 @@ class AddFoodController {
   }
 
   Future<void> _saveDiaryEntryLocally(FoodLog foodLog, String? userId) async {
-    final dbService = await locator.getAsync<DatabaseService>();
-    final localFoodId = foodLog.localFoodId ?? await dbService.upsertFood(localFood: foodLog.food.localFood);
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    final foodService = await locator.getAsync<FoodService>();
+    final localFoodId = foodLog.localFoodId ?? await foodService.upsertFood(localFood: foodLog.food.localFood);
     if (localFoodId == null) {
       locator<LoggingService>().info('Could not save local diary entry. Missing local food id.');
       isLoading.value = false;
       throw Exception('Could not save local diary entry with missing local food id.');
     } else {
       final localDiaryFood = foodLog.food.localDiaryFood..localId = localFoodId;
-      await dbService
+      await diaryEntriesService
           .upsertDiaryEntry(localDiaryEntry: _getLocalDiaryEntry(localDiaryFood, foodLog, userId))
           .then((_) async {
-        locator<DiaryService>().logDiaryEntrySync(
-            date: foodLog.date,
-            meal: foodLog.meal,
-            food: foodLog.food,
-            localId: foodLog.localFoodId,
-            servingQuantity: foodLog.servingQuantity);
+        unawaited(
+            locator<DiaryService>().fetchDiary(date: foodLog.date));
       }).catchError((error, stackTrace) {
         locator<LoggingService>().handle(error, stackTrace);
         isLoading.value = false;
@@ -157,8 +155,8 @@ class AddFoodController {
   }
 
   Future<int?> _saveFoodLocally(FoodLog foodLog, String userId) async {
-    final dbService = await locator.getAsync<DatabaseService>();
-    final localFoodId = await dbService.upsertFood(localFood: foodLog.food.localFood);
+    final foodService = await locator.getAsync<FoodService>();
+    final localFoodId = await foodService.upsertFood(localFood: foodLog.food.localFood);
     if (localFoodId == null) {
       locator<LoggingService>().info('Could not save food locally: ${foodLog.food}');
       isLoading.value = false;

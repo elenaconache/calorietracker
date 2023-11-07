@@ -1,17 +1,14 @@
 import 'dart:async';
-
-import 'package:calorietracker/app/constants.dart';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
 import 'package:calorietracker/models/diary_entry.dart';
-import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/helpers/future_response.dart';
 import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/meal_entries_list.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
-import 'package:calorietracker/services/database_service.dart';
+import 'package:calorietracker/services/database/diary_entry_service.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/user_service.dart';
@@ -92,8 +89,8 @@ class DiaryService {
         return _mergeRemoteAndLocalDiaries(collectionDiary: response, diaryDate: fetchedDate, userId: userId);
       }).catchError((error, stackTrace) async {
         locator<LoggingService>().handle(error, stackTrace);
-        final dbService = await locator.getAsync<DatabaseService>();
-        final localDiary = await dbService.getDisplayDiaryEntries(date: fetchedDate);
+        final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+        final localDiary = await diaryEntriesService.getDisplayDiaryEntries(date: fetchedDate);
         return localDiary;
       }));
       dayMealEntries.value = FutureResponse.success(diary);
@@ -116,7 +113,7 @@ class DiaryService {
 
   bool hasMealEntries({required Meal meal}) => getSelectedDayMealEntries(meal: meal).isNotEmpty;
 
-  void removeDiaryEntry({required Meal meal, required DiaryEntry diaryEntry}) {
+  void removeDiaryEntrySync({required Meal meal, required DiaryEntry diaryEntry}) {
     var entries = dayMealEntries.value.data?.firstWhere((mealEntries) => mealEntries.meal == meal);
     if (entries == null) {
       return;
@@ -136,29 +133,41 @@ class DiaryService {
     }
   }
 
-  void logDiaryEntrySync({
-    required DateTime date,
-    required Meal meal,
-    required Food food,
-    required int? localId,
-    required double servingQuantity,
-  }) {
-    final formattedDate = _dateFormattingService.format(dateTime: date.toString(), format: collectionApiDateFormat);
-    if (selectedDay.value == formattedDate) {
-      var mealEntries = dayMealEntries.value.data?.firstWhereOrNull((entry) => entry.meal == meal) ??
-          MealEntriesList(meal: meal, diaryEntries: []);
-      mealEntries.diaryEntries.add(DiaryEntry(
-          collectionId: food.id,
-          localId: localId,
-          food: food,
-          date: formattedDate,
-          unitId: gramsUnitId,
-          servingQuantity: servingQuantity));
-      final otherMealsEntries = dayMealEntries.value.data?.where((mealEntries) => mealEntries.meal != meal) ?? [];
-      var diary = dayMealEntries.value;
-      diary = FutureResponse.success([...otherMealsEntries, mealEntries]);
-      dayMealEntries.value = diary;
-      locator<LoggingService>().info(dayMealEntries.value.toString());
+  Future<void> removeSingleDiaryEntry({required Meal meal, required DiaryEntry diaryEntry}) async {
+    removeDiaryEntrySync(meal: meal, diaryEntry: diaryEntry);
+    if (diaryEntry.collectionId != null) {
+      final apiService = await locator.getAsync<CollectionApiService>();
+      await apiService.deleteDiaryEntry(diaryEntryId: diaryEntry.collectionId!).then((_) async {
+        await _handleLocalDiaryEntryDeleted(diaryEntry);
+      }).catchError((error, stackTrace) {
+        if (error.isConnectionError) {
+          _handleLocalDiaryEntryDeleteFailed(diaryEntry);
+        } else {
+          locator<LoggingService>().handle(error, stackTrace);
+        }
+      });
+    }
+  }
+
+  Future<void> _handleLocalDiaryEntryDeleteFailed(DiaryEntry diaryEntry) async {
+    // final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    // TODO: for matching local entry with local id or collection id
+    // then mark deleted = true locally
+  }
+
+  Future<void> _handleLocalDiaryEntryDeleted(DiaryEntry diaryEntry) async {
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    if (diaryEntry.localId != null) {
+      await diaryEntriesService.deleteDiaryEntries(localEntries: [diaryEntry.localId!]);
+    } else if (diaryEntry.collectionId != null) {
+      final localDiaryEntry = await diaryEntriesService.getDiaryEntry(collectionId: diaryEntry.collectionId!);
+      if (localDiaryEntry == null) {
+        await diaryEntriesService.deleteDiaryEntries(localEntries: [localDiaryEntry!.id]);
+      } else {
+        locator<LoggingService>().info('Skipping delete from local storage for diary entry $diaryEntry');
+      }
+    } else {
+      locator<LoggingService>().info('Skipping delete from local storage for diary entry $diaryEntry');
     }
   }
 
@@ -168,13 +177,14 @@ class DiaryService {
     required String userId,
   }) async {
     var remoteDiary = collectionDiary.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
-    final dbService = await locator.getAsync<DatabaseService>();
-    final localDisplayDiary = await dbService.getDisplayDiaryEntries(
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    final localDisplayDiary = await diaryEntriesService.getDisplayDiaryEntries(
       date: diaryDate,
       filterPending: true,
     );
 
-    unawaited(_pullRemoteDiary(dbService, remoteDiary, userId));
+    unawaited(_pullRemoteDiary(remoteDiary, userId));
+    unawaited(_deleteMissingPushedLocalDiaryEntries(remoteDiary, userId));
 
     var result = <MealEntriesList>[];
     for (final meal in Meal.values) {
@@ -199,8 +209,22 @@ class DiaryService {
     return result;
   }
 
-  Future<void> _pullRemoteDiary(DatabaseService dbService, List<MealEntriesList> remoteDiary, String userId) async {
-    final pushedLocalEntries = await dbService.getDiaryEntries(filterPushed: true);
+  Future<void> _deleteMissingPushedLocalDiaryEntries(List<MealEntriesList> remoteDiary, String userId) async {
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    final pushedLocalEntries = await diaryEntriesService.getDiaryEntries(filterPushed: true);
+    final remoteEntries = remoteDiary.expand((mealEntriesList) => mealEntriesList.diaryEntries).toList();
+    var discardedDiaryEntriesIds = <int>[];
+    for (final localEntry in pushedLocalEntries) {
+      if (!remoteEntries.any((remoteEntry) => localEntry.entryId == remoteEntry.collectionId)) {
+        discardedDiaryEntriesIds.add(localEntry.id);
+      }
+    }
+    diaryEntriesService.deleteDiaryEntries(localEntries: discardedDiaryEntriesIds);
+  }
+
+  Future<void> _pullRemoteDiary(List<MealEntriesList> remoteDiary, String userId) async {
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    final pushedLocalEntries = await diaryEntriesService.getDiaryEntries(filterPushed: true);
     var pulledDiaryEntries = <LocalDiaryEntry>[];
     for (final remoteMealEntriesList in remoteDiary) {
       for (final entry in remoteMealEntriesList.diaryEntries) {
@@ -220,7 +244,7 @@ class DiaryService {
         }
       }
     }
-    dbService.upsertDiaryEntries(localEntries: pulledDiaryEntries);
+    diaryEntriesService.upsertDiaryEntries(localEntries: pulledDiaryEntries);
   }
 
   void enterEditMode() => diaryEditModeEnabled.value = true;

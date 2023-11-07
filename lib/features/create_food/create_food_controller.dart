@@ -5,7 +5,7 @@ import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/create_food/food_error.dart';
 import 'package:calorietracker/features/create_food/food_input.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
-import 'package:calorietracker/services/database_service.dart';
+import 'package:calorietracker/services/database/food_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/validators/nutrition_validator.dart';
 import 'package:dio/dio.dart';
@@ -27,14 +27,14 @@ class CreateFoodController {
     int? localId;
     final createdFood =
         await locator<CollectionApiService>().createFood(body: foodInput.addFoodRequest).then((created) async {
-      final dbService = await locator.getAsync<DatabaseService>();
-      unawaited(dbService.upsertFood(localFood: foodInput.localFood));
+      final foodService = await locator.getAsync<FoodService>();
+      unawaited(foodService.upsertFood(localFood: foodInput.localFood));
       return created;
     }).catchError((error, stackTrace) async {
       if (error is DioException) {
         if (error.isConnectionError) {
-          final dbService = await locator.getAsync<DatabaseService>();
-          localId = await dbService.upsertFood(localFood: foodInput.localFood);
+          final foodService = await locator.getAsync<FoodService>();
+          localId = await foodService.upsertFood(localFood: foodInput.localFood);
           return null;
         }
       }

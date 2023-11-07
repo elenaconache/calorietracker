@@ -7,7 +7,7 @@ import 'package:calorietracker/models/helpers/future_response.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_search_request.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_search_response.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
-import 'package:calorietracker/services/database_service.dart';
+import 'package:calorietracker/services/database/food_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/api/nutritionix_api_service.dart';
 import 'package:flutter/material.dart';
@@ -63,8 +63,8 @@ class SearchFoodService {
 
   Future<void> searchLocally({required String query}) async {
     currentSearchQuery = query;
-    final dbService = await locator.getAsync<DatabaseService>();
-    final results = await dbService.searchFood(query: query);
+    final foodService = await locator.getAsync<FoodService>();
+    final results = await foodService.searchFood(query: query);
     if (currentSearchQuery != query) {
       return;
     }

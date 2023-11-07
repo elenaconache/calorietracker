@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/diary/diary_row/diary_row.dart';
 import 'package:calorietracker/features/diary/no_logged_foods_message.dart';
@@ -43,5 +45,6 @@ class DiaryEntriesSliverList extends StatelessWidget {
     }
   }
 
-  void _onEntryDismissed(DiaryEntry entry) => locator<DiaryService>().removeDiaryEntry(meal: meal, diaryEntry: entry);
+  void _onEntryDismissed(DiaryEntry entry) =>
+      unawaited(locator<DiaryService>().removeSingleDiaryEntry(meal: meal, diaryEntry: entry));
 }

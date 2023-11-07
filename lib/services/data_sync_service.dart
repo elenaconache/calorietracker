@@ -7,7 +7,8 @@ import 'package:calorietracker/models/collection/add_local_data_response.dart';
 import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
-import 'package:calorietracker/services/database_service.dart';
+import 'package:calorietracker/services/database/food_service.dart';
+import 'package:calorietracker/services/database/diary_entry_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:collection/collection.dart';
@@ -22,15 +23,15 @@ class DataSyncService {
     }
     isUploadInProgress = true;
     locator<LoggingService>().info('Local data upload started: ${DateTime.now()}');
-    final dbService = await locator.getAsync<DatabaseService>();
-
-    final pendingFoods = await dbService.getFoods(filterPending: true);
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    final foodService = await locator.getAsync<FoodService>();
+    final pendingFoods = await foodService.getFoods(filterPending: true);
     final addedFoods = await _uploadFoods(pendingFoods: pendingFoods);
     await _markPushedLocalFoods(pendingFoods: pendingFoods, addedFoods: addedFoods);
 
-    final pendingEntries = await dbService.getDiaryEntries(filterPending: true);
+    final pendingEntries = await diaryEntriesService.getDiaryEntries(filterPending: true);
     await _updateLocalDiaryFoods(pendingEntries: pendingEntries, addedFoods: addedFoods);
-    final uploadReadyEntries = await dbService.getDiaryEntries(filterUploadReady: true);
+    final uploadReadyEntries = await diaryEntriesService.getDiaryEntries(filterUploadReady: true);
     final uploadedEntriesIds = await _uploadDiary(uploadReadyEntries: uploadReadyEntries);
     await _markPushedLocalDiary(addedEntries: uploadedEntriesIds, pendingEntries: uploadReadyEntries);
 
@@ -58,8 +59,8 @@ class DataSyncService {
       food.foodId = addedFoodsSet.firstWhereOrNull((addedFood) => addedFood.localResourceId == food.id)?.resourceId;
     }
 
-    final dbService = await locator.getAsync<DatabaseService>();
-    await dbService.upsertFoods(localFoods: foodsToUpdate.toList());
+    final foodService = await locator.getAsync<FoodService>();
+    await foodService.upsertFoods(localFoods: foodsToUpdate.toList());
   }
 
   Future<void> _markPushedLocalDiary({
@@ -81,8 +82,8 @@ class DataSyncService {
           addedEntriesSet.firstWhereOrNull((addedEntry) => addedEntry.localResourceId == diaryEntry.id)?.resourceId;
     }
 
-    final dbService = await locator.getAsync<DatabaseService>();
-    await dbService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    await diaryEntriesService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
   }
 
   Future<void> _updateLocalDiaryFoods({
@@ -101,8 +102,8 @@ class DataSyncService {
           addedFoodsSet.firstWhereOrNull((food) => food.localResourceId == entry.localFood.localId)?.resourceId;
     }
 
-    final dbService = await locator.getAsync<DatabaseService>();
-    await dbService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    await diaryEntriesService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
   }
 
   Future<List<AddLocalDataResponse>> _uploadFoods({required List<LocalFood> pendingFoods}) async {
@@ -217,16 +218,17 @@ class DataSyncService {
       food.errorPushing = true;
     }
 
-    final dbService = await locator.getAsync<DatabaseService>();
-    final pendingDiaryEntries = await dbService.getDiaryEntries(filterPending: true);
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    final pendingDiaryEntries = await diaryEntriesService.getDiaryEntries(filterPending: true);
     final diaryEntriesWithFoodError = pendingDiaryEntries
         .where((entry) => foodsToUpdate.any((localFood) => entry.localFood.localId == localFood.id))
         .toList();
     for (final entry in diaryEntriesWithFoodError) {
       entry.errorPushing = true;
     }
-    await dbService.upsertDiaryEntries(localEntries: diaryEntriesWithFoodError);
-    await dbService.upsertFoods(localFoods: foodsToUpdate.toList());
+    await diaryEntriesService.upsertDiaryEntries(localEntries: diaryEntriesWithFoodError);
+    final foodService = await locator.getAsync<FoodService>();
+    await foodService.upsertFoods(localFoods: foodsToUpdate.toList());
   }
 
   Future<void> _markInvalidLocalDiaryEntries({
@@ -245,7 +247,7 @@ class DataSyncService {
       entry.errorPushing = true;
     }
 
-    final dbService = await locator.getAsync<DatabaseService>();
-    await dbService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
+    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+    await diaryEntriesService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
   }
 }

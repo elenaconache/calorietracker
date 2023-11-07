@@ -34,6 +34,10 @@ abstract class CollectionApiService {
   Future<List<AddLocalDataResponse>> createFoods({@Body() required List<AddLocalFoodRequest> localFoods});
 
   @POST('diary-entries/add-list')
-  Future<List<AddLocalDataResponse>> createDiaryEntries(
-      {@Body() required List<AddLocalDiaryEntryRequest> localDiaryEntries});
+  Future<List<AddLocalDataResponse>> createDiaryEntries({
+    @Body() required List<AddLocalDiaryEntryRequest> localDiaryEntries,
+  });
+
+  @DELETE('diary-entries/delete/{diaryEntryId}')
+  Future<void> deleteDiaryEntry({@Path('diaryEntryId') required String diaryEntryId});
 }
