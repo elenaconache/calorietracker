@@ -32,7 +32,7 @@ class DataSyncService {
     final pendingEntries = await diaryEntriesService.getDiaryEntries(filterPending: true);
     await _updateLocalDiaryFoods(pendingEntries: pendingEntries, addedFoods: addedFoods);
     final uploadReadyEntries = await diaryEntriesService.getDiaryEntries(filterUploadReady: true);
-    final uploadedEntriesIds = await _uploadDiary(uploadReadyEntries: uploadReadyEntries);
+    final uploadedEntriesIds = await _pushDiary(uploadReadyEntries: uploadReadyEntries);
     await _markPushedLocalDiary(addedEntries: uploadedEntriesIds, pendingEntries: uploadReadyEntries);
 
     locator<LoggingService>().info('Local data upload done: ${DateTime.now()}');
@@ -128,17 +128,46 @@ class DataSyncService {
     return addedFoods;
   }
 
-  Future<List<AddLocalDataResponse>> _uploadDiary({required List<LocalDiaryEntry> uploadReadyEntries}) async {
+  Future<List<AddLocalDataResponse>> _pushDiary({required List<LocalDiaryEntry> uploadReadyEntries}) async {
     if (uploadReadyEntries.isEmpty) {
       return [];
     }
 
-    final requestDiaryEntries =
-        uploadReadyEntries.map((localDiaryEntry) => localDiaryEntry.addLocalDiaryEntryRequest).toList();
+    final createdEntriesIds = await _createRemoteDiaryEntries(uploadReadyEntries);
+    await _deleteRemoteDiaryEntries(uploadReadyEntries);
 
+    return createdEntriesIds;
+  }
+
+  Future<void> _deleteRemoteDiaryEntries(List<LocalDiaryEntry> uploadReadyEntries) async {
     final apiService = await locator.getAsync<CollectionApiService>();
-    final uploadedEntriesIds =
-        await (apiService.createDiaryEntries(localDiaryEntries: requestDiaryEntries).catchError((error, stackTrace) {
+    final entriesToDelete = uploadReadyEntries
+        .where((entry) => entry.deleted && entry.entryId != null)
+        .map((entry) => entry.entryId!)
+        .toList();
+    unawaited(apiService.deleteDiaryEntries(ids: entriesToDelete).then((_) async {
+      final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+      await diaryEntriesService.deleteDiaryEntries(
+          localEntries: uploadReadyEntries
+              .where((entry) => entry.deleted && entry.entryId != null)
+              .map((entry) => entry.id)
+              .toList());
+    }).catchError((error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+    }));
+  }
+
+  Future<List<AddLocalDataResponse>> _createRemoteDiaryEntries(List<LocalDiaryEntry> uploadReadyEntries) async {
+    final apiService = await locator.getAsync<CollectionApiService>();
+    final entriesToCreate = uploadReadyEntries
+        .whereNot((entry) => entry.deleted)
+        .map((localDiaryEntry) => localDiaryEntry.addLocalDiaryEntryRequest)
+        .toList();
+    if (entriesToCreate.isEmpty) {
+      return [];
+    }
+    final createdEntriesIds =
+        await (apiService.createDiaryEntries(localDiaryEntries: entriesToCreate).catchError((error, stackTrace) {
       if (_isPartiallyInvalid(error)) {
         locator<LoggingService>()
             .info('Conflict while calling diary bulk insert API. Response: ${error.response?.data}');
@@ -150,7 +179,7 @@ class DataSyncService {
         return <AddLocalDataResponse>[];
       }
     }));
-    return uploadedEntriesIds;
+    return createdEntriesIds;
   }
 
   bool _isPartiallyInvalid(error) =>

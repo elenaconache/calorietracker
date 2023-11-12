@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:calorietracker/models/collection/add_diary_entry_request.dart';
 import 'package:calorietracker/models/collection/add_food_request.dart';
 import 'package:calorietracker/models/collection/add_local_diary_entry_request.dart';
@@ -40,4 +42,8 @@ abstract class CollectionApiService {
 
   @DELETE('diary-entries/delete/{diaryEntryId}')
   Future<void> deleteDiaryEntry({@Path('diaryEntryId') required String diaryEntryId});
+
+  @POST('diary-entries/delete/list')
+  @Headers({HttpHeaders.contentTypeHeader: 'application/json'})
+  Future<void> deleteDiaryEntries({@Body() required List<String> ids});
 }

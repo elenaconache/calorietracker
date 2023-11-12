@@ -246,5 +246,6 @@
   "switchAccountLabel": "Switch account",
   "syncDataLabel": "Sync data",
   "deleteEntryLabel": "Delete entry",
-  "deleteEntriesTitle": "Delete entries"
+  "deleteEntriesTitle": "Delete entries",
+  "errorCreateFood": "Could not save food. Please use a similar food from collection or try again later."
 }

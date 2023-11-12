@@ -76,7 +76,8 @@ class Food {
     ..brand = brandName
     ..barcode = barcode
     ..pushed = id != null
-    ..createdAtDate = DateTime.now();
+    ..createdAtDate = DateTime.now()
+    ..foodId = id;
 
   AddFoodRequest get addFoodRequest => AddFoodRequest(
         barcode: null,

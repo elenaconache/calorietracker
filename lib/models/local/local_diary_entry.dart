@@ -43,6 +43,32 @@ class LocalDiaryEntry {
         foodId: localFood.foodId!,
         unitId: unitId,
       );
+
+  LocalDiaryEntry copyWith({
+    int? id,
+    DateTime? entryDate,
+    String? userId,
+    String? unitId,
+    double? servingQuantity,
+    Meal? meal,
+    bool? pushed,
+    bool? deleted,
+    bool? errorPushing,
+    LocalDiaryFood? localFood,
+    String? entryId,
+  }) =>
+      LocalDiaryEntry()
+        ..id = id ?? this.id
+        ..entryDate = entryDate ?? this.entryDate
+        ..userId = userId ?? this.userId
+        ..unitId = unitId ?? this.unitId
+        ..servingQuantity = servingQuantity ?? this.servingQuantity
+        ..meal = meal ?? this.meal
+        ..pushed = pushed ?? this.pushed
+        ..deleted = deleted ?? this.deleted
+        ..errorPushing = errorPushing ?? this.errorPushing
+        ..localFood = localFood ?? this.localFood
+        ..entryId = entryId ?? this.entryId;
 }
 
 @embedded

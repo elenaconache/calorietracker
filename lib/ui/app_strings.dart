@@ -226,4 +226,6 @@ class AppStrings {
   static String get deleteEntryLabel => S.current.deleteEntryLabel;
 
   static String get deleteEntriesTitle => S.current.deleteEntriesTitle;
+
+  static String get errorCreateFood => S.current.errorCreateFood;
 }

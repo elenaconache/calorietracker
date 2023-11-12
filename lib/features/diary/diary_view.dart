@@ -8,6 +8,7 @@ import 'package:calorietracker/features/diary/selected_day_line.dart';
 import 'package:calorietracker/models/helpers/future_response_status.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
+import 'package:calorietracker/services/data_sync_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class _DiaryViewState extends State<DiaryView> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: const DiaryAppBar(),
         body: RefreshIndicator(
-            onRefresh: _diaryService.fetchDiary,
+            onRefresh: locator<DataSyncService>().uploadLocalData,
             child: CustomScrollView(
               slivers: [
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),

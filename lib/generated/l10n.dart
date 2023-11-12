@@ -1130,6 +1130,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Could not save food. Please use a similar food from collection or try again later.`
+  String get errorCreateFood {
+    return Intl.message(
+      'Could not save food. Please use a similar food from collection or try again later.',
+      name: 'errorCreateFood',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

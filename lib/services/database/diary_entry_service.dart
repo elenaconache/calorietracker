@@ -14,20 +14,24 @@ import 'package:isar/isar.dart';
 
 class DiaryEntryService {
   Future<void> upsertDiaryEntries({required List<LocalDiaryEntry> localEntries}) async {
-    final id = await compute(_writeDiaryEntries, localEntries);
-    return id;
+    await compute(_writeDiaryEntries, localEntries).catchError((error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+    });
   }
 
   Future<void> deleteDiaryEntries({required List<int> localEntries}) async {
-    final id = await compute(_deleteDiaryEntries, localEntries);
-    return id;
+    await compute(_deleteDiaryEntries, localEntries).catchError((error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+    });
   }
 
   Future<int?> upsertDiaryEntry({required LocalDiaryEntry localDiaryEntry}) async {
-    final id = await compute(_writeDiaryEntry, localDiaryEntry);
-    locator<LoggingService>().info('inserted diary entry ${localDiaryEntry.entryDate}, '
-        'food id ${localDiaryEntry.localFood.foodId},'
-        ' local food id ${localDiaryEntry.localFood.localId}');
+    final id = await compute(_writeDiaryEntry, localDiaryEntry).catchError(
+      (error, stackTrace) {
+        locator<LoggingService>().handle(error, stackTrace);
+        return null;
+      },
+    );
     return id;
   }
 
@@ -43,88 +47,123 @@ class DiaryEntryService {
 
   Future<void> _deleteDiaryEntries(List<int> entries) async {
     final db = await Isar.open(localDataSchemas, directory: '');
-    db.writeTxn(() => db.localDiaryEntrys.deleteAll(entries));
+    db.writeTxnSync(() => db.localDiaryEntrys.deleteAllSync(entries));
   }
 
-  Future<List<LocalDiaryEntry>> _readDiaryEntries(dynamic _) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    return db.localDiaryEntrys.where().findAll();
-  }
+  Future<List<LocalDiaryEntry>> _readDiaryEntries(List<dynamic> filters) async {
+    if (filters.length != 5) {
+      throw Exception('Missing filters values for reading diary entries.');
+    }
 
-  Future<List<LocalDiaryEntry>> _readUploadReadyDiaryEntries(dynamic _) async {
+    final filterPending = filters[0] as bool;
+    final filterUploadReady = filters[1] as bool;
+    final filterPushed = filters[2] as bool;
+    final excludeDeleted = filters[3] as bool;
+    final dateFilter = filters[4] as DateTime?;
+
     final db = await Isar.open(localDataSchemas, directory: '');
     return db.localDiaryEntrys
-        .where()
         .filter()
-        .pushedEqualTo(false)
-        .errorPushingEqualTo(false)
-        .localFood((food) => food.foodIdIsNotNull())
+        .optional(filterPending, (q) => q.pushedEqualTo(false))
+        .and()
+        .optional(
+          filterUploadReady,
+          (q) {
+            return q
+                .pushedEqualTo(false)
+                .and()
+                .localFood(
+                  (food) => food.foodIdIsNotNull(),
+                )
+                .or()
+                .deletedEqualTo(true);
+          },
+        )
+        .and()
+        .optional(filterPushed, (q) => q.pushedEqualTo(true))
+        .and()
+        .optional(dateFilter != null, (q) {
+          final lowerBoundDate = DateTime(
+            dateFilter!.year,
+            dateFilter.month,
+            dateFilter.day,
+          );
+          final upperBoundDate = lowerBoundDate.copyWith(hour: 23, minute: 59);
+          return q.entryDateBetween(lowerBoundDate, upperBoundDate);
+        })
+        .and()
+        .optional(excludeDeleted, (q) => q.deletedEqualTo(false))
         .findAll();
-  }
-
-  Future<List<LocalDiaryEntry>> _readPushedDiaryEntries(dynamic _) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    return db.localDiaryEntrys.where().filter().pushedEqualTo(true).findAll();
-  }
-
-  Future<List<LocalDiaryEntry>> _readPendingDiaryEntries(dynamic _) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    return db.localDiaryEntrys.where().filter().pushedEqualTo(false).findAll();
-  }
-
-  Future<List<LocalDiaryEntry>> _readDayDiaryEntries(DateTime dateFilter) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    final lowerBound = DateTime(
-      dateFilter.year,
-      dateFilter.month,
-      dateFilter.day,
-    );
-    final upperBound = lowerBound.copyWith(hour: 23, minute: 59);
-    return db.localDiaryEntrys.where().filter().entryDateBetween(lowerBound, upperBound).findAll();
-  }
-
-  Future<List<LocalDiaryEntry>> _readPendingDayDiaryEntries(DateTime dateFilter) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    final lowerBound = DateTime(
-      dateFilter.year,
-      dateFilter.month,
-      dateFilter.day,
-    );
-    final upperBound = lowerBound.copyWith(hour: 23, minute: 59);
-    return db.localDiaryEntrys.where().filter().pushedEqualTo(false).entryDateBetween(lowerBound, upperBound).findAll();
   }
 
   Future<List<LocalDiaryEntry>> getDiaryEntries({
     bool filterPending = false,
     bool filterUploadReady = false,
     bool filterPushed = false,
+    bool excludeDeleted = false,
+    DateTime? dateFilter,
   }) async {
-    final entries = await compute(
-        filterPushed
-            ? _readPushedDiaryEntries
-            : filterUploadReady
-                ? _readUploadReadyDiaryEntries
-                : filterPending
-                    ? _readPendingDiaryEntries
-                    : _readDiaryEntries,
-        {}).catchError((error, stackTrace) {
+    final entries = await compute(_readDiaryEntries, [
+      filterPending,
+      filterUploadReady,
+      filterPushed,
+      excludeDeleted,
+      dateFilter,
+    ]).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return <LocalDiaryEntry>[];
     });
     return entries;
   }
 
-  Future<LocalDiaryEntry?> getDiaryEntry({required String collectionId}) async {
-    final entry = await compute(_readDiaryEntry, collectionId).catchError((error, stackTrace) {
+  Future<List<LocalDiaryEntry>> _readDiaryEntriesByIds(List<DiaryEntry> entries) async {
+    if (entries.isEmpty) {
+      return [];
+    }
+    final db = await Isar.open(localDataSchemas, directory: '');
+    var collection = db.localDiaryEntrys;
+    return collection
+        .where()
+        .filter()
+        .anyOf(
+          entries,
+          (q, entry) => entry.localId != null
+              ? q.idEqualTo(entry.localId!)
+              : q.entryIdIsNotNull().and().entryIdEqualTo(entry.collectionId),
+        )
+        .findAll();
+  }
+
+  Future<List<LocalDiaryEntry>> getDiaryEntriesByIds({required List<DiaryEntry> entries}) async {
+    final localEntries = await compute(_readDiaryEntriesByIds, entries).catchError((error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+      return <LocalDiaryEntry>[];
+    });
+    return localEntries;
+  }
+
+  Future<LocalDiaryEntry?> getDiaryEntry({String? collectionId, int? localDiaryEntryId}) async {
+    final entry = await compute(_readDiaryEntry, [collectionId, localDiaryEntryId]).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return null;
     });
     return entry;
   }
 
-  Future<LocalDiaryEntry?> _readDiaryEntry(String collectionId) async {
+  Future<LocalDiaryEntry?> _readDiaryEntry(List<dynamic> params) async {
+    if (params.length != 2 || params[0] is! String? || params[1] is! int?) {
+      throw Exception('Unexpected parameters list while reading diary entry.');
+    }
+    final collectionId = params[0] as String?;
+    final localId = params[1] as int?;
     final db = await Isar.open(localDataSchemas, directory: '');
-    return db.localDiaryEntrys.filter().entryIdEqualTo(collectionId).findFirst();
+    if (collectionId != null) {
+      return db.localDiaryEntrys.filter().entryIdEqualTo(collectionId).findFirst();
+    } else if (localId != null) {
+      return db.localDiaryEntrys.filter().idEqualTo(localId).findFirst();
+    } else {
+      throw Exception('Missing both collection id and local id for diary entry.');
+    }
   }
 
   Future<List<MealEntriesList>> getDisplayDiaryEntries({required String date, bool filterPending = false}) async {
@@ -134,7 +173,13 @@ class DiaryEntryService {
       formattedDate: formattedDate,
       format: collectionApiDateFormat,
     );
-    final entries = await (compute(filterPending ? _readPendingDayDiaryEntries : _readDayDiaryEntries, dateFilter)
+    final entries = await (compute(_readDiaryEntries, [
+      filterPending,
+      false,
+      false,
+      true,
+      dateFilter,
+    ])
       ..catchError((error, stackTrace) {
         locator<LoggingService>().handle(error, stackTrace);
         return <LocalDiaryEntry>[];

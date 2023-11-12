@@ -164,14 +164,17 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     }
   }
 
-  // TODO: show error snack bars
   void _onDonePressed(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
       final isNutritionValid = _controller.validateNutrition(foodInput: _foodInput);
       if (isNutritionValid) {
-        unawaited(_controller.createFood(foodInput: _foodInput).then((response) {
+        unawaited(_controller.createFood(foodInput: _foodInput)
+            .then((response) {
           if (response.localId == null && response.createdFoodId == null) {
             locator<LoggingService>().info('Could not save food locally neither on the API.');
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(AppStrings.errorCreateFood)),
+            );
           } else {
             if (context.mounted) {
               Navigator.of(context).pushReplacementNamed(Routes.addFood.path,

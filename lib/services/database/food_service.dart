@@ -10,18 +10,26 @@ import 'package:isar/isar.dart';
 
 class FoodService {
   Future<int?> upsertFood({required LocalFood localFood}) async {
-    final id = await compute(_writeFood, localFood);
+    final id = await compute(_writeFood, localFood).catchError((error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+      return null;
+    });
+    locator<LoggingService>().info('upsert food $localFood');
     return id;
   }
 
   Future<void> upsertFoods({required List<LocalFood> localFoods}) async {
-    final id = await compute(_writeFoods, localFoods);
+    await compute(_writeFoods, localFoods).catchError((error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+    });
     locator<LoggingService>().info('upsert foods $localFoods');
-    return id;
   }
 
   Future<List<LocalFood>> getFoods({bool filterPending = false}) async {
-    final foods = await compute(filterPending ? _readPendingFoods : _readFoods, {}).catchError((error, stackTrace) {
+    final foods = await compute(
+      filterPending ? _readPendingFoods : _readFoods,
+      {},
+    ).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return <LocalFood>[];
     });
@@ -90,7 +98,6 @@ class FoodService {
           return LocalFood()
             ..nutritionInfo = (Nutrition.local(localNutrition: diaryFood.nutritionInfo).localFoodNutrition)
             ..id = diaryFood.localId ?? -1
-            // TODO: handle foods without local id on search and save (if needed, might be enough if it first checks for remote food id)
             ..foodId = diaryFood.foodId
             ..createdAtDate = diaryFood.createdAtDate
             ..brand = diaryFood.brand

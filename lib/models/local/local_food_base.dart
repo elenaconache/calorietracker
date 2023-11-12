@@ -7,4 +7,10 @@ class LocalFoodBase {
   bool errorPushing = false;
   String? foodId;
   late DateTime createdAtDate;
+
+  @override
+  String toString() {
+    return '{barcode: $barcode, name: $name, brand: $brand, pushed: $pushed, deleted: $deleted, errorPushing: $errorPushing, '
+        'foodId: $foodId, createdAtDate: $createdAtDate}';
+  }
 }

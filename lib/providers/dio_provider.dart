@@ -30,8 +30,8 @@ class DioProvider {
   Future<Dio> buildDio({required String baseUrl, Map<String, String> headers = const {}}) async {
     _cacheInterceptor ??= await cacheInterceptor;
     final dio = Dio(BaseOptions(
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 2),
+      connectTimeout: const Duration(seconds: 9),
+      receiveTimeout: const Duration(seconds: 9),
       baseUrl: baseUrl,
     ));
     dio.interceptors.add(_cacheInterceptor!);
