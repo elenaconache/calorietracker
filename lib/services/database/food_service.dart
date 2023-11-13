@@ -88,8 +88,12 @@ class FoodService {
         .where()
         .filter()
         .errorPushingEqualTo(false)
-        .localFood((queryBuilder) =>
-            queryBuilder.nameContains(searchQuery).or().brandIsNotNull().and().brandContains(searchQuery))
+        .localFood((queryBuilder) => queryBuilder
+            .nameContains(searchQuery, caseSensitive: false)
+            .or()
+            .brandIsNotNull()
+            .and()
+            .brandContains(searchQuery, caseSensitive: false))
         .sortByEntryDateDesc()
         .findAll();
     final result = diaryEntries
@@ -119,11 +123,11 @@ class FoodService {
         .where()
         .filter()
         .errorPushingEqualTo(false)
-        .nameContains(searchQuery)
+        .nameContains(searchQuery, caseSensitive: false)
         .or()
         .brandIsNotNull()
         .and()
-        .brandContains(searchQuery)
+        .brandContains(searchQuery, caseSensitive: false)
         .sortByCreatedAtDateDesc()
         .findAll();
     db.close();

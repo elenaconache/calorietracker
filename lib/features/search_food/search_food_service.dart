@@ -61,6 +61,8 @@ class SearchFoodService {
     collectionSearchResponse.value = FutureResponse.success(null);
   }
 
+  // TODO: Set a flag to know whether the search was submitted or it only has local items.
+  // TODO: Show a different empty state when nothing is found locally while typing.
   Future<void> searchLocally({required String query}) async {
     currentSearchQuery = query;
     final foodService = await locator.getAsync<FoodService>();
