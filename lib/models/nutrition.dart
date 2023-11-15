@@ -1,7 +1,5 @@
 import 'package:calorietracker/extensions/numeric_extensions.dart';
-import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
-import 'package:calorietracker/models/local/local_nutrition_base.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'nutrition.g.dart';
@@ -52,7 +50,7 @@ class Nutrition {
     this.insolubleFiber = 0,
   });
 
-  Nutrition.local({required LocalNutritionBase localNutrition})
+  Nutrition.local({required LocalFoodNutrition localNutrition})
       : fatSaturated = localNutrition.fatSaturated.toPrecision(2),
         fatTrans = localNutrition.fatTrans.toPrecision(2),
         fatPolyunsaturated = localNutrition.fatPolyunsaturated.toPrecision(2),
@@ -122,27 +120,6 @@ class Nutrition {
   factory Nutrition.fromJson(Map<String, dynamic> json) => _$NutritionFromJson(json);
 
   LocalFoodNutrition get localFoodNutrition => LocalFoodNutrition()
-    ..fatSaturated = fatSaturated
-    ..fatTrans = fatTrans
-    ..fatPolyunsaturated = fatPolyunsaturated
-    ..fatMonounsaturated = fatMonounsaturated
-    ..cholesterol = cholesterol
-    ..sodium = sodium
-    ..potassium = potassium
-    ..calcium = calcium
-    ..iron = iron
-    ..vitaminA = vitaminA
-    ..vitaminC = vitaminC
-    ..vitaminD = vitaminD
-    ..carbohydrates = carbohydrates
-    ..fat = fat
-    ..protein = protein
-    ..calories = calories
-    ..sugar = sugar
-    ..fiber = fiber
-    ..insolubleFiber = insolubleFiber;
-
-  LocalDiaryNutrition get localDiaryNutrition => LocalDiaryNutrition()
     ..fatSaturated = fatSaturated
     ..fatTrans = fatTrans
     ..fatPolyunsaturated = fatPolyunsaturated

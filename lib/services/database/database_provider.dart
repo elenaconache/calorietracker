@@ -5,9 +5,11 @@ import 'package:isar/isar.dart';
 const localDataSchemas = [LocalDiaryEntrySchema, LocalFoodSchema];
 
 class DatabaseProvider {
-  /// Open Isar database.
-  /// The directory can be an empty String when called from a separate isolate
-  Future<Isar> getDatabase(String path) async => Isar.open(localDataSchemas, directory: path);
+  final String path;
+
+  DatabaseProvider({required this.path});
+
+  Future<Isar> get database async => isOpen ? Isar.getInstance()! : await Isar.open(localDataSchemas, directory: path);
 
   bool get isOpen => Isar.getInstance()?.isOpen ?? false;
 }

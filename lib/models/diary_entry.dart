@@ -28,15 +28,15 @@ class DiaryEntry {
 
   DiaryEntry.local({required LocalDiaryEntry localEntry})
       : collectionId = localEntry.entryId,
-        localId = localEntry.id,
-        food = Food.localDiary(localFood: localEntry.localFood),
+        localId = localEntry.localId,
+        food = Food.local(localFood: localEntry.localFood.value!),
         date = locator<DateFormattingService>().format(
           dateTime: localEntry.entryDate.toString(),
           format: collectionApiDateFormat,
         ),
         unitId = localEntry.unitId,
         servingQuantity = localEntry.servingQuantity,
-        errorPushing = localEntry.errorPushing;
+        errorPushing = localEntry.errorPushingEntry;
 
   factory DiaryEntry.fromJson(Map<String, dynamic> json) => _$DiaryEntryFromJson(json);
 

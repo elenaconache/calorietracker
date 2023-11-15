@@ -17,9 +17,9 @@ const LocalDiaryEntrySchema = CollectionSchema(
   name: r'LocalDiaryEntry',
   id: -6377377715649131462,
   properties: {
-    r'deleted': PropertySchema(
+    r'deletedEntry': PropertySchema(
       id: 0,
-      name: r'deleted',
+      name: r'deletedEntry',
       type: IsarType.bool,
     ),
     r'entryDate': PropertySchema(
@@ -32,40 +32,34 @@ const LocalDiaryEntrySchema = CollectionSchema(
       name: r'entryId',
       type: IsarType.string,
     ),
-    r'errorPushing': PropertySchema(
+    r'errorPushingEntry': PropertySchema(
       id: 3,
-      name: r'errorPushing',
+      name: r'errorPushingEntry',
       type: IsarType.bool,
     ),
-    r'localFood': PropertySchema(
-      id: 4,
-      name: r'localFood',
-      type: IsarType.object,
-      target: r'LocalDiaryFood',
-    ),
     r'meal': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'meal',
       type: IsarType.byte,
       enumMap: _LocalDiaryEntrymealEnumValueMap,
     ),
-    r'pushed': PropertySchema(
-      id: 6,
-      name: r'pushed',
+    r'pushedEntry': PropertySchema(
+      id: 5,
+      name: r'pushedEntry',
       type: IsarType.bool,
     ),
     r'servingQuantity': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'servingQuantity',
       type: IsarType.double,
     ),
     r'unitId': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'unitId',
       type: IsarType.string,
     ),
     r'userId': PropertySchema(
-      id: 9,
+      id: 8,
       name: r'userId',
       type: IsarType.string,
     )
@@ -74,13 +68,17 @@ const LocalDiaryEntrySchema = CollectionSchema(
   serialize: _localDiaryEntrySerialize,
   deserialize: _localDiaryEntryDeserialize,
   deserializeProp: _localDiaryEntryDeserializeProp,
-  idName: r'id',
+  idName: r'localId',
   indexes: {},
-  links: {},
-  embeddedSchemas: {
-    r'LocalDiaryFood': LocalDiaryFoodSchema,
-    r'LocalDiaryNutrition': LocalDiaryNutritionSchema
+  links: {
+    r'localFood': LinkSchema(
+      id: 733753828691332222,
+      name: r'localFood',
+      target: r'LocalFood',
+      single: true,
+    )
   },
+  embeddedSchemas: {},
   getId: _localDiaryEntryGetId,
   getLinks: _localDiaryEntryGetLinks,
   attach: _localDiaryEntryAttach,
@@ -99,9 +97,6 @@ int _localDiaryEntryEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 +
-      LocalDiaryFoodSchema.estimateSize(
-          object.localFood, allOffsets[LocalDiaryFood]!, allOffsets);
   bytesCount += 3 + object.unitId.length * 3;
   bytesCount += 3 + object.userId.length * 3;
   return bytesCount;
@@ -113,21 +108,15 @@ void _localDiaryEntrySerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.deleted);
+  writer.writeBool(offsets[0], object.deletedEntry);
   writer.writeDateTime(offsets[1], object.entryDate);
   writer.writeString(offsets[2], object.entryId);
-  writer.writeBool(offsets[3], object.errorPushing);
-  writer.writeObject<LocalDiaryFood>(
-    offsets[4],
-    allOffsets,
-    LocalDiaryFoodSchema.serialize,
-    object.localFood,
-  );
-  writer.writeByte(offsets[5], object.meal.index);
-  writer.writeBool(offsets[6], object.pushed);
-  writer.writeDouble(offsets[7], object.servingQuantity);
-  writer.writeString(offsets[8], object.unitId);
-  writer.writeString(offsets[9], object.userId);
+  writer.writeBool(offsets[3], object.errorPushingEntry);
+  writer.writeByte(offsets[4], object.meal.index);
+  writer.writeBool(offsets[5], object.pushedEntry);
+  writer.writeDouble(offsets[6], object.servingQuantity);
+  writer.writeString(offsets[7], object.unitId);
+  writer.writeString(offsets[8], object.userId);
 }
 
 LocalDiaryEntry _localDiaryEntryDeserialize(
@@ -137,24 +126,18 @@ LocalDiaryEntry _localDiaryEntryDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = LocalDiaryEntry();
-  object.deleted = reader.readBool(offsets[0]);
+  object.deletedEntry = reader.readBool(offsets[0]);
   object.entryDate = reader.readDateTime(offsets[1]);
   object.entryId = reader.readStringOrNull(offsets[2]);
-  object.errorPushing = reader.readBool(offsets[3]);
-  object.id = id;
-  object.localFood = reader.readObjectOrNull<LocalDiaryFood>(
-        offsets[4],
-        LocalDiaryFoodSchema.deserialize,
-        allOffsets,
-      ) ??
-      LocalDiaryFood();
+  object.errorPushingEntry = reader.readBool(offsets[3]);
+  object.localId = id;
   object.meal =
-      _LocalDiaryEntrymealValueEnumMap[reader.readByteOrNull(offsets[5])] ??
+      _LocalDiaryEntrymealValueEnumMap[reader.readByteOrNull(offsets[4])] ??
           Meal.breakfast;
-  object.pushed = reader.readBool(offsets[6]);
-  object.servingQuantity = reader.readDouble(offsets[7]);
-  object.unitId = reader.readString(offsets[8]);
-  object.userId = reader.readString(offsets[9]);
+  object.pushedEntry = reader.readBool(offsets[5]);
+  object.servingQuantity = reader.readDouble(offsets[6]);
+  object.unitId = reader.readString(offsets[7]);
+  object.userId = reader.readString(offsets[8]);
   return object;
 }
 
@@ -174,22 +157,15 @@ P _localDiaryEntryDeserializeProp<P>(
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readObjectOrNull<LocalDiaryFood>(
-            offset,
-            LocalDiaryFoodSchema.deserialize,
-            allOffsets,
-          ) ??
-          LocalDiaryFood()) as P;
-    case 5:
       return (_LocalDiaryEntrymealValueEnumMap[reader.readByteOrNull(offset)] ??
           Meal.breakfast) as P;
-    case 6:
+    case 5:
       return (reader.readBool(offset)) as P;
-    case 7:
+    case 6:
       return (reader.readDouble(offset)) as P;
-    case 8:
+    case 7:
       return (reader.readString(offset)) as P;
-    case 9:
+    case 8:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -210,21 +186,23 @@ const _LocalDiaryEntrymealValueEnumMap = {
 };
 
 Id _localDiaryEntryGetId(LocalDiaryEntry object) {
-  return object.id;
+  return object.localId;
 }
 
 List<IsarLinkBase<dynamic>> _localDiaryEntryGetLinks(LocalDiaryEntry object) {
-  return [];
+  return [object.localFood];
 }
 
 void _localDiaryEntryAttach(
     IsarCollection<dynamic> col, Id id, LocalDiaryEntry object) {
-  object.id = id;
+  object.localId = id;
+  object.localFood
+      .attach(col, col.isar.collection<LocalFood>(), r'localFood', id);
 }
 
 extension LocalDiaryEntryQueryWhereSort
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QWhere> {
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhere> anyId() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhere> anyLocalId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -233,69 +211,69 @@ extension LocalDiaryEntryQueryWhereSort
 
 extension LocalDiaryEntryQueryWhere
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QWhereClause> {
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhereClause> idEqualTo(
-      Id id) {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhereClause>
+      localIdEqualTo(Id localId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
+        lower: localId,
+        upper: localId,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+      localIdNotEqualTo(Id localId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
+              IdWhereClause.lessThan(upper: localId, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
+              IdWhereClause.greaterThan(lower: localId, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
+              IdWhereClause.greaterThan(lower: localId, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
+              IdWhereClause.lessThan(upper: localId, includeUpper: false),
             );
       }
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+      localIdGreaterThan(Id localId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: id, includeLower: include),
+        IdWhereClause.greaterThan(lower: localId, includeLower: include),
       );
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhereClause> idLessThan(
-      Id id,
-      {bool include = false}) {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhereClause>
+      localIdLessThan(Id localId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: id, includeUpper: include),
+        IdWhereClause.lessThan(upper: localId, includeUpper: include),
       );
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhereClause> idBetween(
-    Id lowerId,
-    Id upperId, {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterWhereClause>
+      localIdBetween(
+    Id lowerLocalId,
+    Id upperLocalId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
+        lower: lowerLocalId,
         includeLower: includeLower,
-        upper: upperId,
+        upper: upperLocalId,
         includeUpper: includeUpper,
       ));
     });
@@ -305,10 +283,10 @@ extension LocalDiaryEntryQueryWhere
 extension LocalDiaryEntryQueryFilter
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QFilterCondition> {
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      deletedEqualTo(bool value) {
+      deletedEntryEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'deleted',
+        property: r'deletedEntry',
         value: value,
       ));
     });
@@ -525,55 +503,55 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      errorPushingEqualTo(bool value) {
+      errorPushingEntryEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'errorPushing',
+        property: r'errorPushingEntry',
         value: value,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      idEqualTo(Id value) {
+      localIdEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
+        property: r'localId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      idGreaterThan(
+      localIdGreaterThan(
     Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'id',
+        property: r'localId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      idLessThan(
+      localIdLessThan(
     Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'id',
+        property: r'localId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      idBetween(
+      localIdBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -581,7 +559,7 @@ extension LocalDiaryEntryQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
+        property: r'localId',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -647,10 +625,10 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      pushedEqualTo(bool value) {
+      pushedEntryEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'pushed',
+        property: r'pushedEntry',
         value: value,
       ));
     });
@@ -996,30 +974,38 @@ extension LocalDiaryEntryQueryFilter
 }
 
 extension LocalDiaryEntryQueryObject
+    on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QFilterCondition> {}
+
+extension LocalDiaryEntryQueryLinks
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QFilterCondition> {
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      localFood(FilterQuery<LocalDiaryFood> q) {
+      localFood(FilterQuery<LocalFood> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'localFood');
+      return query.link(q, r'localFood');
+    });
+  }
+
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
+      localFoodIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'localFood', 0, true, 0, true);
     });
   }
 }
 
-extension LocalDiaryEntryQueryLinks
-    on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QFilterCondition> {}
-
 extension LocalDiaryEntryQuerySortBy
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QSortBy> {
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> sortByDeleted() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      sortByDeletedEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'deleted', Sort.asc);
+      return query.addSortBy(r'deletedEntry', Sort.asc);
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      sortByDeletedDesc() {
+      sortByDeletedEntryDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'deleted', Sort.desc);
+      return query.addSortBy(r'deletedEntry', Sort.desc);
     });
   }
 
@@ -1051,16 +1037,16 @@ extension LocalDiaryEntryQuerySortBy
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      sortByErrorPushing() {
+      sortByErrorPushingEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'errorPushing', Sort.asc);
+      return query.addSortBy(r'errorPushingEntry', Sort.asc);
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      sortByErrorPushingDesc() {
+      sortByErrorPushingEntryDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'errorPushing', Sort.desc);
+      return query.addSortBy(r'errorPushingEntry', Sort.desc);
     });
   }
 
@@ -1077,16 +1063,17 @@ extension LocalDiaryEntryQuerySortBy
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> sortByPushed() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      sortByPushedEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'pushed', Sort.asc);
+      return query.addSortBy(r'pushedEntry', Sort.asc);
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      sortByPushedDesc() {
+      sortByPushedEntryDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'pushed', Sort.desc);
+      return query.addSortBy(r'pushedEntry', Sort.desc);
     });
   }
 
@@ -1133,16 +1120,17 @@ extension LocalDiaryEntryQuerySortBy
 
 extension LocalDiaryEntryQuerySortThenBy
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QSortThenBy> {
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenByDeleted() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      thenByDeletedEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'deleted', Sort.asc);
+      return query.addSortBy(r'deletedEntry', Sort.asc);
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      thenByDeletedDesc() {
+      thenByDeletedEntryDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'deleted', Sort.desc);
+      return query.addSortBy(r'deletedEntry', Sort.desc);
     });
   }
 
@@ -1174,28 +1162,29 @@ extension LocalDiaryEntryQuerySortThenBy
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      thenByErrorPushing() {
+      thenByErrorPushingEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'errorPushing', Sort.asc);
+      return query.addSortBy(r'errorPushingEntry', Sort.asc);
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      thenByErrorPushingDesc() {
+      thenByErrorPushingEntryDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'errorPushing', Sort.desc);
+      return query.addSortBy(r'errorPushingEntry', Sort.desc);
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenById() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenByLocalId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
+      return query.addSortBy(r'localId', Sort.asc);
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      thenByLocalIdDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
+      return query.addSortBy(r'localId', Sort.desc);
     });
   }
 
@@ -1212,16 +1201,17 @@ extension LocalDiaryEntryQuerySortThenBy
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenByPushed() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      thenByPushedEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'pushed', Sort.asc);
+      return query.addSortBy(r'pushedEntry', Sort.asc);
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      thenByPushedDesc() {
+      thenByPushedEntryDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'pushed', Sort.desc);
+      return query.addSortBy(r'pushedEntry', Sort.desc);
     });
   }
 
@@ -1269,9 +1259,9 @@ extension LocalDiaryEntryQuerySortThenBy
 extension LocalDiaryEntryQueryWhereDistinct
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> {
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct>
-      distinctByDeleted() {
+      distinctByDeletedEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'deleted');
+      return query.addDistinctBy(r'deletedEntry');
     });
   }
 
@@ -1290,9 +1280,9 @@ extension LocalDiaryEntryQueryWhereDistinct
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct>
-      distinctByErrorPushing() {
+      distinctByErrorPushingEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'errorPushing');
+      return query.addDistinctBy(r'errorPushingEntry');
     });
   }
 
@@ -1302,9 +1292,10 @@ extension LocalDiaryEntryQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByPushed() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct>
+      distinctByPushedEntry() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'pushed');
+      return query.addDistinctBy(r'pushedEntry');
     });
   }
 
@@ -1332,15 +1323,15 @@ extension LocalDiaryEntryQueryWhereDistinct
 
 extension LocalDiaryEntryQueryProperty
     on QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QQueryProperty> {
-  QueryBuilder<LocalDiaryEntry, int, QQueryOperations> idProperty() {
+  QueryBuilder<LocalDiaryEntry, int, QQueryOperations> localIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'id');
+      return query.addPropertyName(r'localId');
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, bool, QQueryOperations> deletedProperty() {
+  QueryBuilder<LocalDiaryEntry, bool, QQueryOperations> deletedEntryProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'deleted');
+      return query.addPropertyName(r'deletedEntry');
     });
   }
 
@@ -1357,16 +1348,10 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, bool, QQueryOperations> errorPushingProperty() {
+  QueryBuilder<LocalDiaryEntry, bool, QQueryOperations>
+      errorPushingEntryProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'errorPushing');
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryFood, QQueryOperations>
-      localFoodProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'localFood');
+      return query.addPropertyName(r'errorPushingEntry');
     });
   }
 
@@ -1376,9 +1361,9 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, bool, QQueryOperations> pushedProperty() {
+  QueryBuilder<LocalDiaryEntry, bool, QQueryOperations> pushedEntryProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'pushed');
+      return query.addPropertyName(r'pushedEntry');
     });
   }
 
@@ -1401,2443 +1386,3 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 }
-
-// **************************************************************************
-// IsarEmbeddedGenerator
-// **************************************************************************
-
-// coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
-
-const LocalDiaryFoodSchema = Schema(
-  name: r'LocalDiaryFood',
-  id: -5155966677480490508,
-  properties: {
-    r'barcode': PropertySchema(
-      id: 0,
-      name: r'barcode',
-      type: IsarType.string,
-    ),
-    r'brand': PropertySchema(
-      id: 1,
-      name: r'brand',
-      type: IsarType.string,
-    ),
-    r'createdAtDate': PropertySchema(
-      id: 2,
-      name: r'createdAtDate',
-      type: IsarType.dateTime,
-    ),
-    r'deleted': PropertySchema(
-      id: 3,
-      name: r'deleted',
-      type: IsarType.bool,
-    ),
-    r'errorPushing': PropertySchema(
-      id: 4,
-      name: r'errorPushing',
-      type: IsarType.bool,
-    ),
-    r'foodId': PropertySchema(
-      id: 5,
-      name: r'foodId',
-      type: IsarType.string,
-    ),
-    r'localId': PropertySchema(
-      id: 6,
-      name: r'localId',
-      type: IsarType.long,
-    ),
-    r'name': PropertySchema(
-      id: 7,
-      name: r'name',
-      type: IsarType.string,
-    ),
-    r'nutritionInfo': PropertySchema(
-      id: 8,
-      name: r'nutritionInfo',
-      type: IsarType.object,
-      target: r'LocalDiaryNutrition',
-    ),
-    r'pushed': PropertySchema(
-      id: 9,
-      name: r'pushed',
-      type: IsarType.bool,
-    )
-  },
-  estimateSize: _localDiaryFoodEstimateSize,
-  serialize: _localDiaryFoodSerialize,
-  deserialize: _localDiaryFoodDeserialize,
-  deserializeProp: _localDiaryFoodDeserializeProp,
-);
-
-int _localDiaryFoodEstimateSize(
-  LocalDiaryFood object,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  var bytesCount = offsets.last;
-  {
-    final value = object.barcode;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.brand;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.foodId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 +
-      LocalDiaryNutritionSchema.estimateSize(
-          object.nutritionInfo, allOffsets[LocalDiaryNutrition]!, allOffsets);
-  return bytesCount;
-}
-
-void _localDiaryFoodSerialize(
-  LocalDiaryFood object,
-  IsarWriter writer,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  writer.writeString(offsets[0], object.barcode);
-  writer.writeString(offsets[1], object.brand);
-  writer.writeDateTime(offsets[2], object.createdAtDate);
-  writer.writeBool(offsets[3], object.deleted);
-  writer.writeBool(offsets[4], object.errorPushing);
-  writer.writeString(offsets[5], object.foodId);
-  writer.writeLong(offsets[6], object.localId);
-  writer.writeString(offsets[7], object.name);
-  writer.writeObject<LocalDiaryNutrition>(
-    offsets[8],
-    allOffsets,
-    LocalDiaryNutritionSchema.serialize,
-    object.nutritionInfo,
-  );
-  writer.writeBool(offsets[9], object.pushed);
-}
-
-LocalDiaryFood _localDiaryFoodDeserialize(
-  Id id,
-  IsarReader reader,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  final object = LocalDiaryFood();
-  object.barcode = reader.readStringOrNull(offsets[0]);
-  object.brand = reader.readStringOrNull(offsets[1]);
-  object.createdAtDate = reader.readDateTime(offsets[2]);
-  object.deleted = reader.readBool(offsets[3]);
-  object.errorPushing = reader.readBool(offsets[4]);
-  object.foodId = reader.readStringOrNull(offsets[5]);
-  object.localId = reader.readLongOrNull(offsets[6]);
-  object.name = reader.readString(offsets[7]);
-  object.nutritionInfo = reader.readObjectOrNull<LocalDiaryNutrition>(
-        offsets[8],
-        LocalDiaryNutritionSchema.deserialize,
-        allOffsets,
-      ) ??
-      LocalDiaryNutrition();
-  object.pushed = reader.readBool(offsets[9]);
-  return object;
-}
-
-P _localDiaryFoodDeserializeProp<P>(
-  IsarReader reader,
-  int propertyId,
-  int offset,
-  Map<Type, List<int>> allOffsets,
-) {
-  switch (propertyId) {
-    case 0:
-      return (reader.readStringOrNull(offset)) as P;
-    case 1:
-      return (reader.readStringOrNull(offset)) as P;
-    case 2:
-      return (reader.readDateTime(offset)) as P;
-    case 3:
-      return (reader.readBool(offset)) as P;
-    case 4:
-      return (reader.readBool(offset)) as P;
-    case 5:
-      return (reader.readStringOrNull(offset)) as P;
-    case 6:
-      return (reader.readLongOrNull(offset)) as P;
-    case 7:
-      return (reader.readString(offset)) as P;
-    case 8:
-      return (reader.readObjectOrNull<LocalDiaryNutrition>(
-            offset,
-            LocalDiaryNutritionSchema.deserialize,
-            allOffsets,
-          ) ??
-          LocalDiaryNutrition()) as P;
-    case 9:
-      return (reader.readBool(offset)) as P;
-    default:
-      throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-extension LocalDiaryFoodQueryFilter
-    on QueryBuilder<LocalDiaryFood, LocalDiaryFood, QFilterCondition> {
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'barcode',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'barcode',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'barcode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'barcode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'barcode',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'barcode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      barcodeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'barcode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'brand',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'brand',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'brand',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'brand',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'brand',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'brand',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      brandIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'brand',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      createdAtDateEqualTo(DateTime value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'createdAtDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      createdAtDateGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'createdAtDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      createdAtDateLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'createdAtDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      createdAtDateBetween(
-    DateTime lower,
-    DateTime upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'createdAtDate',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      deletedEqualTo(bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'deleted',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      errorPushingEqualTo(bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'errorPushing',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'foodId',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'foodId',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'foodId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'foodId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'foodId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      foodIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'foodId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      localIdIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'localId',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      localIdIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'localId',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      localIdEqualTo(int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'localId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      localIdGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'localId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      localIdLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'localId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      localIdBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'localId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'name',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'name',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'name',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'name',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nameIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'name',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      pushedEqualTo(bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'pushed',
-        value: value,
-      ));
-    });
-  }
-}
-
-extension LocalDiaryFoodQueryObject
-    on QueryBuilder<LocalDiaryFood, LocalDiaryFood, QFilterCondition> {
-  QueryBuilder<LocalDiaryFood, LocalDiaryFood, QAfterFilterCondition>
-      nutritionInfo(FilterQuery<LocalDiaryNutrition> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'nutritionInfo');
-    });
-  }
-}
-
-// coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
-
-const LocalDiaryNutritionSchema = Schema(
-  name: r'LocalDiaryNutrition',
-  id: 6540107341624903809,
-  properties: {
-    r'calcium': PropertySchema(
-      id: 0,
-      name: r'calcium',
-      type: IsarType.double,
-    ),
-    r'calories': PropertySchema(
-      id: 1,
-      name: r'calories',
-      type: IsarType.double,
-    ),
-    r'carbohydrates': PropertySchema(
-      id: 2,
-      name: r'carbohydrates',
-      type: IsarType.double,
-    ),
-    r'cholesterol': PropertySchema(
-      id: 3,
-      name: r'cholesterol',
-      type: IsarType.double,
-    ),
-    r'fat': PropertySchema(
-      id: 4,
-      name: r'fat',
-      type: IsarType.double,
-    ),
-    r'fatMonounsaturated': PropertySchema(
-      id: 5,
-      name: r'fatMonounsaturated',
-      type: IsarType.double,
-    ),
-    r'fatPolyunsaturated': PropertySchema(
-      id: 6,
-      name: r'fatPolyunsaturated',
-      type: IsarType.double,
-    ),
-    r'fatSaturated': PropertySchema(
-      id: 7,
-      name: r'fatSaturated',
-      type: IsarType.double,
-    ),
-    r'fatTrans': PropertySchema(
-      id: 8,
-      name: r'fatTrans',
-      type: IsarType.double,
-    ),
-    r'fiber': PropertySchema(
-      id: 9,
-      name: r'fiber',
-      type: IsarType.double,
-    ),
-    r'insolubleFiber': PropertySchema(
-      id: 10,
-      name: r'insolubleFiber',
-      type: IsarType.double,
-    ),
-    r'iron': PropertySchema(
-      id: 11,
-      name: r'iron',
-      type: IsarType.double,
-    ),
-    r'potassium': PropertySchema(
-      id: 12,
-      name: r'potassium',
-      type: IsarType.double,
-    ),
-    r'protein': PropertySchema(
-      id: 13,
-      name: r'protein',
-      type: IsarType.double,
-    ),
-    r'sodium': PropertySchema(
-      id: 14,
-      name: r'sodium',
-      type: IsarType.double,
-    ),
-    r'sugar': PropertySchema(
-      id: 15,
-      name: r'sugar',
-      type: IsarType.double,
-    ),
-    r'vitaminA': PropertySchema(
-      id: 16,
-      name: r'vitaminA',
-      type: IsarType.double,
-    ),
-    r'vitaminC': PropertySchema(
-      id: 17,
-      name: r'vitaminC',
-      type: IsarType.double,
-    ),
-    r'vitaminD': PropertySchema(
-      id: 18,
-      name: r'vitaminD',
-      type: IsarType.double,
-    )
-  },
-  estimateSize: _localDiaryNutritionEstimateSize,
-  serialize: _localDiaryNutritionSerialize,
-  deserialize: _localDiaryNutritionDeserialize,
-  deserializeProp: _localDiaryNutritionDeserializeProp,
-);
-
-int _localDiaryNutritionEstimateSize(
-  LocalDiaryNutrition object,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  var bytesCount = offsets.last;
-  return bytesCount;
-}
-
-void _localDiaryNutritionSerialize(
-  LocalDiaryNutrition object,
-  IsarWriter writer,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  writer.writeDouble(offsets[0], object.calcium);
-  writer.writeDouble(offsets[1], object.calories);
-  writer.writeDouble(offsets[2], object.carbohydrates);
-  writer.writeDouble(offsets[3], object.cholesterol);
-  writer.writeDouble(offsets[4], object.fat);
-  writer.writeDouble(offsets[5], object.fatMonounsaturated);
-  writer.writeDouble(offsets[6], object.fatPolyunsaturated);
-  writer.writeDouble(offsets[7], object.fatSaturated);
-  writer.writeDouble(offsets[8], object.fatTrans);
-  writer.writeDouble(offsets[9], object.fiber);
-  writer.writeDouble(offsets[10], object.insolubleFiber);
-  writer.writeDouble(offsets[11], object.iron);
-  writer.writeDouble(offsets[12], object.potassium);
-  writer.writeDouble(offsets[13], object.protein);
-  writer.writeDouble(offsets[14], object.sodium);
-  writer.writeDouble(offsets[15], object.sugar);
-  writer.writeDouble(offsets[16], object.vitaminA);
-  writer.writeDouble(offsets[17], object.vitaminC);
-  writer.writeDouble(offsets[18], object.vitaminD);
-}
-
-LocalDiaryNutrition _localDiaryNutritionDeserialize(
-  Id id,
-  IsarReader reader,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  final object = LocalDiaryNutrition();
-  object.calcium = reader.readDouble(offsets[0]);
-  object.calories = reader.readDouble(offsets[1]);
-  object.carbohydrates = reader.readDouble(offsets[2]);
-  object.cholesterol = reader.readDouble(offsets[3]);
-  object.fat = reader.readDouble(offsets[4]);
-  object.fatMonounsaturated = reader.readDouble(offsets[5]);
-  object.fatPolyunsaturated = reader.readDouble(offsets[6]);
-  object.fatSaturated = reader.readDouble(offsets[7]);
-  object.fatTrans = reader.readDouble(offsets[8]);
-  object.fiber = reader.readDouble(offsets[9]);
-  object.insolubleFiber = reader.readDouble(offsets[10]);
-  object.iron = reader.readDouble(offsets[11]);
-  object.potassium = reader.readDouble(offsets[12]);
-  object.protein = reader.readDouble(offsets[13]);
-  object.sodium = reader.readDouble(offsets[14]);
-  object.sugar = reader.readDouble(offsets[15]);
-  object.vitaminA = reader.readDouble(offsets[16]);
-  object.vitaminC = reader.readDouble(offsets[17]);
-  object.vitaminD = reader.readDouble(offsets[18]);
-  return object;
-}
-
-P _localDiaryNutritionDeserializeProp<P>(
-  IsarReader reader,
-  int propertyId,
-  int offset,
-  Map<Type, List<int>> allOffsets,
-) {
-  switch (propertyId) {
-    case 0:
-      return (reader.readDouble(offset)) as P;
-    case 1:
-      return (reader.readDouble(offset)) as P;
-    case 2:
-      return (reader.readDouble(offset)) as P;
-    case 3:
-      return (reader.readDouble(offset)) as P;
-    case 4:
-      return (reader.readDouble(offset)) as P;
-    case 5:
-      return (reader.readDouble(offset)) as P;
-    case 6:
-      return (reader.readDouble(offset)) as P;
-    case 7:
-      return (reader.readDouble(offset)) as P;
-    case 8:
-      return (reader.readDouble(offset)) as P;
-    case 9:
-      return (reader.readDouble(offset)) as P;
-    case 10:
-      return (reader.readDouble(offset)) as P;
-    case 11:
-      return (reader.readDouble(offset)) as P;
-    case 12:
-      return (reader.readDouble(offset)) as P;
-    case 13:
-      return (reader.readDouble(offset)) as P;
-    case 14:
-      return (reader.readDouble(offset)) as P;
-    case 15:
-      return (reader.readDouble(offset)) as P;
-    case 16:
-      return (reader.readDouble(offset)) as P;
-    case 17:
-      return (reader.readDouble(offset)) as P;
-    case 18:
-      return (reader.readDouble(offset)) as P;
-    default:
-      throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-extension LocalDiaryNutritionQueryFilter on QueryBuilder<LocalDiaryNutrition,
-    LocalDiaryNutrition, QFilterCondition> {
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      calciumEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'calcium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      calciumGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'calcium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      calciumLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'calcium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      calciumBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'calcium',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      caloriesEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'calories',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      caloriesGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'calories',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      caloriesLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'calories',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      caloriesBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'calories',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      carbohydratesEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'carbohydrates',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      carbohydratesGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'carbohydrates',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      carbohydratesLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'carbohydrates',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      carbohydratesBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'carbohydrates',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      cholesterolEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'cholesterol',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      cholesterolGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'cholesterol',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      cholesterolLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'cholesterol',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      cholesterolBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'cholesterol',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fat',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fat',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fat',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fat',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatMonounsaturatedEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fatMonounsaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatMonounsaturatedGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fatMonounsaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatMonounsaturatedLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fatMonounsaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatMonounsaturatedBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fatMonounsaturated',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatPolyunsaturatedEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fatPolyunsaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatPolyunsaturatedGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fatPolyunsaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatPolyunsaturatedLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fatPolyunsaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatPolyunsaturatedBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fatPolyunsaturated',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatSaturatedEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fatSaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatSaturatedGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fatSaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatSaturatedLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fatSaturated',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatSaturatedBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fatSaturated',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatTransEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fatTrans',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatTransGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fatTrans',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatTransLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fatTrans',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fatTransBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fatTrans',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fiberEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fiber',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fiberGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fiber',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fiberLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fiber',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      fiberBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fiber',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      insolubleFiberEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'insolubleFiber',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      insolubleFiberGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'insolubleFiber',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      insolubleFiberLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'insolubleFiber',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      insolubleFiberBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'insolubleFiber',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      ironEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'iron',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      ironGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'iron',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      ironLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'iron',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      ironBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'iron',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      potassiumEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'potassium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      potassiumGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'potassium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      potassiumLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'potassium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      potassiumBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'potassium',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      proteinEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'protein',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      proteinGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'protein',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      proteinLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'protein',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      proteinBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'protein',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      sodiumEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'sodium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      sodiumGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'sodium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      sodiumLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'sodium',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      sodiumBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'sodium',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      sugarEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'sugar',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      sugarGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'sugar',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      sugarLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'sugar',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      sugarBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'sugar',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminAEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'vitaminA',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminAGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'vitaminA',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminALessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'vitaminA',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminABetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'vitaminA',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminCEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'vitaminC',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminCGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'vitaminC',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminCLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'vitaminC',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminCBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'vitaminC',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminDEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'vitaminD',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminDGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'vitaminD',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminDLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'vitaminD',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryNutrition, LocalDiaryNutrition, QAfterFilterCondition>
-      vitaminDBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'vitaminD',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-}
-
-extension LocalDiaryNutritionQueryObject on QueryBuilder<LocalDiaryNutrition,
-    LocalDiaryNutrition, QFilterCondition> {}

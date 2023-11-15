@@ -40,7 +40,6 @@ void setupLocator() {
   locator.registerFactory<DiaryController>(() => DiaryController());
   locator.registerFactory<LoginController>(() => LoginController());
 
-  locator.registerLazySingleton<DatabaseProvider>(() => DatabaseProvider());
   locator.registerLazySingleton<DataSyncService>(() => DataSyncService());
   locator.registerLazySingleton<DateFormattingService>(() => DateFormattingService());
   locator.registerLazySingleton<DiaryService>(() => DiaryService());
@@ -63,23 +62,17 @@ void setupLocator() {
   locator.registerLazySingletonAsync<CollectionApiService>(() async => CollectionApiService(
         await locator<DioProvider>().buildDio(baseUrl: _collectionApiBaseUrl),
       ));
+  locator.registerLazySingletonAsync<DatabaseProvider>(() async {
+    final pathProvider = await locator.getAsync<AppPathProvider>();
+    return DatabaseProvider(path: pathProvider.path);
+  });
   locator.registerLazySingletonAsync<DiaryEntryService>(() async {
-    final databaseService = DiaryEntryService();
-    final databaseProvider = locator<DatabaseProvider>();
-    if (!databaseProvider.isOpen) {
-      final pathProvider = await locator.getAsync<AppPathProvider>();
-      await databaseProvider.getDatabase(pathProvider.path);
-    }
-    return databaseService;
+    final databaseProvider = await locator.getAsync<DatabaseProvider>();
+    return DiaryEntryService(database: await databaseProvider.database);
   });
   locator.registerLazySingletonAsync<FoodService>(() async {
-    final foodService = FoodService();
-    final databaseProvider = locator<DatabaseProvider>();
-    if (!databaseProvider.isOpen) {
-      final pathProvider = await locator.getAsync<AppPathProvider>();
-      await databaseProvider.getDatabase(pathProvider.path);
-    }
-    return foodService;
+    final databaseProvider = await locator.getAsync<DatabaseProvider>();
+    return FoodService(database: await databaseProvider.database);
   });
   locator.registerLazySingletonAsync<NutritionixApiService>(() async {
     return NutritionixApiService(await locator<DioProvider>().buildDio(baseUrl: _nutritionixApiBaseUrl, headers: {

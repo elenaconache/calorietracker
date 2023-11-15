@@ -6,6 +6,7 @@ import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/add_food/food_log.dart';
 import 'package:calorietracker/models/collection/add_diary_entry_request.dart';
 import 'package:calorietracker/models/local/local_diary_entry.dart';
+import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
@@ -76,12 +77,11 @@ class AddFoodController {
       isLoading.value = false;
       throw Exception('Could not save local diary entry with missing local food id.');
     } else {
-      final localDiaryFood = foodLog.food.localDiaryFood..localId = localFoodId;
+      final localDiaryFood = foodLog.food.localFood..id = localFoodId;
       await diaryEntriesService
           .upsertDiaryEntry(localDiaryEntry: _getLocalDiaryEntry(localDiaryFood, foodLog, userId))
           .then((_) async {
-        unawaited(
-            locator<DiaryService>().fetchDiary(date: foodLog.date));
+        unawaited(locator<DiaryService>().fetchDiary(date: foodLog.date));
       }).catchError((error, stackTrace) {
         locator<LoggingService>().handle(error, stackTrace);
         isLoading.value = false;
@@ -90,14 +90,13 @@ class AddFoodController {
     }
   }
 
-  LocalDiaryEntry _getLocalDiaryEntry(LocalDiaryFood localDiaryFood, FoodLog foodLog, String? userId) =>
-      LocalDiaryEntry()
-        ..localFood = localDiaryFood
-        ..entryDate = foodLog.date
-        ..servingQuantity = foodLog.servingQuantity
-        ..meal = foodLog.meal
-        ..unitId = gramsUnitId
-        ..userId = userId!;
+  LocalDiaryEntry _getLocalDiaryEntry(LocalFood localDiaryFood, FoodLog foodLog, String? userId) => LocalDiaryEntry()
+    ..localFood.value = localDiaryFood
+    ..entryDate = foodLog.date
+    ..servingQuantity = foodLog.servingQuantity
+    ..meal = foodLog.meal
+    ..unitId = gramsUnitId
+    ..userId = userId!;
 
   Future<void> _saveRemotely(String userId, FoodLog foodLog) async {
     final collectionApiService = await locator.getAsync<CollectionApiService>();

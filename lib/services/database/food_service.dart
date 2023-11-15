@@ -2,15 +2,17 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/nutrition.dart';
-import 'package:calorietracker/services/database/database_provider.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 
 class FoodService {
+  final Isar database;
+
+  FoodService({required this.database});
+
   Future<int?> upsertFood({required LocalFood localFood}) async {
-    final id = await compute(_writeFood, localFood).catchError((error, stackTrace) {
+    final id = await _writeFood(localFood).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return null;
     });
@@ -19,56 +21,48 @@ class FoodService {
   }
 
   Future<void> upsertFoods({required List<LocalFood> localFoods}) async {
-    await compute(_writeFoods, localFoods).catchError((error, stackTrace) {
+    await _writeFoods(localFoods).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
     });
     locator<LoggingService>().info('upsert foods $localFoods');
   }
 
   Future<List<LocalFood>> getFoods({bool filterPending = false}) async {
-    final foods = await compute(
-      filterPending ? _readPendingFoods : _readFoods,
-      {},
-    ).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
-      return <LocalFood>[];
-    });
-    return foods;
+    if (filterPending) {
+      return _readPendingFoods().catchError((error, stackTrace) {
+        locator<LoggingService>().handle(error, stackTrace);
+        return <LocalFood>[];
+      });
+    } else {
+      return _readFoods().catchError((error, stackTrace) {
+        locator<LoggingService>().handle(error, stackTrace);
+        return <LocalFood>[];
+      });
+    }
   }
 
   Future<void> _writeFoods(List<LocalFood> foods) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    db.writeTxnSync(() => db.localFoods.putAllSync(foods));
-    db.close();
+    await database.writeTxn(() async => await database.localFoods.putAll(foods));
   }
 
   Future<int?> _writeFood(LocalFood food) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    final result = db.writeTxnSync(() => db.localFoods.putSync(food));
-    db.close();
-    return result;
+    return database.writeTxn(() async => await database.localFoods.put(food));
   }
 
-  Future<List<LocalFood>> _readFoods(dynamic _) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    final result = db.localFoods.where().findAll();
-    db.close();
-    return result;
+  Future<List<LocalFood>> _readFoods() async {
+    return database.localFoods.where().findAll();
   }
 
-  Future<List<LocalFood>> _readPendingFoods(dynamic _) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    final result = db.localFoods.where().filter().pushedEqualTo(false).errorPushingEqualTo(false).findAll();
-    db.close();
-    return result;
+  Future<List<LocalFood>> _readPendingFoods() async {
+    return database.localFoods.where().filter().pushedEqualTo(false).errorPushingEqualTo(false).findAll();
   }
 
   Future<List<LocalFood>> searchFood({required String query}) async {
-    final createdFoods = await compute(_searchFoods, query).catchError((error, stackTrace) {
+    final createdFoods = await _searchFoods(query).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return <LocalFood>[];
     });
-    final diaryFoods = await compute(_searchDiaryFoods, query).catchError((error, stackTrace) {
+    final diaryFoods = await _searchDiaryFoods(query).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return <LocalFood>[];
     });
@@ -83,11 +77,10 @@ class FoodService {
   }
 
   Future<List<LocalFood>> _searchDiaryFoods(String searchQuery) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    final diaryEntries = await db.localDiaryEntrys
+    final diaryEntries = await database.localDiaryEntrys
         .where()
         .filter()
-        .errorPushingEqualTo(false)
+        .errorPushingEntryEqualTo(false)
         .localFood((queryBuilder) => queryBuilder
             .nameContains(searchQuery, caseSensitive: false)
             .or()
@@ -96,12 +89,12 @@ class FoodService {
             .brandContains(searchQuery, caseSensitive: false))
         .sortByEntryDateDesc()
         .findAll();
-    final result = diaryEntries
+    return diaryEntries
         .map((localEntry) {
-          final diaryFood = localEntry.localFood;
+          final diaryFood = localEntry.localFood.value ?? LocalFood();
           return LocalFood()
             ..nutritionInfo = (Nutrition.local(localNutrition: diaryFood.nutritionInfo).localFoodNutrition)
-            ..id = diaryFood.localId ?? -1
+            ..id = diaryFood.id
             ..foodId = diaryFood.foodId
             ..createdAtDate = diaryFood.createdAtDate
             ..brand = diaryFood.brand
@@ -113,13 +106,10 @@ class FoodService {
         })
         .sorted((LocalFood firstFood, LocalFood secondFood) => firstFood.compareCreatedAtDateDesc(secondFood))
         .toList();
-    db.close();
-    return result;
   }
 
   Future<List<LocalFood>> _searchFoods(String searchQuery) async {
-    final db = await Isar.open(localDataSchemas, directory: '');
-    final result = db.localFoods
+    return database.localFoods
         .where()
         .filter()
         .errorPushingEqualTo(false)
@@ -130,7 +120,5 @@ class FoodService {
         .brandContains(searchQuery, caseSensitive: false)
         .sortByCreatedAtDateDesc()
         .findAll();
-    db.close();
-    return result;
   }
 }

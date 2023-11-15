@@ -198,11 +198,12 @@ class DiaryService {
       localDiaryEntryId: diaryEntry.localId,
     );
     if (localDiaryEntry != null) {
-      localDiaryEntry.deleted = true;
+      localDiaryEntry.deletedEntry = true;
       await diaryEntryService.upsertDiaryEntry(localDiaryEntry: localDiaryEntry);
     }
   }
 
+  //TODO: might also need to filter diary entries everywhere by currently connected user id
   Future<void> _markLocalDiaryEntriesDeleted(List<DiaryEntry> entries) async {
     final diaryEntryService = await locator.getAsync<DiaryEntryService>();
     var localEntries = await diaryEntryService.getDiaryEntriesByIds(
@@ -214,7 +215,7 @@ class DiaryService {
           'Checked: ${entries.length}, found: ${localEntries.length}.');
     }
     if (localEntries.isNotEmpty) {
-      final updatedEntries = localEntries.map((entry) => entry.copyWith(deleted: true)).toList();
+      final updatedEntries = localEntries.map((entry) => entry..deletedEntry = true).toList();
       await diaryEntryService.upsertDiaryEntries(localEntries: updatedEntries);
     }
   }
@@ -229,7 +230,7 @@ class DiaryService {
     }
 
     await diaryEntryService.deleteDiaryEntries(
-      localEntries: localEntries.map((localEntry) => localEntry.id).toList(),
+      localEntries: localEntries.map((localEntry) => localEntry.localId).toList(),
     );
   }
 
@@ -239,8 +240,8 @@ class DiaryService {
       await diaryEntriesService.deleteDiaryEntries(localEntries: [diaryEntry.localId!]);
     } else if (diaryEntry.collectionId != null) {
       final localDiaryEntry = await diaryEntriesService.getDiaryEntry(collectionId: diaryEntry.collectionId!);
-      if (localDiaryEntry == null) {
-        await diaryEntriesService.deleteDiaryEntries(localEntries: [localDiaryEntry!.id]);
+      if (localDiaryEntry != null) {
+        await diaryEntriesService.deleteDiaryEntries(localEntries: [localDiaryEntry.localId]);
       } else {
         locator<LoggingService>().info('Skipping delete from local storage for diary entry $diaryEntry');
       }
@@ -294,10 +295,12 @@ class DiaryService {
     var discardedDiaryEntriesIds = <int>[];
     for (final localEntry in pushedLocalEntries) {
       if (!remoteEntries.any((remoteEntry) => localEntry.entryId == remoteEntry.collectionId)) {
-        discardedDiaryEntriesIds.add(localEntry.id);
+        discardedDiaryEntriesIds.add(localEntry.localId);
       }
     }
-    diaryEntriesService.deleteDiaryEntries(localEntries: discardedDiaryEntriesIds);
+    if (discardedDiaryEntriesIds.isNotEmpty) {
+      await diaryEntriesService.deleteDiaryEntries(localEntries: discardedDiaryEntriesIds);
+    }
   }
 
   Future<void> _pullRemoteDiary(List<MealEntriesList> remoteDiary, String userId) async {
@@ -311,23 +314,23 @@ class DiaryService {
             LocalDiaryEntry()
               ..entryId = entry.collectionId
               ..meal = remoteMealEntriesList.meal
-              ..pushed = true
+              ..pushedEntry = true
               ..servingQuantity = entry.servingQuantity
               ..unitId = entry.unitId
               ..entryDate = locator<DateFormattingService>().parse(
                 formattedDate: entry.date,
                 format: collectionApiDateFormat,
               )
-              ..localFood = entry.food.localDiaryFood
+              ..localFood.value = entry.food.localFood
               ..userId = userId
-              ..deleted = false
-              ..errorPushing = false,
+              ..deletedEntry = false
+              ..errorPushingEntry = false,
           );
         }
       }
     }
     if (pulledDiaryEntries.isNotEmpty) {
-      diaryEntriesService.upsertDiaryEntries(localEntries: pulledDiaryEntries);
+      diaryEntriesService.upsertDiaryEntries(localEntries: pulledDiaryEntries, pushFoods: true);
     }
   }
 
