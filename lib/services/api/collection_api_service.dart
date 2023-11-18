@@ -35,7 +35,7 @@ abstract class CollectionApiService {
   @POST('foods/add-list')
   Future<List<AddLocalDataResponse>> createFoods({@Body() required List<AddLocalFoodRequest> localFoods});
 
-  @POST('diary-entries/add-list')
+  @POST('diary-entries/add/list')
   Future<List<AddLocalDataResponse>> createDiaryEntries({
     @Body() required List<AddLocalDiaryEntryRequest> localDiaryEntries,
   });

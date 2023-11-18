@@ -188,7 +188,7 @@ class _CollectionApiService implements CollectionApiService {
     )
             .compose(
               _dio.options,
-              'diary-entries/add-list',
+              'diary-entries/add/list',
               queryParameters: queryParameters,
               data: _data,
             )

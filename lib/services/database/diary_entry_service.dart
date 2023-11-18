@@ -8,6 +8,7 @@ import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/meal_entries_list.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
+import 'package:calorietracker/services/user_service.dart';
 import 'package:collection/collection.dart';
 import 'package:isar/isar.dart';
 
@@ -73,6 +74,11 @@ class DiaryEntryService {
     bool excludeDeleted = false,
     DateTime? dateFilter,
   }) async {
+    final currentUserId = locator<UserService>().selectedUser.value?.id;
+    if (currentUserId == null) {
+      locator<LoggingService>().info('Could not fetch local diary entries. Missing user id.');
+      return [];
+    }
     final entries = await database.localDiaryEntrys
         .filter()
         .optional(filterPending, (q) => q.pushedEntryEqualTo(false))
@@ -89,6 +95,8 @@ class DiaryEntryService {
         })
         .and()
         .optional(excludeDeleted, (q) => q.deletedEntryEqualTo(false))
+        .and()
+        .userIdEqualTo(currentUserId)
         .findAll();
     for (final entry in entries) {
       await entry.localFood.load();
