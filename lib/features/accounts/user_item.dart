@@ -1,4 +1,5 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/models/user.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/user_service.dart';
@@ -24,8 +25,10 @@ class UserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => locator<UserService>().selectUser(user.id),
-      child: Ink(
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))),
+      child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor)),
+          ),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: isLarge ? 12 : 8, horizontal: 24),
             child: Row(
@@ -52,7 +55,7 @@ class UserItem extends StatelessWidget {
     final userService = locator<UserService>();
     userService.logout(userId: user.id);
     if (userService.selectedUser.value == null) {
-      Navigator.of(context).pushNamedAndRemoveUntil(Routes.login.path, (route) => false);
+      Navigator.of(rootNavigatorKey.currentContext!).pushNamedAndRemoveUntil(Routes.login.path, (route) => false);
     }
   }
 }

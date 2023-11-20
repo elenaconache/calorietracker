@@ -6,7 +6,8 @@ enum Routes {
   login('/login'),
   accounts('accounts'),
   createFood('createFood'),
-  profile('profile');
+  profile('profile'),
+  home('/home');
 
   final String path;
 

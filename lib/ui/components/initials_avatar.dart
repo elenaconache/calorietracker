@@ -21,7 +21,7 @@ class InitialsAvatar extends StatelessWidget {
         child: Center(
             child: Text(
           _initials,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
         )),
       ),
     );
@@ -31,8 +31,9 @@ class InitialsAvatar extends StatelessWidget {
     String firstLetter = text.substring(0, 1).toUpperCase();
     int hashCode = firstLetter.hashCode;
     Color color = Colors.primaries[hashCode % Colors.primaries.length];
-    return color;
+    return color.withOpacity(0.9);
   }
 
-  String get _initials => text.split(' ').take(2).map((word) => word.characters.isEmpty ? '' : word[0].toUpperCase()).join('');
+  String get _initials =>
+      text.split(' ').take(2).map((word) => word.characters.isEmpty ? '' : word[0].toUpperCase()).join('');
 }

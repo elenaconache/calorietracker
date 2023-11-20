@@ -4,6 +4,7 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/login/login_controller.dart';
 import 'package:calorietracker/features/login/login_error.dart';
 import 'package:calorietracker/navigation/routes.dart';
+import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_text_field.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +106,9 @@ class _LoginViewState extends State<LoginView> {
         },
         onSuccess: () {
           if (context.mounted) {
-            Navigator.of(context).pushReplacementNamed(Routes.diary.path);
+            Navigator.of(context).pushReplacementNamed(Routes.home.path);
+          } else {
+            locator<LoggingService>().info('Could not navigate home. Context unmounted.');
           }
         }));
   }

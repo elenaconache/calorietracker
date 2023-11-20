@@ -148,7 +148,7 @@ class _DiaryViewState extends State<DiaryView> {
                     child: Text(AppStrings.logFoodLabel.toUpperCase()),
                   ))),
                 ),
-                const SliverPadding(padding: EdgeInsets.only(top: 32)),
+                const SliverPadding(padding: EdgeInsets.only(top: 100)),
               ],
             )));
   }

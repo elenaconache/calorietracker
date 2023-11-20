@@ -1,5 +1,5 @@
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_divider.dart';
+import 'package:calorietracker/ui/shadows.dart';
 import 'package:flutter/material.dart';
 
 class PoweredByNutritionixWrapper extends StatelessWidget {
@@ -9,16 +9,23 @@ class PoweredByNutritionixWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Expanded(child: child),
-      const AppDivider(),
-      const SizedBox(height: 12),
-      Center(
-          child: Text(
-        AppStrings.poweredByNutritionixLabel,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w300),
-      )),
-    ]));
+      DecoratedBox(
+        decoration: BoxDecoration(
+            border: Border(top: BorderSide(width: 1, color: Theme.of(context).dividerColor)),
+            boxShadow: const [subtleBackgroundShadow],
+            color: Theme.of(context).scaffoldBackgroundColor),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Center(
+            child: Text(
+              AppStrings.poweredByNutritionixLabel,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w300),
+            ),
+          ),
+        ),
+      ),
+    ]);
   }
 }

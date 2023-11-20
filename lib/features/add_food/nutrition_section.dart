@@ -28,7 +28,7 @@ class NutritionSection extends StatelessWidget {
         NutrientRow(name: AppStrings.vitaminCLabel, displayValue: nutrition.formattedVitaminC),
         NutrientRow(name: AppStrings.vitaminDLabel, displayValue: nutrition.formattedVitaminD),
         NutrientRow(name: AppStrings.calciumLabel, displayValue: nutrition.formattedCalcium),
-        NutrientRow(name: AppStrings.ironLabel, displayValue: nutrition.formattedIron),
+        NutrientRow(name: AppStrings.ironLabel, displayValue: nutrition.formattedIron, isLast: true),
       ],
     );
   }

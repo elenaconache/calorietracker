@@ -147,7 +147,7 @@ class _AddFoodViewState extends State<AddFoodView> {
                   builder: (context, currentServingSizeNutrients, child) => currentServingSizeNutrients != null
                       ? NutritionSection(nutrition: currentServingSizeNutrients)
                       : const SizedBox.shrink()),
-              const SizedBox(height: 24),
+              const SizedBox(height: 100),
             ],
           ),
         ));
