@@ -1,6 +1,6 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_text_field.dart';
+import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
 import 'package:calorietracker/validators/food_validator.dart';
 import 'package:flutter/material.dart';
 

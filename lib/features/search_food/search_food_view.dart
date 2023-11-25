@@ -7,7 +7,7 @@ import 'package:calorietracker/features/search_food/search_results_section.dart'
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_text_field.dart';
+import 'package:calorietracker/ui/components/text_field/search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -53,15 +53,12 @@ class _SearchFoodViewState extends State<SearchFoodView> {
               padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 4),
               child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Expanded(
-                    child: AppTextField(
-                  prefixIcon: Icons.search,
-                  suffixIcon: Icons.clear,
-                  onSuffixIconPressed: _clearSearchQuery,
-                  labelText: AppStrings.searchForFoodLabel,
-                  controller: _searchQueryTextController,
-                  action: TextInputAction.search,
-                  onSubmitted: (query) => _foodSearchService.searchRemotely(query: query),
-                )),
+                  child: SearchTextField(
+                    labelText: AppStrings.searchForFoodLabel,
+                    controller: _searchQueryTextController,
+                    onSubmitted: (query) => _foodSearchService.searchRemotely(query: query),
+                  ),
+                ),
                 const SizedBox(width: 4),
                 IconButton(
                   icon: SvgPicture.asset(
@@ -85,11 +82,6 @@ class _SearchFoodViewState extends State<SearchFoodView> {
         ],
       ),
     );
-  }
-
-  void _clearSearchQuery() {
-    _searchQueryTextController.clear();
-    _foodSearchService.clearResults();
   }
 
   void _navigateToCreateFood(BuildContext context) => Navigator.of(context).pushNamed(

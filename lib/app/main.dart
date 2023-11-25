@@ -8,6 +8,7 @@ import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/data_sync_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:calorietracker/ui/colors.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -77,8 +78,7 @@ class MyApp extends StatelessWidget {
   String get _initialRoutePath => locator<UserService>().isLoggedIn.value ? Routes.home.path : Routes.login.path;
 
   Route? _onGenerateRootRoute(RouteSettings settings) {
-    final matchingRoute =
-        Routes.values.firstWhere((route) => route.path == settings.name, orElse: () => Routes.unknown);
+    final matchingRoute = Routes.values.firstWhereOrNull((route) => route.path == settings.name);
     switch (matchingRoute) {
       case Routes.login:
         return MaterialPageRoute(builder: (context) => const LoginView());

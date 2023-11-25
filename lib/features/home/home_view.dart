@@ -6,12 +6,14 @@ import 'package:calorietracker/features/create_food/create_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/login/login_view.dart';
 import 'package:calorietracker/features/profile/profile_view.dart';
+import 'package:calorietracker/features/recipes/recipe_list_view.dart';
 import 'package:calorietracker/features/search_food/search_food_view.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/generic_error_view.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,10 +41,14 @@ class _HomeViewState extends State<HomeView> {
       ),
       tabBuilder: (context, index) {
         if (index == 0) {
-          return CupertinoTabView(onGenerateRoute: _onGenerateHomeRoute, builder: (context) => const DiaryView());
+          return CupertinoTabView(
+            onGenerateRoute: _onGenerateHomeRoute,
+            builder: (context) => const DiaryView(),
+          );
         } else if (index == 1) {
           return CupertinoTabView(
-            builder: (context) => const Scaffold(body: Center(child: Text('Recipes'))),
+            builder: (context) => const RecipeListView(),
+            onGenerateRoute: _onGenerateRecipesRoute,
           );
         }
         locator<LoggingService>().info('Unknown tab accessed in bottom navigation at index $index');
@@ -52,8 +58,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Route? _onGenerateHomeRoute(RouteSettings settings) {
-    final matchingRoute =
-        Routes.values.firstWhere((route) => route.path == settings.name, orElse: () => Routes.unknown);
+    final matchingRoute = Routes.values.firstWhereOrNull((route) => route.path == settings.name);
     final args = settings.arguments;
     switch (matchingRoute) {
       case Routes.diary:
@@ -77,6 +82,25 @@ class _HomeViewState extends State<HomeView> {
             onButtonPressed: () => Navigator.pushNamedAndRemoveUntil(
               context,
               Routes.diary.path,
+              (_) => false,
+            ),
+          ),
+        );
+    }
+  }
+
+  Route? _onGenerateRecipesRoute(RouteSettings settings) {
+    final matchingRoute = Routes.values.firstWhereOrNull((route) => route.path == settings.name);
+    switch (matchingRoute) {
+      case Routes.recipes:
+        return MaterialPageRoute(builder: (context) => const RecipeListView());
+      default:
+        return MaterialPageRoute(
+          builder: (context) => GenericErrorView(
+            buttonText: AppStrings.recipesTitle,
+            onButtonPressed: () => Navigator.pushNamedAndRemoveUntil(
+              context,
+              Routes.recipes.path,
               (_) => false,
             ),
           ),

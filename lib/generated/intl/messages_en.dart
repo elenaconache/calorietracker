@@ -178,6 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
         "proteinPercentageValue": m13,
         "proteinValue": m14,
+        "recipesTitle": MessageLookupByLibrary.simpleMessage("Recipes"),
         "requiredError": MessageLookupByLibrary.simpleMessage("Required"),
         "saltExceedsServingSizeError": MessageLookupByLibrary.simpleMessage(
             "Salt must be less than or equal to serving size."),
@@ -189,6 +190,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
         "searchForFoodLabel":
             MessageLookupByLibrary.simpleMessage("Search for a food"),
+        "searchRecipeLabel":
+            MessageLookupByLibrary.simpleMessage("Search for a recipe"),
         "servingsLabel":
             MessageLookupByLibrary.simpleMessage("Serving size (g)"),
         "snacksLabel": MessageLookupByLibrary.simpleMessage("Snacks"),

@@ -228,4 +228,8 @@ class AppStrings {
   static String get deleteEntriesTitle => S.current.deleteEntriesTitle;
 
   static String get errorCreateFood => S.current.errorCreateFood;
+
+  static String get recipesTitle => S.current.recipesTitle;
+
+  static String get searchRecipeLabel => S.current.searchRecipeLabel;
 }

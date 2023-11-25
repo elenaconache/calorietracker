@@ -6,7 +6,7 @@ import 'package:calorietracker/features/login/login_error.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_text_field.dart';
+import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {

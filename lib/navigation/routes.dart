@@ -2,12 +2,12 @@ enum Routes {
   diary('/diary'),
   foodSearch('/foodSearch'),
   addFood('addFood'),
-  unknown('/unknown'),
   login('/login'),
   accounts('accounts'),
   createFood('createFood'),
   profile('profile'),
-  home('/home');
+  home('/home'),
+  recipes('/recipes');
 
   final String path;
 

@@ -1,4 +1,4 @@
-import 'package:calorietracker/ui/components/app_text_field.dart';
+import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 
 class FoodFormRow extends StatelessWidget {

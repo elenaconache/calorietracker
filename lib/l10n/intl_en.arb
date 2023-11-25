@@ -247,5 +247,7 @@
   "syncDataLabel": "Sync data",
   "deleteEntryLabel": "Delete entry",
   "deleteEntriesTitle": "Delete entries",
-  "errorCreateFood": "Could not save food. Please use a similar food from collection or try again later."
+  "errorCreateFood": "Could not save food. Please use a similar food from collection or try again later.",
+  "recipesTitle": "Recipes",
+  "searchRecipeLabel": "Search for a recipe"
 }

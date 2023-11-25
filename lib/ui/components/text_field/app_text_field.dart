@@ -86,13 +86,14 @@ class _AppTextFieldState extends State<AppTextField> {
                     padding: const EdgeInsets.only(bottom: 8, left: 16),
                     child: Text(
                       error,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                      style:
+                          Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
                     ))
             ]));
   }
 
   InputDecoration _getDecoration(BuildContext context, String? error) => InputDecoration(
-    enabledBorder: _defaultBorder,
+        enabledBorder: _defaultBorder,
         focusedBorder: _getFocusedBorder(context),
         focusedErrorBorder: error != null
             ? _getErrorBorder(context)
@@ -117,11 +118,9 @@ class _AppTextFieldState extends State<AppTextField> {
               )
             : null,
         labelText: widget.labelText,
-        labelStyle: Theme.of(context)
-            .textTheme
-            .labelLarge
-            ?.copyWith(color: error != null ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
-        counter: const SizedBox.shrink(),
+        labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+            color: error != null ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
+        counterStyle: const TextStyle(height: 0),
         errorText: null,
         errorStyle: const TextStyle(height: 0),
         isDense: widget.isDense,
@@ -136,11 +135,15 @@ class _AppTextFieldState extends State<AppTextField> {
     );
   }
 
-  OutlineInputBorder get _defaultBorder =>
-      OutlineInputBorder(borderRadius: BorderRadius.circular(_borderRadius), borderSide: const BorderSide(color: Colors.grey, width: 1));
+  OutlineInputBorder get _defaultBorder => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(_borderRadius),
+        borderSide: const BorderSide(color: Colors.grey, width: 1),
+      );
 
   OutlineInputBorder _getFocusedBorder(BuildContext context) => OutlineInputBorder(
-      borderRadius: BorderRadius.circular(_borderRadius), borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1));
+        borderRadius: BorderRadius.circular(_borderRadius),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1),
+      );
 
   void _onTextChange() {
     final error = widget.validate?.call(_textController.text);
