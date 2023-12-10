@@ -1,18 +1,13 @@
-import 'package:calorietracker/models/helpers/future_response_status.dart';
+sealed class FutureResponse<T> {}
 
-class FutureResponse<T> {
-  FutureResponseStatus? status;
-  T? data;
-  String? message;
+class FutureSuccess<T> extends FutureResponse<T> {
+  T data;
 
-  FutureResponse.loading() : status = FutureResponseStatus.loading;
-
-  FutureResponse.success(this.data) : status = FutureResponseStatus.success;
-
-  FutureResponse.error({this.message = ''}) : status = FutureResponseStatus.error;
-
-  @override
-  String toString() {
-    return "Status : $status\nMessage : $message\nData : $data";
-  }
+  FutureSuccess({required this.data});
 }
+
+class FutureError<T> extends FutureResponse<T> {}
+
+class FutureLoading<T> extends FutureResponse<T> {}
+
+class FutureInitialState<T> extends FutureResponse<T> {}

@@ -3,7 +3,7 @@ import 'package:calorietracker/features/search_food/empty_view.dart';
 import 'package:calorietracker/features/search_food/food_item.dart';
 import 'package:calorietracker/features/search_food/search_food_service.dart';
 import 'package:calorietracker/models/food.dart';
-import 'package:calorietracker/models/helpers/future_response_status.dart';
+import 'package:calorietracker/models/helpers/future_response.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/ui/components/general_error_view.dart';
 import 'package:flutter/material.dart';
@@ -28,30 +28,28 @@ class _BrandedResultsSectionState extends State<BrandedResultsSection> with Auto
     return ValueListenableBuilder(
         valueListenable: foodSearchService.nutritionixSearchResponse,
         builder: (context, searchResponse, child) {
-          switch (searchResponse.status) {
-            case FutureResponseStatus.loading:
-              return const Center(child: CircularProgressIndicator());
-            case FutureResponseStatus.success:
-              return searchResponse.data == null
-                  ? const SizedBox.shrink()
-                  : searchResponse.data!.brandedFoods.isEmpty
-                      ? const EmptyView()
-                      : ListView.builder(
-                          itemBuilder: (context, index) {
-                            final item = searchResponse.data!.brandedFoods[index];
-                            return FoodItem(
-                              foodResponse: Food.nutritionix(nutritionixFoodResponse: item),
-                              nutritionPerServingQuantity: item.nutrition,
-                              meal: widget.meal,
-                              servingQuantity: item.servingQuantity ?? 1,
-                              unitName: item.servingUnit ?? '',
-                            );
-                          },
-                          itemCount: searchResponse.data!.brandedFoods.length,
-                        );
-            default:
-              return const GeneralErrorView();
-          }
+          return switch (searchResponse) {
+            FutureLoading _ => const Center(child: CircularProgressIndicator()),
+            FutureSuccess response => response.data == null
+                ? const SizedBox.shrink()
+                : response.data!.brandedFoods.isEmpty
+                    ? const EmptyView()
+                    : ListView.builder(
+                        itemBuilder: (context, index) {
+                          final item = response.data!.brandedFoods[index];
+                          return FoodItem(
+                            remoteFood: Food.nutritionix(nutritionixFoodResponse: item),
+                            nutritionPerServingQuantity: item.nutrition,
+                            meal: widget.meal,
+                            servingQuantity: item.servingQuantity ?? 1,
+                            unitName: item.servingUnit ?? '',
+                          );
+                        },
+                        itemCount: response.data!.brandedFoods.length,
+                      ),
+            FutureError _ => const GeneralErrorView(),
+            FutureInitialState _ => const SizedBox.shrink(),
+          };
         });
   }
 }

@@ -26,36 +26,42 @@ class _SearchResultsSectionState extends State<SearchResultsSection> with Single
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisSize: MainAxisSize.max, children: [
-      TabBar(
-        tabs: [
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                AppStrings.collectionLabel,
-                style: Theme.of(context).textTheme.titleMedium,
-              )),
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                AppStrings.commonLabel,
-                style: Theme.of(context).textTheme.titleMedium,
-              )),
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                AppStrings.brandedLabel,
-                style: Theme.of(context).textTheme.titleMedium,
-              )),
-        ],
-        controller: _tabController,
-      ),
-      Expanded(
-          child: TabBarView(controller: _tabController, children: [
-        CollectionResultsSection(meal: widget.meal),
-        PoweredByNutritionixWrapper(child: CommonResultsSection(meal: widget.meal)),
-        PoweredByNutritionixWrapper(child: BrandedResultsSection(meal: widget.meal)),
-      ]))
-    ]);
+    return SafeArea(
+      child: Column(mainAxisSize: MainAxisSize.max, children: [
+        TabBar(
+          tabs: [
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  AppStrings.collectionLabel,
+                  style: Theme.of(context).textTheme.titleMedium,
+                )),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  AppStrings.commonLabel,
+                  style: Theme.of(context).textTheme.titleMedium,
+                )),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  AppStrings.brandedLabel,
+                  style: Theme.of(context).textTheme.titleMedium,
+                )),
+          ],
+          controller: _tabController,
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              CollectionResultsSection(meal: widget.meal),
+              PoweredByNutritionixWrapper(child: CommonResultsSection(meal: widget.meal)),
+              PoweredByNutritionixWrapper(child: BrandedResultsSection(meal: widget.meal)),
+            ],
+          ),
+        )
+      ]),
+    );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/diary/nutrient_item.dart';
-import 'package:calorietracker/models/helpers/future_response_status.dart';
+import 'package:calorietracker/models/helpers/future_response.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
@@ -13,37 +13,38 @@ class DayNutritionSummary extends StatelessWidget {
     final diaryService = locator<DiaryService>();
     return ValueListenableBuilder(
         valueListenable: diaryService.dayMealEntries,
-        builder: (context, todayMealEntries, _) => todayMealEntries.status == FutureResponseStatus.loading
-            ? const Padding(
-                padding: EdgeInsets.all(12),
-                child: Center(child: CircularProgressIndicator()),
-              )
-            : todayMealEntries.status == FutureResponseStatus.error
-                ? Text(
-                    AppStrings.generalErrorMessage,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    textAlign: TextAlign.center,
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      NutrientItem(
-                        formattedValue: diaryService.selectedDayNutrition.carbohydrates.toStringAsFixed(1),
-                        name: AppStrings.carbsLabel,
-                      ),
-                      NutrientItem(
-                        formattedValue: diaryService.selectedDayNutrition.fat.toStringAsFixed(1),
-                        name: AppStrings.fatLabel,
-                      ),
-                      NutrientItem(
-                        formattedValue: diaryService.selectedDayNutrition.protein.toStringAsFixed(1),
-                        name: AppStrings.proteinLabel,
-                      ),
-                      NutrientItem(
-                        formattedValue: diaryService.selectedDayNutrition.calories.toStringAsFixed(0),
-                        name: AppStrings.caloriesLabel,
-                      ),
-                    ],
-                  ));
+        builder: (context, todayMealEntries, _) => switch (todayMealEntries) {
+              FutureLoading _ => const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              FutureError _ => Text(
+                  AppStrings.generalErrorMessage,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+              FutureSuccess _ => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    NutrientItem(
+                      formattedValue: diaryService.selectedDayNutrition.carbohydrates.toStringAsFixed(1),
+                      name: AppStrings.carbsLabel,
+                    ),
+                    NutrientItem(
+                      formattedValue: diaryService.selectedDayNutrition.fat.toStringAsFixed(1),
+                      name: AppStrings.fatLabel,
+                    ),
+                    NutrientItem(
+                      formattedValue: diaryService.selectedDayNutrition.protein.toStringAsFixed(1),
+                      name: AppStrings.proteinLabel,
+                    ),
+                    NutrientItem(
+                      formattedValue: diaryService.selectedDayNutrition.calories.toStringAsFixed(0),
+                      name: AppStrings.caloriesLabel,
+                    ),
+                  ],
+                ),
+              FutureInitialState _ => const SizedBox.shrink()
+            });
   }
 }

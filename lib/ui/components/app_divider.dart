@@ -6,8 +6,11 @@ class AppDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Theme.of(context).dividerColor,
-      child: const SizedBox(height: 0.5),
+      color: Theme.of(context).dividerColor.withOpacity(0.4),
+      child: const SizedBox(
+        height: 0.5,
+        width: double.infinity,
+      ),
     );
   }
 }

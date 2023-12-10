@@ -6,7 +6,7 @@ import 'package:calorietracker/features/create_food/create_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/login/login_view.dart';
 import 'package:calorietracker/features/profile/profile_view.dart';
-import 'package:calorietracker/features/recipes/recipe_list_view.dart';
+import 'package:calorietracker/features/recipes/search_recipe_view.dart';
 import 'package:calorietracker/features/search_food/search_food_view.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
@@ -47,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
           );
         } else if (index == 1) {
           return CupertinoTabView(
-            builder: (context) => const RecipeListView(),
+            builder: (context) => const SearchRecipeView(),
             onGenerateRoute: _onGenerateRecipesRoute,
           );
         }
@@ -93,7 +93,7 @@ class _HomeViewState extends State<HomeView> {
     final matchingRoute = Routes.values.firstWhereOrNull((route) => route.path == settings.name);
     switch (matchingRoute) {
       case Routes.recipes:
-        return MaterialPageRoute(builder: (context) => const RecipeListView());
+        return MaterialPageRoute(builder: (context) => const SearchRecipeView());
       default:
         return MaterialPageRoute(
           builder: (context) => GenericErrorView(

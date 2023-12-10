@@ -5,7 +5,7 @@ import 'package:calorietracker/features/diary/diary_entries_sliver_list.dart';
 import 'package:calorietracker/features/diary/carousel/diary_overview_carousel.dart';
 import 'package:calorietracker/features/diary/meal_title.dart';
 import 'package:calorietracker/features/diary/selected_day_line.dart';
-import 'package:calorietracker/models/helpers/future_response_status.dart';
+import 'package:calorietracker/models/helpers/future_response.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/data_sync_service.dart';
@@ -63,7 +63,7 @@ class _DiaryViewState extends State<DiaryView> {
                     valueListenable: _diaryService.dayMealEntries,
                     builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.breakfast),
-                          error: dayMealEntries.status == FutureResponseStatus.error,
+                          error: dayMealEntries is FutureError,
                           meal: Meal.breakfast,
                         )),
                 SliverPadding(
@@ -88,7 +88,7 @@ class _DiaryViewState extends State<DiaryView> {
                     valueListenable: _diaryService.dayMealEntries,
                     builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.lunch),
-                          error: dayMealEntries.status == FutureResponseStatus.error,
+                          error: dayMealEntries is FutureError,
                           meal: Meal.lunch,
                         )),
                 SliverPadding(
@@ -113,7 +113,7 @@ class _DiaryViewState extends State<DiaryView> {
                     valueListenable: _diaryService.dayMealEntries,
                     builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.dinner),
-                          error: dayMealEntries.status == FutureResponseStatus.error,
+                          error: dayMealEntries is FutureError,
                           meal: Meal.dinner,
                         )),
                 SliverToBoxAdapter(
@@ -136,7 +136,7 @@ class _DiaryViewState extends State<DiaryView> {
                     valueListenable: _diaryService.dayMealEntries,
                     builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
-                          error: dayMealEntries.status == FutureResponseStatus.error,
+                          error: dayMealEntries is FutureError,
                           meal: Meal.snacks,
                         )),
                 SliverPadding(

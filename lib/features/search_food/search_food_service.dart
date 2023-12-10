@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/helpers/future_response.dart';
+import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_search_request.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_search_response.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
@@ -14,9 +15,10 @@ import 'package:flutter/material.dart';
 
 class SearchFoodService {
   final ValueNotifier<FutureResponse<NutritionixSearchResponse>> nutritionixSearchResponse =
-      ValueNotifier(FutureResponse.success(null));
-  final ValueNotifier<FutureResponse<List<Food>>> collectionSearchResponse =
-      ValueNotifier(FutureResponse.success(null));
+      ValueNotifier(FutureInitialState());
+  final ValueNotifier<FutureResponse<List<Food>>> collectionSearchResponse = ValueNotifier(FutureInitialState());
+  final ValueNotifier<FutureResponse<List<LocalFood>>> localSearchResponse =
+      ValueNotifier(FutureInitialState<List<LocalFood>>());
 
   String? currentSearchQuery;
 
@@ -28,40 +30,40 @@ class SearchFoodService {
 
   Future<void> _searchNutritionix({required String query}) async {
     final nutritionixApiService = await locator.getAsync<NutritionixApiService>();
-    nutritionixSearchResponse.value = FutureResponse.loading();
+    nutritionixSearchResponse.value = FutureLoading();
     await nutritionixApiService
         .searchFood(body: NutritionixSearchRequest(query: query, detailed: true.toString()))
-        .then((response) => nutritionixSearchResponse.value = FutureResponse.success(NutritionixSearchResponse(
-              brandedFoods: response.brandedFoods.where((food) => food.hasMeasurementInfo).toList(),
-              commonFoods: response.commonFoods.where((food) => food.hasMeasurementInfo).toList(),
-            )))
-        .catchError((error, stackTrace) {
+        .then((response) {
+      nutritionixSearchResponse.value = FutureSuccess(
+          data: NutritionixSearchResponse(
+        brandedFoods: response.brandedFoods.where((food) => food.hasMeasurementInfo).toList(),
+        commonFoods: response.commonFoods.where((food) => food.hasMeasurementInfo).toList(),
+      ));
+    }).catchError((error, stackTrace) {
       log('Search failed with error: $error.\n$stackTrace');
-      nutritionixSearchResponse.value = FutureResponse.error();
-      return nutritionixSearchResponse.value;
+      nutritionixSearchResponse.value = FutureError();
     });
   }
 
   Future<void> _searchCollection({required String query}) async {
     final collectionApiService = await locator.getAsync<CollectionApiService>();
-    collectionSearchResponse.value = FutureResponse.loading();
-    await collectionApiService
-        .searchFood(query: query)
-        .then((response) => collectionSearchResponse.value =
-            FutureResponse.success(response.map((collectionFood) => Food.collection(food: collectionFood)).toList()))
-        .catchError((error, stackTrace) {
+    collectionSearchResponse.value = FutureLoading();
+    localSearchResponse.value = FutureInitialState();
+    await collectionApiService.searchFood(query: query).then((response) {
+      collectionSearchResponse.value =
+          FutureSuccess(data: response.map((collectionFood) => Food.collection(food: collectionFood)).toList());
+    }).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
-      collectionSearchResponse.value = FutureResponse.error();
-      return collectionSearchResponse.value;
+      collectionSearchResponse.value = FutureError();
     });
   }
 
   void clearResults() {
-    nutritionixSearchResponse.value = FutureResponse.success(null);
-    collectionSearchResponse.value = FutureResponse.success(null);
+    nutritionixSearchResponse.value = FutureInitialState();
+    collectionSearchResponse.value = FutureInitialState();
+    localSearchResponse.value = FutureInitialState();
   }
 
-  // TODO: Set a flag to know whether the search was submitted or it only has local items.
   // TODO: Show a different empty state when nothing is found locally while typing.
   Future<void> searchLocally({required String query}) async {
     currentSearchQuery = query;
@@ -70,7 +72,6 @@ class SearchFoodService {
     if (currentSearchQuery != query) {
       return;
     }
-    collectionSearchResponse.value =
-        FutureResponse.success(results.map((localFood) => Food.local(localFood: localFood)).toList());
+    localSearchResponse.value = FutureSuccess(data: results);
   }
 }
