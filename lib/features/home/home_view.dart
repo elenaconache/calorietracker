@@ -94,6 +94,12 @@ class _HomeViewState extends State<HomeView> {
     switch (matchingRoute) {
       case Routes.recipes:
         return MaterialPageRoute(builder: (context) => const SearchRecipeView());
+      case Routes.createRecipe:
+        return MaterialPageRoute(
+          builder: (context) => const Scaffold(
+            body: Center(child: Text('Create recipe')),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (context) => GenericErrorView(

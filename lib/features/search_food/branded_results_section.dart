@@ -1,5 +1,5 @@
 import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/features/search_food/empty_view.dart';
+import 'package:calorietracker/ui/components/empty_view.dart';
 import 'package:calorietracker/features/search_food/food_item.dart';
 import 'package:calorietracker/features/search_food/search_food_service.dart';
 import 'package:calorietracker/models/food.dart';

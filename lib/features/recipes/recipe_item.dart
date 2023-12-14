@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class RecipeItem extends StatelessWidget {
   final Recipe recipe;
+  final bool showTopDivider;
 
-  const RecipeItem({Key? key, required this.recipe}) : super(key: key);
+  const RecipeItem({Key? key, required this.recipe, required this.showTopDivider}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,10 @@ class RecipeItem extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(children: [
-              const AppDivider(),
-              const SizedBox(height: 8),
+              if (showTopDivider) ...[
+                const AppDivider(),
+                const SizedBox(height: 8),
+              ],
               Row(children: [
                 Expanded(
                   child: Text(
