@@ -5,6 +5,7 @@ import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/features/search_food/search_food_service.dart';
 import 'package:calorietracker/features/search_food/search_results_section.dart';
 import 'package:calorietracker/models/meal.dart';
+import 'package:calorietracker/models/recipe_ingredient.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/text_field/search_text_field.dart';
@@ -12,9 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchFoodView extends StatefulWidget {
-  final Meal meal;
+  final Meal? meal;
 
-  const SearchFoodView({super.key, required this.meal});
+  const SearchFoodView({super.key, this.meal});
 
   @override
   State<SearchFoodView> createState() => _SearchFoodViewState();
@@ -33,7 +34,6 @@ class _SearchFoodViewState extends State<SearchFoodView> {
 
   @override
   void dispose() {
-    _foodSearchService.clearResults();
     _searchQueryTextController.removeListener(_onSearchQueryChanged);
     _searchQueryTextController.dispose();
     super.dispose();
@@ -43,7 +43,7 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.searchFoodsLabel),
+        title: Text(AppStrings.searchFoodsLabel), // TODO: use "search ingredient" for app bar title when meal is null
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -84,10 +84,15 @@ class _SearchFoodViewState extends State<SearchFoodView> {
     );
   }
 
-  void _navigateToCreateFood(BuildContext context) => Navigator.of(context).pushNamed(
-        Routes.createFood.path,
-        arguments: widget.meal,
-      );
+  void _navigateToCreateFood(BuildContext context) async {
+    final result = await Navigator.of(context).pushNamed(
+      Routes.createFood.path,
+      arguments: widget.meal,
+    );
+    if (result is RecipeIngredient && context.mounted) {
+      Navigator.of(context).pop(result);
+    }
+  }
 
   void _onSearchQueryChanged() {
     if (_searchQueryTextController.text.length < 3) {

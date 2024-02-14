@@ -2,7 +2,7 @@ import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/meal.dart';
 
 class AddFoodArguments {
-  final Meal meal;
+  final Meal? meal;
   final Food food;
   final int? localId;
 

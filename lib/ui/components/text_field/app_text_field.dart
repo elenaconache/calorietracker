@@ -124,6 +124,7 @@ class _AppTextFieldState extends State<AppTextField> {
         errorText: null,
         errorStyle: const TextStyle(height: 0),
         isDense: widget.isDense,
+        counter: const SizedBox.shrink(),
       );
 
   EdgeInsets get _contentPadding {

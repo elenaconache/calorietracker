@@ -15,7 +15,7 @@ import 'package:calorietracker/ui/components/error_box.dart';
 import 'package:flutter/material.dart';
 
 class CreateFoodView extends StatefulWidget {
-  final Meal meal;
+  final Meal? meal;
 
   const CreateFoodView({super.key, required this.meal});
 
@@ -88,7 +88,8 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                   valueListenable: _controller.isLoading,
                   builder: (_, isLoading, __) => isLoading
                       ? const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16), child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()))
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()))
                       : IconButton(
                           onPressed: () => _onDonePressed(context),
                           icon: const Icon(
@@ -111,7 +112,8 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                         child: ErrorBox(
                             message: _getErrorMessage(foodError),
                             animationController: _errorAnimationController,
-                            onErrorDismissed: () => _errorAnimationController.reverse().then((value) => _controller.hideError())),
+                            onErrorDismissed: () =>
+                                _errorAnimationController.reverse().then((value) => _controller.hideError())),
                       );
                     }
                   }),
@@ -168,21 +170,27 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     if (_formKey.currentState?.validate() ?? false) {
       final isNutritionValid = _controller.validateNutrition(foodInput: _foodInput);
       if (isNutritionValid) {
-        unawaited(_controller.createFood(foodInput: _foodInput)
-            .then((response) {
+        unawaited(_controller.createFood(foodInput: _foodInput).then((response) {
           if (response.localId == null && response.createdFoodId == null) {
             locator<LoggingService>().info('Could not save food locally neither on the API.');
             ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(AppStrings.errorCreateFood)),
+              SnackBar(content: Text(AppStrings.errorCreateFood)),
             );
           } else {
             if (context.mounted) {
-              Navigator.of(context).pushReplacementNamed(Routes.addFood.path,
-                  arguments: AddFoodArguments(
-                    meal: widget.meal,
-                    food: Food.input(foodInput: _foodInput, id: response.createdFoodId),
-                    localId: response.localId,
-                  ));
+              final food = Food.input(foodInput: _foodInput, id: response.createdFoodId);
+              Navigator.of(context)
+                  .pushNamed(Routes.addFood.path,
+                      arguments: AddFoodArguments(
+                        meal: widget.meal,
+                        food: food,
+                        localId: response.localId,
+                      ))
+                  .then((value) {
+                if (context.mounted) {
+                  Navigator.of(context).pop(value);
+                }
+              });
             } else {
               locator<LoggingService>().info('Could not navigate to add food screen. Context unmounted.');
             }
@@ -199,12 +207,15 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
       SugarsExceedNetCarbsError _ => AppStrings.sugarsExceedNetCarbsLabel,
       FatsSumExceedsTotalFatError _ => AppStrings.sumFatsExceedsTotalFatError(foodError.expectedFat),
       CholesterolExceedsTotalFatError _ => AppStrings.cholesterolExceedsFatError,
-      CholesterolExceedsMaxPerServingError _ => AppStrings.cholesterolExceedsMaxPerServingError(foodError.expectedCholesterolMg),
+      CholesterolExceedsMaxPerServingError _ =>
+        AppStrings.cholesterolExceedsMaxPerServingError(foodError.expectedCholesterolMg),
       InsolubleFiberExceedsFiberError _ => AppStrings.insolubleFiberExceedsFiberError,
       SaltExceedsServingSizeError _ => AppStrings.saltExceedsServingSizeError,
       IronExceedsMaxIronPerServingError _ => AppStrings.ironExceedsMaxPerServingError(foodError.expectedIronMg),
-      PotassiumExceedsMaxPotassiumPerServingError _ => AppStrings.potassiumExceedsMaxPerServingError(foodError.expectedPotassiumMg),
-      CalciumExceedsMaxCalciumPerServingError _ => AppStrings.calciumExceedsMaxPerServingError(foodError.expectedCalciumMg),
+      PotassiumExceedsMaxPotassiumPerServingError _ =>
+        AppStrings.potassiumExceedsMaxPerServingError(foodError.expectedPotassiumMg),
+      CalciumExceedsMaxCalciumPerServingError _ =>
+        AppStrings.calciumExceedsMaxPerServingError(foodError.expectedCalciumMg),
       VitaminAExceedsMaxPerServingError _ => AppStrings.vitaminAExceedsMaxPerServingError(foodError.expectedVitaminAIU),
       VitaminCExceedsMaxPerServingError _ => AppStrings.vitaminCExceedsMaxPerServingError(foodError.expectedVitaminCMg),
       VitaminDExceedsMaxPerServingError _ => AppStrings.vitaminDExceedsMaxPerServingError(foodError.expectedVitaminDIU),

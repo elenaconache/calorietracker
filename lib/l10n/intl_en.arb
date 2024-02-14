@@ -249,5 +249,8 @@
   "deleteEntriesTitle": "Delete entries",
   "errorCreateFood": "Could not save food. Please use a similar food from collection or try again later.",
   "recipesTitle": "Recipes",
-  "searchRecipeLabel": "Search for a recipe"
+  "searchRecipeLabel": "Search for a recipe",
+  "createRecipeTitle": "Create recipe",
+  "recipeNameLabel": "Recipe name",
+  "ingredientsTitle": "Ingredients"
 }

@@ -6,6 +6,7 @@ import 'package:calorietracker/features/create_food/create_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/login/login_view.dart';
 import 'package:calorietracker/features/profile/profile_view.dart';
+import 'package:calorietracker/features/recipes/create_food/create_recipe_view.dart';
 import 'package:calorietracker/features/recipes/search_recipe_view.dart';
 import 'package:calorietracker/features/search_food/search_food_view.dart';
 import 'package:calorietracker/models/meal.dart';
@@ -72,7 +73,7 @@ class _HomeViewState extends State<HomeView> {
       case Routes.accounts:
         return MaterialPageRoute(builder: (context) => const AccountsView());
       case Routes.createFood:
-        return MaterialPageRoute(builder: (context) => CreateFoodView(meal: args as Meal));
+        return MaterialPageRoute(builder: (context) => CreateFoodView(meal: args as Meal?));
       case Routes.profile:
         return MaterialPageRoute(builder: (context) => const ProfileView());
       default:
@@ -91,15 +92,18 @@ class _HomeViewState extends State<HomeView> {
 
   Route? _onGenerateRecipesRoute(RouteSettings settings) {
     final matchingRoute = Routes.values.firstWhereOrNull((route) => route.path == settings.name);
+    final args = settings.arguments;
     switch (matchingRoute) {
       case Routes.recipes:
         return MaterialPageRoute(builder: (context) => const SearchRecipeView());
       case Routes.createRecipe:
-        return MaterialPageRoute(
-          builder: (context) => const Scaffold(
-            body: Center(child: Text('Create recipe')),
-          ),
-        );
+        return MaterialPageRoute(builder: (context) => const CreateRecipeView());
+      case Routes.foodSearch:
+        return MaterialPageRoute(builder: (context) => const SearchFoodView());
+      case Routes.addFood:
+        return MaterialPageRoute(builder: (context) => AddFoodView(args: args as AddFoodArguments));
+      case Routes.createFood:
+        return MaterialPageRoute(builder: (context) => CreateFoodView(meal: args as Meal?));
       default:
         return MaterialPageRoute(
           builder: (context) => GenericErrorView(

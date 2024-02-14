@@ -7,7 +7,7 @@ import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultsSection extends StatefulWidget {
-  final Meal meal;
+  final Meal? meal;
 
   const SearchResultsSection({Key? key, required this.meal}) : super(key: key);
 

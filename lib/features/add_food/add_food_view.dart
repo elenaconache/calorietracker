@@ -4,6 +4,8 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_controller.dart';
 import 'package:calorietracker/features/add_food/food_log.dart';
+import 'package:calorietracker/features/search_food/search_food_service.dart';
+import 'package:calorietracker/models/recipe_ingredient.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
 import 'package:calorietracker/features/add_food/nutrition_section.dart';
 import 'package:calorietracker/models/meal.dart';
@@ -161,26 +163,33 @@ class _AddFoodViewState extends State<AddFoodView> {
         StackTrace.current,
       );
     } else {
-      final foodLog = FoodLog(
-        meal: widget.args.meal,
-        food: widget.args.food,
-        servingQuantity: servingQuantity,
-        localFoodId: widget.args.localId,
-        date: DateTime.now(), // TODO: handle logging a food for a different date too, not just for today
-      );
-      unawaited(_controller.logFood(foodLog: foodLog).then((_) {
-        if (context.mounted) {
-          Navigator.pop(context);
-        } else {
-          locator<LoggingService>().info('Could not pop add food screen. Context unmounted.');
-        }
-      }).catchError((_, __) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.errorAddFood)));
-        } else {
-          locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
-        }
-      }));
+      locator<SearchFoodService>().clearResults();
+      if (widget.args.meal == null) {
+        Navigator.of(context).pop(
+          RecipeIngredient(food: widget.args.food, servingQuantity: servingQuantity),
+        );
+      } else {
+        final foodLog = FoodLog(
+          meal: widget.args.meal!,
+          food: widget.args.food,
+          servingQuantity: servingQuantity,
+          localFoodId: widget.args.localId,
+          date: DateTime.now(), // TODO: handle logging a food for a different date too, not just for today
+        );
+        unawaited(_controller.logFood(foodLog: foodLog).then((_) {
+          if (context.mounted) {
+            Navigator.pop(context);
+          } else {
+            locator<LoggingService>().info('Could not pop add food screen. Context unmounted.');
+          }
+        }).catchError((_, __) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.errorAddFood)));
+          } else {
+            locator<LoggingService>().info('Could not show error snack bar.   Context unmounted.');
+          }
+        }));
+      }
     }
   }
 

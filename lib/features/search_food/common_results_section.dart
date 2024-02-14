@@ -9,7 +9,7 @@ import 'package:calorietracker/ui/components/general_error_view.dart';
 import 'package:flutter/material.dart';
 
 class CommonResultsSection extends StatefulWidget {
-  final Meal meal;
+  final Meal? meal;
 
   const CommonResultsSection({super.key, required this.meal});
 

@@ -105,6 +105,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Could not connect to the server."),
         "continueLabel": MessageLookupByLibrary.simpleMessage("Continue"),
         "createFoodLabel": MessageLookupByLibrary.simpleMessage("Create food"),
+        "createRecipeTitle":
+            MessageLookupByLibrary.simpleMessage("Create recipe"),
         "deleteEntriesTitle":
             MessageLookupByLibrary.simpleMessage("Delete entries"),
         "deleteEntryLabel":
@@ -132,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("An error occurred."),
         "gramsShortLabel": MessageLookupByLibrary.simpleMessage("g"),
         "gramsValue": m8,
+        "ingredientsTitle": MessageLookupByLibrary.simpleMessage("Ingredients"),
         "insolubleFiberExceedsFiberError": MessageLookupByLibrary.simpleMessage(
             "Insoluble fiber must be less than or equal to fiber."),
         "insolubleFiberGramsLabel":
@@ -178,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
         "proteinPercentageValue": m13,
         "proteinValue": m14,
+        "recipeNameLabel": MessageLookupByLibrary.simpleMessage("Recipe name"),
         "recipesTitle": MessageLookupByLibrary.simpleMessage("Recipes"),
         "requiredError": MessageLookupByLibrary.simpleMessage("Required"),
         "saltExceedsServingSizeError": MessageLookupByLibrary.simpleMessage(

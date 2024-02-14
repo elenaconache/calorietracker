@@ -4,6 +4,7 @@ import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/models/nutrition.dart';
+import 'package:calorietracker/models/recipe_ingredient.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/numeric_formatting_service.dart';
@@ -13,7 +14,7 @@ import 'package:flutter/material.dart';
 
 class FoodItem extends StatelessWidget {
   final Food? remoteFood;
-  final Meal meal;
+  final Meal? meal;
   final double servingQuantity;
   final String unitName;
   final Nutrition nutritionPerServingQuantity;
@@ -105,16 +106,19 @@ class FoodItem extends StatelessWidget {
     );
   }
 
-  void _navigateToAddFood(BuildContext context) {
+  void _navigateToAddFood(BuildContext context) async {
     if (remoteFood == null && localFood == null) {
       locator<LoggingService>().info('Attempt to log food when both collection and local search result were empty.');
       return;
     }
-    Navigator.pushNamed(
+    final result = await Navigator.pushNamed(
       context,
       Routes.addFood.path,
       arguments:
           AddFoodArguments(meal: meal, food: remoteFood ?? Food.local(localFood: localFood!), localId: localFood?.id),
     );
+    if (result is RecipeIngredient && context.mounted) {
+      Navigator.of(context).pop(result);
+    }
   }
 }

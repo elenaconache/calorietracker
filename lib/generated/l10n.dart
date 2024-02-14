@@ -1160,6 +1160,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Create recipe`
+  String get createRecipeTitle {
+    return Intl.message(
+      'Create recipe',
+      name: 'createRecipeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recipe name`
+  String get recipeNameLabel {
+    return Intl.message(
+      'Recipe name',
+      name: 'recipeNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ingredients`
+  String get ingredientsTitle {
+    return Intl.message(
+      'Ingredients',
+      name: 'ingredientsTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

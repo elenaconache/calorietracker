@@ -232,4 +232,10 @@ class AppStrings {
   static String get recipesTitle => S.current.recipesTitle;
 
   static String get searchRecipeLabel => S.current.searchRecipeLabel;
+
+  static String get createRecipeTitle => S.current.createRecipeTitle;
+
+  static String get recipeNameLabel => S.current.recipeNameLabel;
+
+  static String get ingredientsTitle => S.current.ingredientsTitle;
 }

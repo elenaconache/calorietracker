@@ -12,7 +12,7 @@ import 'package:calorietracker/ui/components/general_error_view.dart';
 import 'package:flutter/material.dart';
 
 class CollectionResultsSection extends StatefulWidget {
-  final Meal meal;
+  final Meal? meal;
 
   const CollectionResultsSection({Key? key, required this.meal}) : super(key: key);
 
