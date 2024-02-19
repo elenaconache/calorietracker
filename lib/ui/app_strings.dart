@@ -238,4 +238,10 @@ class AppStrings {
   static String get recipeNameLabel => S.current.recipeNameLabel;
 
   static String get ingredientsTitle => S.current.ingredientsTitle;
+
+  static String get searchIngredientTitle => S.current.searchIngredientTitle;
+
+  static String get addIngredientTitle => S.current.addIngredientTitle;
+
+  static String get nutritionTitle => S.current.nutritionTitle;
 }

@@ -43,7 +43,7 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.searchFoodsLabel), // TODO: use "search ingredient" for app bar title when meal is null
+        title: Text(widget.meal == null ? AppStrings.searchIngredientTitle : AppStrings.searchFoodsLabel),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,

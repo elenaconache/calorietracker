@@ -228,4 +228,26 @@ class Nutrition {
   double get netCarbs => carbohydrates - fiber;
 
   String get formattedNetCarbs => '${netCarbs.toStringAsFixed(1)} g';
+
+  Nutrition add({required Nutrition nutrition}) => Nutrition(
+        calcium: nutrition.calcium + calcium,
+        calories: nutrition.calories + calories,
+        carbohydrates: nutrition.carbohydrates + carbohydrates,
+        cholesterol: nutrition.cholesterol + cholesterol,
+        fat: nutrition.fat + fat,
+        fatMonounsaturated: nutrition.fatMonounsaturated + fatMonounsaturated,
+        fatPolyunsaturated: nutrition.fatPolyunsaturated + fatPolyunsaturated,
+        fatSaturated: nutrition.fatSaturated + fatSaturated,
+        fatTrans: nutrition.fatTrans + fatTrans,
+        fiber: nutrition.fiber + fiber,
+        insolubleFiber: nutrition.insolubleFiber + insolubleFiber,
+        iron: nutrition.iron + iron,
+        potassium: nutrition.potassium + potassium,
+        protein: nutrition.protein + protein,
+        sodium: nutrition.sodium + sodium,
+        sugar: nutrition.sugar + sugar,
+        vitaminA: nutrition.vitaminA + vitaminA,
+        vitaminC: nutrition.vitaminC + vitaminC,
+        vitaminD: nutrition.vitaminD + vitaminD,
+      );
 }

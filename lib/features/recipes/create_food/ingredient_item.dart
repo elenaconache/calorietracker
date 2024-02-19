@@ -16,7 +16,7 @@ class IngredientItem extends StatelessWidget {
         InkWell(
           onTap: () {},
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
             child: Row(
               children: [
                 Expanded(
@@ -40,7 +40,7 @@ class IngredientItem extends StatelessWidget {
                   (ingredient.servingQuantity * ingredient.food.nutrition.calories ~/ 100).toString(),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 4),
               ],
             ),
           ),

@@ -1190,6 +1190,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Search ingredient`
+  String get searchIngredientTitle {
+    return Intl.message(
+      'Search ingredient',
+      name: 'searchIngredientTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add ingredient`
+  String get addIngredientTitle {
+    return Intl.message(
+      'Add ingredient',
+      name: 'addIngredientTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nutrition`
+  String get nutritionTitle {
+    return Intl.message(
+      'Nutrition',
+      name: 'nutritionTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -44,11 +44,12 @@ class AppTextField extends StatefulWidget {
 class _AppTextFieldState extends State<AppTextField> {
   late final TextEditingController _textController;
   late final bool _hasInitialTextController;
-  final ValueNotifier<String?> _error = ValueNotifier(null);
+  late final ValueNotifier<String?> _error;
 
   @override
   void initState() {
     _hasInitialTextController = widget.controller != null;
+    _error = ValueNotifier(null);
     _textController = widget.controller ?? TextEditingController();
     _textController.addListener(_onTextChange);
     super.initState();
@@ -80,6 +81,7 @@ class _AppTextFieldState extends State<AppTextField> {
                 autofocus: widget.autofocus,
                 enabled: widget.enabled,
                 validator: (value) => _validateField(value, error),
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
               ),
               if (error != null)
                 Padding(

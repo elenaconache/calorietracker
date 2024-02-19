@@ -73,6 +73,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountsTitle": MessageLookupByLibrary.simpleMessage("Accounts"),
         "addAccountLabel": MessageLookupByLibrary.simpleMessage("Add account"),
+        "addIngredientTitle":
+            MessageLookupByLibrary.simpleMessage("Add ingredient"),
         "alreadyLoggedInMessage": MessageLookupByLibrary.simpleMessage(
             "You are already logged in with this account."),
         "brandNameLabel":
@@ -165,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noResultsTitle": MessageLookupByLibrary.simpleMessage(
             "There were no results matching your search"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
+        "nutritionTitle": MessageLookupByLibrary.simpleMessage("Nutrition"),
         "polyFatGramsLabel":
             MessageLookupByLibrary.simpleMessage("Poly fat (g)"),
         "polyunsaturatedFatLabel":
@@ -194,6 +197,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchFoodsLabel": MessageLookupByLibrary.simpleMessage("Search food"),
         "searchForFoodLabel":
             MessageLookupByLibrary.simpleMessage("Search for a food"),
+        "searchIngredientTitle":
+            MessageLookupByLibrary.simpleMessage("Search ingredient"),
         "searchRecipeLabel":
             MessageLookupByLibrary.simpleMessage("Search for a recipe"),
         "servingsLabel":

@@ -252,5 +252,8 @@
   "searchRecipeLabel": "Search for a recipe",
   "createRecipeTitle": "Create recipe",
   "recipeNameLabel": "Recipe name",
-  "ingredientsTitle": "Ingredients"
+  "ingredientsTitle": "Ingredients",
+  "searchIngredientTitle": "Search ingredient",
+  "addIngredientTitle": "Add ingredient",
+  "nutritionTitle": "Nutrition"
 }

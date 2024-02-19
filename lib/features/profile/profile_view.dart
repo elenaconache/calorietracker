@@ -15,7 +15,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> with SingleTickerProviderStateMixin {
-  late AnimationController _rotationController;
+  late final AnimationController _rotationController;
 
   @override
   void initState() {
