@@ -1,3 +1,4 @@
+import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:flutter/material.dart';
 
 class NutrientRow extends StatelessWidget {
@@ -14,23 +15,24 @@ class NutrientRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-        decoration: BoxDecoration(
-            border: isLast ? null : Border(bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor))),
-        child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Text(
-                  name,
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
-                const Spacer(),
-                Text(
-                  displayValue,
-                  style: Theme.of(context).textTheme.labelLarge,
-                )
-              ],
-            )));
+    return Column(children: [
+      const AppDivider(),
+      Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Text(
+              name,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            const Spacer(),
+            Text(
+              displayValue,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+          ],
+        ),
+      ),
+    ]);
   }
 }

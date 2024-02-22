@@ -255,5 +255,6 @@
   "ingredientsTitle": "Ingredients",
   "searchIngredientTitle": "Search ingredient",
   "addIngredientTitle": "Add ingredient",
-  "nutritionTitle": "Nutrition"
+  "nutritionTitle": "Nutrition",
+  "cookedQuantityGramsLabel": "Cooked quantity (grams)"
 }

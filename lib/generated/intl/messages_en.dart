@@ -106,6 +106,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "connectionErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Could not connect to the server."),
         "continueLabel": MessageLookupByLibrary.simpleMessage("Continue"),
+        "cookedQuantityGramsLabel":
+            MessageLookupByLibrary.simpleMessage("Cooked quantity (grams)"),
         "createFoodLabel": MessageLookupByLibrary.simpleMessage("Create food"),
         "createRecipeTitle":
             MessageLookupByLibrary.simpleMessage("Create recipe"),

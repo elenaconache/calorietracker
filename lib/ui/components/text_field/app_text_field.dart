@@ -16,6 +16,7 @@ class AppTextField extends StatefulWidget {
   final bool enabled;
   final String? Function(String? text)? validate;
   final bool? isDense;
+  final String? hint;
 
   const AppTextField({
     super.key,
@@ -32,6 +33,7 @@ class AppTextField extends StatefulWidget {
     this.enabled = true,
     this.validate,
     this.isDense,
+    this.hint,
   });
 
   @override
@@ -127,6 +129,7 @@ class _AppTextFieldState extends State<AppTextField> {
         errorStyle: const TextStyle(height: 0),
         isDense: widget.isDense,
         counter: const SizedBox.shrink(),
+        hintText: widget.hint,
       );
 
   EdgeInsets get _contentPadding {

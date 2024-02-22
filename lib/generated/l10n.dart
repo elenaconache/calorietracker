@@ -1220,6 +1220,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Cooked quantity (grams)`
+  String get cookedQuantityGramsLabel {
+    return Intl.message(
+      'Cooked quantity (grams)',
+      name: 'cookedQuantityGramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

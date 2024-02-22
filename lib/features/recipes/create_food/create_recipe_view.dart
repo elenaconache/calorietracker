@@ -6,6 +6,7 @@ import 'package:calorietracker/features/recipes/create_food/ingredient_item.dart
 import 'package:calorietracker/models/recipe_ingredient.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
+import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
 import 'package:calorietracker/ui/components/nutrition_section.dart';
 import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
@@ -22,6 +23,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
   late final CreateRecipeController _controller;
   late final ScrollController _scrollController;
   late final AnimationController _rotationController;
+  late final TextEditingController _servingSizeTextController;
 
   @override
   void initState() {
@@ -33,12 +35,18 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
       duration: const Duration(milliseconds: 200),
     );
     Tween<double>(begin: 0, end: pi).animate(_rotationController);
+    _servingSizeTextController = TextEditingController()
+      ..text = '100'
+      ..addListener(_onServingSizeChanged);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     _rotationController.dispose();
+    _servingSizeTextController
+      ..removeListener(_onServingSizeChanged)
+      ..dispose();
     super.dispose();
   }
 
@@ -65,11 +73,13 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
             padding: const EdgeInsets.only(top: 12, left: 16, right: 16),
             sliver: SliverToBoxAdapter(
               child: AppTextField(
-                labelText: AppStrings.servingsLabel,
+                labelText: AppStrings.cookedQuantityGramsLabel,
                 inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
                 maxLength: 6,
                 autofocus: true,
                 action: TextInputAction.done,
+                controller: _servingSizeTextController,
+                hint: '100',
               ),
             ),
           ),
@@ -90,11 +100,10 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
               },
             ),
           ),
+          const SliverToBoxAdapter(child: AppDivider(height: 2)),
           SliverToBoxAdapter(
             child: ExpansionTile(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
-              ),
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               title: Text(
                 AppStrings.nutritionTitle,
                 style: Theme.of(context).textTheme.titleMedium,
@@ -129,30 +138,17 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
               ],
             ),
           ),
+          const SliverToBoxAdapter(child: AppDivider(height: 2)),
           SliverPadding(
-            padding: const EdgeInsets.only(left: 18, right: 12, bottom: 6),
+            padding: const EdgeInsets.only(top: 16, left: 18, right: 12),
             sliver: SliverToBoxAdapter(
-              child: Row(
-                children: [
-                  Text(
-                    AppStrings.ingredientsTitle,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const Spacer(),
-                  const SizedBox(width: 12),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    icon: Icon(
-                      Icons.add,
-                      size: 28,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    onPressed: _navigateToSearchFood,
-                  ),
-                ],
+              child: Text(
+                AppStrings.ingredientsTitle,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ),
+          const SliverPadding(padding: EdgeInsets.only(top: 16)),
           ValueListenableBuilder(
             valueListenable: _controller.ingredients,
             builder: (_, ingredients, __) => SliverList(
@@ -162,9 +158,17 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Center(
+              child: TextButton(
+                onPressed: _navigateToSearchFood,
+                child: Text(AppStrings.addIngredientTitle.toUpperCase()),
+              ),
+            ),
+          ),
           SliverPadding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-          )
+          ),
         ],
       ),
     );
@@ -183,5 +187,9 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
         );
       }
     }
+  }
+
+  void _onServingSizeChanged() {
+    // TODO: update nutrition
   }
 }

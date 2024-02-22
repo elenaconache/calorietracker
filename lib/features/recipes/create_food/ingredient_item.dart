@@ -25,11 +25,11 @@ class IngredientItem extends StatelessWidget {
                     children: [
                       Text(
                         ingredient.food.name,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                       Text(
                         AppStrings.gramsValue(ingredient.servingQuantity),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.labelMedium,
                         textAlign: TextAlign.left,
                       ),
                     ],

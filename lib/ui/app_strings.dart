@@ -244,4 +244,6 @@ class AppStrings {
   static String get addIngredientTitle => S.current.addIngredientTitle;
 
   static String get nutritionTitle => S.current.nutritionTitle;
+
+  static String get cookedQuantityGramsLabel => S.current.cookedQuantityGramsLabel;
 }
