@@ -1230,6 +1230,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Summary for 100g cooked product`
+  String get summary100GramsMessage {
+    return Intl.message(
+      'Summary for 100g cooked product',
+      name: 'summary100GramsMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not create recipe.`
+  String get errorCreatingRecipeMessage {
+    return Intl.message(
+      'Could not create recipe.',
+      name: 'errorCreatingRecipeMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

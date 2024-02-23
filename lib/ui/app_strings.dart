@@ -246,4 +246,8 @@ class AppStrings {
   static String get nutritionTitle => S.current.nutritionTitle;
 
   static String get cookedQuantityGramsLabel => S.current.cookedQuantityGramsLabel;
+
+  static String get summary100GramsMessage => S.current.summary100GramsMessage;
+
+  static String get errorCreatingRecipeMessage => S.current.errorCreatingRecipeMessage;
 }

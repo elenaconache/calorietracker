@@ -125,6 +125,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Could not save food to diary. Please try again later."),
         "errorCreateFood": MessageLookupByLibrary.simpleMessage(
             "Could not save food. Please use a similar food from collection or try again later."),
+        "errorCreatingRecipeMessage":
+            MessageLookupByLibrary.simpleMessage("Could not create recipe."),
         "errorSavingEntry":
             MessageLookupByLibrary.simpleMessage("Error saving entry."),
         "fatGramsLabel": MessageLookupByLibrary.simpleMessage("Fat (g)"),
@@ -212,6 +214,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugarsExceedNetCarbsError": MessageLookupByLibrary.simpleMessage(
             "Sugar must be less than or equal to net carbs."),
         "sumFatsExceedsTotalFatError": m15,
+        "summary100GramsMessage": MessageLookupByLibrary.simpleMessage(
+            "Summary for 100g cooked product"),
         "switchAccountLabel":
             MessageLookupByLibrary.simpleMessage("Switch account"),
         "syncDataLabel": MessageLookupByLibrary.simpleMessage("Sync data"),

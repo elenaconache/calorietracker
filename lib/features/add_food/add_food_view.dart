@@ -193,7 +193,7 @@ class _AddFoodViewState extends State<AddFoodView> {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.errorAddFood)));
           } else {
-            locator<LoggingService>().info('Could not show error snack bar.   Context unmounted.');
+            locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
           }
         }));
       }

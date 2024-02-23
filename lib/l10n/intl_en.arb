@@ -256,5 +256,7 @@
   "searchIngredientTitle": "Search ingredient",
   "addIngredientTitle": "Add ingredient",
   "nutritionTitle": "Nutrition",
-  "cookedQuantityGramsLabel": "Cooked quantity (grams)"
+  "cookedQuantityGramsLabel": "Cooked quantity (grams)",
+  "summary100GramsMessage": "Summary for 100g cooked product",
+  "errorCreatingRecipeMessage": "Could not create recipe."
 }

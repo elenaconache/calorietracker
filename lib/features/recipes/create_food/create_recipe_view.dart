@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/recipes/create_food/create_recipe_controller.dart';
+import 'package:calorietracker/features/recipes/create_food/create_recipe_error.dart';
 import 'package:calorietracker/features/recipes/create_food/ingredient_item.dart';
 import 'package:calorietracker/models/recipe_ingredient.dart';
 import 'package:calorietracker/navigation/routes.dart';
+import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
@@ -55,6 +57,24 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.createRecipeTitle),
+        actions: [
+          ValueListenableBuilder(
+            valueListenable: _controller.isLoading,
+            builder: (_, isLoading, __) => isLoading
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : IconButton(
+                    onPressed: _saveRecipe,
+                    icon: const Icon(Icons.check, size: 32),
+                  ),
+          )
+        ],
       ),
       body: CustomScrollView(
         controller: _scrollController,
@@ -62,42 +82,56 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
           SliverPadding(
             padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
             sliver: SliverToBoxAdapter(
-              child: AppTextField(
-                labelText: AppStrings.recipeNameLabel,
-                action: TextInputAction.next,
-                maxLength: 30,
+              child: ValueListenableBuilder(
+                valueListenable: _controller.isLoading,
+                builder: (_, isLoading, __) => AppTextField(
+                  labelText: AppStrings.recipeNameLabel,
+                  action: TextInputAction.next,
+                  maxLength: 30,
+                  enabled: !isLoading,
+                ),
               ),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(top: 12, left: 16, right: 16),
             sliver: SliverToBoxAdapter(
-              child: AppTextField(
-                labelText: AppStrings.cookedQuantityGramsLabel,
-                inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
-                maxLength: 6,
-                autofocus: true,
-                action: TextInputAction.done,
-                controller: _servingSizeTextController,
-                hint: '100',
+              child: ValueListenableBuilder(
+                valueListenable: _controller.isLoading,
+                builder: (_, isLoading, __) => AppTextField(
+                  labelText: AppStrings.cookedQuantityGramsLabel,
+                  inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
+                  maxLength: 6,
+                  autofocus: true,
+                  action: TextInputAction.done,
+                  controller: _servingSizeTextController,
+                  hint: '100',
+                  enabled: !isLoading,
+                ),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(top: 12, left: 18, right: 12),
+            sliver: SliverToBoxAdapter(
+              child: Text(
+                AppStrings.summary100GramsMessage,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ),
           SliverToBoxAdapter(
             child: ValueListenableBuilder(
-              valueListenable: _controller.ingredients,
-              builder: (_, ingredients, __) {
-                final nutrition = _controller.recipeNutrition;
-                return CaloriesMacrosSection(
-                  calories: nutrition.calories.toInt(),
-                  carbsInGrams: nutrition.carbohydrates,
-                  carbsPercentage: nutrition.carbsPercentage,
-                  fatInGrams: nutrition.fat,
-                  fatPercentage: nutrition.fatPercentage,
-                  proteinInGrams: nutrition.protein,
-                  proteinPercentage: nutrition.proteinPercentage,
-                );
-              },
+              valueListenable: _controller.recipeNutrition,
+              builder: (_, nutrition, __) => CaloriesMacrosSection(
+                calories: nutrition.calories.toInt(),
+                carbsInGrams: nutrition.carbohydrates,
+                carbsPercentage: nutrition.carbsPercentage,
+                fatInGrams: nutrition.fat,
+                fatPercentage: nutrition.fatPercentage,
+                proteinInGrams: nutrition.protein,
+                proteinPercentage: nutrition.proteinPercentage,
+              ),
             ),
           ),
           const SliverToBoxAdapter(child: AppDivider(height: 2)),
@@ -129,11 +163,8 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
               tilePadding: const EdgeInsets.only(left: 18, right: 12),
               children: [
                 ValueListenableBuilder(
-                  valueListenable: _controller.ingredients,
-                  builder: (_, ingredients, __) {
-                    final nutrition = _controller.recipeNutrition;
-                    return NutritionSection(nutrition: nutrition);
-                  },
+                  valueListenable: _controller.recipeNutrition,
+                  builder: (_, nutrition, __) => NutritionSection(nutrition: nutrition),
                 ),
               ],
             ),
@@ -160,9 +191,12 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
           ),
           SliverToBoxAdapter(
             child: Center(
-              child: TextButton(
-                onPressed: _navigateToSearchFood,
-                child: Text(AppStrings.addIngredientTitle.toUpperCase()),
+              child: ValueListenableBuilder(
+                valueListenable: _controller.isLoading,
+                builder: (_, isLoading, __) => TextButton(
+                  onPressed: isLoading ? null : _navigateToSearchFood,
+                  child: Text(AppStrings.addIngredientTitle.toUpperCase()),
+                ),
               ),
             ),
           ),
@@ -177,7 +211,10 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
   void _navigateToSearchFood() async {
     final result = await Navigator.of(context).pushNamed(Routes.foodSearch.path);
     if (result is RecipeIngredient) {
-      _controller.addIngredient(ingredient: result);
+      _controller.addIngredient(
+        ingredient: result,
+        cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+      );
       if (context.mounted) {
         FocusScope.of(context).unfocus();
         _scrollController.animateTo(
@@ -189,7 +226,24 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
     }
   }
 
-  void _onServingSizeChanged() {
-    // TODO: update nutrition
-  }
+  void _onServingSizeChanged() =>
+      _controller.updateCookedQuantity(cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100);
+
+  void _saveRecipe() => _controller.saveRecipe().then((error) {
+        if (error == CreateRecipeError.none) {
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          } else {
+            locator<LoggingService>().info('Context unmounted. Could not pop create recipe screen.');
+          }
+        } else {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(AppStrings.errorCreatingRecipeMessage)),
+            );
+          } else {
+            locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
+          }
+        }
+      });
 }
