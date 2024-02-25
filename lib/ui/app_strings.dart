@@ -250,4 +250,6 @@ class AppStrings {
   static String get summary100GramsMessage => S.current.summary100GramsMessage;
 
   static String get errorCreatingRecipeMessage => S.current.errorCreatingRecipeMessage;
+
+  static String get emptyRecipeNameError => S.current.emptyRecipeNameError;
 }

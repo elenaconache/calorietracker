@@ -26,12 +26,15 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
   late final ScrollController _scrollController;
   late final AnimationController _rotationController;
   late final TextEditingController _servingSizeTextController;
+  late final TextEditingController _nameTextFieldController;
+  late final GlobalKey<FormState> _formKey;
 
   @override
   void initState() {
     super.initState();
     _controller = locator<CreateRecipeController>();
     _scrollController = ScrollController();
+    _formKey = GlobalKey<FormState>(debugLabel: 'createRecipeForm');
     _rotationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -40,6 +43,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
     _servingSizeTextController = TextEditingController()
       ..text = '100'
       ..addListener(_onServingSizeChanged);
+    _nameTextFieldController = TextEditingController();
   }
 
   @override
@@ -49,6 +53,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
     _servingSizeTextController
       ..removeListener(_onServingSizeChanged)
       ..dispose();
+    _nameTextFieldController.dispose();
     super.dispose();
   }
 
@@ -82,13 +87,18 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
           SliverPadding(
             padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
             sliver: SliverToBoxAdapter(
-              child: ValueListenableBuilder(
-                valueListenable: _controller.isLoading,
-                builder: (_, isLoading, __) => AppTextField(
-                  labelText: AppStrings.recipeNameLabel,
-                  action: TextInputAction.next,
-                  maxLength: 30,
-                  enabled: !isLoading,
+              child: Form(
+                key: _formKey,
+                child: ValueListenableBuilder(
+                  valueListenable: _controller.isLoading,
+                  builder: (_, isLoading, __) => AppTextField(
+                    labelText: AppStrings.recipeNameLabel,
+                    action: TextInputAction.next,
+                    maxLength: 30,
+                    enabled: !isLoading,
+                    validate: _validateRecipeName,
+                    controller: _nameTextFieldController,
+                  ),
                 ),
               ),
             ),
@@ -184,7 +194,12 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
             valueListenable: _controller.ingredients,
             builder: (_, ingredients, __) => SliverList(
               delegate: SliverChildBuilderDelegate(
-                (_, index) => IngredientItem(ingredient: ingredients[index]),
+                (_, index) => IngredientItem(
+                    ingredient: ingredients[index],
+                    onSwipe: () => _controller.removeIngredient(
+                          index: index,
+                          cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+                        )),
                 childCount: ingredients.length,
               ),
             ),
@@ -201,12 +216,16 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
           ),
         ],
       ),
     );
   }
+
+  String? _validateRecipeName(text) => (text?.isNotEmpty ?? false) ? null : AppStrings.emptyRecipeNameError;
 
   void _navigateToSearchFood() async {
     final result = await Navigator.of(context).pushNamed(Routes.foodSearch.path);
@@ -226,10 +245,13 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
     }
   }
 
-  void _onServingSizeChanged() =>
-      _controller.updateCookedQuantity(cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100);
+  void _onServingSizeChanged() => _controller.updateNutrition(
+        cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+      );
 
-  void _saveRecipe() => _controller.saveRecipe().then((error) {
+  void _saveRecipe() {
+    if (_formKey.currentState?.validate() ?? false) {
+      _controller.saveRecipe().then((error) {
         if (error == CreateRecipeError.none) {
           if (context.mounted) {
             Navigator.of(context).pop();
@@ -246,4 +268,6 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
           }
         }
       });
+    }
+  }
 }

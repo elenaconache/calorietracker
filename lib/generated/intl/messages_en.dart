@@ -119,6 +119,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dinner"),
         "emptyFoodNameError":
             MessageLookupByLibrary.simpleMessage("Food name can\'t be empty."),
+        "emptyRecipeNameError":
+            MessageLookupByLibrary.simpleMessage("Recipe name can\'t be empty"),
         "emptyServingError": MessageLookupByLibrary.simpleMessage(
             "Serving size can\'t be empty."),
         "errorAddFood": MessageLookupByLibrary.simpleMessage(

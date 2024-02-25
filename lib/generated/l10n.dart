@@ -1250,6 +1250,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Recipe name can't be empty`
+  String get emptyRecipeNameError {
+    return Intl.message(
+      'Recipe name can\'t be empty',
+      name: 'emptyRecipeNameError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

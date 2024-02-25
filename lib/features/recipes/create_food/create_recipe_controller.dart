@@ -32,7 +32,7 @@ class CreateRecipeController {
         ),
       );
 
-  void updateCookedQuantity({required int cookedQuantity}) => recipeNutrition.value = Nutrition.fromServing(
+  void updateNutrition({required int cookedQuantity}) => recipeNutrition.value = Nutrition.fromServing(
         nutritionPerServing: _totalNutrition,
         servingSizeGrams: cookedQuantity == 0 ? 100 : cookedQuantity.toDouble(),
       );
@@ -50,5 +50,13 @@ class CreateRecipeController {
         return CreateRecipeError.unknown;
       }
     });
+  }
+
+  void removeIngredient({required int index, required int cookedQuantity}) {
+    ingredients.value = [
+      ...ingredients.value.sublist(0, index),
+      ...ingredients.value.sublist(index + 1, ingredients.value.length),
+    ];
+    updateNutrition(cookedQuantity: cookedQuantity);
   }
 }

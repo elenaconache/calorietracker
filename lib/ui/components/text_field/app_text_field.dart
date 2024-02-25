@@ -50,11 +50,11 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   void initState() {
+    super.initState();
     _hasInitialTextController = widget.controller != null;
     _error = ValueNotifier(null);
-    _textController = widget.controller ?? TextEditingController();
+    _textController = (widget.controller ?? TextEditingController());
     _textController.addListener(_onTextChange);
-    super.initState();
   }
 
   @override
@@ -74,7 +74,7 @@ class _AppTextFieldState extends State<AppTextField> {
         builder: (context, error, child) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               TextFormField(
                 decoration: _getDecoration(context, error),
-                controller: widget.controller,
+                controller: _textController,
                 cursorWidth: 1,
                 textInputAction: widget.action,
                 onFieldSubmitted: widget.onSubmitted,
