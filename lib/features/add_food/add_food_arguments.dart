@@ -5,6 +5,12 @@ class AddFoodArguments {
   final Meal? meal;
   final Food food;
   final int? localId;
+  final double? servingSize;
 
-  const AddFoodArguments({required this.meal, required this.food, this.localId});
+  const AddFoodArguments({
+    required this.meal,
+    required this.food,
+    this.localId,
+    this.servingSize,
+  });
 }

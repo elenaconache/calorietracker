@@ -59,4 +59,20 @@ class CreateRecipeController {
     ];
     updateNutrition(cookedQuantity: cookedQuantity);
   }
+
+  void updateIngredientQuantity({
+    required int index,
+    required double ingredientQuantity,
+    required int cookedQuantity,
+  }) {
+    ingredients.value = [
+      ...ingredients.value.sublist(0, index),
+      RecipeIngredient(food: ingredients.value[index].food, servingQuantity: ingredientQuantity),
+      ...ingredients.value.sublist(index + 1),
+    ];
+    recipeNutrition.value = Nutrition.fromServing(
+      nutritionPerServing: _totalNutrition,
+      servingSizeGrams: cookedQuantity == 0 ? 100 : cookedQuantity.toDouble(),
+    );
+  }
 }

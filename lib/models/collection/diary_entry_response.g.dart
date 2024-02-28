@@ -9,19 +9,13 @@ part of 'diary_entry_response.dart';
 DiaryEntryResponse _$DiaryEntryResponseFromJson(Map<String, dynamic> json) {
   $checkKeys(
     json,
-    requiredKeys: const [
-      'id',
-      'food',
-      'entryDate',
-      'unitId',
-      'servingQuantity'
-    ],
+    requiredKeys: const ['id', 'food', 'entryDate', 'unit', 'servingQuantity'],
   );
   return DiaryEntryResponse(
     id: json['id'] as String,
     food: CollectionFood.fromJson(json['food'] as Map<String, dynamic>),
     entryDate: json['entryDate'] as String,
-    unitId: json['unitId'] as String,
+    unit: UnitResponse.fromJson(json['unit'] as Map<String, dynamic>),
     servingQuantity: (json['servingQuantity'] as num).toDouble(),
   );
 }
@@ -31,6 +25,6 @@ Map<String, dynamic> _$DiaryEntryResponseToJson(DiaryEntryResponse instance) =>
       'id': instance.id,
       'food': instance.food,
       'entryDate': instance.entryDate,
-      'unitId': instance.unitId,
+      'unit': instance.unit,
       'servingQuantity': instance.servingQuantity,
     };

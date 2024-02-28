@@ -84,6 +84,7 @@ class _AppTextFieldState extends State<AppTextField> {
                 enabled: widget.enabled,
                 validator: (value) => _validateField(value, error),
                 onTapOutside: (_) => FocusScope.of(context).unfocus(),
+                autocorrect: false,
               ),
               if (error != null)
                 Padding(

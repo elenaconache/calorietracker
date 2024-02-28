@@ -16,7 +16,7 @@ class LocalDiaryEntry {
   late DateTime entryDate;
 
   late String userId;
-  String unitId = gramsUnitId;
+  int unitId = gramsUnitId;
   late double servingQuantity;
 
   @enumerated
@@ -45,7 +45,7 @@ class LocalDiaryEntry {
       servingQuantity: servingQuantity,
       meal: meal,
       foodId: localFood.value?.foodId ?? '',
-      unitId: unitId,
+      foodUnitId: unitId,
     );
   }
 }

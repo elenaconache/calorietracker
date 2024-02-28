@@ -56,7 +56,7 @@ const LocalDiaryEntrySchema = CollectionSchema(
     r'unitId': PropertySchema(
       id: 7,
       name: r'unitId',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'userId': PropertySchema(
       id: 8,
@@ -97,7 +97,6 @@ int _localDiaryEntryEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.unitId.length * 3;
   bytesCount += 3 + object.userId.length * 3;
   return bytesCount;
 }
@@ -115,7 +114,7 @@ void _localDiaryEntrySerialize(
   writer.writeByte(offsets[4], object.meal.index);
   writer.writeBool(offsets[5], object.pushedEntry);
   writer.writeDouble(offsets[6], object.servingQuantity);
-  writer.writeString(offsets[7], object.unitId);
+  writer.writeLong(offsets[7], object.unitId);
   writer.writeString(offsets[8], object.userId);
 }
 
@@ -136,7 +135,7 @@ LocalDiaryEntry _localDiaryEntryDeserialize(
           Meal.breakfast;
   object.pushedEntry = reader.readBool(offsets[5]);
   object.servingQuantity = reader.readDouble(offsets[6]);
-  object.unitId = reader.readString(offsets[7]);
+  object.unitId = reader.readLong(offsets[7]);
   object.userId = reader.readString(offsets[8]);
   return object;
 }
@@ -164,7 +163,7 @@ P _localDiaryEntryDeserializeProp<P>(
     case 6:
       return (reader.readDouble(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 8:
       return (reader.readString(offset)) as P;
     default:
@@ -701,58 +700,49 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      unitIdEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      unitIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'unitId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       unitIdGreaterThan(
-    String value, {
+    int value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'unitId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       unitIdLessThan(
-    String value, {
+    int value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'unitId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       unitIdBetween(
-    String lower,
-    String upper, {
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -761,77 +751,6 @@ extension LocalDiaryEntryQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      unitIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'unitId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      unitIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'unitId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      unitIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'unitId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      unitIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'unitId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      unitIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'unitId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      unitIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'unitId',
-        value: '',
       ));
     });
   }
@@ -1306,10 +1225,9 @@ extension LocalDiaryEntryQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByUnitId(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByUnitId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'unitId', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'unitId');
     });
   }
 
@@ -1374,7 +1292,7 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, String, QQueryOperations> unitIdProperty() {
+  QueryBuilder<LocalDiaryEntry, int, QQueryOperations> unitIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'unitId');
     });

@@ -21,4 +21,4 @@ const nutrientsAttributes = {
   Nutrient.calories: 208,
 };
 
-const gramsUnitId = '914743b6-b1f1-4630-a373-113810939541';
+const gramsUnitId = 1;

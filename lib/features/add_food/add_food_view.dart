@@ -36,8 +36,8 @@ class _AddFoodViewState extends State<AddFoodView> {
     _controller.selectMeal(meal: widget.args.meal);
     _controller.initializeNutrients(nutrition: widget.args.food.nutrition);
     _servingsCountController = TextEditingController();
-    _servingsCountController.text = 100.toString();
     _servingsCountController.addListener(_onServingSizeChanged);
+    _servingsCountController.text = (widget.args.servingSize?.toInt() ?? 100).toString();
   }
 
   @override

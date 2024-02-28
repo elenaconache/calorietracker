@@ -11,7 +11,7 @@ DiaryEntry _$DiaryEntryFromJson(Map<String, dynamic> json) => DiaryEntry(
       localId: json['localId'] as int?,
       food: Food.fromJson(json['food'] as Map<String, dynamic>),
       date: json['date'] as String,
-      unitId: json['unitId'] as String,
+      unitId: json['unitId'] as int,
       servingQuantity: (json['servingQuantity'] as num).toDouble(),
       errorPushing: json['errorPushing'] as bool? ?? false,
     );

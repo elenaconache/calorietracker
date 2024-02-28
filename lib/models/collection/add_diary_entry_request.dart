@@ -7,7 +7,7 @@ part 'add_diary_entry_request.g.dart';
 class AddDiaryEntryRequest {
   final String entryDate;
   final String userId;
-  final String unitId;
+  final int foodUnitId;
   final String foodId;
   final double servingQuantity;
   final Meal meal;
@@ -15,7 +15,7 @@ class AddDiaryEntryRequest {
   const AddDiaryEntryRequest({
     required this.entryDate,
     required this.userId,
-    required this.unitId,
+    required this.foodUnitId,
     required this.foodId,
     required this.servingQuantity,
     required this.meal,

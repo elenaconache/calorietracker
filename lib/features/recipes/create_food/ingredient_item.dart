@@ -7,8 +7,14 @@ import 'package:flutter/material.dart';
 class IngredientItem extends StatelessWidget {
   final RecipeIngredient ingredient;
   final VoidCallback onSwipe;
+  final VoidCallback onTap;
 
-  const IngredientItem({super.key, required this.ingredient, required this.onSwipe});
+  const IngredientItem({
+    super.key,
+    required this.ingredient,
+    required this.onSwipe,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,7 @@ class IngredientItem extends StatelessWidget {
         children: [
           const AppDivider(),
           InkWell(
-            onTap: () {},
+            onTap: onTap,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               child: Row(

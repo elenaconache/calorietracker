@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/recipes/create_food/create_recipe_controller.dart';
 import 'package:calorietracker/features/recipes/create_food/create_recipe_error.dart';
 import 'package:calorietracker/features/recipes/create_food/ingredient_item.dart';
@@ -195,11 +196,13 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
             builder: (_, ingredients, __) => SliverList(
               delegate: SliverChildBuilderDelegate(
                 (_, index) => IngredientItem(
-                    ingredient: ingredients[index],
-                    onSwipe: () => _controller.removeIngredient(
-                          index: index,
-                          cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
-                        )),
+                  ingredient: ingredients[index],
+                  onSwipe: () => _controller.removeIngredient(
+                    index: index,
+                    cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+                  ),
+                  onTap: () => _navigateToIngredientDetails(index),
+                ),
                 childCount: ingredients.length,
               ),
             ),
@@ -268,6 +271,26 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
           }
         }
       });
+    }
+  }
+
+  void _navigateToIngredientDetails(int index) async {
+    final ingredient = _controller.ingredients.value[index];
+    final result = await Navigator.of(context).pushNamed(
+      Routes.addFood.path,
+      arguments: AddFoodArguments(
+        meal: null,
+        food: ingredient.food,
+        localId: ingredient.food.localFood.id,
+        servingSize: ingredient.servingQuantity,
+      ),
+    );
+    if (result is RecipeIngredient) {
+      _controller.updateIngredientQuantity(
+        index: index,
+        ingredientQuantity: result.servingQuantity,
+        cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+      );
     }
   }
 }

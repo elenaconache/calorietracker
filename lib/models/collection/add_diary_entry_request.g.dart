@@ -11,7 +11,7 @@ AddDiaryEntryRequest _$AddDiaryEntryRequestFromJson(
     AddDiaryEntryRequest(
       entryDate: json['entryDate'] as String,
       userId: json['userId'] as String,
-      unitId: json['unitId'] as String,
+      foodUnitId: json['foodUnitId'] as int,
       foodId: json['foodId'] as String,
       servingQuantity: (json['servingQuantity'] as num).toDouble(),
       meal: $enumDecode(_$MealEnumMap, json['meal']),
@@ -22,7 +22,7 @@ Map<String, dynamic> _$AddDiaryEntryRequestToJson(
     <String, dynamic>{
       'entryDate': instance.entryDate,
       'userId': instance.userId,
-      'unitId': instance.unitId,
+      'foodUnitId': instance.foodUnitId,
       'foodId': instance.foodId,
       'servingQuantity': instance.servingQuantity,
       'meal': _$MealEnumMap[instance.meal]!,

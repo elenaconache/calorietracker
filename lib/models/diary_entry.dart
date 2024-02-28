@@ -12,7 +12,7 @@ class DiaryEntry {
   final int? localId;
   final Food food;
   final String date;
-  final String unitId;
+  final int unitId;
   final double servingQuantity;
   final bool errorPushing;
 

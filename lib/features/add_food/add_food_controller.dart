@@ -128,15 +128,18 @@ class AddFoodController {
       final collectionApiService = await locator.getAsync<CollectionApiService>();
       await collectionApiService
           .createDiaryEntry(
-              body: AddDiaryEntryRequest(
-        entryDate:
-            locator<DateFormattingService>().format(dateTime: foodLog.date.toString(), format: collectionApiDateFormat),
-        userId: userId,
-        unitId: gramsUnitId,
-        meal: foodLog.meal,
-        foodId: remoteFoodId,
-        servingQuantity: foodLog.servingQuantity,
-      ))
+        body: AddDiaryEntryRequest(
+          entryDate: locator<DateFormattingService>().format(
+            dateTime: foodLog.date.toString(),
+            format: collectionApiDateFormat,
+          ),
+          userId: userId,
+          foodUnitId: gramsUnitId,
+          meal: foodLog.meal,
+          foodId: remoteFoodId,
+          servingQuantity: foodLog.servingQuantity,
+        ),
+      )
           .then((_) {
         unawaited(locator<DiaryService>().fetchDiary());
       }).catchError((error, stackTrace) async {

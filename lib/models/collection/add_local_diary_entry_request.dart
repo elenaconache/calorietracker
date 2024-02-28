@@ -8,7 +8,7 @@ class AddLocalDiaryEntryRequest {
   final int localId;
   final String entryDate;
   final String userId;
-  final String unitId;
+  final int foodUnitId;
   final double servingQuantity;
   final Meal meal;
   final String foodId;
@@ -17,7 +17,7 @@ class AddLocalDiaryEntryRequest {
     required this.localId,
     required this.entryDate,
     required this.userId,
-    required this.unitId,
+    required this.foodUnitId,
     required this.servingQuantity,
     required this.meal,
     required this.foodId,

@@ -1,4 +1,5 @@
 import 'package:calorietracker/models/collection/collection_food.dart';
+import 'package:calorietracker/models/collection/unit_response.dart';
 import 'package:calorietracker/models/diary_entry.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -17,7 +18,7 @@ class DiaryEntryResponse {
   final String entryDate;
 
   @JsonKey(required: true)
-  final String unitId;
+  final UnitResponse unit;
 
   @JsonKey(required: true)
   final double servingQuantity;
@@ -26,7 +27,7 @@ class DiaryEntryResponse {
     required this.id,
     required this.food,
     required this.entryDate,
-    required this.unitId,
+    required this.unit,
     required this.servingQuantity,
   });
 
@@ -42,7 +43,7 @@ class DiaryEntryResponse {
         localId: null,
         food: Food.collection(food: food),
         date: entryDate,
-        unitId: unitId,
+        unitId: unit.id,
         servingQuantity: servingQuantity,
       );
 }
