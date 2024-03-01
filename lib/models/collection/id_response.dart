@@ -5,7 +5,7 @@ part 'id_response.g.dart';
 @JsonSerializable()
 class IdResponse {
   @JsonKey(required: true)
-  final String id;
+  final int id;
 
   const IdResponse({required this.id});
 

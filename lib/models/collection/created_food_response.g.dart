@@ -12,7 +12,7 @@ CreatedFoodResponse _$CreatedFoodResponseFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['id'],
   );
   return CreatedFoodResponse(
-    id: json['id'] as String,
+    id: json['id'] as int,
   );
 }
 

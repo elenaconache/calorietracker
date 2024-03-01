@@ -5,7 +5,7 @@ part 'collection_food.g.dart';
 
 @JsonSerializable()
 class CollectionFood {
-  final String? id;
+  final int? id;
 
   @JsonKey(required: true)
   final String name;
@@ -32,4 +32,5 @@ class CollectionFood {
   String toString() => toJson().toString();
 }
 
-List<CollectionFood> deserializeCollectionFoodList(List<Map<String, dynamic>> json) => json.map((e) => CollectionFood.fromJson(e)).toList();
+List<CollectionFood> deserializeCollectionFoodList(List<Map<String, dynamic>> json) =>
+    json.map((e) => CollectionFood.fromJson(e)).toList();

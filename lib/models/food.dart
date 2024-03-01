@@ -13,7 +13,7 @@ class Food {
   final String name;
   final Nutrition nutrition;
   final String? brandName;
-  final String? id;
+  final int? id;
   final String? barcode;
 
   const Food({

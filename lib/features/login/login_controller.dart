@@ -31,8 +31,8 @@ class LoginController {
     } else {
       final apiService = await locator.getAsync<UserApiService>();
       await apiService.getUserId(username: username).then((user) async {
-        if (user.id.isNotEmpty) {
-          await _saveUser(user.id, user.username);
+        if (user.username.isNotEmpty) {
+          await _saveUser(user.username);
           onSuccess();
         } else {
           onError(LoginError.unknown);
@@ -57,19 +57,19 @@ class LoginController {
     loginState.value = const LoginState(isLoading: false, isDisabled: false);
   }
 
-  Future<void> _saveUser(String userId, String username) async {
+  Future<void> _saveUser(String username) async {
     final storageService = locator<SecureStorageService>();
-    await storageService.save(key: selectedUserIdKey, value: userId).catchError((error, stackTrace) {
+    await storageService.save(key: selectedUserKey, value: username).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
     });
     var storedUsers = await storageService.getList<User>(
       key: usersKey,
       fromJson: (userJson) => User.fromJson(userJson),
     );
-    if (storedUsers.any((user) => user.id == userId)) {
-      locator<LoggingService>().info('Skipping saving user id as it was already stored.');
+    if (storedUsers.any((user) => user.username == username)) {
+      locator<LoggingService>().info('Skipping saving username as it was already stored.');
     } else {
-      storedUsers.add(User(id: userId, username: username));
+      storedUsers.add(User(username: username));
       await storageService.saveList(key: usersKey, list: storedUsers, toJson: (user) => user.toJson());
     }
     await locator<UserService>().fetchLoggedInState();

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/extensions/dio_extensions.dart';
-import 'package:calorietracker/features/recipes/create_food/create_recipe_error.dart';
+import 'package:calorietracker/features/recipes/create_recipe/create_recipe_error.dart';
 import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/models/recipe_ingredient.dart';
 import 'package:calorietracker/services/logging_service.dart';

@@ -45,7 +45,7 @@ const LocalFoodSchema = CollectionSchema(
     r'foodId': PropertySchema(
       id: 5,
       name: r'foodId',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'name': PropertySchema(
       id: 6,
@@ -96,12 +96,6 @@ int _localFoodEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  {
-    final value = object.foodId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 +
       LocalFoodNutritionSchema.estimateSize(
@@ -120,7 +114,7 @@ void _localFoodSerialize(
   writer.writeDateTime(offsets[2], object.createdAtDate);
   writer.writeBool(offsets[3], object.deleted);
   writer.writeBool(offsets[4], object.errorPushing);
-  writer.writeString(offsets[5], object.foodId);
+  writer.writeLong(offsets[5], object.foodId);
   writer.writeString(offsets[6], object.name);
   writer.writeObject<LocalFoodNutrition>(
     offsets[7],
@@ -143,7 +137,7 @@ LocalFood _localFoodDeserialize(
   object.createdAtDate = reader.readDateTime(offsets[2]);
   object.deleted = reader.readBool(offsets[3]);
   object.errorPushing = reader.readBool(offsets[4]);
-  object.foodId = reader.readStringOrNull(offsets[5]);
+  object.foodId = reader.readLongOrNull(offsets[5]);
   object.id = id;
   object.name = reader.readString(offsets[6]);
   object.nutritionInfo = reader.readObjectOrNull<LocalFoodNutrition>(
@@ -174,7 +168,7 @@ P _localFoodDeserializeProp<P>(
     case 4:
       return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
@@ -668,54 +662,46 @@ extension LocalFoodQueryFilter
   }
 
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'foodId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'foodId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'foodId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -724,75 +710,6 @@ extension LocalFoodQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'foodId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'foodId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'foodId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalFood, LocalFood, QAfterFilterCondition> foodIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'foodId',
-        value: '',
       ));
     });
   }
@@ -1247,10 +1164,9 @@ extension LocalFoodQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByFoodId(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LocalFood, LocalFood, QDistinct> distinctByFoodId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'foodId', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'foodId');
     });
   }
 
@@ -1306,7 +1222,7 @@ extension LocalFoodQueryProperty
     });
   }
 
-  QueryBuilder<LocalFood, String?, QQueryOperations> foodIdProperty() {
+  QueryBuilder<LocalFood, int?, QQueryOperations> foodIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'foodId');
     });

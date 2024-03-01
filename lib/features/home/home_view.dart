@@ -6,7 +6,7 @@ import 'package:calorietracker/features/create_food/create_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/login/login_view.dart';
 import 'package:calorietracker/features/profile/profile_view.dart';
-import 'package:calorietracker/features/recipes/create_food/create_recipe_view.dart';
+import 'package:calorietracker/features/recipes/create_recipe/create_recipe_view.dart';
 import 'package:calorietracker/features/recipes/search_recipe_view.dart';
 import 'package:calorietracker/features/search_food/search_food_view.dart';
 import 'package:calorietracker/models/meal.dart';

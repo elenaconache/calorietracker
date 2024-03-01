@@ -18,6 +18,7 @@ class IngredientItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final calories = ingredient.servingQuantity * ingredient.food.nutrition.calories ~/ 100;
     return Dismissible(
       key: UniqueKey(),
       onDismissed: (_) => onSwipe(),
@@ -50,7 +51,7 @@ class IngredientItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    (ingredient.servingQuantity * ingredient.food.nutrition.calories ~/ 100).toString(),
+                    AppStrings.caloriesShortLabel(calories),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(width: 4),

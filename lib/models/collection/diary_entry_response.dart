@@ -9,7 +9,7 @@ part 'diary_entry_response.g.dart';
 @JsonSerializable()
 class DiaryEntryResponse {
   @JsonKey(required: true)
-  final String id;
+  final int id;
 
   @JsonKey(required: true)
   final CollectionFood food;

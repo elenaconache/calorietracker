@@ -15,7 +15,7 @@ class LocalFood {
   bool pushed = false;
   bool deleted = false;
   bool errorPushing = false;
-  String? foodId;
+  int? foodId;
   late DateTime createdAtDate;
 
   @override

@@ -87,12 +87,12 @@ class DiaryService {
     selectedDay.value = fetchedDate;
     dayMealEntries.value = FutureLoading();
     final apiService = await locator.getAsync<CollectionApiService>();
-    final userId = locator<UserService>().selectedUser.value?.id;
-    if (userId?.isEmpty ?? true) {
+    final username = locator<UserService>().selectedUser.value?.username;
+    if (username?.isEmpty ?? true) {
       // TODO: navigate to login and show error snack bar
     } else {
-      final diary = await (apiService.getDiaryEntries(userId: userId!, date: fetchedDate).then((response) async {
-        return _mergeRemoteAndLocalDiaries(collectionDiary: response, diaryDate: fetchedDate, userId: userId);
+      final diary = await (apiService.getDiaryEntries(userId: username!, date: fetchedDate).then((response) async {
+        return _mergeRemoteAndLocalDiaries(collectionDiary: response, diaryDate: fetchedDate, userId: username);
       }).catchError((error, stackTrace) async {
         locator<LoggingService>().handle(error, stackTrace);
         final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
@@ -334,7 +334,7 @@ class DiaryService {
                 format: collectionApiDateFormat,
               )
               ..localFood.value = entry.food.localFood
-              ..userId = userId
+              ..username = userId
               ..deletedEntry = false
               ..errorPushingEntry = false,
           );

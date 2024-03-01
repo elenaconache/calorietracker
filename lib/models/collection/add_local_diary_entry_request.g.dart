@@ -15,7 +15,7 @@ AddLocalDiaryEntryRequest _$AddLocalDiaryEntryRequestFromJson(
       foodUnitId: json['foodUnitId'] as int,
       servingQuantity: (json['servingQuantity'] as num).toDouble(),
       meal: $enumDecode(_$MealEnumMap, json['meal']),
-      foodId: json['foodId'] as String,
+      foodId: json['foodId'] as int,
     );
 
 Map<String, dynamic> _$AddLocalDiaryEntryRequestToJson(

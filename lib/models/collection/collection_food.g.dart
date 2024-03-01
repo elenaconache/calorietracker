@@ -12,7 +12,7 @@ CollectionFood _$CollectionFoodFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['name', 'nutritionInfo'],
   );
   return CollectionFood(
-    id: json['id'] as String?,
+    id: json['id'] as int?,
     name: json['name'] as String,
     nutritionInfo:
         Nutrition.fromJson(json['nutritionInfo'] as Map<String, dynamic>),

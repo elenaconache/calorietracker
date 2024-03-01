@@ -11,7 +11,7 @@ class AddLocalDiaryEntryRequest {
   final int foodUnitId;
   final double servingQuantity;
   final Meal meal;
-  final String foodId;
+  final int foodId;
 
   const AddLocalDiaryEntryRequest({
     required this.localId,

@@ -74,9 +74,9 @@ class DiaryEntryService {
     bool excludeDeleted = false,
     DateTime? dateFilter,
   }) async {
-    final currentUserId = locator<UserService>().selectedUser.value?.id;
-    if (currentUserId == null) {
-      locator<LoggingService>().info('Could not fetch local diary entries. Missing user id.');
+    final currentUsername = locator<UserService>().selectedUser.value?.username;
+    if (currentUsername == null) {
+      locator<LoggingService>().info('Could not fetch local diary entries. Missing username.');
       return [];
     }
     final entries = await database.localDiaryEntrys
@@ -96,7 +96,7 @@ class DiaryEntryService {
         .and()
         .optional(excludeDeleted, (q) => q.deletedEntryEqualTo(false))
         .and()
-        .userIdEqualTo(currentUserId)
+        .usernameEqualTo(currentUsername)
         .findAll();
     for (final entry in entries) {
       await entry.localFood.load();
@@ -170,14 +170,14 @@ class DiaryEntryService {
     });
   }
 
-  Future<LocalDiaryEntry?> getDiaryEntry({String? collectionId, int? localDiaryEntryId}) async {
+  Future<LocalDiaryEntry?> getDiaryEntry({int? collectionId, int? localDiaryEntryId}) async {
     return _readDiaryEntry(collectionId: collectionId, localId: localDiaryEntryId).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return null;
     });
   }
 
-  Future<LocalDiaryEntry?> _readDiaryEntry({String? collectionId, int? localId}) async {
+  Future<LocalDiaryEntry?> _readDiaryEntry({int? collectionId, int? localId}) async {
     if (collectionId != null) {
       return database.localDiaryEntrys.filter().entryIdEqualTo(collectionId).findFirst();
     } else if (localId != null) {

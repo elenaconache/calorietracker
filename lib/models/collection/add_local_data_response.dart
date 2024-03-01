@@ -5,7 +5,7 @@ part 'add_local_data_response.g.dart';
 @JsonSerializable()
 class AddLocalDataResponse {
   @JsonKey(required: true)
-  final String resourceId;
+  final int resourceId;
 
   @JsonKey(required: true)
   final int localResourceId;

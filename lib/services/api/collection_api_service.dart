@@ -41,9 +41,9 @@ abstract class CollectionApiService {
   });
 
   @DELETE('diary-entries/delete/{diaryEntryId}')
-  Future<void> deleteDiaryEntry({@Path('diaryEntryId') required String diaryEntryId});
+  Future<void> deleteDiaryEntry({@Path('diaryEntryId') required int diaryEntryId});
 
   @POST('diary-entries/delete/list')
   @Headers({HttpHeaders.contentTypeHeader: 'application/json'})
-  Future<void> deleteDiaryEntries({@Body() required List<String> ids});
+  Future<void> deleteDiaryEntries({@Body() required List<int> ids});
 }

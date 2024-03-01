@@ -5,7 +5,7 @@ part 'created_food_response.g.dart';
 @JsonSerializable()
 class CreatedFoodResponse {
   @JsonKey(required: true)
-  final String id;
+  final int id;
 
   const CreatedFoodResponse({required this.id});
 

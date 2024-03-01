@@ -15,7 +15,7 @@ class LocalDiaryEntry {
 
   late DateTime entryDate;
 
-  late String userId;
+  late String username;
   int unitId = gramsUnitId;
   late double servingQuantity;
 
@@ -28,7 +28,7 @@ class LocalDiaryEntry {
 
   final localFood = IsarLink<LocalFood>();
 
-  String? entryId;
+  int? entryId;
 
   @ignore
   AddLocalDiaryEntryRequest get addLocalDiaryEntryRequest {
@@ -41,10 +41,10 @@ class LocalDiaryEntry {
         dateTime: entryDate.toString(),
         format: collectionApiDateFormat,
       ),
-      userId: userId,
+      userId: username,
       servingQuantity: servingQuantity,
       meal: meal,
-      foodId: localFood.value?.foodId ?? '',
+      foodId: localFood.value?.foodId ?? -1,
       foodUnitId: unitId,
     );
   }

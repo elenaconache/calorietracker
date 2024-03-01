@@ -205,7 +205,7 @@ class _CollectionApiService implements CollectionApiService {
   }
 
   @override
-  Future<void> deleteDiaryEntry({required String diaryEntryId}) async {
+  Future<void> deleteDiaryEntry({required int diaryEntryId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -229,7 +229,7 @@ class _CollectionApiService implements CollectionApiService {
   }
 
   @override
-  Future<void> deleteDiaryEntries({required List<String> ids}) async {
+  Future<void> deleteDiaryEntries({required List<int> ids}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'content-type': 'application/json'};

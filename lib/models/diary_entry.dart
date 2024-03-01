@@ -8,7 +8,7 @@ part 'diary_entry.g.dart';
 
 @JsonSerializable()
 class DiaryEntry {
-  final String? collectionId;
+  final int? collectionId;
   final int? localId;
   final Food food;
   final String date;

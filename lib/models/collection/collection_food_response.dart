@@ -6,7 +6,7 @@ part 'collection_food_response.g.dart';
 @JsonSerializable()
 class CollectionFoodResponse {
   @JsonKey(required: true)
-  final String id;
+  final int id;
 
   final String? barcode;
 

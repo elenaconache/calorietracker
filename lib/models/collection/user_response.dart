@@ -5,9 +5,6 @@ part 'user_response.g.dart';
 @JsonSerializable()
 class UserResponse {
   @JsonKey(required: true)
-  final String id;
-
-  @JsonKey(required: true)
   final String username;
 
   @JsonKey(required: true)
@@ -17,7 +14,6 @@ class UserResponse {
   final String lastName;
 
   const UserResponse({
-    required this.id,
     required this.username,
     required this.firstName,
     required this.lastName,

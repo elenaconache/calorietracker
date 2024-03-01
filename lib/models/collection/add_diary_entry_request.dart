@@ -8,7 +8,7 @@ class AddDiaryEntryRequest {
   final String entryDate;
   final String userId;
   final int foodUnitId;
-  final String foodId;
+  final int foodId;
   final double servingQuantity;
   final Meal meal;
 

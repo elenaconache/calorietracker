@@ -7,7 +7,7 @@ const _androidOptions = AndroidOptions(encryptedSharedPreferences: true);
 const _iosOptions = IOSOptions(
   accessibility: KeychainAccessibility.first_unlock,
 );
-const selectedUserIdKey = 'selectedUserId';
+const selectedUserKey = 'selectedUser';
 const usersKey = 'users';
 
 class SecureStorageService {
@@ -30,7 +30,11 @@ class SecureStorageService {
         iOptions: _iosOptions,
       );
 
-  Future<void> saveObject<T>({required String key, required T object, required Map<String, dynamic> Function(T) toJson}) async {
+  Future<void> saveObject<T>({
+    required String key,
+    required T object,
+    required Map<String, dynamic> Function(T) toJson,
+  }) async {
     final jsonString = json.encode(toJson(object));
     await save(key: key, value: jsonString);
   }
@@ -46,10 +50,17 @@ class SecureStorageService {
   List<T> _listFromJson<T>({required List<dynamic> jsonList, required T Function(Map<String, dynamic>) fromJson}) =>
       jsonList.map((jsonObject) => fromJson(jsonObject)).toList();
 
-  List<Map<String, dynamic>> _listToJson<T>({required List<T> list, required Map<String, dynamic> Function(T) toJson}) =>
+  List<Map<String, dynamic>> _listToJson<T>({
+    required List<T> list,
+    required Map<String, dynamic> Function(T) toJson,
+  }) =>
       list.map((object) => toJson(object)).toList();
 
-  Future<void> saveList<T>({required String key, required List<T> list, required Map<String, dynamic> Function(T) toJson}) async {
+  Future<void> saveList<T>({
+    required String key,
+    required List<T> list,
+    required Map<String, dynamic> Function(T) toJson,
+  }) async {
     final jsonList = _listToJson(list: list, toJson: toJson);
     final jsonString = json.encode(jsonList);
     await save(key: key, value: jsonString);

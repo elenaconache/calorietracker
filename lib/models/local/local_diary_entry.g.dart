@@ -30,7 +30,7 @@ const LocalDiaryEntrySchema = CollectionSchema(
     r'entryId': PropertySchema(
       id: 2,
       name: r'entryId',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'errorPushingEntry': PropertySchema(
       id: 3,
@@ -58,9 +58,9 @@ const LocalDiaryEntrySchema = CollectionSchema(
       name: r'unitId',
       type: IsarType.long,
     ),
-    r'userId': PropertySchema(
+    r'username': PropertySchema(
       id: 8,
-      name: r'userId',
+      name: r'username',
       type: IsarType.string,
     )
   },
@@ -91,13 +91,7 @@ int _localDiaryEntryEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  {
-    final value = object.entryId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  bytesCount += 3 + object.userId.length * 3;
+  bytesCount += 3 + object.username.length * 3;
   return bytesCount;
 }
 
@@ -109,13 +103,13 @@ void _localDiaryEntrySerialize(
 ) {
   writer.writeBool(offsets[0], object.deletedEntry);
   writer.writeDateTime(offsets[1], object.entryDate);
-  writer.writeString(offsets[2], object.entryId);
+  writer.writeLong(offsets[2], object.entryId);
   writer.writeBool(offsets[3], object.errorPushingEntry);
   writer.writeByte(offsets[4], object.meal.index);
   writer.writeBool(offsets[5], object.pushedEntry);
   writer.writeDouble(offsets[6], object.servingQuantity);
   writer.writeLong(offsets[7], object.unitId);
-  writer.writeString(offsets[8], object.userId);
+  writer.writeString(offsets[8], object.username);
 }
 
 LocalDiaryEntry _localDiaryEntryDeserialize(
@@ -127,7 +121,7 @@ LocalDiaryEntry _localDiaryEntryDeserialize(
   final object = LocalDiaryEntry();
   object.deletedEntry = reader.readBool(offsets[0]);
   object.entryDate = reader.readDateTime(offsets[1]);
-  object.entryId = reader.readStringOrNull(offsets[2]);
+  object.entryId = reader.readLongOrNull(offsets[2]);
   object.errorPushingEntry = reader.readBool(offsets[3]);
   object.localId = id;
   object.meal =
@@ -136,7 +130,7 @@ LocalDiaryEntry _localDiaryEntryDeserialize(
   object.pushedEntry = reader.readBool(offsets[5]);
   object.servingQuantity = reader.readDouble(offsets[6]);
   object.unitId = reader.readLong(offsets[7]);
-  object.userId = reader.readString(offsets[8]);
+  object.username = reader.readString(offsets[8]);
   return object;
 }
 
@@ -152,7 +146,7 @@ P _localDiaryEntryDeserializeProp<P>(
     case 1:
       return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
@@ -366,58 +360,49 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      entryIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'entryId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       entryIdGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'entryId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       entryIdLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'entryId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
       entryIdBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -426,77 +411,6 @@ extension LocalDiaryEntryQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'entryId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'entryId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'entryId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'entryId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'entryId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      entryIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'entryId',
-        value: '',
       ));
     });
   }
@@ -756,13 +670,13 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdEqualTo(
+      usernameEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'userId',
+        property: r'username',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -770,7 +684,7 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdGreaterThan(
+      usernameGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -778,7 +692,7 @@ extension LocalDiaryEntryQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'userId',
+        property: r'username',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -786,7 +700,7 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdLessThan(
+      usernameLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -794,7 +708,7 @@ extension LocalDiaryEntryQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'userId',
+        property: r'username',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -802,7 +716,7 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdBetween(
+      usernameBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -811,7 +725,7 @@ extension LocalDiaryEntryQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'userId',
+        property: r'username',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -822,13 +736,13 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdStartsWith(
+      usernameStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'userId',
+        property: r'username',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -836,13 +750,13 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdEndsWith(
+      usernameEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'userId',
+        property: r'username',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -850,10 +764,10 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdContains(String value, {bool caseSensitive = true}) {
+      usernameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'userId',
+        property: r'username',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -861,10 +775,10 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdMatches(String pattern, {bool caseSensitive = true}) {
+      usernameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'userId',
+        property: r'username',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -872,20 +786,20 @@ extension LocalDiaryEntryQueryFilter
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdIsEmpty() {
+      usernameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'userId',
+        property: r'username',
         value: '',
       ));
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterFilterCondition>
-      userIdIsNotEmpty() {
+      usernameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'userId',
+        property: r'username',
         value: '',
       ));
     });
@@ -1023,16 +937,17 @@ extension LocalDiaryEntryQuerySortBy
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> sortByUserId() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      sortByUsername() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.asc);
+      return query.addSortBy(r'username', Sort.asc);
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      sortByUserIdDesc() {
+      sortByUsernameDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.desc);
+      return query.addSortBy(r'username', Sort.desc);
     });
   }
 }
@@ -1161,16 +1076,17 @@ extension LocalDiaryEntryQuerySortThenBy
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy> thenByUserId() {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
+      thenByUsername() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.asc);
+      return query.addSortBy(r'username', Sort.asc);
     });
   }
 
   QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QAfterSortBy>
-      thenByUserIdDesc() {
+      thenByUsernameDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'userId', Sort.desc);
+      return query.addSortBy(r'username', Sort.desc);
     });
   }
 }
@@ -1191,10 +1107,10 @@ extension LocalDiaryEntryQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByEntryId(
-      {bool caseSensitive = true}) {
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct>
+      distinctByEntryId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'entryId', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'entryId');
     });
   }
 
@@ -1231,10 +1147,10 @@ extension LocalDiaryEntryQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByUserId(
+  QueryBuilder<LocalDiaryEntry, LocalDiaryEntry, QDistinct> distinctByUsername(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'userId', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'username', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1260,7 +1176,7 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, String?, QQueryOperations> entryIdProperty() {
+  QueryBuilder<LocalDiaryEntry, int?, QQueryOperations> entryIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'entryId');
     });
@@ -1298,9 +1214,9 @@ extension LocalDiaryEntryQueryProperty
     });
   }
 
-  QueryBuilder<LocalDiaryEntry, String, QQueryOperations> userIdProperty() {
+  QueryBuilder<LocalDiaryEntry, String, QQueryOperations> usernameProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'userId');
+      return query.addPropertyName(r'username');
     });
   }
 }

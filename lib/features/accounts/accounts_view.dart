@@ -27,7 +27,8 @@ class AccountsView extends StatelessWidget {
                       builder: (_, users, ___) => ValueListenableBuilder(
                             valueListenable: userService.selectedUser,
                             builder: (_, selectedUser, ___) {
-                              final unselectedUsers = users.where((user) => selectedUser?.id != user.id).toList();
+                              final unselectedUsers =
+                                  users.where((user) => selectedUser?.username != user.username).toList();
                               return ListView.builder(
                                 itemBuilder: (context, index) => UserItem(user: unselectedUsers[index]),
                                 itemCount: unselectedUsers.length,

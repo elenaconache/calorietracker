@@ -12,7 +12,7 @@ IdResponse _$IdResponseFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['id'],
   );
   return IdResponse(
-    id: json['id'] as String,
+    id: json['id'] as int,
   );
 }
 

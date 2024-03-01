@@ -22,7 +22,7 @@ class CreateFoodController {
 
   void hideError() => foodError.value = null;
 
-  Future<({int? localId, String? createdFoodId})> createFood({required FoodInput foodInput}) async {
+  Future<({int? localId, int? createdFoodId})> createFood({required FoodInput foodInput}) async {
     isLoading.value = true;
     int? localId;
     final createdFood =

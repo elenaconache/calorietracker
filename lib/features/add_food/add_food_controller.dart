@@ -55,20 +55,20 @@ class AddFoodController {
 
   Future<void> logFood({required FoodLog foodLog}) async {
     isLoading.value = true;
-    final userId = locator<UserService>().selectedUser.value?.id;
-    if (userId?.isEmpty ?? true) {
-      locator<LoggingService>().info('Could not log food. Missing user id.');
+    final username = locator<UserService>().selectedUser.value?.username;
+    if (username?.isEmpty ?? true) {
+      locator<LoggingService>().info('Could not log food. Missing username.');
       // TODO: navigate to login screen and show a snack bar saying the session expired
     } else {
       if (foodLog.localFoodId != null) {
-        await _saveDiaryEntryLocally(foodLog, userId);
+        await _saveDiaryEntryLocally(foodLog, username);
       } else {
-        await _saveRemotely(userId!, foodLog);
+        await _saveRemotely(username!, foodLog);
       }
     }
   }
 
-  Future<void> _saveDiaryEntryLocally(FoodLog foodLog, String? userId) async {
+  Future<void> _saveDiaryEntryLocally(FoodLog foodLog, String? username) async {
     final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
     final foodService = await locator.getAsync<FoodService>();
     final localFoodId = foodLog.localFoodId ?? await foodService.upsertFood(localFood: foodLog.food.localFood);
@@ -79,7 +79,7 @@ class AddFoodController {
     } else {
       final localDiaryFood = foodLog.food.localFood..id = localFoodId;
       await diaryEntriesService
-          .upsertDiaryEntry(localDiaryEntry: _getLocalDiaryEntry(localDiaryFood, foodLog, userId))
+          .upsertDiaryEntry(localDiaryEntry: _getLocalDiaryEntry(localDiaryFood, foodLog, username))
           .then((_) async {
         unawaited(locator<DiaryService>().fetchDiary(date: foodLog.date));
       }).catchError((error, stackTrace) {
@@ -96,11 +96,11 @@ class AddFoodController {
     ..servingQuantity = foodLog.servingQuantity
     ..meal = foodLog.meal
     ..unitId = gramsUnitId
-    ..userId = userId!;
+    ..username = userId!;
 
   Future<void> _saveRemotely(String userId, FoodLog foodLog) async {
     final collectionApiService = await locator.getAsync<CollectionApiService>();
-    String? remoteFoodId;
+    int? remoteFoodId;
     int? localFoodId;
     if (foodLog.food.id == null) {
       final createdFood = await (collectionApiService.createFood(body: foodLog.food.addFoodRequest).then((createdFood) {
@@ -123,7 +123,7 @@ class AddFoodController {
     await _createDiaryEntry(remoteFoodId, userId, foodLog, localFoodId);
   }
 
-  Future<void> _createDiaryEntry(String? remoteFoodId, String userId, FoodLog foodLog, int? localFoodId) async {
+  Future<void> _createDiaryEntry(int? remoteFoodId, String userId, FoodLog foodLog, int? localFoodId) async {
     if (remoteFoodId != null) {
       final collectionApiService = await locator.getAsync<CollectionApiService>();
       await collectionApiService
