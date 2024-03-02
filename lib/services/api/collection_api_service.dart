@@ -6,6 +6,7 @@ import 'package:calorietracker/models/collection/add_local_diary_entry_request.d
 import 'package:calorietracker/models/collection/add_local_food_request.dart';
 import 'package:calorietracker/models/collection/add_local_data_response.dart';
 import 'package:calorietracker/models/collection/collection_food.dart';
+import 'package:calorietracker/models/collection/collection_recipe_response.dart';
 import 'package:calorietracker/models/collection/created_food_response.dart';
 import 'package:calorietracker/models/collection/id_response.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
@@ -46,4 +47,7 @@ abstract class CollectionApiService {
   @POST('diary-entries/delete/list')
   @Headers({HttpHeaders.contentTypeHeader: 'application/json'})
   Future<void> deleteDiaryEntries({@Body() required List<int> ids});
+
+  @GET('recipes/find-all')
+  Future<List<CollectionRecipeResponse>> getRecipes();
 }

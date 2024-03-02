@@ -15,14 +15,11 @@ class RecipeItem extends StatelessWidget {
         onTap: () => _navigateToAddRecipe(context),
         child: Ink(
           color: Theme.of(context).scaffoldBackgroundColor,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(children: [
-              if (showTopDivider) ...[
-                const AppDivider(),
-                const SizedBox(height: 8),
-              ],
+          child: Column(
+            children: [
+              if (showTopDivider)const AppDivider(),
               Row(children: [
+                const SizedBox(width: 16),
                 Expanded(
                   child: Text(
                     recipe.name,
@@ -36,10 +33,10 @@ class RecipeItem extends StatelessWidget {
                   width: 48,
                   height: 48,
                   child: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.primary),
-                )
+                ),
+                const SizedBox(width: 16),
               ]),
-              const SizedBox(height: 8),
-            ]),
+            ],
           ),
         ),
       ),

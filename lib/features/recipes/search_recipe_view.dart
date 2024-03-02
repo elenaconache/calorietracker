@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/recipes/recipe_item.dart';
 import 'package:calorietracker/features/recipes/search_recipe_controller.dart';
@@ -27,6 +29,7 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
     super.initState();
     _searchFieldController = TextEditingController()..addListener(_onSearchQueryChanged);
     _controller = locator<SearchRecipeController>();
+    WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(_controller.fetchRecipes()));
   }
 
   @override
@@ -75,18 +78,21 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
                 valueListenable: _controller.recipes,
                 builder: (_, recipes, __) {
                   return switch (recipes) {
-                    FutureLoading _ => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                    FutureLoading _ => const Center(child: CircularProgressIndicator()),
                     FutureError _ => const Center(child: GeneralErrorView()),
                     FutureSuccess<List<Recipe>> response => response.data.isEmpty
                         ? const EmptyView()
-                        : ListView.builder(
-                            itemBuilder: (context, index) => RecipeItem(
-                              recipe: response.data[index],
-                              showTopDivider: index != 0,
+                        : RefreshIndicator(
+                            onRefresh: () => _searchFieldController.text.isEmpty
+                                ? _controller.fetchRecipes()
+                                : _controller.searchRecipe(query: _searchFieldController.text),
+                            child: ListView.builder(
+                              itemBuilder: (context, index) => RecipeItem(
+                                recipe: response.data[index],
+                                showTopDivider: index != 0,
+                              ),
+                              itemCount: response.data.length,
                             ),
-                            itemCount: response.data.length,
                           ),
                     FutureInitialState _ => const SizedBox.shrink(),
                   };

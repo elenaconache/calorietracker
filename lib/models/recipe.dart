@@ -1,5 +1,14 @@
-class Recipe {
-  final String name;
+import 'package:calorietracker/models/collection/collection_recipe_response.dart';
 
-  const Recipe({required this.name});
+class Recipe {
+  final int id;
+  final String name;
+  final int cookedWeight;
+
+  const Recipe({required this.name, required this.id, required this.cookedWeight});
+
+  Recipe.collection({required CollectionRecipeResponse recipe})
+      : id = recipe.id,
+        name = recipe.name,
+        cookedWeight = recipe.cookedWeight;
 }

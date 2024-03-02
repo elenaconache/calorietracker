@@ -104,7 +104,7 @@ class DiaryService {
   }
 
   Nutrition getSelectedDayMealNutrients({required Meal meal}) {
-    if (dayMealEntries is! FutureSuccess<List<MealEntriesList>>) {
+    if (dayMealEntries.value is! FutureSuccess<List<MealEntriesList>>) {
       return const Nutrition();
     }
     final entries = _entries;
