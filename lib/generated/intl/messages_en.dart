@@ -73,6 +73,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountsTitle": MessageLookupByLibrary.simpleMessage("Accounts"),
         "addAccountLabel": MessageLookupByLibrary.simpleMessage("Add account"),
+        "addIngredientError": MessageLookupByLibrary.simpleMessage(
+            "Could not add ingredient to recipe"),
         "addIngredientTitle":
             MessageLookupByLibrary.simpleMessage("Add ingredient"),
         "alreadyLoggedInMessage": MessageLookupByLibrary.simpleMessage(

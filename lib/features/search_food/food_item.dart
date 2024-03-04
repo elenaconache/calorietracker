@@ -1,5 +1,6 @@
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
+import 'package:calorietracker/features/home/home_view.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/meal.dart';
@@ -117,8 +118,8 @@ class FoodItem extends StatelessWidget {
       arguments:
           AddFoodArguments(meal: meal, food: remoteFood ?? Food.local(localFood: localFood!), localId: localFood?.id),
     );
-    if (result is RecipeIngredient && context.mounted) {
-      Navigator.of(context).pop(result);
+    if (result is RecipeIngredient) {
+      Navigator.of(recipeNavigatorKey.currentContext!).pop(result);
     }
   }
 }

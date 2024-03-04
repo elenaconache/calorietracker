@@ -5,6 +5,7 @@ import 'package:calorietracker/models/collection/add_food_request.dart';
 import 'package:calorietracker/models/collection/add_local_diary_entry_request.dart';
 import 'package:calorietracker/models/collection/add_local_food_request.dart';
 import 'package:calorietracker/models/collection/add_local_data_response.dart';
+import 'package:calorietracker/models/collection/add_recipe_request.dart';
 import 'package:calorietracker/models/collection/collection_food.dart';
 import 'package:calorietracker/models/collection/collection_recipe_response.dart';
 import 'package:calorietracker/models/collection/created_food_response.dart';
@@ -50,4 +51,7 @@ abstract class CollectionApiService {
 
   @GET('recipes/find-all')
   Future<List<CollectionRecipeResponse>> getRecipes();
+
+  @POST('recipes/add')
+  Future<IdResponse> createRecipe({@Body() required AddRecipeRequest body});
 }

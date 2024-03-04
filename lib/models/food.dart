@@ -76,4 +76,19 @@ class Food {
 
   @override
   String toString() => toJson().toString();
+
+  Food copyWith({
+    String? name,
+    Nutrition? nutrition,
+    String? brandName,
+    int? id,
+    String? barcode,
+  }) =>
+      Food(
+        name: name ?? this.name,
+        id: id ?? this.id,
+        barcode: barcode ?? this.barcode,
+        nutrition: nutrition ?? this.nutrition,
+        brandName: brandName ?? this.brandName,
+      );
 }

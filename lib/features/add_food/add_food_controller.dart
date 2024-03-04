@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:calorietracker/app/constants.dart';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/add_food/food_log.dart';
 import 'package:calorietracker/models/collection/add_diary_entry_request.dart';
+import 'package:calorietracker/models/collection/create_food_errors_response.dart';
+import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/meal.dart';
@@ -99,11 +102,10 @@ class AddFoodController {
     ..username = userId!;
 
   Future<void> _saveRemotely(String userId, FoodLog foodLog) async {
-    final collectionApiService = await locator.getAsync<CollectionApiService>();
     int? remoteFoodId;
     int? localFoodId;
     if (foodLog.food.id == null) {
-      final createdFood = await (collectionApiService.createFood(body: foodLog.food.addFoodRequest).then((createdFood) {
+      final createdFoodId = await (createFood(food: foodLog.food).then((createdFood) {
         unawaited(_saveFoodLocally(foodLog, userId));
         return createdFood;
       }).catchError((error, stackTrace) async {
@@ -116,11 +118,28 @@ class AddFoodController {
         }
         return null;
       }));
-      remoteFoodId = createdFood?.id;
+      remoteFoodId = createdFoodId;
     } else {
       remoteFoodId = foodLog.food.id;
     }
     await _createDiaryEntry(remoteFoodId, userId, foodLog, localFoodId);
+  }
+
+  Future<int?> createFood({required Food food}) async {
+    if(!isLoading.value){
+      isLoading.value = true;
+    }
+    final collectionApiService = await locator.getAsync<CollectionApiService>();
+    return collectionApiService.createFood(body: food.addFoodRequest).then((createdFood) => createdFood?.id)
+    .catchError((error, stackTrace) {
+      if(error is DioException && error.response?.statusCode == HttpStatus.conflict){
+        final errorsResponse = CreateFoodErrorsResponse.fromJson(error.response?.data);
+        return errorsResponse.errors.firstOrNull?.resource.id;
+      }else{
+        locator<LoggingService>().handle(error, stackTrace);
+        return null;
+      }
+    });
   }
 
   Future<void> _createDiaryEntry(int? remoteFoodId, String userId, FoodLog foodLog, int? localFoodId) async {

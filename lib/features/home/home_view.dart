@@ -18,6 +18,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+final diaryNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'diary');
+final recipeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'recipe');
+
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
@@ -45,11 +48,13 @@ class _HomeViewState extends State<HomeView> {
           return CupertinoTabView(
             onGenerateRoute: _onGenerateHomeRoute,
             builder: (context) => const DiaryView(),
+            navigatorKey: diaryNavigatorKey,
           );
         } else if (index == 1) {
           return CupertinoTabView(
             builder: (context) => const SearchRecipeView(),
             onGenerateRoute: _onGenerateRecipesRoute,
+            navigatorKey: recipeNavigatorKey,
           );
         }
         locator<LoggingService>().info('Unknown tab accessed in bottom navigation at index $index');

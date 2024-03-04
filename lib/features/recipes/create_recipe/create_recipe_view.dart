@@ -254,7 +254,12 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
 
   void _saveRecipe() {
     if (_formKey.currentState?.validate() ?? false) {
-      _controller.saveRecipe().then((error) {
+      _controller
+          .saveRecipe(
+        cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 0,
+        name: _nameTextFieldController.text,
+      )
+          .then((error) {
         if (error == CreateRecipeError.none) {
           if (context.mounted) {
             Navigator.of(context).pop();

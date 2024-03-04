@@ -172,9 +172,23 @@ class _AddFoodViewState extends State<AddFoodView> {
     } else {
       locator<SearchFoodService>().clearResults();
       if (widget.args.meal == null) {
-        Navigator.of(context).pop(
-          RecipeIngredient(food: widget.args.food, servingQuantity: servingQuantity),
-        );
+        _controller.createFood(food: widget.args.food).then((createdFoodId) {
+          if (createdFoodId != null) {
+            if (context.mounted) {
+              Navigator.of(context).pop(
+                RecipeIngredient(food: widget.args.food.copyWith(id: createdFoodId), servingQuantity: servingQuantity),
+              );
+            } else {
+              locator<LoggingService>().info('Could not pop screen. Context unmounted.');
+            }
+          } else {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.addIngredientError)));
+            } else {
+              locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
+            }
+          }
+        });
       } else {
         final foodLog = FoodLog(
           meal: widget.args.meal!,

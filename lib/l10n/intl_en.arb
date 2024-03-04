@@ -259,5 +259,6 @@
   "cookedQuantityGramsLabel": "Cooked quantity (grams)",
   "summary100GramsMessage": "Summary for 100g cooked product",
   "errorCreatingRecipeMessage": "Could not create recipe.",
-  "emptyRecipeNameError": "Recipe name can't be empty"
+  "emptyRecipeNameError": "Recipe name can't be empty",
+  "addIngredientError": "Could not add ingredient to recipe"
 }

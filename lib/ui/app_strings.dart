@@ -252,4 +252,6 @@ class AppStrings {
   static String get errorCreatingRecipeMessage => S.current.errorCreatingRecipeMessage;
 
   static String get emptyRecipeNameError => S.current.emptyRecipeNameError;
+
+  static String get addIngredientError => S.current.addIngredientError;
 }

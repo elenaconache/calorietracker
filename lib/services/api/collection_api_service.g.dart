@@ -284,6 +284,34 @@ class _CollectionApiService implements CollectionApiService {
     return value;
   }
 
+  @override
+  Future<IdResponse> createRecipe({required AddRecipeRequest body}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(await compute(serializeAddRecipeRequest, body));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<IdResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'recipes/add',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = await compute(deserializeIdResponse, _result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

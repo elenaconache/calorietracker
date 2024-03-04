@@ -1260,6 +1260,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Could not add ingredient to recipe`
+  String get addIngredientError {
+    return Intl.message(
+      'Could not add ingredient to recipe',
+      name: 'addIngredientError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
