@@ -7,12 +7,14 @@ import 'package:calorietracker/models/collection/add_local_food_request.dart';
 import 'package:calorietracker/models/collection/add_local_data_response.dart';
 import 'package:calorietracker/models/collection/add_recipe_request.dart';
 import 'package:calorietracker/models/collection/collection_food.dart';
+import 'package:calorietracker/models/collection/collection_recipe_ingredient_response.dart';
 import 'package:calorietracker/models/collection/collection_recipe_response.dart';
 import 'package:calorietracker/models/collection/created_food_response.dart';
 import 'package:calorietracker/models/collection/id_response.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter/foundation.dart';
+import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'collection_api_service.g.dart';
@@ -54,4 +56,7 @@ abstract class CollectionApiService {
 
   @POST('recipes/add')
   Future<IdResponse> createRecipe({@Body() required AddRecipeRequest body});
+
+  @GET('recipes/{recipeId}/ingredients')
+  Future<List<CollectionRecipeIngredientResponse>> getRecipeIngredients({@Path('recipeId') required int recipeId});
 }

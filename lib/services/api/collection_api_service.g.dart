@@ -312,6 +312,37 @@ class _CollectionApiService implements CollectionApiService {
     return value;
   }
 
+  @override
+  Future<List<CollectionRecipeIngredientResponse>> getRecipeIngredients(
+      {required int recipeId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<CollectionRecipeIngredientResponse>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'recipes/${recipeId}/ingredients',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = await compute(
+      deserializeCollectionRecipeIngredientResponseList,
+      _result.data!.cast<Map<String, dynamic>>(),
+    );
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

@@ -7,6 +7,8 @@ import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/login/login_view.dart';
 import 'package:calorietracker/features/profile/profile_view.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_view.dart';
+import 'package:calorietracker/features/recipes/details/recipe_details_arguments.dart';
+import 'package:calorietracker/features/recipes/details/recipe_details_view.dart';
 import 'package:calorietracker/features/recipes/search_recipe_view.dart';
 import 'package:calorietracker/features/search_food/search_food_view.dart';
 import 'package:calorietracker/models/meal.dart';
@@ -103,6 +105,8 @@ class _HomeViewState extends State<HomeView> {
         return MaterialPageRoute(builder: (context) => const SearchRecipeView());
       case Routes.createRecipe:
         return MaterialPageRoute(builder: (context) => const CreateRecipeView());
+      case Routes.recipe:
+        return MaterialPageRoute(builder: (context) => RecipeDetailsView(arguments: args as RecipeDetailsArguments));
       case Routes.foodSearch:
         return MaterialPageRoute(builder: (context) => const SearchFoodView());
       case Routes.addFood:

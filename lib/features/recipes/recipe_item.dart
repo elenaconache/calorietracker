@@ -1,4 +1,6 @@
+import 'package:calorietracker/features/recipes/details/recipe_details_arguments.dart';
 import 'package:calorietracker/models/recipe.dart';
+import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +14,12 @@ class RecipeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () => _navigateToAddRecipe(context),
+        onTap: () => _navigateToRecipeDetails(context),
         child: Ink(
           color: Theme.of(context).scaffoldBackgroundColor,
           child: Column(
             children: [
-              if (showTopDivider)const AppDivider(),
+              if (showTopDivider) const AppDivider(),
               Row(children: [
                 const SizedBox(width: 16),
                 Expanded(
@@ -43,5 +45,6 @@ class RecipeItem extends StatelessWidget {
     );
   }
 
-  void _navigateToAddRecipe(BuildContext context) {}
+  void _navigateToRecipeDetails(BuildContext context) => Navigator.of(context)
+      .pushNamed(Routes.recipe.path, arguments: RecipeDetailsArguments(recipeId: recipe.id, recipeName: recipe.name));
 }
