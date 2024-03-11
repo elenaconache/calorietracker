@@ -260,5 +260,6 @@
   "summary100GramsMessage": "Summary for 100g cooked product",
   "errorCreatingRecipeMessage": "Could not create recipe.",
   "emptyRecipeNameError": "Recipe name can't be empty",
-  "addIngredientError": "Could not add ingredient to recipe"
+  "addIngredientError": "Could not add ingredient to recipe",
+  "recipeDetailsTitle": "Recipe details"
 }

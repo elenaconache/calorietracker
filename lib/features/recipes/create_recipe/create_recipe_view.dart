@@ -5,6 +5,7 @@ import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_controller.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_error.dart';
 import 'package:calorietracker/features/recipes/create_recipe/ingredient_item.dart';
+import 'package:calorietracker/features/recipes/recipe_name_field.dart';
 import 'package:calorietracker/models/recipe_ingredient.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/logging_service.dart';
@@ -88,18 +89,12 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
           SliverPadding(
             padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
             sliver: SliverToBoxAdapter(
-              child: Form(
-                key: _formKey,
-                child: ValueListenableBuilder(
-                  valueListenable: _controller.isLoading,
-                  builder: (_, isLoading, __) => AppTextField(
-                    labelText: AppStrings.recipeNameLabel,
-                    action: TextInputAction.next,
-                    maxLength: 30,
-                    enabled: !isLoading,
-                    validate: _validateRecipeName,
-                    controller: _nameTextFieldController,
-                  ),
+              child: ValueListenableBuilder(
+                valueListenable: _controller.isLoading,
+                builder: (_, isLoading, __) => RecipeNameField(
+                  formKey: _formKey,
+                  isLoading: isLoading,
+                  textController: _nameTextFieldController,
                 ),
               ),
             ),
@@ -228,24 +223,23 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
     );
   }
 
-  String? _validateRecipeName(text) => (text?.isNotEmpty ?? false) ? null : AppStrings.emptyRecipeNameError;
-
-  void _navigateToSearchFood() async {
-    final result = await Navigator.of(context).pushNamed(Routes.foodSearch.path);
-    if (result is RecipeIngredient) {
-      _controller.addIngredient(
-        ingredient: result,
-        cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
-      );
-      if (context.mounted) {
-        FocusScope.of(context).unfocus();
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent + MediaQuery.of(context).padding.bottom,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeIn,
+  void _navigateToSearchFood() {
+    Navigator.of(context).pushNamed(Routes.foodSearch.path).then((result) {
+      if (result is RecipeIngredient) {
+        _controller.addIngredient(
+          ingredient: result,
+          cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
         );
+        if (context.mounted) {
+          FocusScope.of(context).unfocus();
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent + MediaQuery.of(context).padding.bottom,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+          );
+        }
       }
-    }
+    });
   }
 
   void _onServingSizeChanged() => _controller.updateNutrition(

@@ -192,6 +192,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "proteinLabel": MessageLookupByLibrary.simpleMessage("Protein"),
         "proteinPercentageValue": m13,
         "proteinValue": m14,
+        "recipeDetailsTitle":
+            MessageLookupByLibrary.simpleMessage("Recipe details"),
         "recipeNameLabel": MessageLookupByLibrary.simpleMessage("Recipe name"),
         "recipesTitle": MessageLookupByLibrary.simpleMessage("Recipes"),
         "requiredError": MessageLookupByLibrary.simpleMessage("Required"),

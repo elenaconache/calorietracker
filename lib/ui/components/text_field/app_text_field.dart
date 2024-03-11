@@ -17,6 +17,7 @@ class AppTextField extends StatefulWidget {
   final String? Function(String? text)? validate;
   final bool? isDense;
   final String? hint;
+  final Color? textColor;
 
   const AppTextField({
     super.key,
@@ -34,6 +35,7 @@ class AppTextField extends StatefulWidget {
     this.validate,
     this.isDense,
     this.hint,
+    this.textColor,
   });
 
   @override
@@ -73,19 +75,21 @@ class _AppTextFieldState extends State<AppTextField> {
         valueListenable: _error,
         builder: (context, error, child) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               TextFormField(
-                decoration: _getDecoration(context, error),
-                controller: _textController,
-                cursorWidth: 1,
-                textInputAction: widget.action,
-                onFieldSubmitted: widget.onSubmitted,
-                keyboardType: widget.inputType,
-                maxLength: widget.maxLength,
-                autofocus: widget.autofocus,
-                enabled: widget.enabled,
-                validator: (value) => _validateField(value, error),
-                onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                autocorrect: false,
-              ),
+                  decoration: _getDecoration(context, error),
+                  controller: _textController,
+                  cursorWidth: 1,
+                  textInputAction: widget.action,
+                  onFieldSubmitted: widget.onSubmitted,
+                  keyboardType: widget.inputType,
+                  maxLength: widget.maxLength,
+                  autofocus: widget.autofocus,
+                  enabled: widget.enabled,
+                  validator: (value) => _validateField(value, error),
+                  onTapOutside: (_) => FocusScope.of(context).unfocus(),
+                  autocorrect: false,
+                  style: widget.textColor == null
+                      ? null
+                      : Theme.of(context).textTheme.bodyLarge?.copyWith(color: widget.textColor)),
               if (error != null)
                 Padding(
                     padding: const EdgeInsets.only(bottom: 8, left: 16),
@@ -99,6 +103,7 @@ class _AppTextFieldState extends State<AppTextField> {
 
   InputDecoration _getDecoration(BuildContext context, String? error) => InputDecoration(
         enabledBorder: _defaultBorder,
+        disabledBorder: _disabledBorder,
         focusedBorder: _getFocusedBorder(context),
         focusedErrorBorder: error != null
             ? _getErrorBorder(context)
@@ -123,8 +128,9 @@ class _AppTextFieldState extends State<AppTextField> {
               )
             : null,
         labelText: widget.labelText,
-        labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: error != null ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
+        labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: error != null ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+            ),
         counterStyle: const TextStyle(height: 0),
         errorText: null,
         errorStyle: const TextStyle(height: 0),
@@ -145,6 +151,11 @@ class _AppTextFieldState extends State<AppTextField> {
   OutlineInputBorder get _defaultBorder => OutlineInputBorder(
         borderRadius: BorderRadius.circular(_borderRadius),
         borderSide: const BorderSide(color: Colors.grey, width: 1),
+      );
+
+  OutlineInputBorder get _disabledBorder => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(_borderRadius),
+        borderSide: const BorderSide(color: Colors.grey, width: 0.5),
       );
 
   OutlineInputBorder _getFocusedBorder(BuildContext context) => OutlineInputBorder(

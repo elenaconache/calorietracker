@@ -3,6 +3,7 @@ import 'package:calorietracker/features/create_food/create_food_controller.dart'
 import 'package:calorietracker/features/diary/diary_controller.dart';
 import 'package:calorietracker/features/login/login_controller.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_controller.dart';
+import 'package:calorietracker/features/recipes/details/recipe_details_controller.dart';
 import 'package:calorietracker/features/recipes/search_recipe_controller.dart';
 import 'package:calorietracker/features/search_food/search_food_service.dart';
 import 'package:calorietracker/interceptors/logging_interceptor.dart';
@@ -43,6 +44,7 @@ void setupLocator() {
   locator.registerFactory<CreateRecipeController>(() => CreateRecipeController());
   locator.registerFactory<DiaryController>(() => DiaryController());
   locator.registerFactory<LoginController>(() => LoginController());
+  locator.registerFactory<RecipeDetailsController>(() => RecipeDetailsController());
   locator.registerFactory<SearchRecipeController>(() => SearchRecipeController());
 
   locator.registerLazySingleton<DataSyncService>(() => DataSyncService());

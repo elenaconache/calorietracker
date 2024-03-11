@@ -1270,6 +1270,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Recipe details`
+  String get recipeDetailsTitle {
+    return Intl.message(
+      'Recipe details',
+      name: 'recipeDetailsTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
