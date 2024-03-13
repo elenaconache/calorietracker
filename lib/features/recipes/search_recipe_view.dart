@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/features/recipes/recipe_item.dart';
+import 'package:calorietracker/features/recipes/components/recipe_item.dart';
 import 'package:calorietracker/features/recipes/search_recipe_controller.dart';
 import 'package:calorietracker/models/helpers/future_response.dart';
 import 'package:calorietracker/models/recipe.dart';
@@ -79,21 +79,25 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
                 builder: (_, recipes, __) {
                   return switch (recipes) {
                     FutureLoading _ => const Center(child: CircularProgressIndicator()),
-                    FutureError _ => const Center(child: GeneralErrorView()),
-                    FutureSuccess<List<Recipe>> response => response.data.isEmpty
-                        ? const EmptyView()
-                        : RefreshIndicator(
-                            onRefresh: () => _searchFieldController.text.isEmpty
-                                ? _controller.fetchRecipes()
-                                : _controller.searchRecipe(query: _searchFieldController.text),
-                            child: ListView.builder(
-                              itemBuilder: (context, index) => RecipeItem(
-                                recipe: response.data[index],
-                                showTopDivider: index != 0,
+                    FutureError _ => RefreshIndicator(
+                        onRefresh: () => _searchFieldController.text.isEmpty
+                            ? _controller.fetchRecipes()
+                            : _controller.searchRecipe(query: _searchFieldController.text),
+                        child: ListView(children: const [Center(child: GeneralErrorView())])),
+                    FutureSuccess<List<Recipe>> response => RefreshIndicator(
+                        onRefresh: () => _searchFieldController.text.isEmpty
+                            ? _controller.fetchRecipes()
+                            : _controller.searchRecipe(query: _searchFieldController.text),
+                        child: response.data.isEmpty
+                            ? ListView(children: const [EmptyView()])
+                            : ListView.builder(
+                                itemBuilder: (context, index) => RecipeItem(
+                                  recipe: response.data[index],
+                                  showTopDivider: index != 0,
+                                ),
+                                itemCount: response.data.length,
                               ),
-                              itemCount: response.data.length,
-                            ),
-                          ),
+                      ),
                     FutureInitialState _ => const SizedBox.shrink(),
                   };
                 },

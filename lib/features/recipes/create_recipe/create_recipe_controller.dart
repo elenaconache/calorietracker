@@ -4,6 +4,7 @@ import 'package:calorietracker/app/constants.dart';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/extensions/dio_extensions.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_error.dart';
+import 'package:calorietracker/features/recipes/recipe_helper.dart';
 import 'package:calorietracker/models/collection/add_recipe_request.dart';
 import 'package:calorietracker/models/collection/collection_recipe_ingredient.dart';
 import 'package:calorietracker/models/nutrition.dart';
@@ -26,19 +27,13 @@ class CreateRecipeController {
     );
   }
 
-  Nutrition get _totalNutrition => ingredients.value.fold(
-        const Nutrition(),
-        (nutrition, ingredient) => nutrition.add(
-          nutrition: Nutrition.perServing(
-            nutritionPer100Grams: ingredient.food.nutrition,
-            servingSizeGrams: ingredient.servingQuantity,
-          ),
-        ),
-      );
+  Nutrition get _totalNutrition =>
+      locator<RecipeHelper>().calculateTotalIngredientsNutrition(ingredients: ingredients.value);
 
-  void updateNutrition({required int cookedQuantity}) => recipeNutrition.value = Nutrition.fromServing(
-        nutritionPerServing: _totalNutrition,
-        servingSizeGrams: cookedQuantity == 0 ? 100 : cookedQuantity.toDouble(),
+  void updateNutrition({required int cookedQuantity}) =>
+      recipeNutrition.value = locator<RecipeHelper>().calculateRecipeNutrition(
+        ingredients: ingredients.value,
+        cookedQuantity: cookedQuantity,
       );
 
   Future<CreateRecipeError> saveRecipe({required String name, required int cookedQuantity}) async {

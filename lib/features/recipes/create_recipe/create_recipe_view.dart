@@ -2,10 +2,11 @@ import 'dart:math';
 
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
+import 'package:calorietracker/features/recipes/components/recipe_name_field.dart';
+import 'package:calorietracker/features/recipes/components/recipe_servings_field.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_controller.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_error.dart';
 import 'package:calorietracker/features/recipes/create_recipe/ingredient_item.dart';
-import 'package:calorietracker/features/recipes/recipe_name_field.dart';
 import 'package:calorietracker/models/recipe_ingredient.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/services/logging_service.dart';
@@ -13,7 +14,6 @@ import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
 import 'package:calorietracker/ui/components/nutrition_section.dart';
-import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 
 class CreateRecipeView extends StatefulWidget {
@@ -104,15 +104,9 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
             sliver: SliverToBoxAdapter(
               child: ValueListenableBuilder(
                 valueListenable: _controller.isLoading,
-                builder: (_, isLoading, __) => AppTextField(
-                  labelText: AppStrings.cookedQuantityGramsLabel,
-                  inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
-                  maxLength: 6,
-                  autofocus: true,
-                  action: TextInputAction.done,
-                  controller: _servingSizeTextController,
-                  hint: '100',
-                  enabled: !isLoading,
+                builder: (_, isLoading, __) => RecipeServingsField(
+                  textController: _servingSizeTextController,
+                  isLoading: isLoading,
                 ),
               ),
             ),
