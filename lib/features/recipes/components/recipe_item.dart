@@ -45,6 +45,12 @@ class RecipeItem extends StatelessWidget {
     );
   }
 
-  void _navigateToRecipeDetails(BuildContext context) => Navigator.of(context)
-      .pushNamed(Routes.recipe.path, arguments: RecipeDetailsArguments(recipeId: recipe.id, recipeName: recipe.name));
+  void _navigateToRecipeDetails(BuildContext context) => Navigator.of(context).pushNamed(
+        Routes.recipe.path,
+        arguments: RecipeDetailsArguments(
+          recipeId: recipe.id,
+          recipeName: recipe.name,
+          cookedQuantity: recipe.cookedWeight,
+        ),
+      );
 }

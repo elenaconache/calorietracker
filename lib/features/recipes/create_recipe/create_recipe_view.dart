@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
+import 'package:calorietracker/features/recipes/components/nutrition_tile.dart';
 import 'package:calorietracker/features/recipes/components/recipe_name_field.dart';
 import 'package:calorietracker/features/recipes/components/recipe_servings_field.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_controller.dart';
@@ -13,7 +12,6 @@ import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
-import 'package:calorietracker/ui/components/nutrition_section.dart';
 import 'package:flutter/material.dart';
 
 class CreateRecipeView extends StatefulWidget {
@@ -26,7 +24,6 @@ class CreateRecipeView extends StatefulWidget {
 class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerProviderStateMixin {
   late final CreateRecipeController _controller;
   late final ScrollController _scrollController;
-  late final AnimationController _rotationController;
   late final TextEditingController _servingSizeTextController;
   late final TextEditingController _nameTextFieldController;
   late final GlobalKey<FormState> _formKey;
@@ -37,11 +34,6 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
     _controller = locator<CreateRecipeController>();
     _scrollController = ScrollController();
     _formKey = GlobalKey<FormState>(debugLabel: 'createRecipeForm');
-    _rotationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
-    Tween<double>(begin: 0, end: pi).animate(_rotationController);
     _servingSizeTextController = TextEditingController()
       ..text = '100'
       ..addListener(_onServingSizeChanged);
@@ -51,7 +43,6 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
   @override
   void dispose() {
     _scrollController.dispose();
-    _rotationController.dispose();
     _servingSizeTextController
       ..removeListener(_onServingSizeChanged)
       ..dispose();
@@ -135,38 +126,10 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
             ),
           ),
           const SliverToBoxAdapter(child: AppDivider(height: 2)),
-          SliverToBoxAdapter(
-            child: ExpansionTile(
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-              title: Text(
-                AppStrings.nutritionTitle,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              trailing: IconButton(
-                padding: EdgeInsets.zero,
-                icon: RotationTransition(
-                  turns: _rotationController,
-                  child: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    size: 28,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                ),
-                onPressed: null,
-              ),
-              onExpansionChanged: (expanded) {
-                _rotationController.animateTo(
-                  expanded ? 0.5 : 0,
-                  duration: const Duration(milliseconds: 200),
-                );
-              },
-              tilePadding: const EdgeInsets.only(left: 18, right: 12),
-              children: [
-                ValueListenableBuilder(
-                  valueListenable: _controller.recipeNutrition,
-                  builder: (_, nutrition, __) => NutritionSection(nutrition: nutrition),
-                ),
-              ],
+          ValueListenableBuilder(
+            valueListenable: _controller.recipeNutrition,
+            builder: (_, nutrition, __) => SliverToBoxAdapter(
+              child: NutritionTile(nutrition: nutrition),
             ),
           ),
           const SliverToBoxAdapter(child: AppDivider(height: 2)),

@@ -8,12 +8,14 @@ class IngredientItem extends StatelessWidget {
   final RecipeIngredient ingredient;
   final VoidCallback onSwipe;
   final VoidCallback onTap;
+  final bool enabled;
 
   const IngredientItem({
     super.key,
     required this.ingredient,
     required this.onSwipe,
     required this.onTap,
+    this.enabled = true,
   });
 
   @override
@@ -21,6 +23,7 @@ class IngredientItem extends StatelessWidget {
     final calories = ingredient.servingQuantity * ingredient.food.nutrition.calories ~/ 100;
     return Dismissible(
       key: UniqueKey(),
+      direction: enabled ? DismissDirection.horizontal : DismissDirection.none,
       onDismissed: (_) => onSwipe(),
       background: const SwipeToDeleteBackground(direction: TextDirection.ltr),
       secondaryBackground: const SwipeToDeleteBackground(direction: TextDirection.rtl),
@@ -28,7 +31,7 @@ class IngredientItem extends StatelessWidget {
         children: [
           const AppDivider(),
           InkWell(
-            onTap: onTap,
+            onTap: enabled ? onTap : null,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               child: Row(
