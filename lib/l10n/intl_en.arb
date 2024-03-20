@@ -261,5 +261,7 @@
   "errorCreatingRecipeMessage": "Could not create recipe.",
   "emptyRecipeNameError": "Recipe name can't be empty",
   "addIngredientError": "Could not add ingredient to recipe",
-  "recipeDetailsTitle": "Recipe details"
+  "recipeDetailsTitle": "Recipe details",
+  "yesterdayLabel": "Yesterday",
+  "tomorrowLabel": "Tomorrow"
 }

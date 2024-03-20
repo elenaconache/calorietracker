@@ -43,8 +43,8 @@ class _DiaryViewState extends State<DiaryView> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: const DiaryAppBar(),
         body: RefreshIndicator(
-            onRefresh: locator<DataSyncService>().uploadLocalData,
-            child: CustomScrollView(
+          onRefresh: locator<DataSyncService>().uploadLocalData,
+          child:  CustomScrollView(
               slivers: [
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),
                 const SliverToBoxAdapter(child: SelectedDayLine()),
@@ -150,7 +150,9 @@ class _DiaryViewState extends State<DiaryView> {
                 ),
                 const SliverPadding(padding: EdgeInsets.only(top: 100)),
               ],
-            )));
+
+          ),
+        ));
   }
 
   void _openSearchFoodScreen(BuildContext context, Meal meal) {

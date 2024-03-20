@@ -256,4 +256,8 @@ class AppStrings {
   static String get addIngredientError => S.current.addIngredientError;
 
   static String get recipeDetailsTitle => S.current.recipeDetailsTitle;
+
+  static String get yesterdayLabel => S.current.yesterdayLabel;
+
+  static String get tomorrowLabel => S.current.tomorrowLabel;
 }

@@ -1280,6 +1280,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Yesterday`
+  String get yesterdayLabel {
+    return Intl.message(
+      'Yesterday',
+      name: 'yesterdayLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tomorrow`
+  String get tomorrowLabel {
+    return Intl.message(
+      'Tomorrow',
+      name: 'tomorrowLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

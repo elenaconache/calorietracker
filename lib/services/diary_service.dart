@@ -33,6 +33,40 @@ class DiaryService {
     ));
   }
 
+  void selectNextDay() {
+    try {
+      final selection = DateTime.parse(selectedDay.value).add(const Duration(days: 1));
+      final formattedSelection = _dateFormattingService.format(
+        dateTime: selection.toString(),
+        format: collectionApiDateFormat,
+      );
+      selectedDay.value = _dateFormattingService.format(
+        dateTime: formattedSelection,
+        format: collectionApiDateFormat,
+      );
+      fetchDiary();
+    } on FormatException catch (error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+    }
+  }
+
+  void selectPreviousDay() {
+    try {
+      final selection = DateTime.parse(selectedDay.value).subtract(const Duration(days: 1));
+      final formattedSelection = _dateFormattingService.format(
+        dateTime: selection.toString(),
+        format: collectionApiDateFormat,
+      );
+      selectedDay.value = _dateFormattingService.format(
+        dateTime: formattedSelection,
+        format: collectionApiDateFormat,
+      );
+      fetchDiary();
+    } on FormatException catch (error, stackTrace) {
+      locator<LoggingService>().handle(error, stackTrace);
+    }
+  }
+
   Nutrition get selectedDayNutrition {
     final allDiaryEntries = _allMealsDiaryEntries;
     if (allDiaryEntries.isEmpty) {
@@ -81,7 +115,7 @@ class DiaryService {
   Future<void> fetchDiary({DateTime? date}) async {
     exitEditMode();
     final fetchedDate = _dateFormattingService.format(
-      dateTime: (date ?? DateTime.now()).toString(),
+      dateTime: (date ?? DateTime.tryParse(selectedDay.value) ?? DateTime.now()).toString(),
       format: collectionApiDateFormat,
     );
     selectedDay.value = fetchedDate;

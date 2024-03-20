@@ -226,6 +226,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Switch account"),
         "syncDataLabel": MessageLookupByLibrary.simpleMessage("Sync data"),
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today"),
+        "tomorrowLabel": MessageLookupByLibrary.simpleMessage("Tomorrow"),
         "transFatGramsLabel":
             MessageLookupByLibrary.simpleMessage("Trans fat (g)"),
         "transFatLabel": MessageLookupByLibrary.simpleMessage("Trans fat"),
@@ -243,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "vitaminDExceedsMaxPerServingError": m18,
         "vitaminDIULabel":
             MessageLookupByLibrary.simpleMessage("Vitamin D (IU)"),
-        "vitaminDLabel": MessageLookupByLibrary.simpleMessage("Vitamin D")
+        "vitaminDLabel": MessageLookupByLibrary.simpleMessage("Vitamin D"),
+        "yesterdayLabel": MessageLookupByLibrary.simpleMessage("Yesterday")
       };
 }
