@@ -79,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Add ingredient"),
         "alreadyLoggedInMessage": MessageLookupByLibrary.simpleMessage(
             "You are already logged in with this account."),
+        "anotherDayLabel": MessageLookupByLibrary.simpleMessage("Another day"),
         "brandNameLabel":
             MessageLookupByLibrary.simpleMessage("Brand name (optional)"),
         "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
@@ -110,6 +111,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "continueLabel": MessageLookupByLibrary.simpleMessage("Continue"),
         "cookedQuantityGramsLabel":
             MessageLookupByLibrary.simpleMessage("Cooked quantity (grams)"),
+        "copyFromTitle": MessageLookupByLibrary.simpleMessage("Copy from"),
+        "copyYesterdayError": MessageLookupByLibrary.simpleMessage(
+            "Could not copy diary logs from yesterday"),
         "createFoodLabel": MessageLookupByLibrary.simpleMessage("Create food"),
         "createRecipeTitle":
             MessageLookupByLibrary.simpleMessage("Create recipe"),
@@ -186,6 +190,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Potassium (mg)"),
         "poweredByNutritionixLabel":
             MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
+        "previousDayLabel":
+            MessageLookupByLibrary.simpleMessage("Previous day"),
         "profileTitle": MessageLookupByLibrary.simpleMessage("Profile"),
         "proteinGramsLabel":
             MessageLookupByLibrary.simpleMessage("Protein (g)"),

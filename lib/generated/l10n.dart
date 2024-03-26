@@ -1300,6 +1300,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Copy from`
+  String get copyFromTitle {
+    return Intl.message(
+      'Copy from',
+      name: 'copyFromTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Another day`
+  String get anotherDayLabel {
+    return Intl.message(
+      'Another day',
+      name: 'anotherDayLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Previous day`
+  String get previousDayLabel {
+    return Intl.message(
+      'Previous day',
+      name: 'previousDayLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not copy diary logs from yesterday`
+  String get copyYesterdayError {
+    return Intl.message(
+      'Could not copy diary logs from yesterday',
+      name: 'copyYesterdayError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

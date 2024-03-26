@@ -48,4 +48,23 @@ class DiaryEntry {
   bool matches(DiaryEntry diaryEntry) =>
       diaryEntry.collectionId != null && diaryEntry.collectionId == collectionId ||
       diaryEntry.localId != null && diaryEntry.localId == localId;
+
+  DiaryEntry copyWith({
+    int? collectionId,
+    int? localId,
+    Food? food,
+    String? date,
+    int? unitId,
+    double? servingQuantity,
+    bool? errorPushing,
+  }) =>
+      DiaryEntry(
+        food: food ?? this.food,
+        servingQuantity: servingQuantity ?? this.servingQuantity,
+        date: date ?? this.date,
+        collectionId: collectionId ?? this.collectionId,
+        localId: localId ?? this.localId,
+        unitId: unitId ?? this.unitId,
+        errorPushing: errorPushing ?? this.errorPushing,
+      );
 }

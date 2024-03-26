@@ -21,7 +21,7 @@ class _NutritionixApiService implements NutritionixApiService {
   @override
   Future<NutritionixSearchResponse> searchFood(
       {required NutritionixSearchRequest body}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};

@@ -13,6 +13,7 @@ import 'package:calorietracker/providers/dio_provider.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
 import 'package:calorietracker/services/data_sync_service.dart';
 import 'package:calorietracker/services/database/database_provider.dart';
+import 'package:calorietracker/services/database/diary_logging_service.dart';
 import 'package:calorietracker/services/database/food_service.dart';
 import 'package:calorietracker/services/database/diary_entry_service.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
@@ -50,6 +51,7 @@ void setupLocator() {
 
   locator.registerLazySingleton<DataSyncService>(() => DataSyncService());
   locator.registerLazySingleton<DateFormattingService>(() => DateFormattingService());
+  locator.registerLazySingleton<DiaryLoggingService>(() => DiaryLoggingService());
   locator.registerLazySingleton<DiaryService>(() => DiaryService());
   locator.registerLazySingleton<DioProvider>(() => DioProvider());
   locator.registerLazySingleton<FlutterSecureStorage>(() => const FlutterSecureStorage());

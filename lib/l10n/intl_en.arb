@@ -263,5 +263,9 @@
   "addIngredientError": "Could not add ingredient to recipe",
   "recipeDetailsTitle": "Recipe details",
   "yesterdayLabel": "Yesterday",
-  "tomorrowLabel": "Tomorrow"
+  "tomorrowLabel": "Tomorrow",
+  "copyFromTitle": "Copy from",
+  "anotherDayLabel": "Another day",
+  "previousDayLabel": "Previous day",
+  "copyYesterdayError": "Could not copy diary logs from yesterday"
 }

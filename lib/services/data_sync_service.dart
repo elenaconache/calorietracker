@@ -151,7 +151,7 @@ class DataSyncService {
         .where((entry) => entry.deletedEntry && entry.entryId != null)
         .map((entry) => entry.entryId!)
         .toList();
-    if(entriesToDelete.isEmpty){
+    if (entriesToDelete.isEmpty) {
       return;
     }
     unawaited(apiService.deleteDiaryEntries(ids: entriesToDelete).then((_) async {

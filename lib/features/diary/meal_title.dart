@@ -1,9 +1,12 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/features/diary/meal_macros.dart';
 import 'package:calorietracker/models/helpers/future_response.dart';
 import 'package:calorietracker/models/meal.dart';
+import 'package:calorietracker/services/database/diary_logging_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
+import 'package:calorietracker/ui/components/copy_from_modal_content.dart';
 import 'package:flutter/material.dart';
 
 class MealTitle extends StatelessWidget {
@@ -25,6 +28,10 @@ class MealTitle extends StatelessWidget {
         color: Theme.of(context).cardColor,
         child: InkWell(
             onTap: onTap,
+            onLongPress: () => showDialog(
+                  context: rootNavigatorKey.currentContext!,
+                  builder: (context) => CopyFromModalContent(meal: meal),
+                ),
             child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -55,10 +62,26 @@ class MealTitle extends StatelessWidget {
                                         : const SizedBox.shrink())
                                 : const SizedBox.shrink()),
                         Expanded(
+                          child: ValueListenableBuilder(
+                            valueListenable: locator<DiaryLoggingService>().mealsLoading,
                             child: Text(
-                          _mealLabel,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                        )),
+                              _mealLabel,
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            builder: (context, loading, child) => (loading[meal] ?? false)
+                                ? Row(children: [
+                                    child!,
+                                    const SizedBox(width: 12),
+                                    if (loading[meal] ?? false)
+                                      const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(strokeWidth: 2),
+                                      ),
+                                  ])
+                                : child!,
+                          ),
+                        ),
                         ValueListenableBuilder(
                             valueListenable: diaryService.dayMealEntries,
                             builder: (context, dayMealEntries, __) {
@@ -73,7 +96,7 @@ class MealTitle extends StatelessWidget {
                             })
                       ],
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 8),
                     ValueListenableBuilder(
                       valueListenable: diaryService.dayMealEntries,
                       builder: (context, _, __) => ValueListenableBuilder(

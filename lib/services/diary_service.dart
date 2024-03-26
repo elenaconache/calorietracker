@@ -125,7 +125,7 @@ class DiaryService {
     if (username?.isEmpty ?? true) {
       // TODO: navigate to login and show error snack bar
     } else {
-      final diary = await (apiService.getDiaryEntries(userId: username!, date: fetchedDate).then((response) async {
+      final diary = await (apiService.getDiaryEntries(username: username!, date: fetchedDate).then((response) async {
         return _mergeRemoteAndLocalDiaries(collectionDiary: response, diaryDate: fetchedDate, userId: username);
       }).catchError((error, stackTrace) async {
         locator<LoggingService>().handle(error, stackTrace);
@@ -301,7 +301,7 @@ class DiaryService {
     required String diaryDate,
     required String userId,
   }) async {
-    var remoteDiary = collectionDiary.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
+    var remoteDiary = _getMealEntriesList(collectionDiary);
     final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
     final localDisplayDiary = await diaryEntriesService.getDisplayDiaryEntries(
       date: diaryDate,
@@ -334,13 +334,26 @@ class DiaryService {
     return result;
   }
 
+  List<MealEntriesList> _getMealEntriesList(List<MealEntriesResponse> collectionDiary) =>
+      collectionDiary.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
+
   Future<void> _deleteMissingPushedLocalDiaryEntries(List<MealEntriesList> remoteDiary, String userId) async {
     final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
     final pushedLocalEntries = await diaryEntriesService.getDiaryEntries(filterPushed: true, excludeDeleted: true);
     final remoteEntries = remoteDiary.expand((mealEntriesList) => mealEntriesList.diaryEntries).toList();
     var discardedDiaryEntriesIds = <int>[];
+    final dateFormattingService = locator<DateFormattingService>();
+    final formattedSelectedDay = dateFormattingService.format(
+      dateTime: selectedDay.value,
+      format: collectionApiDateFormat,
+    );
     for (final localEntry in pushedLocalEntries) {
-      if (!remoteEntries.any((remoteEntry) => localEntry.entryId == remoteEntry.collectionId)) {
+      final localEntryFormattedDate = dateFormattingService.format(
+        dateTime: localEntry.entryDate.toString(),
+        format: collectionApiDateFormat,
+      );
+      if (localEntryFormattedDate == formattedSelectedDay &&
+          !remoteEntries.any((remoteEntry) => localEntry.entryId == remoteEntry.collectionId)) {
         discardedDiaryEntriesIds.add(localEntry.localId);
       }
     }
@@ -357,20 +370,7 @@ class DiaryService {
       for (final entry in remoteMealEntriesList.diaryEntries) {
         if (!pushedLocalEntries.any((localEntry) => localEntry.entryId == entry.collectionId)) {
           pulledDiaryEntries.add(
-            LocalDiaryEntry()
-              ..entryId = entry.collectionId
-              ..meal = remoteMealEntriesList.meal
-              ..pushedEntry = true
-              ..servingQuantity = entry.servingQuantity
-              ..unitId = entry.unitId
-              ..entryDate = locator<DateFormattingService>().parse(
-                formattedDate: entry.date,
-                format: collectionApiDateFormat,
-              )
-              ..localFood.value = entry.food.localFood
-              ..username = userId
-              ..deletedEntry = false
-              ..errorPushingEntry = false,
+            toLocalEntry(entry, remoteMealEntriesList.meal, userId, true),
           );
         }
       }
@@ -379,6 +379,21 @@ class DiaryService {
       diaryEntriesService.upsertDiaryEntries(localEntries: pulledDiaryEntries, pushFoods: true);
     }
   }
+
+  LocalDiaryEntry toLocalEntry(DiaryEntry entry, Meal meal, String userId, bool pushed) => LocalDiaryEntry()
+    ..entryId = pushed ? entry.collectionId : null
+    ..meal = meal
+    ..pushedEntry = pushed
+    ..servingQuantity = entry.servingQuantity
+    ..unitId = entry.unitId
+    ..entryDate = locator<DateFormattingService>().parse(
+      formattedDate: entry.date,
+      format: collectionApiDateFormat,
+    )
+    ..localFood.value = entry.food.localFood
+    ..username = userId
+    ..deletedEntry = false
+    ..errorPushingEntry = false;
 
   void enterEditMode() => diaryEditModeEnabled.value = true;
 
@@ -454,4 +469,28 @@ class DiaryService {
 
   bool isEntryChecked({required DiaryEntry entry}) =>
       checkedDiaryEntries.value.any((checkedEntry) => checkedEntry.matches(entry));
+
+  Future<List<MealEntriesList>> fetchDiaryEntries({required DateTime date, Meal? meal}) async {
+    final fetchedDate = _dateFormattingService.format(
+      dateTime: date.toString(),
+      format: collectionApiDateFormat,
+    );
+    final apiService = await locator.getAsync<CollectionApiService>();
+    final username = locator<UserService>().selectedUser.value?.username;
+    if (username?.isEmpty ?? true) {
+      return [];
+    } else {
+      final List<MealEntriesList> diary =
+          await (apiService.getDiaryEntries(username: username!, date: fetchedDate).then((response) async {
+        return _getMealEntriesList(response);
+      }).catchError((error, stackTrace) async {
+        locator<LoggingService>().handle(error, stackTrace);
+
+        final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
+        final localDisplayDiary = await diaryEntriesService.getDisplayDiaryEntries(date: fetchedDate);
+        return localDisplayDiary;
+      }));
+      return meal == null ? diary : diary.where((mealEntriesList) => mealEntriesList.meal == meal).toList();
+    }
+  }
 }

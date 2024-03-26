@@ -26,9 +26,11 @@ abstract class CollectionApiService {
   @POST('diary-entries/add')
   Future<IdResponse> createDiaryEntry({@Body() required AddDiaryEntryRequest body});
 
-  @GET('diary-entries/{userId}/{date}')
-  Future<List<MealEntriesResponse>> getDiaryEntries(
-      {@Path('userId') required String userId, @Path('date') required String date});
+  @GET('diary-entries/{username}/{date}')
+  Future<List<MealEntriesResponse>> getDiaryEntries({
+    @Path('username') required String username,
+    @Path('date') required String date,
+  });
 
   @POST('foods/add')
   Future<CreatedFoodResponse?> createFood({@Body() required AddFoodRequest body});

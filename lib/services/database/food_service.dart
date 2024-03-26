@@ -42,11 +42,22 @@ class FoodService {
   }
 
   Future<void> _writeFoods(List<LocalFood> foods) async {
-    await database.writeTxn(() async => await database.localFoods.putAll(foods));
+    List<LocalFood> newFoods = [];
+    for (final food in foods) {
+      if (await _findLocalFood(name: food.name, brand: food.brand) == null) {
+        newFoods.add(food);
+      }
+    }
+    await database.writeTxn(() async => await database.localFoods.putAll(newFoods));
   }
 
   Future<int?> _writeFood(LocalFood food) async {
-    return database.writeTxn(() async => await database.localFoods.put(food));
+    final existingId = await _findLocalFood(name: food.name, brand: food.brand);
+    if (existingId == null) {
+      return await database.writeTxn(() async => await database.localFoods.put(food));
+    } else {
+      return existingId;
+    }
   }
 
   Future<List<LocalFood>> _readFoods() async {
@@ -120,5 +131,10 @@ class FoodService {
         .brandContains(searchQuery, caseSensitive: false)
         .sortByCreatedAtDateDesc()
         .findAll();
+  }
+
+  Future<int?> _findLocalFood({required String name, String? brand}) async {
+    final results = await database.localFoods.where().filter().nameEqualTo(name).and().brandEqualTo(brand).findAll();
+    return results.firstOrNull?.id;
   }
 }

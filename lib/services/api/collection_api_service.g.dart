@@ -21,7 +21,7 @@ class _CollectionApiService implements CollectionApiService {
   @override
   Future<IdResponse> createDiaryEntry(
       {required AddDiaryEntryRequest body}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -49,13 +49,13 @@ class _CollectionApiService implements CollectionApiService {
 
   @override
   Future<List<MealEntriesResponse>> getDiaryEntries({
-    required String userId,
+    required String username,
     required String date,
   }) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<MealEntriesResponse>>(Options(
       method: 'GET',
@@ -64,7 +64,7 @@ class _CollectionApiService implements CollectionApiService {
     )
             .compose(
               _dio.options,
-              'diary-entries/${userId}/${date}',
+              'diary-entries/${username}/${date}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -83,7 +83,7 @@ class _CollectionApiService implements CollectionApiService {
   @override
   Future<CreatedFoodResponse?> createFood(
       {required AddFoodRequest body}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -113,10 +113,10 @@ class _CollectionApiService implements CollectionApiService {
 
   @override
   Future<List<CollectionFood>> searchFood({required String query}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<CollectionFood>>(Options(
       method: 'GET',
@@ -144,7 +144,7 @@ class _CollectionApiService implements CollectionApiService {
   @override
   Future<List<AddLocalDataResponse>> createFoods(
       {required List<AddLocalFoodRequest> localFoods}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = await compute(serializeAddLocalFoodRequestList, localFoods);
@@ -175,7 +175,7 @@ class _CollectionApiService implements CollectionApiService {
   @override
   Future<List<AddLocalDataResponse>> createDiaryEntries(
       {required List<AddLocalDiaryEntryRequest> localDiaryEntries}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = await compute(
@@ -206,10 +206,10 @@ class _CollectionApiService implements CollectionApiService {
 
   @override
   Future<void> deleteDiaryEntry({required int diaryEntryId}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'DELETE',
       headers: _headers,
@@ -230,7 +230,7 @@ class _CollectionApiService implements CollectionApiService {
 
   @override
   Future<void> deleteDiaryEntries({required List<int> ids}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'content-type': 'application/json'};
     _headers.removeWhere((k, v) => v == null);
@@ -256,10 +256,10 @@ class _CollectionApiService implements CollectionApiService {
 
   @override
   Future<List<CollectionRecipeResponse>> getRecipes() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<CollectionRecipeResponse>>(Options(
       method: 'GET',
@@ -286,7 +286,7 @@ class _CollectionApiService implements CollectionApiService {
 
   @override
   Future<IdResponse> createRecipe({required AddRecipeRequest body}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -315,10 +315,10 @@ class _CollectionApiService implements CollectionApiService {
   @override
   Future<List<CollectionRecipeIngredientResponse>> getRecipeIngredients(
       {required int recipeId}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<CollectionRecipeIngredientResponse>>(Options(
       method: 'GET',

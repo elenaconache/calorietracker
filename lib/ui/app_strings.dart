@@ -260,4 +260,12 @@ class AppStrings {
   static String get yesterdayLabel => S.current.yesterdayLabel;
 
   static String get tomorrowLabel => S.current.tomorrowLabel;
+
+  static String get copyFromTitle => S.current.copyFromTitle;
+
+  static String get anotherDayLabel => S.current.anotherDayLabel;
+
+  static String get previousDayLabel => S.current.previousDayLabel;
+
+  static String get copyYesterdayError => S.current.copyYesterdayError;
 }
