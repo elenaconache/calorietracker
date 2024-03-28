@@ -112,13 +112,15 @@ class DiaryService {
     });
   }
 
-  Future<void> fetchDiary({DateTime? date}) async {
+  Future<void> fetchDiary({DateTime? date, bool selectDay = true}) async {
     exitEditMode();
     final fetchedDate = _dateFormattingService.format(
       dateTime: (date ?? DateTime.tryParse(selectedDay.value) ?? DateTime.now()).toString(),
       format: collectionApiDateFormat,
     );
-    selectedDay.value = fetchedDate;
+    if (selectDay) {
+      selectedDay.value = fetchedDate;
+    }
     dayMealEntries.value = FutureLoading();
     final apiService = await locator.getAsync<CollectionApiService>();
     final username = locator<UserService>().selectedUser.value?.username;
@@ -493,4 +495,6 @@ class DiaryService {
       return meal == null ? diary : diary.where((mealEntriesList) => mealEntriesList.meal == meal).toList();
     }
   }
+
+  DateTime? get selectedDayDateTime => DateTime.tryParse(selectedDay.value);
 }

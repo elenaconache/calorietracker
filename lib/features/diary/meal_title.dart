@@ -6,7 +6,7 @@ import 'package:calorietracker/models/meal.dart';
 import 'package:calorietracker/services/database/diary_logging_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/copy_from_modal_content.dart';
+import 'package:calorietracker/ui/components/copy_diary_modal.dart';
 import 'package:flutter/material.dart';
 
 class MealTitle extends StatelessWidget {
@@ -28,9 +28,9 @@ class MealTitle extends StatelessWidget {
         color: Theme.of(context).cardColor,
         child: InkWell(
             onTap: onTap,
-            onLongPress: () => showDialog(
+            onLongPress: () => showModalBottomSheet(
                   context: rootNavigatorKey.currentContext!,
-                  builder: (context) => CopyFromModalContent(meal: meal),
+                  builder: (context) => CopyDiaryModal(meal: meal),
                 ),
             child: Padding(
                 padding: const EdgeInsets.all(12),

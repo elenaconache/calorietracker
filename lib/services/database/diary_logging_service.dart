@@ -22,27 +22,29 @@ import 'package:flutter/cupertino.dart';
 class DiaryLoggingService {
   final ValueNotifier<Map<Meal, bool>> mealsLoading = ValueNotifier({});
 
-  Future<bool> copyFromYesterday({Meal? meal}) async {
+  Future<bool> copyDiary({Meal? meal, DateTime? fromDate, DateTime? toDate}) async {
     _updateLoadingState(meal, true);
-
+    final DateTime copiedDate;
     final diaryService = locator<DiaryService>();
-    final selectedDay = DateTime.tryParse(diaryService.selectedDay.value);
+    final selectedDay = diaryService.selectedDayDateTime;
     if (selectedDay == null) {
       locator<LoggingService>().info('Could not copy meal or day. Selected diary day was null.');
       _updateLoadingState(meal, false);
       return false;
+    }
+    copiedDate = fromDate ?? selectedDay;
+    final dateEntries = await diaryService.fetchDiaryEntries(
+      date: copiedDate,
+      meal: meal,
+    );
+    if (dateEntries.isEmpty) {
+      _updateLoadingState(meal, false);
+      return false;
     } else {
-      final yesterdayEntries = await diaryService.fetchDiaryEntries(
-        date: selectedDay.subtract(const Duration(days: 1)),
-        meal: meal,
-      );
-      if (yesterdayEntries.isEmpty) {
-        _updateLoadingState(meal, false);
-        return false;
-      } else {
-        _updateLoadingState(meal, false);
-        return copyDiaryEntries(mealsEntries: yesterdayEntries, toDate: selectedDay);
-      }
+      final dateToCopyTo = toDate ?? selectedDay;
+      final result = await copyDiaryEntries(mealsEntries: dateEntries, toDate: dateToCopyTo);
+      _updateLoadingState(meal, false);
+      return result;
     }
   }
 

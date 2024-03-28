@@ -1301,41 +1301,61 @@ class S {
     );
   }
 
-  /// `Copy from`
-  String get copyFromTitle {
+  /// `Copy diary entries`
+  String get copyDiaryTitle {
     return Intl.message(
-      'Copy from',
-      name: 'copyFromTitle',
+      'Copy diary entries',
+      name: 'copyDiaryTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Another day`
-  String get anotherDayLabel {
+  /// `From another day`
+  String get fromAnotherDayLabel {
     return Intl.message(
-      'Another day',
-      name: 'anotherDayLabel',
+      'From another day',
+      name: 'fromAnotherDayLabel',
       desc: '',
       args: [],
     );
   }
 
-  /// `Previous day`
-  String get previousDayLabel {
+  /// `From previous day`
+  String get fromPreviousDayLabel {
     return Intl.message(
-      'Previous day',
-      name: 'previousDayLabel',
+      'From previous day',
+      name: 'fromPreviousDayLabel',
       desc: '',
       args: [],
     );
   }
 
-  /// `Could not copy diary logs from yesterday`
-  String get copyYesterdayError {
+  /// `Could not copy diary logs`
+  String get copyDiaryError {
     return Intl.message(
-      'Could not copy diary logs from yesterday',
-      name: 'copyYesterdayError',
+      'Could not copy diary logs',
+      name: 'copyDiaryError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To another day`
+  String get toAnotherDayLabel {
+    return Intl.message(
+      'To another day',
+      name: 'toAnotherDayLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To today`
+  String get toTodayLabel {
+    return Intl.message(
+      'To today',
+      name: 'toTodayLabel',
       desc: '',
       args: [],
     );

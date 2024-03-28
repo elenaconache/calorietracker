@@ -264,8 +264,10 @@
   "recipeDetailsTitle": "Recipe details",
   "yesterdayLabel": "Yesterday",
   "tomorrowLabel": "Tomorrow",
-  "copyFromTitle": "Copy from",
-  "anotherDayLabel": "Another day",
-  "previousDayLabel": "Previous day",
-  "copyYesterdayError": "Could not copy diary logs from yesterday"
+  "copyDiaryTitle": "Copy diary entries",
+  "fromAnotherDayLabel": "From another day",
+  "fromPreviousDayLabel": "From previous day",
+  "copyDiaryError": "Could not copy diary logs",
+  "toAnotherDayLabel": "To another day",
+  "toTodayLabel": "To today"
 }

@@ -261,11 +261,15 @@ class AppStrings {
 
   static String get tomorrowLabel => S.current.tomorrowLabel;
 
-  static String get copyFromTitle => S.current.copyFromTitle;
+  static String get copyDiaryTitle => S.current.copyDiaryTitle;
 
-  static String get anotherDayLabel => S.current.anotherDayLabel;
+  static String get fromAnotherDayLabel => S.current.fromAnotherDayLabel;
 
-  static String get previousDayLabel => S.current.previousDayLabel;
+  static String get fromPreviousDayLabel => S.current.fromPreviousDayLabel;
 
-  static String get copyYesterdayError => S.current.copyYesterdayError;
+  static String get copyDiaryError => S.current.copyDiaryError;
+
+  static String get toAnotherDayLabel => S.current.toAnotherDayLabel;
+
+  static String get toTodayLabel => S.current.toTodayLabel;
 }
