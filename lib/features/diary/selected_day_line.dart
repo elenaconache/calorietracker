@@ -1,6 +1,8 @@
 import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/app/main.dart';
 import 'package:calorietracker/services/date_formatting_service.dart';
 import 'package:calorietracker/services/diary_service.dart';
+import 'package:calorietracker/ui/components/copy_diary_modal.dart';
 import 'package:flutter/material.dart';
 
 class SelectedDayLine extends StatelessWidget {
@@ -11,7 +13,7 @@ class SelectedDayLine extends StatelessWidget {
     final diaryService = locator<DiaryService>();
     return ValueListenableBuilder(
       valueListenable: diaryService.diaryEditModeEnabled,
-      builder: (context, editable, child) => Row(
+      builder: (_, editable, child) => Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(width: 4),
@@ -48,10 +50,20 @@ class SelectedDayLine extends StatelessWidget {
       ),
       child: ValueListenableBuilder(
         valueListenable: diaryService.selectedDay,
-        builder: (context, selectedDay, _) => Text(
-          locator<DateFormattingService>().formatUserFriendly(dateTime: selectedDay),
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium,
+        builder: (context, selectedDay, _) => InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => showModalBottomSheet(
+            context: rootNavigatorKey.currentContext!,
+            builder: (_) => const CopyDiaryModal(),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              locator<DateFormattingService>().formatUserFriendly(dateTime: selectedDay),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
         ),
       ),
     );
