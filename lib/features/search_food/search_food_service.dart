@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/helpers/future_response.dart';
+import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_search_request.dart';
 import 'package:calorietracker/models/nutritionix/nutritionix_search_response.dart';
@@ -17,8 +18,8 @@ class SearchFoodService {
   final ValueNotifier<FutureResponse<NutritionixSearchResponse>> nutritionixSearchResponse =
       ValueNotifier(FutureInitialState());
   final ValueNotifier<FutureResponse<List<Food>>> collectionSearchResponse = ValueNotifier(FutureInitialState());
-  final ValueNotifier<FutureResponse<List<LocalFood>>> localSearchResponse =
-      ValueNotifier(FutureInitialState<List<LocalFood>>());
+  final ValueNotifier<FutureResponse<Map<LocalFood, LocalDiaryEntry?>>> localSearchResponse =
+      ValueNotifier(FutureInitialState());
 
   String? currentSearchQuery;
 

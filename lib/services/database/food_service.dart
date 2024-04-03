@@ -2,6 +2,7 @@ import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/models/local/local_diary_entry.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/nutrition.dart';
+import 'package:calorietracker/services/database/diary_entry_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:collection/collection.dart';
 import 'package:isar/isar.dart';
@@ -68,7 +69,7 @@ class FoodService {
     return database.localFoods.where().filter().pushedEqualTo(false).errorPushingEqualTo(false).findAll();
   }
 
-  Future<List<LocalFood>> searchFood({required String query}) async {
+  Future<Map<LocalFood, LocalDiaryEntry?>> searchFood({required String query}) async {
     final createdFoods = await _searchFoods(query).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return <LocalFood>[];
@@ -77,6 +78,11 @@ class FoodService {
       locator<LoggingService>().handle(error, stackTrace);
       return <LocalFood>[];
     });
+    final diaryEntriesService = locator<DiaryEntryService>();
+    final foodsDiaryEntries = await diaryEntriesService.getDiaryEntries(
+      localFoodIds: diaryFoods.map((food) => food.id).toList(),
+    );
+
     var result = [
       ...createdFoods,
       ...diaryFoods,
@@ -84,7 +90,12 @@ class FoodService {
     result.removeWhere((localFood) =>
         result.indexWhere((otherFood) => otherFood.name == localFood.name && otherFood.brand == localFood.brand) !=
         result.lastIndexOf(localFood));
-    return result.sorted((firstFood, secondFood) => firstFood.compareCreatedAtDateDesc(secondFood));
+    return Map.fromEntries(result.sorted((firstFood, secondFood) => firstFood.compareCreatedAtDateDesc(secondFood)).map(
+          (food) => MapEntry(
+            food,
+            foodsDiaryEntries.lastWhereOrNull((entry) => entry.localFood.value?.id == food.id),
+          ),
+        ));
   }
 
   Future<List<LocalFood>> _searchDiaryFoods(String searchQuery) async {

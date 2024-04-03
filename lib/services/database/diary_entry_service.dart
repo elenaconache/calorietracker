@@ -73,6 +73,7 @@ class DiaryEntryService {
     bool filterPushed = false,
     bool excludeDeleted = false,
     DateTime? dateFilter,
+    List<int>? localFoodIds,
   }) async {
     final currentUsername = locator<UserService>().selectedUser.value?.username;
     if (currentUsername == null) {
@@ -97,6 +98,11 @@ class DiaryEntryService {
         .optional(excludeDeleted, (q) => q.deletedEntryEqualTo(false))
         .and()
         .usernameEqualTo(currentUsername)
+        .and()
+        .optional(
+          localFoodIds?.isNotEmpty ?? false,
+          (q) => q.localFood((f) => f.anyOf(localFoodIds!, (itemQ, localFoodId) => itemQ.idEqualTo(localFoodId))),
+        )
         .findAll();
     for (final entry in entries) {
       await entry.localFood.load();
@@ -133,6 +139,7 @@ class DiaryEntryService {
     bool filterPushed = false,
     bool excludeDeleted = false,
     DateTime? dateFilter,
+    List<int>? localFoodIds,
   }) async {
     return _readDiaryEntries(
       dateFilter: dateFilter,
@@ -140,6 +147,7 @@ class DiaryEntryService {
       filterPending: filterPending,
       filterUploadReady: filterUploadReady,
       filterPushed: filterPushed,
+      localFoodIds: localFoodIds,
     ).catchError((error, stackTrace) {
       locator<LoggingService>().handle(error, stackTrace);
       return <LocalDiaryEntry>[];

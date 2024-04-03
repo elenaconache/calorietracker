@@ -12,16 +12,26 @@ import 'package:flutter/material.dart';
 class DiaryEntriesSliverList extends StatelessWidget {
   final List<DiaryEntry> entries;
   final bool error;
+  final bool loading;
   final Meal meal;
 
-  const DiaryEntriesSliverList({super.key, required this.entries, required this.error, required this.meal});
+  const DiaryEntriesSliverList({
+    super.key,
+    required this.entries,
+    required this.error,
+    required this.meal,
+    this.loading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (error) {
       return const SliverPadding(padding: EdgeInsets.zero);
-    }
-    if (entries.isNotEmpty) {
+    } else if (loading) {
+      return const SliverToBoxAdapter(
+        child: CircularProgressIndicator(),
+      );
+    } else if (entries.isNotEmpty) {
       return SliverList(
         key: UniqueKey(),
         delegate: SliverChildBuilderDelegate(

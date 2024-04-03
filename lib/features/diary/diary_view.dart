@@ -44,113 +44,149 @@ class _DiaryViewState extends State<DiaryView> {
         appBar: const DiaryAppBar(),
         body: RefreshIndicator(
           onRefresh: locator<DataSyncService>().uploadLocalData,
-          child:  CustomScrollView(
-              slivers: [
-                const SliverPadding(padding: EdgeInsets.only(top: 12)),
-                const SliverToBoxAdapter(child: SelectedDayLine()),
-                const SliverPadding(padding: EdgeInsets.only(top: 12)),
-                const SliverToBoxAdapter(child: DiaryOverviewCarousel()),
-                const SliverPadding(padding: EdgeInsets.only(top: 24)),
-                SliverToBoxAdapter(
-                    child: ValueListenableBuilder(
-                        valueListenable: _controller.enabledMacrosPercentageMode,
-                        builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
-                              meal: Meal.breakfast,
-                              enabledMacrosPercentageMode: enabledMacrosPercentageMode,
-                              onTap: _controller.toggleMacrosMode,
-                            ))),
-                ValueListenableBuilder(
-                    valueListenable: _diaryService.dayMealEntries,
-                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
+          child: CustomScrollView(
+            slivers: [
+              const SliverPadding(padding: EdgeInsets.only(top: 12)),
+              const SliverToBoxAdapter(child: SelectedDayLine()),
+              const SliverPadding(padding: EdgeInsets.only(top: 12)),
+              const SliverToBoxAdapter(child: DiaryOverviewCarousel()),
+              const SliverPadding(padding: EdgeInsets.only(top: 24)),
+              SliverToBoxAdapter(
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.enabledMacrosPercentageMode,
+                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                            meal: Meal.breakfast,
+                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                            onTap: _controller.toggleMacrosMode,
+                          ))),
+              ValueListenableBuilder(
+                  valueListenable: _diaryService.dayMealEntries,
+                  builder: (context, dayMealEntries, __) => dayMealEntries is FutureLoading
+                      ? const SliverPadding(
+                          padding: EdgeInsets.only(top: 12),
+                          sliver: SliverToBoxAdapter(
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                        )
+                      : DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.breakfast),
                           error: dayMealEntries is FutureError,
                           meal: Meal.breakfast,
                         )),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  sliver: SliverToBoxAdapter(
-                      child: Center(
-                          child: TextButton(
-                    onPressed: () => _openSearchFoodScreen(context, Meal.breakfast),
-                    child: Text(AppStrings.logFoodLabel.toUpperCase()),
-                  ))),
-                ),
-                const SliverPadding(padding: EdgeInsets.only(top: 12)),
-                SliverToBoxAdapter(
-                    child: ValueListenableBuilder(
-                        valueListenable: _controller.enabledMacrosPercentageMode,
-                        builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
-                              meal: Meal.lunch,
-                              enabledMacrosPercentageMode: enabledMacrosPercentageMode,
-                              onTap: _controller.toggleMacrosMode,
-                            ))),
-                ValueListenableBuilder(
-                    valueListenable: _diaryService.dayMealEntries,
-                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                sliver: SliverToBoxAdapter(
+                    child: Center(
+                        child: TextButton(
+                  onPressed: () => _openSearchFoodScreen(context, Meal.breakfast),
+                  child: Text(AppStrings.logFoodLabel.toUpperCase()),
+                ))),
+              ),
+              const SliverPadding(padding: EdgeInsets.only(top: 12)),
+              SliverToBoxAdapter(
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.enabledMacrosPercentageMode,
+                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                            meal: Meal.lunch,
+                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                            onTap: _controller.toggleMacrosMode,
+                          ))),
+              ValueListenableBuilder(
+                  valueListenable: _diaryService.dayMealEntries,
+                  builder: (context, dayMealEntries, __) => dayMealEntries is FutureLoading
+                      ? const SliverPadding(
+                          padding: EdgeInsets.only(top: 12),
+                          sliver: SliverToBoxAdapter(
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                        )
+                      : DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.lunch),
                           error: dayMealEntries is FutureError,
                           meal: Meal.lunch,
                         )),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  sliver: SliverToBoxAdapter(
-                      child: Center(
-                          child: TextButton(
-                    onPressed: () => _openSearchFoodScreen(context, Meal.lunch),
-                    child: Text(AppStrings.logFoodLabel.toUpperCase()),
-                  ))),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                sliver: SliverToBoxAdapter(
+                  child: Center(
+                    child: TextButton(
+                      onPressed: () => _openSearchFoodScreen(context, Meal.lunch),
+                      child: Text(AppStrings.logFoodLabel.toUpperCase()),
+                    ),
+                  ),
                 ),
-                const SliverPadding(padding: EdgeInsets.only(top: 12)),
-                SliverToBoxAdapter(
-                    child: ValueListenableBuilder(
-                        valueListenable: _controller.enabledMacrosPercentageMode,
-                        builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
-                              meal: Meal.dinner,
-                              enabledMacrosPercentageMode: enabledMacrosPercentageMode,
-                              onTap: _controller.toggleMacrosMode,
-                            ))),
-                ValueListenableBuilder(
-                    valueListenable: _diaryService.dayMealEntries,
-                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
+              ),
+              const SliverPadding(padding: EdgeInsets.only(top: 12)),
+              SliverToBoxAdapter(
+                  child: ValueListenableBuilder(
+                      valueListenable: _controller.enabledMacrosPercentageMode,
+                      builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                            meal: Meal.dinner,
+                            enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                            onTap: _controller.toggleMacrosMode,
+                          ))),
+              ValueListenableBuilder(
+                  valueListenable: _diaryService.dayMealEntries,
+                  builder: (context, dayMealEntries, __) => dayMealEntries is FutureLoading
+                      ? const SliverPadding(
+                          padding: EdgeInsets.only(top: 12),
+                          sliver: SliverToBoxAdapter(
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                        )
+                      : DiaryEntriesSliverList(
                           entries: _diaryService.getSelectedDayMealEntries(meal: Meal.dinner),
                           error: dayMealEntries is FutureError,
                           meal: Meal.dinner,
                         )),
-                SliverToBoxAdapter(
-                  child: Center(
-                      child: TextButton(
+              SliverToBoxAdapter(
+                child: Center(
+                  child: TextButton(
                     onPressed: () => _openSearchFoodScreen(context, Meal.dinner),
                     child: Text(AppStrings.logFoodLabel.toUpperCase()),
-                  )),
+                  ),
                 ),
-                const SliverPadding(padding: EdgeInsets.only(top: 12)),
-                SliverToBoxAdapter(
-                    child: ValueListenableBuilder(
-                        valueListenable: _controller.enabledMacrosPercentageMode,
-                        builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
-                              meal: Meal.snacks,
-                              enabledMacrosPercentageMode: enabledMacrosPercentageMode,
-                              onTap: _controller.toggleMacrosMode,
-                            ))),
-                ValueListenableBuilder(
-                    valueListenable: _diaryService.dayMealEntries,
-                    builder: (context, dayMealEntries, __) => DiaryEntriesSliverList(
-                          entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
-                          error: dayMealEntries is FutureError,
-                          meal: Meal.snacks,
-                        )),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  sliver: SliverToBoxAdapter(
-                      child: Center(
-                          child: TextButton(
-                    onPressed: () => _openSearchFoodScreen(context, Meal.snacks),
-                    child: Text(AppStrings.logFoodLabel.toUpperCase()),
-                  ))),
+              ),
+              const SliverPadding(padding: EdgeInsets.only(top: 12)),
+              SliverToBoxAdapter(
+                child: ValueListenableBuilder(
+                  valueListenable: _controller.enabledMacrosPercentageMode,
+                  builder: (context, enabledMacrosPercentageMode, _) => MealTitle(
+                    meal: Meal.snacks,
+                    enabledMacrosPercentageMode: enabledMacrosPercentageMode,
+                    onTap: _controller.toggleMacrosMode,
+                  ),
                 ),
-                const SliverPadding(padding: EdgeInsets.only(top: 100)),
-              ],
-
+              ),
+              ValueListenableBuilder(
+                valueListenable: _diaryService.dayMealEntries,
+                builder: (context, dayMealEntries, __) => dayMealEntries is FutureLoading
+                    ? const SliverPadding(
+                        padding: EdgeInsets.only(top: 12),
+                        sliver: SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      )
+                    : DiaryEntriesSliverList(
+                        loading: dayMealEntries is FutureLoading,
+                        entries: _diaryService.getSelectedDayMealEntries(meal: Meal.snacks),
+                        error: dayMealEntries is FutureError,
+                        meal: Meal.snacks,
+                      ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                sliver: SliverToBoxAdapter(
+                  child: Center(
+                    child: TextButton(
+                      onPressed: () => _openSearchFoodScreen(context, Meal.snacks),
+                      child: Text(AppStrings.logFoodLabel.toUpperCase()),
+                    ),
+                  ),
+                ),
+              ),
+              const SliverPadding(padding: EdgeInsets.only(top: 100)),
+            ],
           ),
         ));
   }
