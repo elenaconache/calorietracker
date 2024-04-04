@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:calorietracker/app/dependency_injection.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/home/home_view.dart';
+import 'package:calorietracker/features/search_food/food_item_controller.dart';
 import 'package:calorietracker/models/food.dart';
 import 'package:calorietracker/models/local/local_food.dart';
 import 'package:calorietracker/models/meal.dart';
@@ -13,7 +16,7 @@ import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:flutter/material.dart';
 
-class FoodItem extends StatelessWidget {
+class FoodItem extends StatefulWidget {
   final Food? remoteFood;
   final Meal? meal;
   final double servingQuantity;
@@ -30,6 +33,25 @@ class FoodItem extends StatelessWidget {
     required this.nutritionPerServingQuantity,
     this.localFood,
   });
+
+  @override
+  State<FoodItem> createState() => _FoodItemState();
+}
+
+class _FoodItemState extends State<FoodItem> {
+  late final FoodItemController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = locator<FoodItemController>();
+  }
+
+  @override
+  void dispose() {
+    _controller.isLoggingLoading.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,18 +90,31 @@ class FoodItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 24),
                 SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: Ink(
-                        decoration: _getAddButtonDecoration(context),
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.add,
-                            color: Theme.of(context).colorScheme.primary,
+                  width: 48,
+                  height: 48,
+                  child: ValueListenableBuilder(
+                    valueListenable: _controller.isLoggingLoading,
+                    builder: (_, loading, __) => loading
+                        ? const Center(
+                            child: SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : Ink(
+                            decoration: _getAddButtonDecoration(context),
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () => _onAddPressed(context),
+                              icon: Icon(
+                                Icons.add,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
                           ),
-                        )))
+                  ),
+                ),
               ]),
               const SizedBox(height: 8),
             ]),
@@ -89,9 +124,32 @@ class FoodItem extends StatelessWidget {
     );
   }
 
-  String? get name => remoteFood?.name ?? localFood?.name;
+  void _onAddPressed(BuildContext context) {
+    if (widget.localFood == null && widget.remoteFood == null) {
+      locator<LoggingService>().info('Missing food data, could not log to diary.');
+    } else if (widget.meal == null) {
+      // TODO: quick add ingredient to recipe
+    } else {
+      unawaited(_controller
+          .logFood(
+        food: widget.remoteFood ?? Food.local(localFood: widget.localFood!),
+        meal: widget.meal!,
+        servingQuantity: widget.servingQuantity,
+        localFoodId: widget.localFood?.id,
+        remoteFoodId: widget.remoteFood?.id ?? widget.localFood?.foodId,
+      )
+          .then((added) {
+        final message = added ? AppStrings.foodLoggedMessage : AppStrings.errorAddFood;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }));
+    }
+  }
 
-  String? get brand => remoteFood?.brandName ?? localFood?.brand;
+  String? get name => widget.remoteFood?.name ?? widget.localFood?.name;
+
+  String? get brand => widget.remoteFood?.brandName ?? widget.localFood?.brand;
 
   BoxDecoration _getAddButtonDecoration(BuildContext context) => BoxDecoration(
         shape: BoxShape.circle,
@@ -101,22 +159,24 @@ class FoodItem extends StatelessWidget {
   String get _caloriesText {
     final numericFormatter = locator<NumericFormattingService>();
     return AppStrings.caloriesServingShortLabel(
-      nutritionPerServingQuantity.calories.toStringAsFixed(0),
-      numericFormatter.formatDecimals(value: servingQuantity),
-      unitName,
+      widget.nutritionPerServingQuantity.calories.toStringAsFixed(0),
+      numericFormatter.formatDecimals(value: widget.servingQuantity),
+      widget.unitName,
     );
   }
 
   void _navigateToAddFood(BuildContext context) async {
-    if (remoteFood == null && localFood == null) {
+    if (widget.remoteFood == null && widget.localFood == null) {
       locator<LoggingService>().info('Attempt to log food when both collection and local search result were empty.');
       return;
     }
     final result = await Navigator.pushNamed(
       context,
       Routes.addFood.path,
-      arguments:
-          AddFoodArguments(meal: meal, food: remoteFood ?? Food.local(localFood: localFood!), localId: localFood?.id),
+      arguments: AddFoodArguments(
+          meal: widget.meal,
+          food: widget.remoteFood ?? Food.local(localFood: widget.localFood!),
+          localId: widget.localFood?.id),
     );
     if (result is RecipeIngredient) {
       Navigator.of(recipeNavigatorKey.currentContext!).pop(result);

@@ -144,6 +144,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fiberGramsLabel": MessageLookupByLibrary.simpleMessage("Fiber (g)"),
         "fiberLabel": MessageLookupByLibrary.simpleMessage("Fiber"),
         "foodLabel": MessageLookupByLibrary.simpleMessage("Food"),
+        "foodLoggedMessage":
+            MessageLookupByLibrary.simpleMessage("Food logged!"),
         "fromAnotherDayLabel":
             MessageLookupByLibrary.simpleMessage("From another day"),
         "fromPreviousDayLabel":

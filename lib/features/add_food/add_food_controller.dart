@@ -89,7 +89,12 @@ class AddFoodController {
       remoteFoodId = foodLog.food.id;
     }
     showLoading();
-    await locator<DiaryLoggingService>().createDiaryEntry(remoteFoodId, userId, foodLog, localFoodId);
+    await locator<DiaryLoggingService>().createDiaryEntry(
+      remoteFoodId: remoteFoodId,
+      username: userId,
+      foodLog: foodLog,
+      localFoodId: localFoodId,
+    );
     hideLoading();
   }
 

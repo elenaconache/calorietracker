@@ -6,6 +6,7 @@ import 'package:calorietracker/features/recipes/create_recipe/create_recipe_cont
 import 'package:calorietracker/features/recipes/details/recipe_details_controller.dart';
 import 'package:calorietracker/features/recipes/recipe_helper.dart';
 import 'package:calorietracker/features/recipes/search_recipe_controller.dart';
+import 'package:calorietracker/features/search_food/food_item_controller.dart';
 import 'package:calorietracker/features/search_food/search_food_service.dart';
 import 'package:calorietracker/interceptors/logging_interceptor.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
@@ -45,6 +46,7 @@ void setupLocator() {
   locator.registerFactory<CreateFoodController>(() => CreateFoodController());
   locator.registerFactory<CreateRecipeController>(() => CreateRecipeController());
   locator.registerFactory<DiaryController>(() => DiaryController());
+  locator.registerFactory<FoodItemController>(() => FoodItemController());
   locator.registerFactory<LoginController>(() => LoginController());
   locator.registerFactory<RecipeDetailsController>(() => RecipeDetailsController());
   locator.registerFactory<SearchRecipeController>(() => SearchRecipeController());

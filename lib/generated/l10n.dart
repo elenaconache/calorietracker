@@ -1360,6 +1360,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Food logged!`
+  String get foodLoggedMessage {
+    return Intl.message(
+      'Food logged!',
+      name: 'foodLoggedMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

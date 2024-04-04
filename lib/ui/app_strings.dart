@@ -272,4 +272,6 @@ class AppStrings {
   static String get toAnotherDayLabel => S.current.toAnotherDayLabel;
 
   static String get toTodayLabel => S.current.toTodayLabel;
+
+  static String get foodLoggedMessage => S.current.foodLoggedMessage;
 }

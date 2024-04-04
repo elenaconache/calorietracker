@@ -60,7 +60,12 @@ class DiaryLoggingService {
     mealsLoading.value = mealsLoadingState;
   }
 
-  Future<void> createDiaryEntry(int? remoteFoodId, String userId, FoodLog foodLog, int? localFoodId) async {
+  Future<void> createDiaryEntry({
+    int? remoteFoodId,
+    required String username,
+    required FoodLog foodLog,
+    int? localFoodId,
+  }) async {
     if (remoteFoodId != null) {
       final collectionApiService = await locator.getAsync<CollectionApiService>();
       await collectionApiService
@@ -70,7 +75,7 @@ class DiaryLoggingService {
             dateTime: foodLog.date.toString(),
             format: collectionApiDateFormat,
           ),
-          userId: userId,
+          userId: username,
           foodUnitId: gramsUnitId,
           meal: foodLog.meal,
           foodId: remoteFoodId,
@@ -81,14 +86,14 @@ class DiaryLoggingService {
         unawaited(locator<DiaryService>().fetchDiary());
       }).catchError((error, stackTrace) async {
         if (error is DioException && error.isConnectionError) {
-          await saveDiaryEntryLocally(foodLog, userId);
+          await saveDiaryEntryLocally(foodLog, username);
         } else {
           locator<LoggingService>().handle(error, stackTrace);
           throw error;
         }
       });
     } else {
-      await saveDiaryEntryLocally(foodLog.copyWith(localFoodId: localFoodId), userId);
+      await saveDiaryEntryLocally(foodLog.copyWith(localFoodId: localFoodId), username);
     }
   }
 

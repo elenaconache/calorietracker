@@ -269,5 +269,6 @@
   "fromPreviousDayLabel": "From previous day",
   "copyDiaryError": "Could not copy diary logs",
   "toAnotherDayLabel": "To another day",
-  "toTodayLabel": "To today"
+  "toTodayLabel": "To today",
+  "foodLoggedMessage": "Food logged!"
 }
