@@ -135,7 +135,9 @@ class DiaryService {
         final localDiary = await diaryEntriesService.getDisplayDiaryEntries(date: fetchedDate);
         return localDiary;
       }));
-      dayMealEntries.value = FutureSuccess(data: diary);
+      if (selectedDay.value == fetchedDate) {
+        dayMealEntries.value = FutureSuccess(data: diary);
+      }
     }
   }
 
@@ -162,7 +164,7 @@ class DiaryService {
 
   bool hasMealEntries({required Meal meal}) => getSelectedDayMealEntries(meal: meal).isNotEmpty;
 
-  void removeDiaryEntrySync({required Meal meal, required DiaryEntry diaryEntry}) {
+  void _removeDiaryEntrySync({required Meal meal, required int? collectionId, required int? localId}) {
     var entries = _entries.firstWhereOrNull((mealEntries) => mealEntries.meal == meal);
     if (entries == null) {
       return;
@@ -172,7 +174,11 @@ class DiaryService {
             .map((mealEntriesList) => mealEntriesList.meal == meal
                 ? MealEntriesList(
                     meal: meal,
-                    diaryEntries: mealEntriesList.diaryEntries.whereNot((entry) => entry.matches(diaryEntry)).toList())
+                    diaryEntries: mealEntriesList.diaryEntries
+                        .whereNot((entry) =>
+                            entry.collectionId != null && collectionId == entry.collectionId ||
+                            entry.localId != null && localId == entry.localId)
+                        .toList())
                 : mealEntriesList)
             .toList());
 
@@ -191,28 +197,28 @@ class DiaryService {
                 meal: mealEntriesList.meal,
                 diaryEntries: mealEntriesList.diaryEntries
                     .whereNot((entry) => checkedDiaryEntries.value.any(
-                          (diaryEntry) => entry.matches(diaryEntry),
+                          (diaryEntry) => _matchDiaryEntries(entry, diaryEntry.collectionId, diaryEntry.localId),
                         ))
                     .toList()))
             .toList());
     exitEditMode();
   }
 
-  Future<void> removeSingleDiaryEntry({required Meal meal, required DiaryEntry diaryEntry}) async {
-    removeDiaryEntrySync(meal: meal, diaryEntry: diaryEntry);
-    if (diaryEntry.collectionId != null) {
+  Future<void> removeSingleDiaryEntry({required Meal meal, required int? collectionId, required int? localId}) async {
+    _removeDiaryEntrySync(meal: meal, collectionId: collectionId, localId: localId);
+    if (collectionId != null) {
       final apiService = await locator.getAsync<CollectionApiService>();
-      await apiService.deleteDiaryEntry(diaryEntryId: diaryEntry.collectionId!).then((_) async {
-        await _deleteLocalDiaryEntry(diaryEntry);
+      await apiService.deleteDiaryEntry(diaryEntryId: collectionId).then((_) async {
+        await _deleteLocalDiaryEntry(collectionId, localId);
       }).catchError((error, stackTrace) async {
         if (error is DioException && error.isConnectionError) {
-          await _markLocalDiaryEntryDeleted(diaryEntry);
+          await _markLocalDiaryEntryDeleted(collectionId, localId);
         } else {
           locator<LoggingService>().handle(error, stackTrace);
         }
       });
-    } else if (diaryEntry.localId != null) {
-      await _markLocalDiaryEntryDeleted(diaryEntry);
+    } else if (localId != null) {
+      await _markLocalDiaryEntryDeleted(collectionId, localId);
     }
   }
 
@@ -239,11 +245,11 @@ class DiaryService {
     });
   }
 
-  Future<void> _markLocalDiaryEntryDeleted(DiaryEntry diaryEntry) async {
+  Future<void> _markLocalDiaryEntryDeleted(int? collectionId, int? localId) async {
     final diaryEntryService = await locator.getAsync<DiaryEntryService>();
     var localDiaryEntry = await diaryEntryService.getDiaryEntry(
-      collectionId: diaryEntry.collectionId,
-      localDiaryEntryId: diaryEntry.localId,
+      collectionId: collectionId,
+      localDiaryEntryId: localId,
     );
     if (localDiaryEntry != null) {
       localDiaryEntry.deletedEntry = true;
@@ -282,19 +288,21 @@ class DiaryService {
     );
   }
 
-  Future<void> _deleteLocalDiaryEntry(DiaryEntry diaryEntry) async {
+  Future<void> _deleteLocalDiaryEntry(int? collectionId, int? localId) async {
     final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
-    if (diaryEntry.localId != null) {
-      await diaryEntriesService.deleteDiaryEntries(localEntries: [diaryEntry.localId!]);
-    } else if (diaryEntry.collectionId != null) {
-      final localDiaryEntry = await diaryEntriesService.getDiaryEntry(collectionId: diaryEntry.collectionId!);
+    if (localId != null) {
+      await diaryEntriesService.deleteDiaryEntries(localEntries: [localId]);
+    } else if (collectionId != null) {
+      final localDiaryEntry = await diaryEntriesService.getDiaryEntry(collectionId: collectionId);
       if (localDiaryEntry != null) {
         await diaryEntriesService.deleteDiaryEntries(localEntries: [localDiaryEntry.localId]);
       } else {
-        locator<LoggingService>().info('Skipping delete from local storage for diary entry $diaryEntry');
+        locator<LoggingService>()
+            .info('Skipping delete from local storage for diary entry with collection id $collectionId');
       }
     } else {
-      locator<LoggingService>().info('Skipping delete from local storage for diary entry $diaryEntry');
+      locator<LoggingService>()
+          .info('Skipping delete from local storage for diary entry with null local and collection ids');
     }
   }
 
@@ -422,11 +430,16 @@ class DiaryService {
     }
   }
 
+  bool _matchDiaryEntries(DiaryEntry entry, int? collectionId, int? localId) =>
+      entry.collectionId != null && entry.collectionId == collectionId ||
+      entry.localId != null && entry.localId == localId;
+
   bool? isMealChecked({required Meal meal}) {
     final mealEntries =
         _entries.firstWhereOrNull((mealEntriesList) => mealEntriesList.meal == meal)?.diaryEntries ?? [];
     final mealCheckedEntriesCount = mealEntries
-        .where((entry) => checkedDiaryEntries.value.any((checkedEntry) => checkedEntry.matches(entry)))
+        .where((entry) => checkedDiaryEntries.value
+            .any((checkedEntry) => _matchDiaryEntries(checkedEntry, entry.collectionId, entry.localId)))
         .length;
     if (mealCheckedEntriesCount == 0) {
       return false;
@@ -443,7 +456,8 @@ class DiaryService {
       final newlyChecked = _entries
               .firstWhereOrNull((mealEntries) => mealEntries.meal == meal)
               ?.diaryEntries
-              .whereNot((entry) => currentlyChecked.any((checkedEntry) => checkedEntry.matches(entry)))
+              .whereNot((entry) => currentlyChecked
+                  .any((checkedEntry) => _matchDiaryEntries(checkedEntry, entry.collectionId, entry.localId)))
               .toList() ??
           [];
       currentlyChecked.addAll(newlyChecked);
@@ -451,10 +465,12 @@ class DiaryService {
       final alreadyChecked = _entries
               .firstWhereOrNull((mealEntries) => mealEntries.meal == meal)
               ?.diaryEntries
-              .where((entry) => currentlyChecked.any((checkedEntry) => checkedEntry.matches(entry)))
+              .where((entry) => currentlyChecked
+                  .any((checkedEntry) => _matchDiaryEntries(checkedEntry, entry.collectionId, entry.localId)))
               .toList() ??
           [];
-      currentlyChecked.removeWhere((checkedEntry) => alreadyChecked.any((entry) => checkedEntry.matches(entry)));
+      currentlyChecked.removeWhere((checkedEntry) =>
+          alreadyChecked.any((entry) => _matchDiaryEntries(checkedEntry, entry.collectionId, entry.localId)));
     }
     checkedDiaryEntries.value = currentlyChecked;
   }
@@ -464,13 +480,14 @@ class DiaryService {
     if (checked ?? false) {
       currentlyChecked.add(entry);
     } else {
-      currentlyChecked.removeWhere((checkedEntry) => checkedEntry.matches(entry));
+      currentlyChecked
+          .removeWhere((checkedEntry) => _matchDiaryEntries(checkedEntry, entry.collectionId, entry.localId));
     }
     checkedDiaryEntries.value = currentlyChecked;
   }
 
-  bool isEntryChecked({required DiaryEntry entry}) =>
-      checkedDiaryEntries.value.any((checkedEntry) => checkedEntry.matches(entry));
+  bool isEntryChecked({required DiaryEntry entry}) => checkedDiaryEntries.value
+      .any((checkedEntry) => _matchDiaryEntries(checkedEntry, entry.collectionId, entry.localId));
 
   Future<List<MealEntriesList>> fetchDiaryEntries({required DateTime date, Meal? meal}) async {
     final fetchedDate = _dateFormattingService.format(

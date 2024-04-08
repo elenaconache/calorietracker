@@ -237,7 +237,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
       arguments: AddFoodArguments(
         meal: null,
         food: ingredient.food,
-        localId: ingredient.food.localFood.id,
+        localFoodId: ingredient.food.localFood.id,
         servingSize: ingredient.servingQuantity,
       ),
     );

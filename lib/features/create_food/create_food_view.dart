@@ -184,7 +184,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                       arguments: AddFoodArguments(
                         meal: widget.meal,
                         food: food,
-                        localId: response.localId,
+                        localFoodId: response.localId,
                       ))
                   .then((value) {
                 if (context.mounted) {

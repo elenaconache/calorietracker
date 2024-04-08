@@ -1370,6 +1370,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Could not update diary entry. Please try again later.`
+  String get updateLogError {
+    return Intl.message(
+      'Could not update diary entry. Please try again later.',
+      name: 'updateLogError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

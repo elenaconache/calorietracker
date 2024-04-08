@@ -11,6 +11,7 @@ import 'package:calorietracker/models/nutrition.dart';
 import 'package:calorietracker/services/api/collection_api_service.dart';
 import 'package:calorietracker/services/database/diary_logging_service.dart';
 import 'package:calorietracker/services/database/food_service.dart';
+import 'package:calorietracker/services/diary_service.dart';
 import 'package:calorietracker/services/logging_service.dart';
 import 'package:calorietracker/services/user_service.dart';
 import 'package:dio/dio.dart';
@@ -45,25 +46,38 @@ class AddFoodController {
   int get proteinPercentage => _nutrition.proteinPercentage;
 
   void recalculateNutrition({required String servingSizeGrams}) {
-    final serving = double.tryParse(servingSizeGrams) ?? 100;
+    final serving = double.tryParse(servingSizeGrams.replaceAll(',', '.')) ?? 100;
     currentServingSizeNutrients.value =
         Nutrition.perServing(nutritionPer100Grams: _nutrition, servingSizeGrams: serving);
   }
 
-  Future<void> logFood({required FoodLog foodLog}) async {
+  Future<void> logFood({
+    required FoodLog foodLog,
+    int? remoteDiaryEntryId,
+    int? localDiaryEntryId,
+    Meal? initialMeal,
+  }) async {
     isLoading.value = true;
     final username = locator<UserService>().selectedUser.value?.username;
     if (username?.isEmpty ?? true) {
       locator<LoggingService>().info('Could not log food. Missing username.');
       // TODO: navigate to login screen and show a snack bar saying the session expired
     } else {
+      final updatesExistingLog = [remoteDiaryEntryId, localDiaryEntryId].any((id) => id != null);
+      showLoading();
+
+      // TODO: API call to update entry; on error, call remove and create locally
+      if (updatesExistingLog) {
+        await locator<DiaryService>()
+            .removeSingleDiaryEntry(meal: foodLog.meal, collectionId: remoteDiaryEntryId, localId: localDiaryEntryId);
+      }
+
       if (foodLog.localFoodId != null) {
-        showLoading();
         await locator<DiaryLoggingService>().saveDiaryEntryLocally(foodLog, username);
-        hideLoading();
       } else {
         await _saveRemotely(username!, foodLog);
       }
+      hideLoading();
     }
   }
 
@@ -88,14 +102,12 @@ class AddFoodController {
     } else {
       remoteFoodId = foodLog.food.id;
     }
-    showLoading();
     await locator<DiaryLoggingService>().createDiaryEntry(
       remoteFoodId: remoteFoodId,
       username: userId,
       foodLog: foodLog,
       localFoodId: localFoodId,
     );
-    hideLoading();
   }
 
   Future<int?> createFood({required Food food}) async {

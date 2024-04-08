@@ -15,6 +15,7 @@ class Food {
   final String? brandName;
   final int? id;
   final String? barcode;
+  final int? localId;
 
   const Food({
     required this.name,
@@ -22,6 +23,7 @@ class Food {
     required this.brandName,
     required this.id,
     required this.barcode,
+    this.localId,
   });
 
   Food.nutritionix({required NutritionixFoodResponse nutritionixFoodResponse})
@@ -29,7 +31,8 @@ class Food {
         nutrition = nutritionixFoodResponse.nutritionPer100Grams,
         brandName = nutritionixFoodResponse.brandName,
         barcode = null,
-        id = null;
+        id = null,
+        localId = null;
 
   Food.input({required FoodInput foodInput, required this.id})
       : name = foodInput.name,
@@ -38,30 +41,39 @@ class Food {
           servingSizeGrams: foodInput.servingSizeValue,
         ),
         brandName = (foodInput.brand?.isEmpty ?? true) ? null : foodInput.brand,
-        barcode = null;
+        barcode = null,
+        localId = null;
 
   Food.collection({required CollectionFood food})
       : name = food.name,
         nutrition = food.nutritionInfo,
         barcode = food.barcode,
         brandName = food.brand,
-        id = food.id;
+        id = food.id,
+        localId = null;
 
   Food.local({required LocalFood localFood})
       : name = localFood.name,
         nutrition = Nutrition.local(localNutrition: localFood.nutritionInfo),
         brandName = localFood.brand,
         id = null,
-        barcode = localFood.barcode;
+        barcode = localFood.barcode,
+        localId = localFood.id;
 
-  LocalFood get localFood => LocalFood()
-    ..nutritionInfo = nutrition.localFoodNutrition
-    ..name = name
-    ..brand = brandName
-    ..barcode = barcode
-    ..pushed = id != null
-    ..createdAtDate = DateTime.now()
-    ..foodId = id;
+  LocalFood get localFood {
+    final localFood = LocalFood()
+      ..nutritionInfo = nutrition.localFoodNutrition
+      ..name = name
+      ..brand = brandName
+      ..barcode = barcode
+      ..pushed = id != null
+      ..createdAtDate = DateTime.now()
+      ..foodId = id;
+    if (localId != null) {
+      localFood.id = localId!;
+    }
+    return localFood;
+  }
 
   AddFoodRequest get addFoodRequest => AddFoodRequest(
         barcode: null,
@@ -83,6 +95,7 @@ class Food {
     String? brandName,
     int? id,
     String? barcode,
+    int? localId,
   }) =>
       Food(
         name: name ?? this.name,
@@ -90,5 +103,6 @@ class Food {
         barcode: barcode ?? this.barcode,
         nutrition: nutrition ?? this.nutrition,
         brandName: brandName ?? this.brandName,
+        localId: localId ?? this.localId,
       );
 }

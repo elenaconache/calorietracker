@@ -243,6 +243,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "transFatGramsLabel":
             MessageLookupByLibrary.simpleMessage("Trans fat (g)"),
         "transFatLabel": MessageLookupByLibrary.simpleMessage("Trans fat"),
+        "updateLogError": MessageLookupByLibrary.simpleMessage(
+            "Could not update diary entry. Please try again later."),
         "userNotFoundError": MessageLookupByLibrary.simpleMessage(
             "The username you entered was not found."),
         "usernameLabel": MessageLookupByLibrary.simpleMessage("Username"),

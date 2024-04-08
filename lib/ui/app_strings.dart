@@ -274,4 +274,6 @@ class AppStrings {
   static String get toTodayLabel => S.current.toTodayLabel;
 
   static String get foodLoggedMessage => S.current.foodLoggedMessage;
+
+  static String get updateLogError => S.current.updateLogError;
 }

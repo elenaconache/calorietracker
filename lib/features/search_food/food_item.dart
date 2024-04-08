@@ -174,9 +174,10 @@ class _FoodItemState extends State<FoodItem> {
       context,
       Routes.addFood.path,
       arguments: AddFoodArguments(
-          meal: widget.meal,
-          food: widget.remoteFood ?? Food.local(localFood: widget.localFood!),
-          localId: widget.localFood?.id),
+        meal: widget.meal,
+        food: widget.remoteFood ?? Food.local(localFood: widget.localFood!),
+        localFoodId: widget.localFood?.id,
+      ),
     );
     if (result is RecipeIngredient) {
       Navigator.of(recipeNavigatorKey.currentContext!).pop(result);

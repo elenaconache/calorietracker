@@ -45,10 +45,6 @@ class DiaryEntry {
   @override
   String toString() => toJson().toString();
 
-  bool matches(DiaryEntry diaryEntry) =>
-      diaryEntry.collectionId != null && diaryEntry.collectionId == collectionId ||
-      diaryEntry.localId != null && diaryEntry.localId == localId;
-
   DiaryEntry copyWith({
     int? collectionId,
     int? localId,

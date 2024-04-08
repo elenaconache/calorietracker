@@ -270,5 +270,6 @@
   "copyDiaryError": "Could not copy diary logs",
   "toAnotherDayLabel": "To another day",
   "toTodayLabel": "To today",
-  "foodLoggedMessage": "Food logged!"
+  "foodLoggedMessage": "Food logged!",
+  "updateLogError": "Could not update diary entry. Please try again later."
 }

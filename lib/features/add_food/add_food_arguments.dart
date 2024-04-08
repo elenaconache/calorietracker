@@ -4,13 +4,17 @@ import 'package:calorietracker/models/meal.dart';
 class AddFoodArguments {
   final Meal? meal;
   final Food food;
-  final int? localId;
+  final int? localFoodId;
   final double? servingSize;
+  final int? diaryEntryId;
+  final int? localDiaryEntryId;
 
   const AddFoodArguments({
     required this.meal,
     required this.food,
-    this.localId,
+    this.localFoodId,
     this.servingSize,
+    this.diaryEntryId,
+    this.localDiaryEntryId,
   });
 }
