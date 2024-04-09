@@ -9,7 +9,8 @@ enum Routes {
   home('/home'),
   recipes('/recipes'),
   createRecipe('createRecipe'),
-  recipe('recipe');
+  recipe('recipe'),
+  userGoals('userGoals');
 
   final String path;
 

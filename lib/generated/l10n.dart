@@ -1380,6 +1380,16 @@ class S {
       args: [],
     );
   }
+
+  /// `My goals`
+  String get myGoalsLabel {
+    return Intl.message(
+      'My goals',
+      name: 'myGoalsLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -179,6 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mono fat (g)"),
         "monounsaturatedFatLabel":
             MessageLookupByLibrary.simpleMessage("Monounsaturated fat"),
+        "myGoalsLabel": MessageLookupByLibrary.simpleMessage("My goals"),
         "netCarbsLabel": MessageLookupByLibrary.simpleMessage("Net carbs"),
         "noFoodLoggedMessage": MessageLookupByLibrary.simpleMessage(
             "You didn\'t log foods for this meal yet."),

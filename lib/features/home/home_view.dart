@@ -1,11 +1,12 @@
 import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/features/accounts/accounts_view.dart';
 import 'package:calorietracker/features/add_food/add_food_arguments.dart';
 import 'package:calorietracker/features/add_food/add_food_view.dart';
 import 'package:calorietracker/features/create_food/create_food_view.dart';
 import 'package:calorietracker/features/diary/diary_view.dart';
 import 'package:calorietracker/features/login/login_view.dart';
+import 'package:calorietracker/features/profile/accounts/accounts_view.dart';
 import 'package:calorietracker/features/profile/profile_view.dart';
+import 'package:calorietracker/features/profile/user_goals_view.dart';
 import 'package:calorietracker/features/recipes/create_recipe/create_recipe_view.dart';
 import 'package:calorietracker/features/recipes/details/recipe_details_arguments.dart';
 import 'package:calorietracker/features/recipes/details/recipe_details_view.dart';
@@ -48,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
       tabBuilder: (context, index) {
         if (index == 0) {
           return CupertinoTabView(
-            onGenerateRoute: _onGenerateHomeRoute,
+            onGenerateRoute: _onGenerateDiaryRoute,
             builder: (context) => const DiaryView(),
             navigatorKey: diaryNavigatorKey,
           );
@@ -65,7 +66,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Route? _onGenerateHomeRoute(RouteSettings settings) {
+  Route? _onGenerateDiaryRoute(RouteSettings settings) {
     final matchingRoute = Routes.values.firstWhereOrNull((route) => route.path == settings.name);
     final args = settings.arguments;
     switch (matchingRoute) {
@@ -83,6 +84,8 @@ class _HomeViewState extends State<HomeView> {
         return MaterialPageRoute(builder: (context) => CreateFoodView(meal: args as Meal?));
       case Routes.profile:
         return MaterialPageRoute(builder: (context) => const ProfileView());
+      case Routes.userGoals:
+        return MaterialPageRoute(builder: (context) => const UserGoalsView());
       default:
         return MaterialPageRoute(
           builder: (context) => GenericErrorView(

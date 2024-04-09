@@ -271,5 +271,6 @@
   "toAnotherDayLabel": "To another day",
   "toTodayLabel": "To today",
   "foodLoggedMessage": "Food logged!",
-  "updateLogError": "Could not update diary entry. Please try again later."
+  "updateLogError": "Could not update diary entry. Please try again later.",
+  "myGoalsLabel": "My goals"
 }

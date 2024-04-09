@@ -276,4 +276,6 @@ class AppStrings {
   static String get foodLoggedMessage => S.current.foodLoggedMessage;
 
   static String get updateLogError => S.current.updateLogError;
+
+  static String get myGoalsLabel => S.current.myGoalsLabel;
 }

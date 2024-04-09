@@ -65,6 +65,14 @@ class _ProfileViewState extends State<ProfileView> with SingleTickerProviderStat
               ),
             ),
           ),
+          ProfileItem(
+            onTap: () => Navigator.pushNamed(context, Routes.userGoals.path),
+            title: AppStrings.myGoalsLabel,
+            icon: const Icon(
+              Icons.chevron_right_rounded,
+              size: 32,
+            ),
+          )
         ],
       ),
     );
