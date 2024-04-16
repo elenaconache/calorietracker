@@ -1390,6 +1390,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Grams`
+  String get gramsLabel {
+    return Intl.message(
+      'Grams',
+      name: 'gramsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Percentages`
+  String get percentagesLabel {
+    return Intl.message(
+      'Percentages',
+      name: 'percentagesLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

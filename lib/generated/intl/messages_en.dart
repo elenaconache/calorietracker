@@ -152,6 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("From previous day"),
         "generalErrorMessage":
             MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "gramsLabel": MessageLookupByLibrary.simpleMessage("Grams"),
         "gramsShortLabel": MessageLookupByLibrary.simpleMessage("g"),
         "gramsValue": m8,
         "ingredientsTitle": MessageLookupByLibrary.simpleMessage("Ingredients"),
@@ -187,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "There were no results matching your search"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
         "nutritionTitle": MessageLookupByLibrary.simpleMessage("Nutrition"),
+        "percentagesLabel": MessageLookupByLibrary.simpleMessage("Percentages"),
         "polyFatGramsLabel":
             MessageLookupByLibrary.simpleMessage("Poly fat (g)"),
         "polyunsaturatedFatLabel":

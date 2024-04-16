@@ -20,8 +20,8 @@ class _SearchResultsSectionState extends State<SearchResultsSection> with Single
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override

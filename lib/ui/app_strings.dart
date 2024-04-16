@@ -278,4 +278,8 @@ class AppStrings {
   static String get updateLogError => S.current.updateLogError;
 
   static String get myGoalsLabel => S.current.myGoalsLabel;
+
+  static String get gramsLabel => S.current.gramsLabel;
+
+  static String get percentagesLabel => S.current.percentagesLabel;
 }
