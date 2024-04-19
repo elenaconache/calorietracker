@@ -12,6 +12,7 @@ Food _$FoodFromJson(Map<String, dynamic> json) => Food(
       brandName: json['brandName'] as String?,
       id: json['id'] as int?,
       barcode: json['barcode'] as String?,
+      localId: json['localId'] as int?,
     );
 
 Map<String, dynamic> _$FoodToJson(Food instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$FoodToJson(Food instance) => <String, dynamic>{
       'brandName': instance.brandName,
       'id': instance.id,
       'barcode': instance.barcode,
+      'localId': instance.localId,
     };

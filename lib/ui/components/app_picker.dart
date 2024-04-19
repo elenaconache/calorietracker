@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 
 class AppPicker extends StatelessWidget {
   final String label;
+  final int initialValue;
+  final Function(int value) onValuePicked;
 
-  const AppPicker({super.key, required this.label});
+  const AppPicker({super.key, required this.label, required this.initialValue, required this.onValuePicked});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +22,12 @@ class AppPicker extends StatelessWidget {
             squeeze: 1.3,
             useMagnifier: true,
             itemExtent: 40,
-            scrollController: FixedExtentScrollController(initialItem: 50),
-            onSelectedItemChanged: (int _) {},
+            scrollController: FixedExtentScrollController(initialItem: initialValue),
+            onSelectedItemChanged: onValuePicked,
             children: List<Widget>.generate(
-              100,
+              101,
               (int index) => Center(
-                child: Text((index + 1).toString()),
+                child: Text(index.toString()),
               ),
             ),
           ),
