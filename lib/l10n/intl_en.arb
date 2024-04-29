@@ -274,5 +274,7 @@
   "updateLogError": "Could not update diary entry. Please try again later.",
   "myGoalsLabel": "My goals",
   "gramsLabel": "Grams",
-  "percentagesLabel": "Percentages"
+  "percentagesLabel": "Percentages",
+  "totalLabel": "Total",
+  "macroPercentagesSumMessage": "Must be equal to 100%"
 }

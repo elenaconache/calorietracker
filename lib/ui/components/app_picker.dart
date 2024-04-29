@@ -13,15 +13,15 @@ class AppPicker extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 30),
+        const SizedBox(height: 20),
         Center(child: Text(label)),
         SizedBox(
-          height: 200,
+          height: 250,
           child: CupertinoPicker(
-            magnification: 1.1,
-            squeeze: 1.3,
+            magnification: 1.2,
+            squeeze: 1.2,
             useMagnifier: true,
-            itemExtent: 40,
+            itemExtent: 50,
             scrollController: FixedExtentScrollController(initialItem: initialValue),
             onSelectedItemChanged: onValuePicked,
             children: List<Widget>.generate(

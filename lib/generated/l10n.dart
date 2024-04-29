@@ -1410,6 +1410,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Total`
+  String get totalLabel {
+    return Intl.message(
+      'Total',
+      name: 'totalLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Must be equal to 100%`
+  String get macroPercentagesSumMessage {
+    return Intl.message(
+      'Must be equal to 100%',
+      name: 'macroPercentagesSumMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

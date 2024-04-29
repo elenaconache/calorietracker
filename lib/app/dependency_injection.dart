@@ -35,10 +35,10 @@ import 'package:get_it/get_it.dart';
 final GetIt locator = GetIt.instance;
 
 // TODO: extract collection base url into env variable
-const _collectionApiBaseUrl = 'http://192.168.0.93:8080/'; // MAC / DEV
+const _collectionApiBaseUrl = 'http://192.168.0.162:8080/'; // DEV
 // const _collectionApiBaseUrl = 'http://192.168.0.133:8080/calorietracker/';// ACER / PROD
 // const _collectionApiBaseUrl = 'http://192.168.0.133:8080/user/';// ACER / PROD
-const _userApiBaseUrl = 'http://192.168.0.93:8082/';
+const _userApiBaseUrl = 'http://192.168.0.162:8082/';
 const _nutritionixApiBaseUrl = 'https://trackapi.nutritionix.com/';
 
 void setupLocator() {

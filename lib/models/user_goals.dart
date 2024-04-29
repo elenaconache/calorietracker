@@ -4,10 +4,10 @@ part 'user_goals.g.dart';
 
 @JsonSerializable()
 class UserGoals {
-  final int calories;
-  final int carbsPercentage;
-  final int proteinPercentage;
-  final int fatPercentage;
+  final double calories;
+  final double carbsPercentage;
+  final double proteinPercentage;
+  final double fatPercentage;
   final String username;
 
   const UserGoals({
@@ -23,10 +23,10 @@ class UserGoals {
   Map<String, dynamic> toJson() => _$UserGoalsToJson(this);
 
   UserGoals copyWith({
-    int? calories,
-    int? carbsPercentage,
-    int? proteinPercentage,
-    int? fatPercentage,
+    double? calories,
+    double? carbsPercentage,
+    double? proteinPercentage,
+    double? fatPercentage,
     String? username,
   }) =>
       UserGoals(

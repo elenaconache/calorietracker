@@ -106,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
         },
         onSuccess: () {
           if (context.mounted) {
-            Navigator.of(context).pushReplacementNamed(Routes.home.path);
+            Navigator.of(context).pushReplacementNamed(Routes.diary.path);
           } else {
             locator<LoggingService>().info('Could not navigate home. Context unmounted.');
           }

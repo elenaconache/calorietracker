@@ -172,6 +172,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutLabel": MessageLookupByLibrary.simpleMessage("Logout"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
+        "macroPercentagesSumMessage":
+            MessageLookupByLibrary.simpleMessage("Must be equal to 100%"),
         "macrosExceedServingSizeError": m10,
         "macrosOrCaloriesError": m11,
         "mealLabel": MessageLookupByLibrary.simpleMessage("Meal"),
@@ -243,6 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "toTodayLabel": MessageLookupByLibrary.simpleMessage("To today"),
         "todayTitle": MessageLookupByLibrary.simpleMessage("Today"),
         "tomorrowLabel": MessageLookupByLibrary.simpleMessage("Tomorrow"),
+        "totalLabel": MessageLookupByLibrary.simpleMessage("Total"),
         "transFatGramsLabel":
             MessageLookupByLibrary.simpleMessage("Trans fat (g)"),
         "transFatLabel": MessageLookupByLibrary.simpleMessage("Trans fat"),

@@ -282,4 +282,8 @@ class AppStrings {
   static String get gramsLabel => S.current.gramsLabel;
 
   static String get percentagesLabel => S.current.percentagesLabel;
+
+  static String get totalLabel => S.current.totalLabel;
+
+  static String get macroPercentagesSumMessage => S.current.macroPercentagesSumMessage;
 }

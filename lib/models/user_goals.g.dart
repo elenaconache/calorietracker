@@ -7,10 +7,10 @@ part of 'user_goals.dart';
 // **************************************************************************
 
 UserGoals _$UserGoalsFromJson(Map<String, dynamic> json) => UserGoals(
-      calories: json['calories'] as int? ?? 2100,
-      carbsPercentage: json['carbsPercentage'] as int? ?? 50,
-      proteinPercentage: json['proteinPercentage'] as int? ?? 20,
-      fatPercentage: json['fatPercentage'] as int? ?? 30,
+      calories: (json['calories'] as num?)?.toDouble() ?? 2100,
+      carbsPercentage: (json['carbsPercentage'] as num?)?.toDouble() ?? 50,
+      proteinPercentage: (json['proteinPercentage'] as num?)?.toDouble() ?? 20,
+      fatPercentage: (json['fatPercentage'] as num?)?.toDouble() ?? 30,
       username: json['username'] as String,
     );
 
