@@ -8,7 +8,7 @@ part of 'add_local_food_request.dart';
 
 AddLocalFoodRequest _$AddLocalFoodRequestFromJson(Map<String, dynamic> json) =>
     AddLocalFoodRequest(
-      localId: json['localId'] as int,
+      localId: (json['localId'] as num).toInt(),
       barcode: json['barcode'] as String?,
       name: json['name'] as String,
       brand: json['brand'] as String?,

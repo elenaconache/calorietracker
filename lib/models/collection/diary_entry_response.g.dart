@@ -12,7 +12,7 @@ DiaryEntryResponse _$DiaryEntryResponseFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['id', 'food', 'entryDate', 'unit', 'servingQuantity'],
   );
   return DiaryEntryResponse(
-    id: json['id'] as int,
+    id: (json['id'] as num).toInt(),
     food: CollectionFood.fromJson(json['food'] as Map<String, dynamic>),
     entryDate: json['entryDate'] as String,
     unit: UnitResponse.fromJson(json['unit'] as Map<String, dynamic>),

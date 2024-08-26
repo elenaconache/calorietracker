@@ -9,7 +9,7 @@ part of 'nutritionix_nutrient.dart';
 NutritionixNutrient _$NutritionixNutrientFromJson(Map<String, dynamic> json) =>
     NutritionixNutrient(
       value: (json['value'] as num).toDouble(),
-      nutrientId: json['attr_id'] as int,
+      nutrientId: (json['attr_id'] as num).toInt(),
     );
 
 Map<String, dynamic> _$NutritionixNutrientToJson(

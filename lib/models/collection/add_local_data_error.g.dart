@@ -13,8 +13,8 @@ AddLocalDataError _$AddLocalDataErrorFromJson(Map<String, dynamic> json) {
   );
   return AddLocalDataError(
     message: json['message'] as String,
-    index: json['index'] as int,
-    localId: json['localId'] as int,
+    index: (json['index'] as num).toInt(),
+    localId: (json['localId'] as num).toInt(),
   );
 }
 

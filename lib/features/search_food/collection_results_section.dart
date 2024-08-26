@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 class CollectionResultsSection extends StatefulWidget {
   final Meal? meal;
 
-  const CollectionResultsSection({Key? key, required this.meal}) : super(key: key);
+  const CollectionResultsSection({super.key, required this.meal});
 
   @override
   State<CollectionResultsSection> createState() => _CollectionResultsSectionState();

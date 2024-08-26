@@ -27,6 +27,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
   late final TextEditingController _fatController;
   late final TabController _tabController;
   late final UserGoalsController _controller;
+  late final GlobalKey<FormState> _formKey;
 
   @override
   void initState() {
@@ -50,6 +51,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
       ),
     );
     _caloriesController.addListener(_onCaloriesChanged);
+    _formKey = GlobalKey<FormState>(debugLabel: 'goalsForm');
   }
 
   @override
@@ -68,7 +70,15 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.myGoalsLabel)),
+      appBar: AppBar(
+        title: Text(AppStrings.myGoalsLabel),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.done),
+            onPressed: _onDonePressed,
+          )
+        ],
+      ),
       body: ValueListenableBuilder(
         valueListenable: _controller.userGoals,
         builder: (context, goals, _) => switch (goals) {
@@ -79,14 +89,17 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
                 const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: AppTextField(
-                    autofocus: true,
-                    validate: locator<FoodValidator>().validateCalories,
-                    controller: _caloriesController,
-                    maxLength: 5,
-                    labelText: AppStrings.caloriesLabel,
-                    inputType: TextInputType.number,
-                    action: TextInputAction.next,
+                  child: Form(
+                    key: _formKey,
+                    child: AppTextField(
+                      autofocus: true,
+                      validate: locator<FoodValidator>().validateCalories,
+                      controller: _caloriesController,
+                      maxLength: 5,
+                      labelText: AppStrings.caloriesLabel,
+                      inputType: TextInputType.number,
+                      action: TextInputAction.next,
+                    ),
                   ),
                 ),
                 Padding(
@@ -142,8 +155,15 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
     );
   }
 
-  void _onMacroPercentagePicked(Macro macro, int pickedValue) =>
-      _controller.onMacroPercentageChanged(macro: macro, value: pickedValue);
+  void _onMacroPercentagePicked(Macro macro, int pickedValue) {
+    _controller.onMacroPercentageChanged(macro: macro, value: pickedValue);
+    final goals = _controller.macroGoals.value;
+    if (goals.roundedCarbsPercentage + goals.roundedFatPercentage + goals.roundedProteinPercentage == 100) {
+      _carbsController.text = goals.roundedCarbsGrams.toString();
+      _proteinController.text = goals.roundedProteinGrams.toString();
+      _fatController.text = goals.roundedFatGrams.toString();
+    }
+  }
 
   void _removeMacrosListeners() {
     _carbsController.removeListener(_onCarbsGramsChanged);
@@ -204,5 +224,9 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
       _updateCaloriesGoal();
     }
     _addMacrosListeners();
+  }
+
+  void _onDonePressed() {
+    if (_formKey.currentState?.validate() ?? false) {}
   }
 }

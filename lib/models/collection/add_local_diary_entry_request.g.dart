@@ -9,13 +9,13 @@ part of 'add_local_diary_entry_request.dart';
 AddLocalDiaryEntryRequest _$AddLocalDiaryEntryRequestFromJson(
         Map<String, dynamic> json) =>
     AddLocalDiaryEntryRequest(
-      localId: json['localId'] as int,
+      localId: (json['localId'] as num).toInt(),
       entryDate: json['entryDate'] as String,
       userId: json['userId'] as String,
-      foodUnitId: json['foodUnitId'] as int,
+      foodUnitId: (json['foodUnitId'] as num).toInt(),
       servingQuantity: (json['servingQuantity'] as num).toDouble(),
       meal: $enumDecode(_$MealEnumMap, json['meal']),
-      foodId: json['foodId'] as int,
+      foodId: (json['foodId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$AddLocalDiaryEntryRequestToJson(

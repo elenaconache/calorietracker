@@ -12,7 +12,7 @@ UnitResponse _$UnitResponseFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['id', 'name', 'abbrev', 'weightInGrams'],
   );
   return UnitResponse(
-    id: json['id'] as int,
+    id: (json['id'] as num).toInt(),
     name: json['name'] as String,
     abbrev: json['abbrev'] as String,
     weightInGrams: (json['weightInGrams'] as num).toDouble(),

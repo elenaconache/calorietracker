@@ -66,7 +66,7 @@ class _LoginViewState extends State<LoginView> {
                                     _onLoginPressed(context);
                                   },
                             style: ButtonStyle(
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(4.0),
                               )),
                             ),
@@ -90,6 +90,7 @@ class _LoginViewState extends State<LoginView> {
             switch (loginError) {
               case LoginError.alreadyLoggedIn:
                 errorMessage = AppStrings.alreadyLoggedInMessage;
+                Navigator.of(context).pushReplacementNamed(Routes.home.path);
                 break;
               case LoginError.notFound:
                 errorMessage = AppStrings.userNotFoundError;
@@ -106,7 +107,7 @@ class _LoginViewState extends State<LoginView> {
         },
         onSuccess: () {
           if (context.mounted) {
-            Navigator.of(context).pushReplacementNamed(Routes.diary.path);
+            Navigator.of(context).pushReplacementNamed(Routes.home.path);
           } else {
             locator<LoggingService>().info('Could not navigate home. Context unmounted.');
           }

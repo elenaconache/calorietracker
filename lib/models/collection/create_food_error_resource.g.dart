@@ -13,7 +13,7 @@ CreateFoodErrorResource _$CreateFoodErrorResourceFromJson(
     requiredKeys: const ['id'],
   );
   return CreateFoodErrorResource(
-    id: json['id'] as int,
+    id: (json['id'] as num).toInt(),
   );
 }
 

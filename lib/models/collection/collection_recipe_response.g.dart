@@ -13,10 +13,10 @@ CollectionRecipeResponse _$CollectionRecipeResponseFromJson(
     requiredKeys: const ['id', 'name', 'description', 'cookedWeight'],
   );
   return CollectionRecipeResponse(
-    id: json['id'] as int,
+    id: (json['id'] as num).toInt(),
     name: json['name'] as String,
     description: json['description'] as String?,
-    cookedWeight: json['cookedWeight'] as int,
+    cookedWeight: (json['cookedWeight'] as num).toInt(),
   );
 }
 

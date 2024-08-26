@@ -12,8 +12,8 @@ AddLocalDataResponse _$AddLocalDataResponseFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['resourceId', 'localResourceId'],
   );
   return AddLocalDataResponse(
-    resourceId: json['resourceId'] as int,
-    localResourceId: json['localResourceId'] as int,
+    resourceId: (json['resourceId'] as num).toInt(),
+    localResourceId: (json['localResourceId'] as num).toInt(),
   );
 }
 

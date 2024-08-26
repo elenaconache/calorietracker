@@ -65,7 +65,6 @@ class SearchFoodService {
     localSearchResponse.value = FutureInitialState();
   }
 
-  // TODO: Show a different empty state when nothing is found locally while typing.
   Future<void> searchLocally({required String query}) async {
     currentSearchQuery = query;
     final foodService = await locator.getAsync<FoodService>();

@@ -10,7 +10,7 @@ AddRecipeRequest _$AddRecipeRequestFromJson(Map<String, dynamic> json) =>
     AddRecipeRequest(
       name: json['name'] as String,
       description: json['description'] as String?,
-      cookedWeight: json['cookedWeight'] as int,
+      cookedWeight: (json['cookedWeight'] as num).toInt(),
       ingredients: (json['ingredients'] as List<dynamic>)
           .map((e) =>
               CollectionRecipeIngredient.fromJson(e as Map<String, dynamic>))

@@ -13,7 +13,7 @@ CollectionFoodResponse _$CollectionFoodResponseFromJson(
     requiredKeys: const ['id', 'name', 'nutritionInfo'],
   );
   return CollectionFoodResponse(
-    id: json['id'] as int,
+    id: (json['id'] as num).toInt(),
     barcode: json['barcode'] as String?,
     name: json['name'] as String,
     brand: json['brand'] as String?,
