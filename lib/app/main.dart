@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.black,
         snackBarTheme: SnackBarThemeData(
-          backgroundColor: _defaultDarkColorScheme.background,
+          backgroundColor: _defaultDarkColorScheme.surface,
           contentTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: _defaultDarkColorScheme.tertiary),
         ),
       ),

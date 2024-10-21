@@ -14,7 +14,7 @@ import 'package:calorietracker/ui/components/text_field/search_text_field.dart';
 import 'package:flutter/material.dart';
 
 class SearchRecipeView extends StatefulWidget {
-  const SearchRecipeView({Key? key}) : super(key: key);
+  const SearchRecipeView({super.key});
 
   @override
   State<SearchRecipeView> createState() => _SearchRecipeViewState();

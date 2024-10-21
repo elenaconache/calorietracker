@@ -8,7 +8,7 @@ class RecipeItem extends StatelessWidget {
   final Recipe recipe;
   final bool showTopDivider;
 
-  const RecipeItem({Key? key, required this.recipe, required this.showTopDivider}) : super(key: key);
+  const RecipeItem({super.key, required this.recipe, required this.showTopDivider});
 
   @override
   Widget build(BuildContext context) {

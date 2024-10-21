@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class SearchResultsSection extends StatefulWidget {
   final Meal? meal;
 
-  const SearchResultsSection({Key? key, required this.meal}) : super(key: key);
+  const SearchResultsSection({super.key, required this.meal});
 
   @override
   State<SearchResultsSection> createState() => _SearchResultsSectionState();

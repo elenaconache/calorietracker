@@ -14,7 +14,6 @@ import 'package:calorietracker/models/collection/id_response.dart';
 import 'package:calorietracker/models/collection/meal_entries_response.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter/foundation.dart';
-import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'collection_api_service.g.dart';

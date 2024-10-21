@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 class BrandedResultsSection extends StatefulWidget {
   final Meal? meal;
 
-  const BrandedResultsSection({Key? key, required this.meal}) : super(key: key);
+  const BrandedResultsSection({super.key, required this.meal});
 
   @override
   State<BrandedResultsSection> createState() => _BrandedResultsSectionState();
