@@ -8,13 +8,13 @@
             "name": "Dart",
             "type": "dart",
             "request": "launch",
-            "program": "lib/app/main.dart"
+            "program": "lib/main.dart"
         },
         {
             "name": "calorietracker",
             "request": "launch",
             "type": "dart",
-            "program": "lib/app/main.dart"
+            "program": "lib/main.dart"
         },
         {
             "name": "calorietracker (profile mode)",

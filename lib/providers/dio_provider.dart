@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/interceptors/logging_interceptor.dart';
+import 'package:calorietracker/shared/di/dependency_injection.dart';
+import 'package:calorietracker/shared/interceptor/logging_interceptor.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';

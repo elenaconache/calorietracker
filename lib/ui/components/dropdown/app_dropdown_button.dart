@@ -1,4 +1,4 @@
-import 'package:calorietracker/app/dependency_injection.dart';
+import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_button_content.dart';
 import 'package:calorietracker/ui/components/dropdown/app_dropdown_menu.dart';
 import 'package:flutter/material.dart';

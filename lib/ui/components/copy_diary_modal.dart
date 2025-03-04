@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:calorietracker/app/dependency_injection.dart';
-import 'package:calorietracker/models/meal.dart';
-import 'package:calorietracker/services/database/diary_logging_service.dart';
-import 'package:calorietracker/services/diary_service.dart';
+import 'package:calorietracker/shared/di/dependency_injection.dart';
+import 'package:calorietracker/shared/model/meal.dart';
+import 'package:calorietracker/shared/service/database/diary_logging_service.dart';
+import 'package:calorietracker/shared/service/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
-import 'package:calorietracker/app/main.dart';
+import 'package:calorietracker/main.dart';
 
 class CopyDiaryModal extends StatelessWidget {
   final Meal? meal;
@@ -94,10 +94,7 @@ class CopyDiaryModal extends StatelessWidget {
       if (selectedDate != null) {
         unawaited(
           locator<DiaryLoggingService>()
-              .copyDiary(
-                  meal: meal,
-                  fromDate: isFromSelection ? selectedDate : null,
-                  toDate: isFromSelection ? null : selectedDate)
+              .copyDiary(meal: meal, fromDate: isFromSelection ? selectedDate : null, toDate: isFromSelection ? null : selectedDate)
               .then((copied) {
             if (!copied) {
               ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(

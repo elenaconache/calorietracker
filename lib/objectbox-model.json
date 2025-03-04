@@ -1,0 +1,238 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:5131412822362615304",
+      "lastPropertyId": "11:591696758286405718",
+      "name": "LocalDiaryEntry",
+      "properties": [
+        {
+          "id": "1:3261115456366930040",
+          "name": "localId",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:6859686216847258117",
+          "name": "entryDate",
+          "type": 10
+        },
+        {
+          "id": "3:3992204725654785423",
+          "name": "username",
+          "type": 9
+        },
+        {
+          "id": "4:7941509233595512949",
+          "name": "unitId",
+          "type": 6
+        },
+        {
+          "id": "5:3397514877572050640",
+          "name": "servingQuantity",
+          "type": 8
+        },
+        {
+          "id": "6:1726709682213357061",
+          "name": "pushedEntry",
+          "type": 1
+        },
+        {
+          "id": "7:4162788812154352761",
+          "name": "deletedEntry",
+          "type": 1
+        },
+        {
+          "id": "8:270675761643922539",
+          "name": "errorPushingEntry",
+          "type": 1
+        },
+        {
+          "id": "9:6158728946300868111",
+          "name": "localFoodId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:7902949239279718162",
+          "relationTarget": "LocalFood"
+        },
+        {
+          "id": "10:2914229019763343892",
+          "name": "entryId",
+          "type": 6,
+          "flags": 32808,
+          "indexId": "2:8051380942129571284"
+        },
+        {
+          "id": "11:591696758286405718",
+          "name": "dbMeal",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:2084377092419227434",
+      "lastPropertyId": "28:3973348157706845018",
+      "name": "LocalFood",
+      "properties": [
+        {
+          "id": "1:4803178478840731373",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:7031046045764449252",
+          "name": "calories",
+          "type": 8
+        },
+        {
+          "id": "3:7634539576413761895",
+          "name": "fat",
+          "type": 8
+        },
+        {
+          "id": "4:9046462348331399659",
+          "name": "fatSaturated",
+          "type": 8
+        },
+        {
+          "id": "5:3677459918824223309",
+          "name": "fatTrans",
+          "type": 8
+        },
+        {
+          "id": "6:961629032631106028",
+          "name": "fatPolyunsaturated",
+          "type": 8
+        },
+        {
+          "id": "7:4046681211023219992",
+          "name": "fatMonounsaturated",
+          "type": 8
+        },
+        {
+          "id": "8:2256741507766148717",
+          "name": "cholesterol",
+          "type": 8
+        },
+        {
+          "id": "9:2066609992490603651",
+          "name": "carbohydrates",
+          "type": 8
+        },
+        {
+          "id": "10:1348653668827968239",
+          "name": "fiber",
+          "type": 8
+        },
+        {
+          "id": "11:498317594279610293",
+          "name": "insolubleFiber",
+          "type": 8
+        },
+        {
+          "id": "12:3260257729852852447",
+          "name": "sugar",
+          "type": 8
+        },
+        {
+          "id": "13:2673898096093794184",
+          "name": "protein",
+          "type": 8
+        },
+        {
+          "id": "14:9114825634267802032",
+          "name": "sodium",
+          "type": 8
+        },
+        {
+          "id": "15:8686932542427004260",
+          "name": "potassium",
+          "type": 8
+        },
+        {
+          "id": "16:5632263445673722684",
+          "name": "calcium",
+          "type": 8
+        },
+        {
+          "id": "17:5491768700759782465",
+          "name": "iron",
+          "type": 8
+        },
+        {
+          "id": "18:5644706555118799676",
+          "name": "vitaminA",
+          "type": 8
+        },
+        {
+          "id": "19:2411141735171373178",
+          "name": "vitaminC",
+          "type": 8
+        },
+        {
+          "id": "20:795666330533380306",
+          "name": "vitaminD",
+          "type": 8
+        },
+        {
+          "id": "21:6936708131457988521",
+          "name": "barcode",
+          "type": 9
+        },
+        {
+          "id": "22:3251004936734939414",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "23:6702916557996106333",
+          "name": "brand",
+          "type": 9
+        },
+        {
+          "id": "24:1795354905629938356",
+          "name": "pushed",
+          "type": 1
+        },
+        {
+          "id": "25:4054345587206238458",
+          "name": "deleted",
+          "type": 1
+        },
+        {
+          "id": "26:4395032351356709334",
+          "name": "errorPushing",
+          "type": 1
+        },
+        {
+          "id": "27:7026930630894945364",
+          "name": "foodId",
+          "type": 6,
+          "flags": 32808,
+          "indexId": "3:3600908181472716497"
+        },
+        {
+          "id": "28:3973348157706845018",
+          "name": "createdAtDate",
+          "type": 10
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:2084377092419227434",
+  "lastIndexId": "3:3600908181472716497",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
