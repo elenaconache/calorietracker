@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
-import 'package:calorietracker/feature/add_food/food_log.dart';
+import 'package:calorietracker/feature/add_food/data/food_log.dart';
 import 'package:calorietracker/shared/model/collection/create_food_errors_response.dart';
 import 'package:calorietracker/shared/model/food.dart';
 import 'package:calorietracker/shared/model/meal.dart';
@@ -47,8 +47,7 @@ class AddFoodController {
 
   void recalculateNutrition({required String servingSizeGrams}) {
     final serving = double.tryParse(servingSizeGrams.replaceAll(',', '.')) ?? 100;
-    currentServingSizeNutrients.value =
-        Nutrition.perServing(nutritionPer100Grams: _nutrition, servingSizeGrams: serving);
+    currentServingSizeNutrients.value = Nutrition.perServing(nutritionPer100Grams: _nutrition, servingSizeGrams: serving);
   }
 
   Future<void> logFood({
@@ -68,8 +67,7 @@ class AddFoodController {
 
       // TODO: API call to update entry; on error, call remove and create locally
       if (updatesExistingLog) {
-        await locator<DiaryService>()
-            .removeSingleDiaryEntry(meal: foodLog.meal, collectionId: remoteDiaryEntryId, localId: localDiaryEntryId);
+        await locator<DiaryService>().removeSingleDiaryEntry(meal: foodLog.meal, collectionId: remoteDiaryEntryId, localId: localDiaryEntryId);
       }
 
       if (foodLog.localFoodId != null) {
@@ -115,10 +113,7 @@ class AddFoodController {
       isLoading.value = true;
     }
     final collectionApiService = await locator.getAsync<CollectionApiService>();
-    return collectionApiService
-        .createFood(body: food.addFoodRequest)
-        .then((createdFood) => createdFood?.id)
-        .catchError((error, stackTrace) {
+    return collectionApiService.createFood(body: food.addFoodRequest).then((createdFood) => createdFood?.id).catchError((error, stackTrace) {
       if (error is DioException && error.response?.statusCode == HttpStatus.conflict) {
         final errorsResponse = CreateFoodErrorsResponse.fromJson(error.response?.data);
         return errorsResponse.errors.firstOrNull?.resource.id;

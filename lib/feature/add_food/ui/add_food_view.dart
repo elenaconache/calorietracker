@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/add_food/add_food_arguments.dart';
-import 'package:calorietracker/feature/add_food/add_food_controller.dart';
-import 'package:calorietracker/feature/add_food/food_log.dart';
+import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
+import 'package:calorietracker/feature/add_food/logic/add_food_controller.dart';
+import 'package:calorietracker/feature/add_food/data/food_log.dart';
 import 'package:calorietracker/feature/search_food/search_food_service.dart';
 import 'package:calorietracker/shared/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/service/diary_service.dart';
@@ -158,9 +158,8 @@ class _AddFoodViewState extends State<AddFoodView> {
               const AppDivider(),
               ValueListenableBuilder(
                 valueListenable: _controller.currentServingSizeNutrients,
-                builder: (_, currentServingSizeNutrients, __) => currentServingSizeNutrients != null
-                    ? NutritionSection(nutrition: currentServingSizeNutrients)
-                    : const SizedBox.shrink(),
+                builder: (_, currentServingSizeNutrients, __) =>
+                    currentServingSizeNutrients != null ? NutritionSection(nutrition: currentServingSizeNutrients) : const SizedBox.shrink(),
               ),
               const SizedBox(height: 100),
             ],
@@ -216,9 +215,7 @@ class _AddFoodViewState extends State<AddFoodView> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                widget.args.diaryEntryId != null || widget.args.localDiaryEntryId != null
-                    ? AppStrings.updateLogError
-                    : AppStrings.errorAddFood,
+                widget.args.diaryEntryId != null || widget.args.localDiaryEntryId != null ? AppStrings.updateLogError : AppStrings.errorAddFood,
               ),
             ),
           );
