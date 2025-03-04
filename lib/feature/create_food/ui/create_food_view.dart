@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
-import 'package:calorietracker/feature/create_food/create_food_controller.dart';
-import 'package:calorietracker/feature/create_food/food_error.dart';
-import 'package:calorietracker/feature/create_food/food_form.dart';
-import 'package:calorietracker/feature/create_food/food_input.dart';
+import 'package:calorietracker/feature/create_food/logic/create_food_controller.dart';
+import 'package:calorietracker/feature/create_food/data/food_error.dart';
+import 'package:calorietracker/feature/create_food/ui/food_form.dart';
+import 'package:calorietracker/feature/create_food/ui/food_input.dart';
 import 'package:calorietracker/shared/model/food.dart';
 import 'package:calorietracker/shared/model/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
