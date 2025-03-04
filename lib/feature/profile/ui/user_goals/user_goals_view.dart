@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/profile/user_goals/macro_percentage_goals.dart';
-import 'package:calorietracker/feature/profile/user_goals/macros_form.dart';
-import 'package:calorietracker/feature/profile/user_goals/user_goals_controller.dart';
+import 'package:calorietracker/feature/profile/ui/user_goals/macro_percentage_goals.dart';
+import 'package:calorietracker/feature/profile/ui/user_goals/macros_form.dart';
+import 'package:calorietracker/feature/profile/logic/user_goals_controller.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/model/macro.dart';
 import 'package:calorietracker/shared/model/user_goals.dart';

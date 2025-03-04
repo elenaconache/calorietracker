@@ -1,5 +1,5 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/profile/accounts/user_item.dart';
+import 'package:calorietracker/feature/profile/ui/accounts/user_item.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/shared/service/user_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';

@@ -1,5 +1,5 @@
-import 'package:calorietracker/feature/profile/user_goals/macros_pickers.dart';
-import 'package:calorietracker/feature/profile/user_goals/percentages_total.dart';
+import 'package:calorietracker/feature/profile/ui/user_goals/macros_pickers.dart';
+import 'package:calorietracker/feature/profile/ui/user_goals/percentages_total.dart';
 import 'package:calorietracker/shared/model/macro.dart';
 import 'package:calorietracker/shared/model/macro_goals.dart';
 import 'package:flutter/material.dart';

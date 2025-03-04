@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/profile/profile_item.dart';
+import 'package:calorietracker/feature/profile/ui/profile_item.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/shared/service/data_sync_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
