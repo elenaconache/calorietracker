@@ -47,6 +47,7 @@ dependencies:
   smooth_page_indicator: ^1.2.0
   objectbox: ^4.1.0
   objectbox_sync_flutter_libs: ^4.1.0
+  intl_utils: ^2.8.7
 
 dev_dependencies:
   flutter_test:

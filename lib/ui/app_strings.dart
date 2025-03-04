@@ -1,4 +1,4 @@
-import 'package:calorietracker/generated/l10n.dart';
+import 'package:calorietracker/shared/generated/l10n/l10n.dart';
 
 class AppStrings {
   AppStrings._();
@@ -144,30 +144,23 @@ class AppStrings {
 
   static String macrosExceedServingSizeError(int servingSize) => S.current.macrosExceedServingSizeError(servingSize);
 
-  static String cholesterolExceedsMaxPerServingError(int expectedCholesterol) =>
-      S.current.cholesterolExceedsMaxPerServingError(expectedCholesterol);
+  static String cholesterolExceedsMaxPerServingError(int expectedCholesterol) => S.current.cholesterolExceedsMaxPerServingError(expectedCholesterol);
 
   static String get insolubleFiberExceedsFiberError => S.current.insolubleFiberExceedsFiberError;
 
   static String get saltExceedsServingSizeError => S.current.saltExceedsServingSizeError;
 
-  static String ironExceedsMaxPerServingError(int expectedIron) =>
-      S.current.ironExceedsMaxPerServingError(expectedIron);
+  static String ironExceedsMaxPerServingError(int expectedIron) => S.current.ironExceedsMaxPerServingError(expectedIron);
 
-  static String potassiumExceedsMaxPerServingError(int expectedPotassium) =>
-      S.current.potassiumExceedsMaxPerServingError(expectedPotassium);
+  static String potassiumExceedsMaxPerServingError(int expectedPotassium) => S.current.potassiumExceedsMaxPerServingError(expectedPotassium);
 
-  static String calciumExceedsMaxPerServingError(int expectedCalcium) =>
-      S.current.calciumExceedsMaxPerServingError(expectedCalcium);
+  static String calciumExceedsMaxPerServingError(int expectedCalcium) => S.current.calciumExceedsMaxPerServingError(expectedCalcium);
 
-  static String vitaminAExceedsMaxPerServingError(int expectedVitaminA) =>
-      S.current.vitaminAExceedsMaxPerServingError(expectedVitaminA);
+  static String vitaminAExceedsMaxPerServingError(int expectedVitaminA) => S.current.vitaminAExceedsMaxPerServingError(expectedVitaminA);
 
-  static String vitaminCExceedsMaxPerServingError(int expectedVitaminC) =>
-      S.current.vitaminCExceedsMaxPerServingError(expectedVitaminC);
+  static String vitaminCExceedsMaxPerServingError(int expectedVitaminC) => S.current.vitaminCExceedsMaxPerServingError(expectedVitaminC);
 
-  static String vitaminDExceedsMaxPerServingError(int expectedVitaminD) =>
-      S.current.vitaminDExceedsMaxPerServingError(expectedVitaminD);
+  static String vitaminDExceedsMaxPerServingError(int expectedVitaminD) => S.current.vitaminDExceedsMaxPerServingError(expectedVitaminD);
 
   static String get carbsGramsLabel => S.current.carbsGramsLabel;
 
