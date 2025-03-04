@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/recipes/components/recipe_item.dart';
-import 'package:calorietracker/feature/recipes/search_recipe_controller.dart';
+import 'package:calorietracker/feature/recipes/ui/recipe_item.dart';
+import 'package:calorietracker/feature/recipes/logic/search_recipe_controller.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/model/recipe.dart';
 import 'package:calorietracker/navigation/routes.dart';

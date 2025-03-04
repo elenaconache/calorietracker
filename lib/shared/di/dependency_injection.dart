@@ -3,10 +3,10 @@ import 'package:calorietracker/feature/create_food/logic/create_food_controller.
 import 'package:calorietracker/feature/diary/logic/diary_controller.dart';
 import 'package:calorietracker/feature/login/logic/login_controller.dart';
 import 'package:calorietracker/feature/profile/logic/user_goals_controller.dart';
-import 'package:calorietracker/feature/recipes/create_recipe/create_recipe_controller.dart';
+import 'package:calorietracker/feature/recipes/logic/create_recipe_controller.dart';
 import 'package:calorietracker/feature/recipes/details/recipe_details_controller.dart';
-import 'package:calorietracker/feature/recipes/recipe_helper.dart';
-import 'package:calorietracker/feature/recipes/search_recipe_controller.dart';
+import 'package:calorietracker/feature/recipes/logic/recipe_helper.dart';
+import 'package:calorietracker/feature/recipes/logic/search_recipe_controller.dart';
 import 'package:calorietracker/feature/search_food/food_item_controller.dart';
 import 'package:calorietracker/feature/search_food/search_food_service.dart';
 import 'package:calorietracker/shared/interceptor/logging_interceptor.dart';

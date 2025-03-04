@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/recipes/components/nutrition_tile.dart';
-import 'package:calorietracker/feature/recipes/components/recipe_name_field.dart';
-import 'package:calorietracker/feature/recipes/components/recipe_servings_field.dart';
-import 'package:calorietracker/feature/recipes/create_recipe/ingredient_item.dart';
+import 'package:calorietracker/feature/recipes/ui/nutrition_tile.dart';
+import 'package:calorietracker/feature/recipes/ui/recipe_name_field.dart';
+import 'package:calorietracker/feature/recipes/ui/recipe_servings_field.dart';
+import 'package:calorietracker/feature/recipes/ui/create_recipe/ingredient_item.dart';
 import 'package:calorietracker/feature/recipes/details/recipe_details_arguments.dart';
 import 'package:calorietracker/feature/recipes/details/recipe_details_controller.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';

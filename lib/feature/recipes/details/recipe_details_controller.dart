@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/recipes/recipe_helper.dart';
+import 'package:calorietracker/feature/recipes/logic/recipe_helper.dart';
 import 'package:calorietracker/shared/model/food.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/model/nutrition.dart';

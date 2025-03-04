@@ -1,11 +1,11 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
-import 'package:calorietracker/feature/recipes/components/nutrition_tile.dart';
-import 'package:calorietracker/feature/recipes/components/recipe_name_field.dart';
-import 'package:calorietracker/feature/recipes/components/recipe_servings_field.dart';
-import 'package:calorietracker/feature/recipes/create_recipe/create_recipe_controller.dart';
-import 'package:calorietracker/feature/recipes/create_recipe/create_recipe_error.dart';
-import 'package:calorietracker/feature/recipes/create_recipe/ingredient_item.dart';
+import 'package:calorietracker/feature/recipes/ui/nutrition_tile.dart';
+import 'package:calorietracker/feature/recipes/ui/recipe_name_field.dart';
+import 'package:calorietracker/feature/recipes/ui/recipe_servings_field.dart';
+import 'package:calorietracker/feature/recipes/logic/create_recipe_controller.dart';
+import 'package:calorietracker/feature/recipes/data/create_recipe_error.dart';
+import 'package:calorietracker/feature/recipes/ui/create_recipe/ingredient_item.dart';
 import 'package:calorietracker/shared/model/recipe_ingredient.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
