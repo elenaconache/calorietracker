@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
-import 'package:calorietracker/feature/login/login_error.dart';
-import 'package:calorietracker/feature/login/login_state.dart';
+import 'package:calorietracker/feature/login/data/login_error.dart';
+import 'package:calorietracker/feature/login/data/login_state.dart';
 import 'package:calorietracker/shared/model/user.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:calorietracker/shared/service/secure_storage_service.dart';

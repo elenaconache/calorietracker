@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/login/login_controller.dart';
-import 'package:calorietracker/feature/login/login_error.dart';
+import 'package:calorietracker/feature/login/logic/login_controller.dart';
+import 'package:calorietracker/feature/login/data/login_error.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';

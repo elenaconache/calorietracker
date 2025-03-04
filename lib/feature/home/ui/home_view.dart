@@ -3,7 +3,7 @@ import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/add_food/ui/add_food_view.dart';
 import 'package:calorietracker/feature/create_food/ui/create_food_view.dart';
 import 'package:calorietracker/feature/diary/ui/diary_view.dart';
-import 'package:calorietracker/feature/login/login_view.dart';
+import 'package:calorietracker/feature/login/ui/login_view.dart';
 import 'package:calorietracker/feature/profile/accounts/accounts_view.dart';
 import 'package:calorietracker/feature/profile/profile_view.dart';
 import 'package:calorietracker/feature/profile/user_goals/user_goals_view.dart';
