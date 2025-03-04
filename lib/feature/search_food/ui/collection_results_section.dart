@@ -1,8 +1,8 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/model/local/local_diary_entry.dart';
 import 'package:calorietracker/ui/components/empty_view.dart';
-import 'package:calorietracker/feature/search_food/food_item.dart';
-import 'package:calorietracker/feature/search_food/search_food_service.dart';
+import 'package:calorietracker/feature/search_food/ui/food_item.dart';
+import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
 import 'package:calorietracker/shared/model/food.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/model/local/local_food.dart';

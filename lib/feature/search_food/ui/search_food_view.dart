@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/main.dart';
-import 'package:calorietracker/feature/search_food/search_food_service.dart';
-import 'package:calorietracker/feature/search_food/search_results_section.dart';
+import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
+import 'package:calorietracker/feature/search_food/ui/search_results_section.dart';
 import 'package:calorietracker/shared/model/meal.dart';
 import 'package:calorietracker/shared/model/recipe_ingredient.dart';
 import 'package:calorietracker/navigation/routes.dart';

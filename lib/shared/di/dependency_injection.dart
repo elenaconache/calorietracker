@@ -7,8 +7,8 @@ import 'package:calorietracker/feature/recipes/logic/create_recipe_controller.da
 import 'package:calorietracker/feature/recipes/details/recipe_details_controller.dart';
 import 'package:calorietracker/feature/recipes/logic/recipe_helper.dart';
 import 'package:calorietracker/feature/recipes/logic/search_recipe_controller.dart';
-import 'package:calorietracker/feature/search_food/food_item_controller.dart';
-import 'package:calorietracker/feature/search_food/search_food_service.dart';
+import 'package:calorietracker/feature/search_food/logic/food_item_controller.dart';
+import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
 import 'package:calorietracker/shared/interceptor/logging_interceptor.dart';
 import 'package:calorietracker/providers/app_path_provider.dart';
 import 'package:calorietracker/providers/dio_provider.dart';

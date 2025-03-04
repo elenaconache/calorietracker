@@ -4,7 +4,7 @@ import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/add_food/logic/add_food_controller.dart';
 import 'package:calorietracker/feature/add_food/data/food_log.dart';
-import 'package:calorietracker/feature/search_food/search_food_service.dart';
+import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
 import 'package:calorietracker/shared/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/service/diary_service.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';

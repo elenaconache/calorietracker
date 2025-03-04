@@ -11,7 +11,7 @@ import 'package:calorietracker/feature/recipes/ui/create_recipe/create_recipe_vi
 import 'package:calorietracker/feature/recipes/details/recipe_details_arguments.dart';
 import 'package:calorietracker/feature/recipes/details/recipe_details_view.dart';
 import 'package:calorietracker/feature/recipes/ui/search_recipe_view.dart';
-import 'package:calorietracker/feature/search_food/search_food_view.dart';
+import 'package:calorietracker/feature/search_food/ui/search_food_view.dart';
 import 'package:calorietracker/shared/model/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';

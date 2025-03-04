@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/home/ui/home_view.dart';
-import 'package:calorietracker/feature/search_food/food_item_controller.dart';
+import 'package:calorietracker/feature/search_food/logic/food_item_controller.dart';
 import 'package:calorietracker/shared/model/food.dart';
 import 'package:calorietracker/shared/model/local/local_food.dart';
 import 'package:calorietracker/shared/model/meal.dart';
