@@ -31,7 +31,7 @@ class InitialsAvatar extends StatelessWidget {
     String firstLetter = text.substring(0, 1).toUpperCase();
     int hashCode = firstLetter.hashCode;
     Color color = Colors.primaries[hashCode % Colors.primaries.length];
-    return color.withOpacity(0.9);
+    return color.withValues(alpha: .9);
   }
 
   String get _initials =>

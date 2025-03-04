@@ -44,7 +44,7 @@ class _HomeViewState extends State<HomeView> {
         height: 36,
         inactiveColor: Theme.of(context).disabledColor,
         activeColor: Theme.of(context).colorScheme.onPrimary,
-        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+        backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: .7),
       ),
       tabBuilder: (context, index) {
         if (index == 0) {
