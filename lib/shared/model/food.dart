@@ -1,4 +1,4 @@
-import 'package:calorietracker/feature/create_food/food_input.dart';
+import 'package:calorietracker/feature/create_food/ui/food_input.dart';
 import 'package:calorietracker/shared/model/collection/add_food_request.dart';
 import 'package:calorietracker/shared/model/collection/collection_food.dart';
 import 'package:calorietracker/shared/model/local/local_food.dart';

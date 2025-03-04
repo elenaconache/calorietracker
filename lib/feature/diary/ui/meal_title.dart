@@ -1,6 +1,6 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/main.dart';
-import 'package:calorietracker/feature/diary/meal_macros.dart';
+import 'package:calorietracker/feature/diary/ui/meal_macros.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/model/meal.dart';
 import 'package:calorietracker/shared/service/database/diary_logging_service.dart';

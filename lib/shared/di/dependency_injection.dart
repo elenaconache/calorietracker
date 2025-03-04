@@ -1,6 +1,6 @@
 import 'package:calorietracker/feature/add_food/logic/add_food_controller.dart';
-import 'package:calorietracker/feature/create_food/create_food_controller.dart';
-import 'package:calorietracker/feature/diary/diary_controller.dart';
+import 'package:calorietracker/feature/create_food/logic/create_food_controller.dart';
+import 'package:calorietracker/feature/diary/logic/diary_controller.dart';
 import 'package:calorietracker/feature/login/login_controller.dart';
 import 'package:calorietracker/feature/profile/user_goals/user_goals_controller.dart';
 import 'package:calorietracker/feature/recipes/create_recipe/create_recipe_controller.dart';

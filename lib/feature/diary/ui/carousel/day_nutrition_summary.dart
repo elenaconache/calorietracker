@@ -1,5 +1,5 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/diary/nutrient_item.dart';
+import 'package:calorietracker/feature/diary/ui/nutrient_item.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/service/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';

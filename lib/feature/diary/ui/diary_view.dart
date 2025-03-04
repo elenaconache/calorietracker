@@ -1,10 +1,10 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/diary/diary_app_bar.dart';
-import 'package:calorietracker/feature/diary/diary_controller.dart';
-import 'package:calorietracker/feature/diary/diary_entries_sliver_list.dart';
-import 'package:calorietracker/feature/diary/carousel/diary_overview_carousel.dart';
-import 'package:calorietracker/feature/diary/meal_title.dart';
-import 'package:calorietracker/feature/diary/selected_day_line.dart';
+import 'package:calorietracker/feature/diary/ui/diary_app_bar.dart';
+import 'package:calorietracker/feature/diary/logic/diary_controller.dart';
+import 'package:calorietracker/feature/diary/ui/diary_entries_sliver_list.dart';
+import 'package:calorietracker/feature/diary/ui/carousel/diary_overview_carousel.dart';
+import 'package:calorietracker/feature/diary/ui/meal_title.dart';
+import 'package:calorietracker/feature/diary/ui/selected_day_line.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/model/meal.dart';
 import 'package:calorietracker/navigation/routes.dart';

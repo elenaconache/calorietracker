@@ -1,5 +1,5 @@
 import 'package:calorietracker/shared/extension/numeric_extensions.dart';
-import 'package:calorietracker/feature/diary/diary_row/diary_row_check_box.dart';
+import 'package:calorietracker/feature/diary/ui/diary_row/diary_row_check_box.dart';
 import 'package:calorietracker/shared/model/diary_entry.dart';
 import 'package:calorietracker/shared/model/nutrition.dart';
 import 'package:calorietracker/ui/app_strings.dart';

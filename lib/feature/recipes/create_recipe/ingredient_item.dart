@@ -1,4 +1,4 @@
-import 'package:calorietracker/feature/diary/swipe_to_delete_background.dart';
+import 'package:calorietracker/feature/diary/ui/swipe_to_delete_background.dart';
 import 'package:calorietracker/shared/model/recipe_ingredient.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
