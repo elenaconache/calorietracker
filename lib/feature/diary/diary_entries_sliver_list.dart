@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/add_food/add_food_arguments.dart';
+import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/diary/diary_row/diary_row.dart';
 import 'package:calorietracker/feature/diary/no_logged_foods_message.dart';
 import 'package:calorietracker/feature/diary/swipe_to_delete_background.dart';

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:calorietracker/shared/constants.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
-import 'package:calorietracker/feature/add_food/food_log.dart';
+import 'package:calorietracker/feature/add_food/data/food_log.dart';
 import 'package:calorietracker/shared/model/collection/add_diary_entry_request.dart';
 import 'package:calorietracker/shared/model/local/local_diary_entry.dart';
 import 'package:calorietracker/shared/model/local/local_food.dart';

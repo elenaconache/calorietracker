@@ -1,5 +1,5 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/add_food/food_log.dart';
+import 'package:calorietracker/feature/add_food/data/food_log.dart';
 import 'package:calorietracker/shared/model/food.dart';
 import 'package:calorietracker/shared/model/meal.dart';
 import 'package:calorietracker/shared/service/database/diary_logging_service.dart';
