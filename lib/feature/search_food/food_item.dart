@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/add_food/add_food_arguments.dart';
+import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/home/home_view.dart';
 import 'package:calorietracker/feature/search_food/food_item_controller.dart';
 import 'package:calorietracker/shared/model/food.dart';
@@ -139,11 +139,17 @@ class _FoodItemState extends State<FoodItem> {
         remoteFoodId: widget.remoteFood?.id ?? widget.localFood?.foodId,
       )
           .then((added) {
-        final message = added ? AppStrings.foodLoggedMessage : AppStrings.errorAddFood;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        _handleLogFoodResult(added);
       }));
+    }
+  }
+
+  void _handleLogFoodResult(bool added) {
+    if (context.mounted) {
+      final message = added ? AppStrings.foodLoggedMessage : AppStrings.errorAddFood;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
     }
   }
 

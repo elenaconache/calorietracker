@@ -1,4 +1,4 @@
-import 'package:calorietracker/feature/add_food/add_food_controller.dart';
+import 'package:calorietracker/feature/add_food/logic/add_food_controller.dart';
 import 'package:calorietracker/feature/create_food/create_food_controller.dart';
 import 'package:calorietracker/feature/diary/diary_controller.dart';
 import 'package:calorietracker/feature/login/login_controller.dart';
