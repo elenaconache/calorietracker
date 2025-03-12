@@ -1,5 +1,5 @@
-import 'package:calorietracker/features/create_food/food_error.dart';
-import 'package:calorietracker/features/create_food/food_input.dart';
+import 'package:calorietracker/feature/create_food/data/food_error.dart';
+import 'package:calorietracker/feature/create_food/ui/food_input.dart';
 
 const _acceptableMacrosCaloriesOffset = 20;
 const _maxCholesterolPer100Grams = 10000;

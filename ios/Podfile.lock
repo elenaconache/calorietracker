@@ -2,8 +2,10 @@ PODS:
   - Flutter (1.0.0)
   - flutter_secure_storage (6.0.0):
     - Flutter
-  - isar_flutter_libs (1.0.0):
+  - ObjectBox (4.1.0-sync)
+  - objectbox_sync_flutter_libs (0.0.1):
     - Flutter
+    - ObjectBox (= 4.1.0-sync)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -11,25 +13,30 @@ PODS:
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
-  - isar_flutter_libs (from `.symlinks/plugins/isar_flutter_libs/ios`)
+  - objectbox_sync_flutter_libs (from `.symlinks/plugins/objectbox_sync_flutter_libs/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+
+SPEC REPOS:
+  trunk:
+    - ObjectBox
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
-  isar_flutter_libs:
-    :path: ".symlinks/plugins/isar_flutter_libs/ios"
+  objectbox_sync_flutter_libs:
+    :path: ".symlinks/plugins/objectbox_sync_flutter_libs/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
-  isar_flutter_libs: b69f437aeab9c521821c3f376198c4371fa21073
-  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
+  ObjectBox: 82ecd5139c750d0c152f78cbe0440db3bbe5e4a1
+  objectbox_sync_flutter_libs: fa82af74a6ae10113b74a7a541d0951ccdc25fe1
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
 
 PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2
