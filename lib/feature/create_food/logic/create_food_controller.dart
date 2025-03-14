@@ -28,13 +28,13 @@ class CreateFoodController {
     isLoading.value = true;
     int? localId;
     final createdFood = await getIt<CollectionApiService>().createFood(body: foodInput.addFoodRequest).then((created) async {
-      final foodService = await getIt.getAsync<FoodService>();
+      final foodService =  getIt.get<FoodService>();
       unawaited(foodService.upsertFood(localFood: foodInput.localFood));
       return created;
     }).catchError((error, stackTrace) async {
       if (error is DioException) {
         if (error.isConnectionError) {
-          final foodService = await getIt.getAsync<FoodService>();
+          final foodService =  getIt.get<FoodService>();
           localId = await foodService.upsertFood(localFood: foodInput.localFood);
           return null;
         }

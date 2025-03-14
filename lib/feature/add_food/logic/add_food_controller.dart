@@ -127,7 +127,7 @@ class AddFoodController {
   }
 
   Future<int?> _saveFoodLocally(FoodLog foodLog, String userId) async {
-    final foodService = await getIt.getAsync<FoodService>();
+    final foodService =  getIt.get<FoodService>();
     final localFoodId = await foodService.upsertFood(localFood: foodLog.food.localFood);
     if (localFoodId == null) {
       getIt<LoggingService>().info('Could not save food locally: ${foodLog.food}');

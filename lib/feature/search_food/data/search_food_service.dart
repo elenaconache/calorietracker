@@ -66,7 +66,7 @@ class SearchFoodService {
 
   Future<void> searchLocally({required String query}) async {
     currentSearchQuery = query;
-    final foodService = await getIt.getAsync<FoodService>();
+    final foodService =  getIt.get<FoodService>();
     final results = await foodService.searchFood(query: query);
     if (currentSearchQuery != query) {
       return;

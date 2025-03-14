@@ -61,7 +61,7 @@ class DataSyncService {
       food.foodId = addedFoodsSet.firstWhereOrNull((addedFood) => addedFood.localResourceId == food.id)?.resourceId;
     }
 
-    final foodService = await getIt.getAsync<FoodService>();
+    final foodService =  getIt.get<FoodService>();
     await foodService.upsertFoods(localFoods: foodsToUpdate.toList());
   }
 
