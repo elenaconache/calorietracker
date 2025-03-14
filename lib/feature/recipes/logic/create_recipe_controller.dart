@@ -13,7 +13,9 @@ import 'package:calorietracker/shared/service/api/collection_api_service.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class CreateRecipeController {
   final ValueNotifier<List<RecipeIngredient>> ingredients = ValueNotifier([]);
   final ValueNotifier<Nutrition> recipeNutrition = ValueNotifier(const Nutrition());
@@ -27,18 +29,16 @@ class CreateRecipeController {
     );
   }
 
-  Nutrition get _totalNutrition =>
-      locator<RecipeHelper>().calculateTotalIngredientsNutrition(ingredients: ingredients.value);
+  Nutrition get _totalNutrition => getIt<RecipeHelper>().calculateTotalIngredientsNutrition(ingredients: ingredients.value);
 
-  void updateNutrition({required int cookedQuantity}) =>
-      recipeNutrition.value = locator<RecipeHelper>().calculateRecipeNutrition(
+  void updateNutrition({required int cookedQuantity}) => recipeNutrition.value = getIt<RecipeHelper>().calculateRecipeNutrition(
         ingredients: ingredients.value,
         cookedQuantity: cookedQuantity,
       );
 
   Future<CreateRecipeError> saveRecipe({required String name, required int cookedQuantity}) async {
     isLoading.value = true;
-    final apiService = await locator.getAsync<CollectionApiService>();
+    final apiService = await getIt.getAsync<CollectionApiService>();
     return apiService
         .createRecipe(
           body: AddRecipeRequest(
@@ -59,7 +59,7 @@ class CreateRecipeController {
       if (error is DioException && error.isConnectionError) {
         return CreateRecipeError.connection;
       } else {
-        locator<LoggingService>().handle(error, stackTrace);
+        getIt<LoggingService>().handle(error, stackTrace);
         return CreateRecipeError.unknown;
       }
     });

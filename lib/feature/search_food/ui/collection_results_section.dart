@@ -28,7 +28,7 @@ class _CollectionResultsSectionState extends State<CollectionResultsSection> wit
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final foodSearchService = locator<SearchFoodService>();
+    final foodSearchService = getIt<SearchFoodService>();
     return ValueListenableBuilder(
         valueListenable: foodSearchService.collectionSearchResponse,
         builder: (_, collectionResponse, __) => ValueListenableBuilder(

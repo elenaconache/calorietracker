@@ -20,7 +20,7 @@ class MacrosInputSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final validator = locator<FoodValidator>();
+    final validator = getIt<FoodValidator>();
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(

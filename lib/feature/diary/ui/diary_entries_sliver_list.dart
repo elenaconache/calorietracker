@@ -45,7 +45,7 @@ class DiaryEntriesSliverList extends StatelessWidget {
               background: const SwipeToDeleteBackground(direction: TextDirection.ltr),
               secondaryBackground: const SwipeToDeleteBackground(direction: TextDirection.rtl),
               child: InkWell(
-                onLongPress: locator<DiaryService>().enterEditMode,
+                onLongPress: getIt<DiaryService>().enterEditMode,
                 onTap: () => _onEntryTap(context, entry),
                 child: DiaryRow(diaryEntry: entry),
               ),
@@ -62,8 +62,9 @@ class DiaryEntriesSliverList extends StatelessWidget {
     }
   }
 
-  void _onEntryDismissed(DiaryEntry entry) => unawaited(locator<DiaryService>()
-      .removeSingleDiaryEntry(meal: meal, collectionId: entry.collectionId, localId: entry.localId));
+  void _onEntryDismissed(DiaryEntry entry) => unawaited(
+        getIt<DiaryService>().removeSingleDiaryEntry(meal: meal, collectionId: entry.collectionId, localId: entry.localId),
+      );
 
   void _onEntryTap(BuildContext context, DiaryEntry entry) {
     if (context.mounted) {

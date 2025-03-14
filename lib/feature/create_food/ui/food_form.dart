@@ -61,7 +61,7 @@ class FoodForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final validator = locator<FoodValidator>();
+    final validator = getIt<FoodValidator>();
     return ListView(
       padding: const EdgeInsets.only(top: 20),
       children: [

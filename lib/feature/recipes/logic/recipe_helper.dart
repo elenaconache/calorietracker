@@ -1,6 +1,8 @@
 import 'package:calorietracker/shared/model/nutrition.dart';
 import 'package:calorietracker/shared/model/recipe_ingredient.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class RecipeHelper {
   Nutrition calculateTotalIngredientsNutrition({required List<RecipeIngredient> ingredients}) => ingredients.fold(
         const Nutrition(),

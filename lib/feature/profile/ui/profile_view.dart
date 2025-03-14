@@ -50,7 +50,7 @@ class _ProfileViewState extends State<ProfileView> with SingleTickerProviderStat
           ),
           ProfileItem(
             onTap: () {
-              final dataSyncService = locator<DataSyncService>();
+              final dataSyncService = getIt<DataSyncService>();
               if (!dataSyncService.isUploadInProgress) {
                 _rotationController.repeat();
                 dataSyncService.uploadLocalData().then((_) => _rotationController.stop());

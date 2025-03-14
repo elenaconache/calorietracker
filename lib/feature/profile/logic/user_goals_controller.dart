@@ -8,7 +8,9 @@ import 'package:calorietracker/shared/service/user_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class UserGoalsController {
   final ValueNotifier<FutureResponse<UserGoals>> userGoals = ValueNotifier(FutureLoading());
   UserGoals? savedUserGoals;
@@ -16,14 +18,13 @@ class UserGoalsController {
   late final ValueNotifier<MacroGoals> macroGoals;
 
   Future<void> fetchStoredUserGoals() async {
-    final storageService = locator<SecureStorageService>();
-    final currentUser = locator<UserService>().selectedUser.value?.username;
+    final storageService = getIt<SecureStorageService>();
+    final currentUser = getIt<UserService>().selectedUser.value?.username;
     if (currentUser == null) {
       userGoals.value = FutureError();
     } else {
       final storedGoals = await storageService.getList(key: usersGoalsKey, fromJson: UserGoals.fromJson);
-      savedUserGoals =
-          storedGoals.firstWhereOrNull((goals) => goals.username == currentUser) ?? UserGoals(username: currentUser);
+      savedUserGoals = storedGoals.firstWhereOrNull((goals) => goals.username == currentUser) ?? UserGoals(username: currentUser);
       userGoals.value = FutureSuccess(data: savedUserGoals!);
       macroGoals = ValueNotifier(_calculateGoalsFromMacrosGrams().macroGoals);
     }

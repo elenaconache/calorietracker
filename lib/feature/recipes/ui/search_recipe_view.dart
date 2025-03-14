@@ -28,7 +28,7 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
   void initState() {
     super.initState();
     _searchFieldController = TextEditingController()..addListener(_onSearchQueryChanged);
-    _controller = locator<SearchRecipeController>();
+    _controller = getIt<SearchRecipeController>();
     WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(_controller.fetchRecipes()));
   }
 

@@ -60,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
             navigatorKey: recipeNavigatorKey,
           );
         }
-        locator<LoggingService>().info('Unknown tab accessed in bottom navigation at index $index');
+        getIt<LoggingService>().info('Unknown tab accessed in bottom navigation at index $index');
         return CupertinoTabView(builder: (context) => const GenericErrorView());
       },
     );

@@ -12,7 +12,7 @@ class DiaryOverviewCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diaryService = locator<DiaryService>();
+    final diaryService = getIt<DiaryService>();
     return AppCarousel(items: [
       Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -51,26 +51,27 @@ class DiaryOverviewCarousel extends StatelessWidget {
                           }
                           final nutrition = diaryService.selectedDayNutrition;
                           return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                DottedItem(
-                                  label: AppStrings.carbohydratesLabel,
-                                  value: nutrition.formattedCarbs,
-                                ),
-                                DottedItem(
-                                  label: AppStrings.fiberLabel,
-                                  value: nutrition.formattedFiber,
-                                ),
-                                DottedItem(
-                                  label: AppStrings.netCarbsLabel,
-                                  value: nutrition.formattedNetCarbs,
-                                ),
-                                DottedItem(
-                                  label: AppStrings.sugarLabel,
-                                  value: nutrition.formattedSugar,
-                                ),
-                              ]);
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              DottedItem(
+                                label: AppStrings.carbohydratesLabel,
+                                value: nutrition.formattedCarbs,
+                              ),
+                              DottedItem(
+                                label: AppStrings.fiberLabel,
+                                value: nutrition.formattedFiber,
+                              ),
+                              DottedItem(
+                                label: AppStrings.netCarbsLabel,
+                                value: nutrition.formattedNetCarbs,
+                              ),
+                              DottedItem(
+                                label: AppStrings.sugarLabel,
+                                value: nutrition.formattedSugar,
+                              ),
+                            ],
+                          );
                         }),
                   ))))
     ]);

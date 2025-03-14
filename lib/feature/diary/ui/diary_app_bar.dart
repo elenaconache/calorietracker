@@ -11,7 +11,7 @@ class DiaryAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diaryService = locator<DiaryService>();
+    final diaryService = getIt<DiaryService>();
     return ValueListenableBuilder(
       valueListenable: diaryService.diaryEditModeEnabled,
       builder: (context, editable, _) => AppBar(
@@ -39,5 +39,5 @@ class DiaryAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
-  void _onDonePressed() => unawaited(locator<DiaryService>().removeCheckedDiaryEntries());
+  void _onDonePressed() => unawaited(getIt<DiaryService>().removeCheckedDiaryEntries());
 }

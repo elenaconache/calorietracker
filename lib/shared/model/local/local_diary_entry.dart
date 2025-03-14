@@ -64,11 +64,11 @@ class LocalDiaryEntry {
   // @ignore
   AddLocalDiaryEntryRequest get addLocalDiaryEntryRequest {
     if (!localFood.hasValue) {
-      locator<LoggingService>().info('Missing food for adding diary entry');
+      getIt<LoggingService>().info('Missing food for adding diary entry');
     }
     return AddLocalDiaryEntryRequest(
       localId: localId,
-      entryDate: locator<DateFormattingService>().format(
+      entryDate: getIt<DateFormattingService>().format(
         dateTime: entryDate.toString(),
         format: collectionApiDateFormat,
       ),

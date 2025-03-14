@@ -28,7 +28,7 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   @override
   void initState() {
     super.initState();
-    _foodSearchService = locator<SearchFoodService>();
+    _foodSearchService = getIt<SearchFoodService>();
     _searchQueryTextController = TextEditingController()..addListener(_onSearchQueryChanged);
   }
 

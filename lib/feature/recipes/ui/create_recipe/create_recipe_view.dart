@@ -31,7 +31,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    _controller = locator<CreateRecipeController>();
+    _controller = getIt<CreateRecipeController>();
     _scrollController = ScrollController();
     _formKey = GlobalKey<FormState>(debugLabel: 'createRecipeForm');
     _servingSizeTextController = TextEditingController()
@@ -220,7 +220,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
       if (context.mounted) {
         Navigator.of(context).pop();
       } else {
-        locator<LoggingService>().info('Context unmounted. Could not pop create recipe screen.');
+        getIt<LoggingService>().info('Context unmounted. Could not pop create recipe screen.');
       }
     } else {
       if (context.mounted) {
@@ -228,7 +228,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
           SnackBar(content: Text(AppStrings.errorCreatingRecipeMessage)),
         );
       } else {
-        locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
+        getIt<LoggingService>().info('Could not show error snack bar. Context unmounted.');
       }
     }
   }

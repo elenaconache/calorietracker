@@ -10,7 +10,7 @@ class SelectedDayLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diaryService = locator<DiaryService>();
+    final diaryService = getIt<DiaryService>();
     return ValueListenableBuilder(
       valueListenable: diaryService.diaryEditModeEnabled,
       builder: (_, editable, child) => Row(
@@ -59,7 +59,7 @@ class SelectedDayLine extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              locator<DateFormattingService>().formatUserFriendly(dateTime: selectedDay),
+              getIt<DateFormattingService>().formatUserFriendly(dateTime: selectedDay),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),

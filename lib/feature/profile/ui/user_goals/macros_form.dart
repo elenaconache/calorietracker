@@ -18,7 +18,7 @@ class MacrosForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foodValidator = locator<FoodValidator>();
+    final foodValidator = getIt<FoodValidator>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

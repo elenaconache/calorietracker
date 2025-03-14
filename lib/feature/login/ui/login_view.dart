@@ -23,7 +23,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     _usernameController = TextEditingController();
-    _loginController = locator<LoginController>();
+    _loginController = getIt<LoginController>();
     _usernameController.addListener(_onUsernameChanged);
     super.initState();
   }
@@ -109,7 +109,7 @@ class _LoginViewState extends State<LoginView> {
           if (context.mounted) {
             Navigator.of(context).pushReplacementNamed(Routes.home.path);
           } else {
-            locator<LoggingService>().info('Could not navigate home. Context unmounted.');
+            getIt<LoggingService>().info('Could not navigate home. Context unmounted.');
           }
         }));
   }

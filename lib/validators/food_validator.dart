@@ -1,5 +1,7 @@
 import 'package:calorietracker/ui/app_strings.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class FoodValidator {
   String? validateMicronutrient(String? text) {
     if (text == null || text.isEmpty) {

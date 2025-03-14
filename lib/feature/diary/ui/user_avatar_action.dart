@@ -10,7 +10,7 @@ class UserAvatarAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: locator<UserService>().selectedUser,
+      valueListenable: getIt<UserService>().selectedUser,
       builder: (_, selectedUser, __) => selectedUser == null
           ? const SizedBox.shrink()
           : Padding(

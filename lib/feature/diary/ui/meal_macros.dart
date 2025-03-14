@@ -14,7 +14,7 @@ class MealMacros extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diaryService = locator<DiaryService>();
+    final diaryService = getIt<DiaryService>();
     return ValueListenableBuilder(
         valueListenable: diaryService.dayMealEntries,
         builder: (context, dayMealEntries, __) {

@@ -24,7 +24,7 @@ class _BrandedResultsSectionState extends State<BrandedResultsSection> with Auto
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final foodSearchService = locator<SearchFoodService>();
+    final foodSearchService = getIt<SearchFoodService>();
     return ValueListenableBuilder(
         valueListenable: foodSearchService.nutritionixSearchResponse,
         builder: (context, searchResponse, child) {

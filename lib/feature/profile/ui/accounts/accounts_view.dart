@@ -10,7 +10,7 @@ class AccountsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userService = locator<UserService>();
+    final userService = getIt<UserService>();
     return Scaffold(
         appBar: AppBar(title: Text(AppStrings.accountsTitle)),
         body: SafeArea(
@@ -27,8 +27,7 @@ class AccountsView extends StatelessWidget {
                       builder: (_, users, ___) => ValueListenableBuilder(
                             valueListenable: userService.selectedUser,
                             builder: (_, selectedUser, ___) {
-                              final unselectedUsers =
-                                  users.where((user) => selectedUser?.username != user.username).toList();
+                              final unselectedUsers = users.where((user) => selectedUser?.username != user.username).toList();
                               return ListView.builder(
                                 itemBuilder: (context, index) => UserItem(user: unselectedUsers[index]),
                                 itemCount: unselectedUsers.length,
@@ -37,8 +36,10 @@ class AccountsView extends StatelessWidget {
                           ))),
               Padding(
                 padding: const EdgeInsets.only(top: 12, bottom: 12, left: 24, right: 24),
-                child:
-                    FilledButton(onPressed: () => _navigateToLogin(context), child: Text(AppStrings.addAccountLabel)),
+                child: FilledButton(
+                  onPressed: () => _navigateToLogin(context),
+                  child: Text(AppStrings.addAccountLabel),
+                ),
               ),
             ],
           ),

@@ -17,7 +17,9 @@ import 'package:calorietracker/shared/service/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class AddFoodController {
   final ValueNotifier<Meal?> selectedMeal = ValueNotifier(null);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
@@ -57,9 +59,9 @@ class AddFoodController {
     Meal? initialMeal,
   }) async {
     isLoading.value = true;
-    final username = locator<UserService>().selectedUser.value?.username;
+    final username = getIt<UserService>().selectedUser.value?.username;
     if (username?.isEmpty ?? true) {
-      locator<LoggingService>().info('Could not log food. Missing username.');
+      getIt<LoggingService>().info('Could not log food. Missing username.');
       // TODO: navigate to login screen and show a snack bar saying the session expired
     } else {
       final updatesExistingLog = [remoteDiaryEntryId, localDiaryEntryId].any((id) => id != null);
@@ -67,11 +69,11 @@ class AddFoodController {
 
       // TODO: API call to update entry; on error, call remove and create locally
       if (updatesExistingLog) {
-        await locator<DiaryService>().removeSingleDiaryEntry(meal: foodLog.meal, collectionId: remoteDiaryEntryId, localId: localDiaryEntryId);
+        await getIt<DiaryService>().removeSingleDiaryEntry(meal: foodLog.meal, collectionId: remoteDiaryEntryId, localId: localDiaryEntryId);
       }
 
       if (foodLog.localFoodId != null) {
-        await locator<DiaryLoggingService>().saveDiaryEntryLocally(foodLog, username);
+        await getIt<DiaryLoggingService>().saveDiaryEntryLocally(foodLog, username);
       } else {
         await _saveRemotely(username!, foodLog);
       }
@@ -90,7 +92,7 @@ class AddFoodController {
         if (error is DioException && error.isConnectionError) {
           localFoodId = await _saveFoodLocally(foodLog, userId);
         } else {
-          locator<LoggingService>().handle(error, stackTrace);
+          getIt<LoggingService>().handle(error, stackTrace);
           hideLoading();
           throw error;
         }
@@ -100,7 +102,7 @@ class AddFoodController {
     } else {
       remoteFoodId = foodLog.food.id;
     }
-    await locator<DiaryLoggingService>().createDiaryEntry(
+    await getIt<DiaryLoggingService>().createDiaryEntry(
       remoteFoodId: remoteFoodId,
       username: userId,
       foodLog: foodLog,
@@ -112,23 +114,23 @@ class AddFoodController {
     if (!isLoading.value) {
       isLoading.value = true;
     }
-    final collectionApiService = await locator.getAsync<CollectionApiService>();
+    final collectionApiService = await getIt.getAsync<CollectionApiService>();
     return collectionApiService.createFood(body: food.addFoodRequest).then((createdFood) => createdFood?.id).catchError((error, stackTrace) {
       if (error is DioException && error.response?.statusCode == HttpStatus.conflict) {
         final errorsResponse = CreateFoodErrorsResponse.fromJson(error.response?.data);
         return errorsResponse.errors.firstOrNull?.resource.id;
       } else {
-        locator<LoggingService>().handle(error, stackTrace);
+        getIt<LoggingService>().handle(error, stackTrace);
         return null;
       }
     });
   }
 
   Future<int?> _saveFoodLocally(FoodLog foodLog, String userId) async {
-    final foodService = await locator.getAsync<FoodService>();
+    final foodService = await getIt.getAsync<FoodService>();
     final localFoodId = await foodService.upsertFood(localFood: foodLog.food.localFood);
     if (localFoodId == null) {
-      locator<LoggingService>().info('Could not save food locally: ${foodLog.food}');
+      getIt<LoggingService>().info('Could not save food locally: ${foodLog.food}');
       isLoading.value = false;
       throw Exception('Could not save food locally. Food: ${foodLog.food}.');
     }

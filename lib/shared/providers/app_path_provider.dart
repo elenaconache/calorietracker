@@ -1,18 +1,13 @@
+import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 
+@lazySingleton
 class AppPathProvider {
-  String? _path;
+  late String path;
 
-  String get path {
-    if (_path != null) {
-      return _path!;
-    } else {
-      throw Exception('Application path not initialized');
-    }
-  }
-
+  @PostConstruct(preResolve: true)
   Future<void> initPath() async {
     final dir = await getApplicationDocumentsDirectory();
-    _path = dir.path;
+    path = dir.path;
   }
 }

@@ -30,7 +30,7 @@ class DiaryEntry {
       : collectionId = localEntry.entryId,
         localId = localEntry.localId,
         food = Food.local(localFood: localEntry.localFood.target!),
-        date = locator<DateFormattingService>().format(
+        date = getIt<DateFormattingService>().format(
           dateTime: localEntry.entryDate.toString(),
           format: collectionApiDateFormat,
         ),

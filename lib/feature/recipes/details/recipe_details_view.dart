@@ -36,7 +36,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _controller = locator<RecipeDetailsController>();
+    _controller = getIt<RecipeDetailsController>();
     _formKey = GlobalKey<FormState>(debugLabel: 'recipeDetailsForm');
     _nameTextFieldController = TextEditingController();
     _nameTextFieldController.text = widget.arguments.recipeName;

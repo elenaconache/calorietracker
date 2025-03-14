@@ -53,9 +53,9 @@ class CopyDiaryModal extends StatelessWidget {
   }
 
   void _copyFromPreviousDay() {
-    final previousDay = locator<DiaryService>().selectedDayDateTime?.subtract(const Duration(days: 1));
+    final previousDay = getIt<DiaryService>().selectedDayDateTime?.subtract(const Duration(days: 1));
     unawaited(
-      locator<DiaryLoggingService>().copyDiary(meal: meal, fromDate: previousDay).then((copied) {
+      getIt<DiaryLoggingService>().copyDiary(meal: meal, fromDate: previousDay).then((copied) {
         if (!copied) {
           ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(
             SnackBar(
@@ -70,7 +70,7 @@ class CopyDiaryModal extends StatelessWidget {
 
   void _copyToToday() {
     unawaited(
-      locator<DiaryLoggingService>().copyDiary(meal: meal, toDate: DateTime.now()).then((copied) {
+      getIt<DiaryLoggingService>().copyDiary(meal: meal, toDate: DateTime.now()).then((copied) {
         if (!copied) {
           ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(
             SnackBar(
@@ -93,7 +93,7 @@ class CopyDiaryModal extends StatelessWidget {
     ).then((selectedDate) {
       if (selectedDate != null) {
         unawaited(
-          locator<DiaryLoggingService>()
+          getIt<DiaryLoggingService>()
               .copyDiary(meal: meal, fromDate: isFromSelection ? selectedDate : null, toDate: isFromSelection ? null : selectedDate)
               .then((copied) {
             if (!copied) {

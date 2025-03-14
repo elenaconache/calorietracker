@@ -5,11 +5,14 @@ import 'package:calorietracker/shared/model/local/local_food.dart';
 import 'dart:core';
 
 import 'package:collection/collection.dart';
+import 'package:injectable/injectable.dart' hide Order;
 
+@lazySingleton
 class DatabaseRepository {
   late final Store _store;
 
-  Future<void> init(String appDirectory) async {
+  @PostConstruct(preResolve: true)
+  Future<void> init({@Named('appDirectoryPath') String? appDirectory}) async {
     _store = await openStore(directory: appDirectory);
   }
 

@@ -7,7 +7,9 @@ import 'package:calorietracker/shared/service/diary_service.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:calorietracker/shared/service/user_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class FoodItemController {
   final ValueNotifier<bool> isLoggingLoading = ValueNotifier(false);
 
@@ -19,20 +21,20 @@ class FoodItemController {
     required double servingQuantity,
   }) async {
     isLoggingLoading.value = true;
-    final date = DateTime.tryParse(locator<DiaryService>().selectedDay.value);
+    final date = DateTime.tryParse(getIt<DiaryService>().selectedDay.value);
     final bool added;
     if (date == null) {
       added = false;
-      locator<LoggingService>().info('Could not log food. No selected diary date.');
+      getIt<LoggingService>().info('Could not log food. No selected diary date.');
     } else {
-      final username = locator<UserService>().selectedUser.value?.username;
+      final username = getIt<UserService>().selectedUser.value?.username;
       if (username == null) {
         added = false;
-        locator<LoggingService>().info('Could not log food. Missing username.');
+        getIt<LoggingService>().info('Could not log food. Missing username.');
         // TODO: navigate to login screen and show a snack bar saying the session expired
       } else {
         final results = await Future.wait([
-          locator<DiaryLoggingService>()
+          getIt<DiaryLoggingService>()
               .createDiaryEntry(
                 remoteFoodId: remoteFoodId,
                 username: username,

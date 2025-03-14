@@ -1,21 +1,24 @@
 import 'dart:io';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/shared/interceptor/logging_interceptor.dart';
 import 'package:calorietracker/shared/providers/app_path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class DioProvider {
-  CacheStore? _cacheStore;
-  DioCacheInterceptor? _cacheInterceptor;
+  final Dio dio;
 
-  Future<DioCacheInterceptor> get cacheInterceptor async {
-    final pathProvider = await locator.getAsync<AppPathProvider>();
-    _cacheStore = HiveCacheStore('${pathProvider.path}/cache/api');
+  DioProvider(this.dio);
+
+  @factoryMethod
+  static Future<DioProvider> buildDio({@factoryParam String? baseUrl, @factoryParam Map<String, String>? headers}) async {
+    final pathProvider = getIt.get<AppPathProvider>();
+    final cacheStore = HiveCacheStore('${pathProvider.path}/cache/api');
     final cacheOptions = CacheOptions(
-      store: _cacheStore,
+      store: cacheStore,
       hitCacheOnErrorExcept: [
         HttpStatus.notFound,
         HttpStatus.unauthorized,
@@ -24,19 +27,15 @@ class DioProvider {
       policy: CachePolicy.refresh,
       maxStale: const Duration(days: 7),
     );
-    return DioCacheInterceptor(options: cacheOptions);
-  }
-
-  Future<Dio> buildDio({required String baseUrl, Map<String, String> headers = const {}}) async {
-    _cacheInterceptor ??= await cacheInterceptor;
+    final cacheInterceptor = DioCacheInterceptor(options: cacheOptions);
     final dio = Dio(BaseOptions(
       connectTimeout: const Duration(seconds: 9),
       receiveTimeout: const Duration(seconds: 9),
-      baseUrl: baseUrl,
+      baseUrl: baseUrl ?? '',
     ));
-    dio.interceptors.add(_cacheInterceptor!);
-    dio.interceptors.add(locator<LoggingInterceptor>());
-    dio.options.headers = headers;
-    return dio;
+    dio.interceptors.add(cacheInterceptor);
+    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+    dio.options.headers = headers ?? {};
+    return DioProvider(dio);
   }
 }

@@ -7,14 +7,16 @@ import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:calorietracker/shared/service/secure_storage_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class UserService {
   final ValueNotifier<bool> isLoggedIn = ValueNotifier(false);
   final ValueNotifier<User?> selectedUser = ValueNotifier(null);
   final ValueNotifier<List<User>> users = ValueNotifier([]);
 
   Future<void> fetchLoggedInState() async {
-    final storageService = locator<SecureStorageService>();
+    final storageService = getIt<SecureStorageService>();
     final username = await storageService.get(key: selectedUserKey);
     if (username != null) {
       final users = await storageService.getList(key: usersKey, fromJson: (json) => User.fromJson(json));
@@ -29,22 +31,21 @@ class UserService {
   void selectUser(String username) {
     final selection = users.value.firstWhereOrNull((user) => user.username == username);
     if (selection == null) {
-      locator<LoggingService>()
-          .info('Could not select user with id $username. There is no user stored locally with the given id.');
+      getIt<LoggingService>().info('Could not select user with id $username. There is no user stored locally with the given id.');
     } else {
       selectedUser.value = selection;
-      unawaited(locator<SecureStorageService>().save(key: selectedUserKey, value: username));
+      unawaited(getIt<SecureStorageService>().save(key: selectedUserKey, value: username));
       unawaited(fetchUserData());
     }
   }
 
-  Future<void> fetchUserData() async => await locator<DiaryService>().fetchDiary();
+  Future<void> fetchUserData() async => await getIt<DiaryService>().fetchDiary();
 
   void logout({required String username}) {
     final updatedUsers = List<User>.from(users.value);
     updatedUsers.removeWhere((user) => user.username == username);
     users.value = updatedUsers;
-    final storageService = locator<SecureStorageService>();
+    final storageService = getIt<SecureStorageService>();
     if (users.value.isEmpty) {
       unawaited(storageService.delete(key: usersKey));
     } else {

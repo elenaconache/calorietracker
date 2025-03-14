@@ -55,7 +55,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   @override
   void initState() {
     super.initState();
-    _controller = locator<CreateFoodController>();
+    _controller = getIt<CreateFoodController>();
     _initTextControllers();
     _addTextListeners();
 
@@ -170,7 +170,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
       if (isNutritionValid) {
         unawaited(_controller.createFood(foodInput: _foodInput).then((response) {
           if (response.localId == null && response.createdFoodId == null) {
-            locator<LoggingService>().info('Could not save food locally neither on the API.');
+            getIt<LoggingService>().info('Could not save food locally neither on the API.');
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(AppStrings.errorCreateFood)),
@@ -192,7 +192,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                 }
               });
             } else {
-              locator<LoggingService>().info('Could not navigate to add food screen. Context unmounted.');
+              getIt<LoggingService>().info('Could not navigate to add food screen. Context unmounted.');
             }
           }
         }));

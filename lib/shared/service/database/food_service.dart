@@ -3,7 +3,9 @@ import 'package:calorietracker/shared/model/local/local_diary_entry.dart';
 import 'package:calorietracker/shared/model/local/local_food.dart';
 import 'package:calorietracker/shared/service/database/database_repository.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class FoodService {
   final DatabaseRepository database;
 
@@ -11,23 +13,23 @@ class FoodService {
 
   Future<int?> upsertFood({required LocalFood localFood}) async {
     final id = await _writeFood(localFood).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
       return null;
     });
-    locator<LoggingService>().info('upsert food $localFood');
+    getIt<LoggingService>().info('upsert food $localFood');
     return id;
   }
 
   Future<void> upsertFoods({required List<LocalFood> localFoods}) async {
     await _writeFoods(localFoods).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
     });
-    locator<LoggingService>().info('upsert foods $localFoods');
+    getIt<LoggingService>().info('upsert foods $localFoods');
   }
 
   Future<List<LocalFood>> getFoodsPendingUpload() async {
     return _readPendingFoods().catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
       return <LocalFood>[];
     });
   }

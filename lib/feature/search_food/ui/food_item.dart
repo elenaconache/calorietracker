@@ -44,7 +44,7 @@ class _FoodItemState extends State<FoodItem> {
   @override
   void initState() {
     super.initState();
-    _controller = locator<FoodItemController>();
+    _controller = getIt<FoodItemController>();
   }
 
   @override
@@ -126,7 +126,7 @@ class _FoodItemState extends State<FoodItem> {
 
   void _onAddPressed(BuildContext context) {
     if (widget.localFood == null && widget.remoteFood == null) {
-      locator<LoggingService>().info('Missing food data, could not log to diary.');
+      getIt<LoggingService>().info('Missing food data, could not log to diary.');
     } else if (widget.meal == null) {
       // TODO: quick add ingredient to recipe
     } else {
@@ -163,7 +163,7 @@ class _FoodItemState extends State<FoodItem> {
       );
 
   String get _caloriesText {
-    final numericFormatter = locator<NumericFormattingService>();
+    final numericFormatter = getIt<NumericFormattingService>();
     return AppStrings.caloriesServingShortLabel(
       widget.nutritionPerServingQuantity.calories.toStringAsFixed(0),
       numericFormatter.formatDecimals(value: widget.servingQuantity),
@@ -173,7 +173,7 @@ class _FoodItemState extends State<FoodItem> {
 
   void _navigateToAddFood(BuildContext context) async {
     if (widget.remoteFood == null && widget.localFood == null) {
-      locator<LoggingService>().info('Attempt to log food when both collection and local search result were empty.');
+      getIt<LoggingService>().info('Attempt to log food when both collection and local search result were empty.');
       return;
     }
     final result = await Navigator.pushNamed(

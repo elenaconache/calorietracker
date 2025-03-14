@@ -18,17 +18,19 @@ import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:calorietracker/shared/service/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class DiaryLoggingService {
   final ValueNotifier<Map<Meal, bool>> mealsLoading = ValueNotifier({});
 
   Future<bool> copyDiary({Meal? meal, DateTime? fromDate, DateTime? toDate}) async {
     _updateLoadingState(meal, true);
     final DateTime copiedDate;
-    final diaryService = locator<DiaryService>();
+    final diaryService = getIt<DiaryService>();
     final selectedDay = diaryService.selectedDayDateTime;
     if (selectedDay == null) {
-      locator<LoggingService>().info('Could not copy meal or day. Selected diary day was null.');
+      getIt<LoggingService>().info('Could not copy meal or day. Selected diary day was null.');
       _updateLoadingState(meal, false);
       return false;
     }
@@ -67,11 +69,11 @@ class DiaryLoggingService {
     int? localFoodId,
   }) async {
     if (remoteFoodId != null) {
-      final collectionApiService = await locator.getAsync<CollectionApiService>();
+      final collectionApiService = await getIt.getAsync<CollectionApiService>();
       await collectionApiService
           .createDiaryEntry(
         body: AddDiaryEntryRequest(
-          entryDate: locator<DateFormattingService>().format(
+          entryDate: getIt<DateFormattingService>().format(
             dateTime: foodLog.date.toString(),
             format: collectionApiDateFormat,
           ),
@@ -83,12 +85,12 @@ class DiaryLoggingService {
         ),
       )
           .then((_) {
-        unawaited(locator<DiaryService>().fetchDiary());
+        unawaited(getIt<DiaryService>().fetchDiary());
       }).catchError((error, stackTrace) async {
         if (error is DioException && error.isConnectionError) {
           await saveDiaryEntryLocally(foodLog, username);
         } else {
-          locator<LoggingService>().handle(error, stackTrace);
+          getIt<LoggingService>().handle(error, stackTrace);
           throw error;
         }
       });
@@ -98,40 +100,38 @@ class DiaryLoggingService {
   }
 
   Future<void> saveDiaryEntryLocally(FoodLog foodLog, String? username) async {
-    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
-    final foodService = await locator.getAsync<FoodService>();
+    final diaryEntriesService = getIt.get<DiaryEntryService>();
+    final foodService = getIt.get<FoodService>();
     final localFoodId = foodLog.localFoodId ?? await foodService.upsertFood(localFood: foodLog.food.localFood);
     if (localFoodId == null) {
-      locator<LoggingService>().info('Could not save local diary entry. Missing local food id.');
+      getIt<LoggingService>().info('Could not save local diary entry. Missing local food id.');
       throw Exception('Could not save local diary entry with missing local food id.');
     } else {
       final localDiaryFood = foodLog.food.localFood..id = localFoodId;
-      await diaryEntriesService
-          .upsertDiaryEntry(localDiaryEntry: _getLocalDiaryEntry(localDiaryFood, foodLog, username))
-          .then((_) async {
-        unawaited(locator<DiaryService>().fetchDiary(date: foodLog.date));
+      await diaryEntriesService.upsertDiaryEntry(localDiaryEntry: _getLocalDiaryEntry(localDiaryFood, foodLog, username)).then((_) async {
+        unawaited(getIt<DiaryService>().fetchDiary(date: foodLog.date));
       }).catchError((error, stackTrace) {
-        locator<LoggingService>().handle(error, stackTrace);
+        getIt<LoggingService>().handle(error, stackTrace);
         throw error;
       });
     }
   }
 
   LocalDiaryEntry _getLocalDiaryEntry(LocalFood localDiaryFood, FoodLog foodLog, String? userId) => LocalDiaryEntry.withParams(
-    localFoodId:  localDiaryFood.id,
-    entryDate : foodLog.date,
-    servingQuantity: foodLog.servingQuantity,
-    unitId : gramsUnitId,
-    username : userId!,
-  )..meal = foodLog.meal;
+        localFoodId: localDiaryFood.id,
+        entryDate: foodLog.date,
+        servingQuantity: foodLog.servingQuantity,
+        unitId: gramsUnitId,
+        username: userId!,
+      )..meal = foodLog.meal;
 
   // TODO: call API to copy from date to date, given meal or the whole day, if online
   Future<bool> copyDiaryEntries({
     required List<MealEntriesList> mealsEntries,
     required DateTime toDate,
   }) async {
-    final diaryEntriesService = await locator.getAsync<DiaryEntryService>();
-    final username = locator<UserService>().selectedUser.value?.username;
+    final diaryEntriesService = getIt.get<DiaryEntryService>();
+    final username = getIt<UserService>().selectedUser.value?.username;
     if (username == null) {
       return false;
     } else {
@@ -142,15 +142,15 @@ class DiaryLoggingService {
           pushFoods: true,
           localEntries: entries.map((entry) {
             final copiedEntry = LocalDiaryEntry.withParams(
-              entryDate : toDate,
-              username : entry.username,
-              unitId : entry.unitId,
-              servingQuantity : entry.servingQuantity,
+              entryDate: toDate,
+              username: entry.username,
+              unitId: entry.unitId,
+              servingQuantity: entry.servingQuantity,
               localFoodId: entry.localFood.targetId,
             )..meal = entry.meal;
             return copiedEntry;
           }).toList());
-      await locator<DiaryService>().fetchDiary(date: toDate);
+      await getIt<DiaryService>().fetchDiary(date: toDate);
       return true;
     }
   }

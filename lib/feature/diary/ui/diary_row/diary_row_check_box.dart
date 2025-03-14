@@ -10,7 +10,7 @@ class DiaryRowCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diaryService = locator<DiaryService>();
+    final diaryService = getIt<DiaryService>();
     return ValueListenableBuilder(
         valueListenable: diaryService.dayMealEntries,
         builder: (context, _, __) => ValueListenableBuilder(
@@ -19,16 +19,17 @@ class DiaryRowCheckBox extends StatelessWidget {
                 ? ValueListenableBuilder(
                     valueListenable: diaryService.checkedDiaryEntries,
                     builder: (context, _, __) => Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: Checkbox(
-                            value: diaryService.isEntryChecked(entry: diaryEntry),
-                            onChanged: (checked) =>
-                                diaryService.onDiaryEntryCheckChanged(entry: diaryEntry, checked: checked),
-                          ),
-                        )))
+                      padding: const EdgeInsets.only(right: 8),
+                      child: SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: Checkbox(
+                          value: diaryService.isEntryChecked(entry: diaryEntry),
+                          onChanged: (checked) => diaryService.onDiaryEntryCheckChanged(entry: diaryEntry, checked: checked),
+                        ),
+                      ),
+                    ),
+                  )
                 : const SizedBox.shrink()));
   }
 }

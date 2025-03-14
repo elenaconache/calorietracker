@@ -26,8 +26,8 @@ class _DiaryViewState extends State<DiaryView> {
 
   @override
   void initState() {
-    _diaryService = locator<DiaryService>();
-    _controller = locator<DiaryController>();
+    _diaryService = getIt<DiaryService>();
+    _controller = getIt<DiaryController>();
     super.initState();
   }
 
@@ -43,7 +43,7 @@ class _DiaryViewState extends State<DiaryView> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: const DiaryAppBar(),
         body: RefreshIndicator(
-          onRefresh: locator<DataSyncService>().uploadLocalData,
+          onRefresh: getIt<DataSyncService>().uploadLocalData,
           child: CustomScrollView(
             slivers: [
               const SliverPadding(padding: EdgeInsets.only(top: 12)),

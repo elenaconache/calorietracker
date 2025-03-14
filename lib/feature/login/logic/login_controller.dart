@@ -10,7 +10,9 @@ import 'package:calorietracker/shared/service/api/user_api_service.dart';
 import 'package:calorietracker/shared/service/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class LoginController {
   final ValueNotifier<LoginState> loginState = ValueNotifier(const LoginState());
 
@@ -29,7 +31,7 @@ class LoginController {
     if (await _isUserAlreadySaved(username)) {
       onError(LoginError.alreadyLoggedIn);
     } else {
-      final apiService = await locator.getAsync<UserApiService>();
+      final apiService = await getIt.getAsync<UserApiService>();
       await apiService.getUserId(username: username).then((user) async {
         if (user.username.isNotEmpty) {
           await _saveUser(user.username);
@@ -39,7 +41,7 @@ class LoginController {
         }
       }).catchError((error, stackTrace) {
         final LoginError loginError;
-        locator<LoggingService>().handle(error, stackTrace);
+        getIt<LoggingService>().handle(error, stackTrace);
         if (error is DioException) {
           if (error.isConnectionError) {
             loginError = LoginError.connection;
@@ -58,25 +60,25 @@ class LoginController {
   }
 
   Future<void> _saveUser(String username) async {
-    final storageService = locator<SecureStorageService>();
+    final storageService = getIt<SecureStorageService>();
     await storageService.save(key: selectedUserKey, value: username).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
     });
     var storedUsers = await storageService.getList<User>(
       key: usersKey,
       fromJson: (userJson) => User.fromJson(userJson),
     );
     if (storedUsers.any((user) => user.username == username)) {
-      locator<LoggingService>().info('Skipping saving username as it was already stored.');
+      getIt<LoggingService>().info('Skipping saving username as it was already stored.');
     } else {
       storedUsers.add(User(username: username));
       await storageService.saveList(key: usersKey, list: storedUsers, toJson: (user) => user.toJson());
     }
-    await locator<UserService>().fetchLoggedInState();
+    await getIt<UserService>().fetchLoggedInState();
   }
 
   Future<bool> _isUserAlreadySaved(String username) async {
-    final storageService = locator<SecureStorageService>();
+    final storageService = getIt<SecureStorageService>();
     final storedUsers = await storageService.getList<User>(
       key: usersKey,
       fromJson: (userJson) => User.fromJson(userJson),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injectable/injectable.dart';
 
 const _androidOptions = AndroidOptions(encryptedSharedPreferences: true);
 const _iosOptions = IOSOptions(
@@ -11,21 +12,22 @@ const selectedUserKey = 'selectedUser';
 const usersKey = 'users';
 const usersGoalsKey = 'usersGoals';
 
+@injectable
 class SecureStorageService {
-  Future<String?> get({required String key}) => locator<FlutterSecureStorage>().read(
+  Future<String?> get({required String key}) => getIt<FlutterSecureStorage>().read(
         key: key,
         aOptions: _androidOptions,
         iOptions: _iosOptions,
       );
 
-  Future<void> save({required String key, required String value}) => locator<FlutterSecureStorage>().write(
+  Future<void> save({required String key, required String value}) => getIt<FlutterSecureStorage>().write(
         key: key,
         value: value,
         aOptions: _androidOptions,
         iOptions: _iosOptions,
       );
 
-  Future<void> delete({required String key}) => locator<FlutterSecureStorage>().delete(
+  Future<void> delete({required String key}) => getIt<FlutterSecureStorage>().delete(
         key: key,
         aOptions: _androidOptions,
         iOptions: _iosOptions,

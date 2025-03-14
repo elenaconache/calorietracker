@@ -13,13 +13,13 @@ import 'package:calorietracker/shared/service/database/food_service.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:calorietracker/shared/service/api/nutritionix_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class SearchFoodService {
-  final ValueNotifier<FutureResponse<NutritionixSearchResponse>> nutritionixSearchResponse =
-      ValueNotifier(FutureInitialState());
+  final ValueNotifier<FutureResponse<NutritionixSearchResponse>> nutritionixSearchResponse = ValueNotifier(FutureInitialState());
   final ValueNotifier<FutureResponse<List<Food>>> collectionSearchResponse = ValueNotifier(FutureInitialState());
-  final ValueNotifier<FutureResponse<Map<LocalFood, LocalDiaryEntry?>>> localSearchResponse =
-      ValueNotifier(FutureInitialState());
+  final ValueNotifier<FutureResponse<Map<LocalFood, LocalDiaryEntry?>>> localSearchResponse = ValueNotifier(FutureInitialState());
 
   String? currentSearchQuery;
 
@@ -30,11 +30,9 @@ class SearchFoodService {
   }
 
   Future<void> _searchNutritionix({required String query}) async {
-    final nutritionixApiService = await locator.getAsync<NutritionixApiService>();
+    final nutritionixApiService = await getIt.getAsync<NutritionixApiService>();
     nutritionixSearchResponse.value = FutureLoading();
-    await nutritionixApiService
-        .searchFood(body: NutritionixSearchRequest(query: query, detailed: true.toString()))
-        .then((response) {
+    await nutritionixApiService.searchFood(body: NutritionixSearchRequest(query: query, detailed: true.toString())).then((response) {
       nutritionixSearchResponse.value = FutureSuccess(
           data: NutritionixSearchResponse(
         brandedFoods: response.brandedFoods.where((food) => food.hasMeasurementInfo).toList(),
@@ -47,14 +45,15 @@ class SearchFoodService {
   }
 
   Future<void> _searchCollection({required String query}) async {
-    final collectionApiService = await locator.getAsync<CollectionApiService>();
+    final collectionApiService = await getIt.getAsync<CollectionApiService>();
     collectionSearchResponse.value = FutureLoading();
     localSearchResponse.value = FutureInitialState();
     await collectionApiService.searchFood(query: query).then((response) {
-      collectionSearchResponse.value =
-          FutureSuccess(data: response.map((collectionFood) => Food.collection(food: collectionFood)).toList());
+      collectionSearchResponse.value = FutureSuccess(
+        data: response.map((collectionFood) => Food.collection(food: collectionFood)).toList(),
+      );
     }).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
       collectionSearchResponse.value = FutureError();
     });
   }
@@ -67,7 +66,7 @@ class SearchFoodService {
 
   Future<void> searchLocally({required String query}) async {
     currentSearchQuery = query;
-    final foodService = await locator.getAsync<FoodService>();
+    final foodService = await getIt.getAsync<FoodService>();
     final results = await foodService.searchFood(query: query);
     if (currentSearchQuery != query) {
       return;

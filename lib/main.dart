@@ -18,10 +18,10 @@ final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupLocator();
-  await locator<UserService>().fetchLoggedInState();
+  await configureDependencies();
+  await getIt<UserService>().fetchLoggedInState();
 
-  unawaited(locator<DataSyncService>().uploadLocalData());
+  unawaited(getIt<DataSyncService>().uploadLocalData());
   //TODO: periodic job for upload
 
   runApp(const MyApp());
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  String get _initialRoutePath => locator<UserService>().isLoggedIn.value ? Routes.home.path : Routes.login.path;
+  String get _initialRoutePath => getIt<UserService>().isLoggedIn.value ? Routes.home.path : Routes.login.path;
 
   Route? _onGenerateRootRoute(RouteSettings settings) {
     final matchingRoute = Routes.values.firstWhereOrNull((route) => route.path == settings.name);

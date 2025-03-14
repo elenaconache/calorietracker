@@ -10,7 +10,9 @@ import 'package:calorietracker/shared/service/date_formatting_service.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:calorietracker/shared/service/user_service.dart';
 import 'package:collection/collection.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class DiaryEntryService {
   final DatabaseRepository databaseRepository;
 
@@ -18,20 +20,20 @@ class DiaryEntryService {
 
   Future<void> upsertDiaryEntries({required List<LocalDiaryEntry> localEntries, bool pushFoods = false}) async {
     await _writeDiaryEntries(localEntries, pushFoods).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
     });
   }
 
   Future<void> deleteDiaryEntries({required List<int> localEntries}) async {
     await _deleteDiaryEntries(localEntries).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
     });
   }
 
   Future<int?> upsertDiaryEntry({required LocalDiaryEntry localDiaryEntry}) async {
     return _writeDiaryEntry(localDiaryEntry).catchError(
       (error, stackTrace) {
-        locator<LoggingService>().handle(error, stackTrace);
+        getIt<LoggingService>().handle(error, stackTrace);
         return null;
       },
     );
@@ -61,13 +63,21 @@ class DiaryEntryService {
     DateTime? dateFilter,
     List<int>? localFoodIds,
   }) async {
-    final currentUsername = locator<UserService>().selectedUser.value?.username;
+    final currentUsername = getIt<UserService>().selectedUser.value?.username;
     if (currentUsername == null) {
-      locator<LoggingService>().info('Could not fetch local diary entries. Missing username.');
+      getIt<LoggingService>().info('Could not fetch local diary entries. Missing username.');
       return [];
     }
 
-    return databaseRepository.readDiaryEntries(username: currentUsername);
+    return databaseRepository.readDiaryEntries(
+      username: currentUsername,
+      dateFilter: dateFilter,
+      filterPending: filterPending,
+      excludeDeleted: excludeDeleted,
+      filterPushed: filterPushed,
+      filterUploadReady: filterUploadReady,
+      localFoodIds: localFoodIds,
+    );
   }
 
   Future<List<LocalDiaryEntry>> getDiaryEntries({
@@ -86,7 +96,7 @@ class DiaryEntryService {
       filterPushed: filterPushed,
       localFoodIds: localFoodIds,
     ).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
       return <LocalDiaryEntry>[];
     });
   }
@@ -101,14 +111,14 @@ class DiaryEntryService {
 
   Future<List<LocalDiaryEntry>> getDiaryEntriesByIds({required List<DiaryEntry> entries}) async {
     return _readDiaryEntriesByIds(entries).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
       return <LocalDiaryEntry>[];
     });
   }
 
   Future<LocalDiaryEntry?> getDiaryEntry({int? collectionId, int? localDiaryEntryId}) async {
     return _readDiaryEntry(collectionId: collectionId, localId: localDiaryEntryId).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
       return null;
     });
   }
@@ -118,7 +128,7 @@ class DiaryEntryService {
   }
 
   Future<List<MealEntriesList>> getDisplayDiaryEntries({required String date, bool filterPending = false}) async {
-    final dateFormattingService = locator<DateFormattingService>();
+    final dateFormattingService = getIt<DateFormattingService>();
     final formattedDate = dateFormattingService.format(dateTime: date, format: collectionApiDateFormat);
     final dateFilter = dateFormattingService.parse(
       formattedDate: formattedDate,
@@ -131,7 +141,7 @@ class DiaryEntryService {
       filterUploadReady: false,
       filterPushed: false,
     ).catchError((error, stackTrace) {
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
       return <LocalDiaryEntry>[];
     });
     final map = entries.groupListsBy((element) => element.meal);
@@ -139,12 +149,7 @@ class DiaryEntryService {
       final meal = Meal.values[index];
       return MealEntriesList(
         meal: meal,
-        diaryEntries: map[meal]
-                // ?.where(
-                //   (diaryEntry) => diaryEntry.localFood.targetId != null)
-                ?.map((e) => DiaryEntry.local(localEntry: e))
-                .toList() ??
-            [],
+        diaryEntries: map[meal]?.map((e) => DiaryEntry.local(localEntry: e)).toList() ?? [],
       );
     });
   }

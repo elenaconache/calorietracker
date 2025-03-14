@@ -37,7 +37,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
     _proteinController = TextEditingController();
     _fatController = TextEditingController();
     _tabController = TabController(length: 2, vsync: this);
-    _controller = locator<UserGoalsController>();
+    _controller = getIt<UserGoalsController>();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => unawaited(
         _controller.fetchStoredUserGoals().then((_) {
@@ -93,7 +93,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
                     key: _formKey,
                     child: AppTextField(
                       autofocus: true,
-                      validate: locator<FoodValidator>().validateCalories,
+                      validate: getIt<FoodValidator>().validateCalories,
                       controller: _caloriesController,
                       maxLength: 5,
                       labelText: AppStrings.caloriesLabel,
@@ -201,8 +201,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
 
   void _updateCaloriesGoal() {
     _caloriesController.removeListener(_onCaloriesChanged);
-    _caloriesController.text =
-        (_controller.userGoals.value as FutureSuccess<UserGoals>).data.calories.toInt().toString();
+    _caloriesController.text = (_controller.userGoals.value as FutureSuccess<UserGoals>).data.calories.toInt().toString();
     _caloriesController.addListener(_onCaloriesChanged);
   }
 

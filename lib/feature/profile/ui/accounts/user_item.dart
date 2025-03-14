@@ -24,7 +24,7 @@ class UserItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => locator<UserService>().selectUser(user.username),
+      onTap: () => getIt<UserService>().selectUser(user.username),
       child: DecoratedBox(
           decoration: BoxDecoration(
             border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor)),
@@ -52,7 +52,7 @@ class UserItem extends StatelessWidget {
   }
 
   void _onLogoutPressed(BuildContext context) {
-    final userService = locator<UserService>();
+    final userService = getIt<UserService>();
     userService.logout(username: user.username);
     if (userService.selectedUser.value == null) {
       Navigator.of(rootNavigatorKey.currentContext!).pushNamedAndRemoveUntil(Routes.login.path, (route) => false);

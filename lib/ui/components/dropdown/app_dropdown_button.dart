@@ -40,7 +40,7 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> with Single
   @override
   void initState() {
     super.initState();
-    _controller = locator<AppDropdownButtonController>();
+    _controller = getIt<AppDropdownButtonController>();
     _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
   }
 
@@ -56,20 +56,24 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> with Single
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
-        link: _layerLink,
-        child: SizedBox(
-            height: _height,
-            child: InkWell(
-                borderRadius: _borderRadius,
-                onTap: widget.enabled ? _toggleDropdown : null,
-                child: ValueListenableBuilder(
-                    valueListenable: _controller.isOpen,
-                    builder: (context, isOpen, child) => DropdownButtonContent<T>(
-                        enabled: widget.enabled,
-                        isOpen: isOpen,
-                        hint: widget.hint,
-                        optionNameMapper: widget.optionNameMapper,
-                        selectedOption: widget.selectedOption)))));
+      link: _layerLink,
+      child: SizedBox(
+        height: _height,
+        child: InkWell(
+          borderRadius: _borderRadius,
+          onTap: widget.enabled ? _toggleDropdown : null,
+          child: ValueListenableBuilder(
+            valueListenable: _controller.isOpen,
+            builder: (context, isOpen, child) => DropdownButtonContent<T>(
+                enabled: widget.enabled,
+                isOpen: isOpen,
+                hint: widget.hint,
+                optionNameMapper: widget.optionNameMapper,
+                selectedOption: widget.selectedOption),
+          ),
+        ),
+      ),
+    );
   }
 
   void _toggleDropdown({bool close = false}) async {
@@ -91,32 +95,36 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> with Single
     final offset = renderBox.localToGlobal(Offset.zero);
     final topOffset = offset.dy + size.height;
     return OverlayEntry(
-        builder: (context) => GestureDetector(
-            onTap: () => _toggleDropdown(close: true),
-            behavior: HitTestBehavior.translucent,
-            child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Stack(children: [
-                  Positioned(
-                      left: offset.dx,
-                      top: topOffset,
-                      width: size.width,
-                      child: CompositedTransformFollower(
-                          offset: Offset(0, size.height),
-                          link: _layerLink,
-                          showWhenUnlinked: false,
-                          child: AppDropdownMenu<T>(
-                            animationController: _animationController,
-                            maxHeight:
-                                (MediaQuery.of(context).size.height - topOffset).isNegative ? 100 : MediaQuery.of(context).size.height - topOffset,
-                            options: widget.options,
-                            onItemTap: (item) {
-                              widget.onChanged?.call(item);
-                              _toggleDropdown();
-                            },
-                            optionNameMapper: widget.optionNameMapper,
-                          )))
-                ]))));
+      builder: (context) => GestureDetector(
+        onTap: () => _toggleDropdown(close: true),
+        behavior: HitTestBehavior.translucent,
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(children: [
+            Positioned(
+              left: offset.dx,
+              top: topOffset,
+              width: size.width,
+              child: CompositedTransformFollower(
+                offset: Offset(0, size.height),
+                link: _layerLink,
+                showWhenUnlinked: false,
+                child: AppDropdownMenu<T>(
+                  animationController: _animationController,
+                  maxHeight: (MediaQuery.of(context).size.height - topOffset).isNegative ? 100 : MediaQuery.of(context).size.height - topOffset,
+                  options: widget.options,
+                  onItemTap: (item) {
+                    widget.onChanged?.call(item);
+                    _toggleDropdown();
+                  },
+                  optionNameMapper: widget.optionNameMapper,
+                ),
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 }

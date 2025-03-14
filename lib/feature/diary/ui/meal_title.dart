@@ -23,7 +23,7 @@ class MealTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diaryService = locator<DiaryService>();
+    final diaryService = getIt<DiaryService>();
     return Material(
         color: Theme.of(context).cardColor,
         child: InkWell(
@@ -49,21 +49,26 @@ class MealTitle extends StatelessWidget {
                                         ? ValueListenableBuilder(
                                             valueListenable: diaryService.checkedDiaryEntries,
                                             builder: (context, _, __) => Padding(
-                                                padding: const EdgeInsets.only(right: 8),
-                                                child: SizedBox(
-                                                    width: 24,
-                                                    height: 24,
-                                                    child: Checkbox(
-                                                      tristate: true,
-                                                      value: diaryService.isMealChecked(meal: meal),
-                                                      onChanged: (checked) =>
-                                                          diaryService.onMealCheckChanged(meal: meal, checked: checked),
-                                                    ))))
+                                              padding: const EdgeInsets.only(right: 8),
+                                              child: SizedBox(
+                                                width: 24,
+                                                height: 24,
+                                                child: Checkbox(
+                                                  tristate: true,
+                                                  value: diaryService.isMealChecked(meal: meal),
+                                                  onChanged: (checked) => diaryService.onMealCheckChanged(
+                                                    meal: meal,
+                                                    checked: checked,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
                                         : const SizedBox.shrink())
                                 : const SizedBox.shrink()),
                         Expanded(
                           child: ValueListenableBuilder(
-                            valueListenable: locator<DiaryLoggingService>().mealsLoading,
+                            valueListenable: getIt<DiaryLoggingService>().mealsLoading,
                             child: Text(
                               _mealLabel,
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),

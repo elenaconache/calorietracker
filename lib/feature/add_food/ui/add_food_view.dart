@@ -33,7 +33,7 @@ class _AddFoodViewState extends State<AddFoodView> {
   @override
   void initState() {
     super.initState();
-    _controller = locator<AddFoodController>();
+    _controller = getIt<AddFoodController>();
     _controller
       ..selectMeal(meal: widget.args.meal)
       ..initializeNutrients(nutrition: widget.args.food.nutrition);
@@ -170,18 +170,18 @@ class _AddFoodViewState extends State<AddFoodView> {
   void _confirmFood(BuildContext context) {
     final servingQuantity = double.tryParse(_servingsCountController.text);
     if (servingQuantity == null) {
-      locator<LoggingService>().handle(
+      getIt<LoggingService>().handle(
         Exception('Could not log food with null serving quantity.'),
         StackTrace.current,
       );
     } else {
-      locator<SearchFoodService>().clearResults();
+      getIt<SearchFoodService>().clearResults();
       if (widget.args.meal == null) {
         _confirmRecipeIngredient(context, servingQuantity);
       } else {
-        final date = DateTime.tryParse(locator<DiaryService>().selectedDay.value);
+        final date = DateTime.tryParse(getIt<DiaryService>().selectedDay.value);
         if (date == null) {
-          locator<LoggingService>().info('Could not log to diary. Missing date.');
+          getIt<LoggingService>().info('Could not log to diary. Missing date.');
         } else {
           _confirmDiaryLog(servingQuantity, date, context);
         }
@@ -208,7 +208,7 @@ class _AddFoodViewState extends State<AddFoodView> {
         if (context.mounted) {
           Navigator.pop(context);
         } else {
-          locator<LoggingService>().info('Could not pop add food screen. Context unmounted.');
+          getIt<LoggingService>().info('Could not pop add food screen. Context unmounted.');
         }
       }).catchError((_, __) {
         if (context.mounted) {
@@ -220,7 +220,7 @@ class _AddFoodViewState extends State<AddFoodView> {
             ),
           );
         } else {
-          locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
+          getIt<LoggingService>().info('Could not show error snack bar. Context unmounted.');
         }
       }),
     );
@@ -234,13 +234,13 @@ class _AddFoodViewState extends State<AddFoodView> {
             RecipeIngredient(food: widget.args.food.copyWith(id: createdFoodId), servingQuantity: servingQuantity),
           );
         } else {
-          locator<LoggingService>().info('Could not pop screen. Context unmounted.');
+          getIt<LoggingService>().info('Could not pop screen. Context unmounted.');
         }
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.addIngredientError)));
         } else {
-          locator<LoggingService>().info('Could not show error snack bar. Context unmounted.');
+          getIt<LoggingService>().info('Could not show error snack bar. Context unmounted.');
         }
       }
     });

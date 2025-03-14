@@ -10,13 +10,15 @@ import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:calorietracker/validators/nutrition_validator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class CreateFoodController {
   final ValueNotifier<FoodError?> foodError = ValueNotifier(null);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
   bool validateNutrition({required FoodInput foodInput}) {
-    foodError.value = locator<NutritionValidator>().validateNutrition(nutritionInput: foodInput);
+    foodError.value = getIt<NutritionValidator>().validateNutrition(nutritionInput: foodInput);
     return foodError.value == null;
   }
 
@@ -25,19 +27,19 @@ class CreateFoodController {
   Future<({int? localId, int? createdFoodId})> createFood({required FoodInput foodInput}) async {
     isLoading.value = true;
     int? localId;
-    final createdFood = await locator<CollectionApiService>().createFood(body: foodInput.addFoodRequest).then((created) async {
-      final foodService = await locator.getAsync<FoodService>();
+    final createdFood = await getIt<CollectionApiService>().createFood(body: foodInput.addFoodRequest).then((created) async {
+      final foodService = await getIt.getAsync<FoodService>();
       unawaited(foodService.upsertFood(localFood: foodInput.localFood));
       return created;
     }).catchError((error, stackTrace) async {
       if (error is DioException) {
         if (error.isConnectionError) {
-          final foodService = await locator.getAsync<FoodService>();
+          final foodService = await getIt.getAsync<FoodService>();
           localId = await foodService.upsertFood(localFood: foodInput.localFood);
           return null;
         }
       }
-      locator<LoggingService>().handle(error, stackTrace);
+      getIt<LoggingService>().handle(error, stackTrace);
       return null;
     });
     isLoading.value = false;

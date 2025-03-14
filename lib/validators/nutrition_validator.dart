@@ -1,5 +1,6 @@
 import 'package:calorietracker/feature/create_food/data/food_error.dart';
 import 'package:calorietracker/feature/create_food/ui/food_input.dart';
+import 'package:injectable/injectable.dart';
 
 const _acceptableMacrosCaloriesOffset = 20;
 const _maxCholesterolPer100Grams = 10000;
@@ -10,6 +11,7 @@ const _maxVitaminAPer100Grams = 14000;
 const _maxVitaminCPer100Grams = 5000;
 const _maxVitaminDPer100Grams = 21000;
 
+@injectable
 class NutritionValidator {
   FoodError? validateNutrition({required FoodInput nutritionInput}) {
     if (!_macrosMatchCalories(nutritionInput).match) {

@@ -8,22 +8,23 @@ import 'package:calorietracker/shared/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/service/api/collection_api_service.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class RecipeDetailsController {
   final ValueNotifier<bool> isLoading = ValueNotifier(true);
   final ValueNotifier<FutureResponse<Nutrition>> recipeNutrition = ValueNotifier(FutureLoading());
-  final ValueNotifier<FutureResponse<List<RecipeIngredient>>> ingredients =
-      ValueNotifier(FutureLoading<List<RecipeIngredient>>());
+  final ValueNotifier<FutureResponse<List<RecipeIngredient>>> ingredients = ValueNotifier(FutureLoading<List<RecipeIngredient>>());
 
   void updateNutrition({required int cookedQuantity}) => recipeNutrition.value = FutureSuccess(
-        data: locator<RecipeHelper>().calculateRecipeNutrition(
+        data: getIt<RecipeHelper>().calculateRecipeNutrition(
           ingredients: ingredients.value is FutureSuccess ? (ingredients.value as FutureSuccess).data : [],
           cookedQuantity: cookedQuantity,
         ),
       );
 
   Future<void> initializeRecipe({required int recipeId, required int cookedQuantity}) async {
-    final apiService = await locator.getAsync<CollectionApiService>();
+    final apiService = await getIt.getAsync<CollectionApiService>();
     FutureResponse<List<RecipeIngredient>> ingredientsResponse = FutureLoading();
     await Future.wait([
       apiService.getRecipeIngredients(recipeId: recipeId).then((recipeIngredients) {
@@ -31,12 +32,11 @@ class RecipeDetailsController {
             data: recipeIngredients
                 .map((collectionRecipeIngredient) => RecipeIngredient(
                       food: Food.collection(food: collectionRecipeIngredient.food),
-                      servingQuantity:
-                          collectionRecipeIngredient.quantity * collectionRecipeIngredient.unit.weightInGrams,
+                      servingQuantity: collectionRecipeIngredient.quantity * collectionRecipeIngredient.unit.weightInGrams,
                     ))
                 .toList());
       }).catchError((error, stackTrace) {
-        locator<LoggingService>().handle(error, stackTrace);
+        getIt<LoggingService>().handle(error, stackTrace);
         ingredientsResponse = FutureError();
       }),
       Future.delayed(const Duration(milliseconds: 700))
@@ -59,7 +59,7 @@ class RecipeDetailsController {
     }
   }
 
-  Nutrition get _totalNutrition => locator<RecipeHelper>().calculateTotalIngredientsNutrition(
+  Nutrition get _totalNutrition => getIt<RecipeHelper>().calculateTotalIngredientsNutrition(
         ingredients: ingredients.value is FutureSuccess ? (ingredients.value as FutureSuccess).data : [],
       );
 }

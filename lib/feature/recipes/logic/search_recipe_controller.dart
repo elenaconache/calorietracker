@@ -6,20 +6,22 @@ import 'package:calorietracker/shared/model/recipe.dart';
 import 'package:calorietracker/shared/service/api/collection_api_service.dart';
 import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class SearchRecipeController {
   final ValueNotifier<FutureResponse<List<Recipe>>> recipes = ValueNotifier(FutureInitialState());
 
   Future<void> fetchRecipes() async {
     recipes.value = FutureLoading();
-    final apiService = await locator.getAsync<CollectionApiService>();
+    final apiService = await getIt.getAsync<CollectionApiService>();
     unawaited(
       apiService.getRecipes().then((response) {
         recipes.value = FutureSuccess(
           data: response.map((collectionRecipe) => Recipe.collection(recipe: collectionRecipe)).toList(),
         );
       }).catchError((error, stackTrace) {
-        locator<LoggingService>().handle(error, stackTrace);
+        getIt<LoggingService>().handle(error, stackTrace);
         recipes.value = FutureError();
       }),
     );
