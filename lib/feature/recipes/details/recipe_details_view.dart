@@ -7,9 +7,9 @@ import 'package:calorietracker/feature/recipes/ui/recipe_servings_field.dart';
 import 'package:calorietracker/feature/recipes/ui/create_recipe/ingredient_item.dart';
 import 'package:calorietracker/feature/recipes/details/recipe_details_arguments.dart';
 import 'package:calorietracker/feature/recipes/details/recipe_details_controller.dart';
+import 'package:calorietracker/shared/data/model/nutrition.dart';
+import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/shared/model/nutrition.dart';
-import 'package:calorietracker/shared/model/recipe_ingredient.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
@@ -121,13 +121,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                         ),
                       ),
                     FutureSuccess<Nutrition> nutrition => CaloriesMacrosSection(
-                        calories: nutrition.data.calories.toInt(),
-                        carbsInGrams: nutrition.data.carbohydrates,
-                        carbsPercentage: nutrition.data.carbsPercentage,
-                        fatInGrams: nutrition.data.fat,
-                        fatPercentage: nutrition.data.fatPercentage,
-                        proteinInGrams: nutrition.data.protein,
-                        proteinPercentage: nutrition.data.proteinPercentage,
+                        nutrition: nutrition.data,
                       ),
                     _ => const GeneralErrorView(),
                   };

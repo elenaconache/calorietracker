@@ -5,10 +5,10 @@ import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/diary/ui/diary_row/diary_row.dart';
 import 'package:calorietracker/feature/diary/ui/no_logged_foods_message.dart';
 import 'package:calorietracker/feature/diary/ui/swipe_to_delete_background.dart';
-import 'package:calorietracker/shared/model/diary_entry.dart';
-import 'package:calorietracker/shared/model/meal.dart';
+import 'package:calorietracker/shared/data/model/diary_entry.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:flutter/material.dart';
 
 class DiaryEntriesSliverList extends StatelessWidget {

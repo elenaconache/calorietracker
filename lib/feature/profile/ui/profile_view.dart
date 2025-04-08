@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/profile/ui/profile_item.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/service/data_sync_service.dart';
+import 'package:calorietracker/shared/data/service/data_sync_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 

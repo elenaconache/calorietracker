@@ -1,7 +1,7 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/diary/ui/nutrient_item.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +44,7 @@ class DayNutritionSummary extends StatelessWidget {
                     ),
                   ],
                 ),
-              FutureInitialState _ => const SizedBox.shrink()
+              _ => const SizedBox.shrink()
             });
   }
 }

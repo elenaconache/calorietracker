@@ -5,11 +5,11 @@ import 'package:calorietracker/feature/diary/ui/diary_entries_sliver_list.dart';
 import 'package:calorietracker/feature/diary/ui/carousel/diary_overview_carousel.dart';
 import 'package:calorietracker/feature/diary/ui/meal_title.dart';
 import 'package:calorietracker/feature/diary/ui/selected_day_line.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/shared/model/meal.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/service/data_sync_service.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
+import 'package:calorietracker/shared/data/service/data_sync_service.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 

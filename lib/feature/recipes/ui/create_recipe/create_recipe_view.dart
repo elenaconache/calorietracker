@@ -6,9 +6,9 @@ import 'package:calorietracker/feature/recipes/ui/recipe_servings_field.dart';
 import 'package:calorietracker/feature/recipes/logic/create_recipe_controller.dart';
 import 'package:calorietracker/feature/recipes/data/create_recipe_error.dart';
 import 'package:calorietracker/feature/recipes/ui/create_recipe/ingredient_item.dart';
-import 'package:calorietracker/shared/model/recipe_ingredient.dart';
+import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
@@ -115,13 +115,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
             child: ValueListenableBuilder(
               valueListenable: _controller.recipeNutrition,
               builder: (_, nutrition, __) => CaloriesMacrosSection(
-                calories: nutrition.calories.toInt(),
-                carbsInGrams: nutrition.carbohydrates,
-                carbsPercentage: nutrition.carbsPercentage,
-                fatInGrams: nutrition.fat,
-                fatPercentage: nutrition.fatPercentage,
-                proteinInGrams: nutrition.protein,
-                proteinPercentage: nutrition.proteinPercentage,
+                nutrition: nutrition,
               ),
             ),
           ),

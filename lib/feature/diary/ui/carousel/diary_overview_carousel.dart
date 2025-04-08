@@ -1,7 +1,7 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/diary/ui/carousel/dotted_item.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_carousel.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
@@ -26,13 +26,7 @@ class DiaryOverviewCarousel extends StatelessWidget {
                   }
                   final nutrition = diaryService.selectedDayNutrition;
                   return CaloriesMacrosSection(
-                    calories: nutrition.calories.toInt(),
-                    carbsInGrams: nutrition.carbohydrates,
-                    carbsPercentage: nutrition.carbsPercentage,
-                    fatInGrams: nutrition.fat,
-                    fatPercentage: nutrition.fatPercentage,
-                    proteinInGrams: nutrition.protein,
-                    proteinPercentage: nutrition.proteinPercentage,
+                    nutrition: nutrition,
                   );
                 }),
           )),

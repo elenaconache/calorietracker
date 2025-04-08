@@ -1,7 +1,7 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/main.dart';
-import 'package:calorietracker/shared/service/date_formatting_service.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
+import 'package:calorietracker/shared/data/service/date_formatting_service.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/ui/components/copy_diary_modal.dart';
 import 'package:flutter/material.dart';
 

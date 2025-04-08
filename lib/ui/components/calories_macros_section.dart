@@ -1,3 +1,4 @@
+import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/ui/components/calories_macros_pie_chart.dart';
 import 'package:calorietracker/feature/add_food/ui/macro_item.dart';
 import 'package:calorietracker/ui/app_strings.dart';
@@ -10,23 +11,12 @@ const _proteinColor = carmineRed;
 const _unknownMacroColor = blanchedAlmond;
 
 class CaloriesMacrosSection extends StatelessWidget {
-  final int calories;
-  final int carbsPercentage;
-  final int proteinPercentage;
-  final int fatPercentage;
-  final double carbsInGrams;
-  final double fatInGrams;
-  final double proteinInGrams;
+  final Nutrition nutrition;
 
-  const CaloriesMacrosSection(
-      {super.key,
-      required this.calories,
-      required this.carbsPercentage,
-      required this.proteinPercentage,
-      required this.fatPercentage,
-      required this.carbsInGrams,
-      required this.fatInGrams,
-      required this.proteinInGrams});
+  const CaloriesMacrosSection({
+    super.key,
+    required this.nutrition,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,4 +45,18 @@ class CaloriesMacrosSection extends StatelessWidget {
       ],
     );
   }
+
+  int get calories => nutrition.calories.toInt();
+
+  double get carbsInGrams => nutrition.carbohydrates;
+
+  double get fatInGrams => nutrition.fat;
+
+  double get proteinInGrams => nutrition.protein;
+
+  int get carbsPercentage => nutrition.carbsPercentage;
+
+  int get fatPercentage => nutrition.fatPercentage;
+
+  int get proteinPercentage => nutrition.proteinPercentage;
 }

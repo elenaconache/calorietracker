@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/diary/ui/user_avatar_action.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 

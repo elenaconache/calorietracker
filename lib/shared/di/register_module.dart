@@ -1,10 +1,10 @@
 import 'package:calorietracker/shared/app_environment.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/shared/providers/app_path_provider.dart';
-import 'package:calorietracker/shared/providers/dio_provider.dart';
-import 'package:calorietracker/shared/service/api/collection_api_service.dart';
-import 'package:calorietracker/shared/service/api/nutritionix_api_service.dart';
-import 'package:calorietracker/shared/service/api/user_api_service.dart';
+import 'package:calorietracker/shared/data/providers/app_path_provider.dart';
+import 'package:calorietracker/shared/data/providers/dio_provider.dart';
+import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
+import 'package:calorietracker/shared/data/service/api/nutritionix_api_service.dart';
+import 'package:calorietracker/shared/data/service/api/user_api_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 

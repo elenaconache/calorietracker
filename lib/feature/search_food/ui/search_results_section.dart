@@ -2,7 +2,7 @@ import 'package:calorietracker/feature/search_food/ui/branded_results_section.da
 import 'package:calorietracker/feature/search_food/ui/collection_results_section.dart';
 import 'package:calorietracker/feature/search_food/ui/common_results_section.dart';
 import 'package:calorietracker/feature/search_food/ui/powered_by_nutritionix_wrapper.dart';
-import 'package:calorietracker/shared/model/meal.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 

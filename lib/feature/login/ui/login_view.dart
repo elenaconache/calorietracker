@@ -4,7 +4,7 @@ import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/login/logic/login_controller.dart';
 import 'package:calorietracker/feature/login/data/login_error.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
 import 'package:flutter/material.dart';

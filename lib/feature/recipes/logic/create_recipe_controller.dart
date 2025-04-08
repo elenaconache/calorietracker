@@ -5,12 +5,12 @@ import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
 import 'package:calorietracker/feature/recipes/data/create_recipe_error.dart';
 import 'package:calorietracker/feature/recipes/logic/recipe_helper.dart';
-import 'package:calorietracker/shared/model/collection/add_recipe_request.dart';
-import 'package:calorietracker/shared/model/collection/collection_recipe_ingredient.dart';
-import 'package:calorietracker/shared/model/nutrition.dart';
-import 'package:calorietracker/shared/model/recipe_ingredient.dart';
-import 'package:calorietracker/shared/service/api/collection_api_service.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
+import 'package:calorietracker/shared/data/model/collection/add_recipe_request.dart';
+import 'package:calorietracker/shared/data/model/collection/collection_recipe_ingredient.dart';
+import 'package:calorietracker/shared/data/model/nutrition.dart';
+import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
+import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
@@ -29,12 +29,16 @@ class CreateRecipeController {
     );
   }
 
-  Nutrition get _totalNutrition => getIt<RecipeHelper>().calculateTotalIngredientsNutrition(ingredients: ingredients.value);
-
-  void updateNutrition({required int cookedQuantity}) => recipeNutrition.value = getIt<RecipeHelper>().calculateRecipeNutrition(
+  Nutrition get _totalNutrition => getIt<RecipeHelper>().calculateTotalIngredientsNutrition(
         ingredients: ingredients.value,
-        cookedQuantity: cookedQuantity,
       );
+
+  void updateNutrition({required int cookedQuantity}) {
+    recipeNutrition.value = getIt<RecipeHelper>().calculateRecipeNutrition(
+      ingredients: ingredients.value,
+      cookedQuantity: cookedQuantity,
+    );
+  }
 
   Future<CreateRecipeError> saveRecipe({required String name, required int cookedQuantity}) async {
     isLoading.value = true;

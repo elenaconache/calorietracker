@@ -1,5 +1,5 @@
-import 'package:calorietracker/shared/model/nutrition.dart';
-import 'package:calorietracker/shared/model/recipe_ingredient.dart';
+import 'package:calorietracker/shared/data/model/nutrition.dart';
+import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

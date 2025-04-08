@@ -1,11 +1,9 @@
 {
     "dart.lineLength": 150,
     "[dart]": {
-        "editor.rulers": [
-            150
-        ],
+        "editor.rulers": [],
     },
     "gitlens.currentLine.enabled": false,
     "gitlens.codeLens.authors.enabled": false,
-    "gitlens.codeLens.recentChange.enabled": false,
+    "gitlens.codeLens.recentChange.enabled": false
 }

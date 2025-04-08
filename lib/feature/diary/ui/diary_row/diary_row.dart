@@ -1,7 +1,7 @@
 import 'package:calorietracker/shared/extension/numeric_extensions.dart';
 import 'package:calorietracker/feature/diary/ui/diary_row/diary_row_check_box.dart';
-import 'package:calorietracker/shared/model/diary_entry.dart';
-import 'package:calorietracker/shared/model/nutrition.dart';
+import 'package:calorietracker/shared/data/model/diary_entry.dart';
+import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -32,8 +32,7 @@ class DiaryRow extends StatelessWidget {
                           Text(diaryEntry.food.name, style: Theme.of(context).textTheme.bodyLarge),
                           Row(
                             children: [
-                              if (diaryEntry.food.brandName != null)
-                                Text('${diaryEntry.food.brandName!}, ', style: _getSecondaryTextStyle(context)),
+                              if (diaryEntry.food.brandName != null) Text('${diaryEntry.food.brandName!}, ', style: _getSecondaryTextStyle(context)),
                               Text(
                                 AppStrings.gramsValue(diaryEntry.servingQuantity.toDouble().toPrecision(2)),
                                 style: _getSecondaryTextStyle(context),
@@ -71,11 +70,13 @@ class DiaryRow extends StatelessWidget {
     );
   }
 
-  TextStyle? _getSecondaryTextStyle(BuildContext context) =>
-      Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300);
+  TextStyle? _getSecondaryTextStyle(BuildContext context) {
+    return Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300);
+  }
 
-  TextStyle? _getErrorTextStyle(BuildContext context) =>
-      Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error);
+  TextStyle? _getErrorTextStyle(BuildContext context) {
+    return Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error);
+  }
 
   String get _diaryEntryCalories => AppStrings.caloriesShortLabel(Nutrition.perServing(
         nutritionPer100Grams: diaryEntry.food.nutrition,

@@ -1,6 +1,6 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/shared/model/diary_entry.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
+import 'package:calorietracker/shared/data/model/diary_entry.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:flutter/material.dart';
 
 class DiaryRowCheckBox extends StatelessWidget {

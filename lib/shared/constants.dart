@@ -1,4 +1,4 @@
-import 'package:calorietracker/shared/model/nutrient.dart';
+import 'package:calorietracker/shared/data/model/nutrient.dart';
 
 const nutrientsAttributes = {
   Nutrient.fat: 204,

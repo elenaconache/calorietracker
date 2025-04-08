@@ -1,6 +1,6 @@
-import 'package:calorietracker/shared/model/collection/add_food_request.dart';
-import 'package:calorietracker/shared/model/local/local_food.dart';
-import 'package:calorietracker/shared/model/nutrition.dart';
+import 'package:calorietracker/shared/data/model/collection/add_food_request.dart';
+import 'package:calorietracker/shared/data/model/local/local_food.dart';
+import 'package:calorietracker/shared/data/model/nutrition.dart';
 
 class FoodInput {
   final String name;
@@ -96,33 +96,35 @@ class FoodInput {
       );
 
   LocalFood get localFood {
-    final foodNutrition = Nutrition.fromServing(nutritionPerServing: nutrition, 
-    servingSizeGrams: servingSizeValue,).round();
+    final foodNutrition = Nutrition.fromServing(
+      nutritionPerServing: nutrition,
+      servingSizeGrams: servingSizeValue,
+    ).round();
     return LocalFood(
-    barcode: null,
-    name: name,
-    brand: (brand?.isEmpty ?? true) ? null : brand,
-    calcium: foodNutrition.calcium,
-    calories: foodNutrition.calories,
-    carbohydrates: foodNutrition.carbohydrates,
-    cholesterol: foodNutrition.cholesterol,
-    fat: foodNutrition.fat,
-    fatMonounsaturated: foodNutrition.fatMonounsaturated,
-    fatPolyunsaturated: foodNutrition.fatPolyunsaturated,
-    fatSaturated: foodNutrition.fatSaturated,
-    fatTrans: foodNutrition.fatTrans,
-    fiber: foodNutrition.fiber,
-    insolubleFiber: foodNutrition.insolubleFiber,
-    iron: foodNutrition.iron,
-    potassium: foodNutrition.potassium,
-    protein: foodNutrition.protein,
-    sodium: foodNutrition.sodium,
-    sugar: foodNutrition.sugar,
-    vitaminA: foodNutrition.vitaminA,
-    vitaminC: foodNutrition.vitaminC,
-    vitaminD: foodNutrition.vitaminD,
-    createdAtDate: DateTime.now(),
-  );
+      barcode: null,
+      name: name,
+      brand: (brand?.isEmpty ?? true) ? null : brand,
+      calcium: foodNutrition.calcium,
+      calories: foodNutrition.calories,
+      carbohydrates: foodNutrition.carbohydrates,
+      cholesterol: foodNutrition.cholesterol,
+      fat: foodNutrition.fat,
+      fatMonounsaturated: foodNutrition.fatMonounsaturated,
+      fatPolyunsaturated: foodNutrition.fatPolyunsaturated,
+      fatSaturated: foodNutrition.fatSaturated,
+      fatTrans: foodNutrition.fatTrans,
+      fiber: foodNutrition.fiber,
+      insolubleFiber: foodNutrition.insolubleFiber,
+      iron: foodNutrition.iron,
+      potassium: foodNutrition.potassium,
+      protein: foodNutrition.protein,
+      sodium: foodNutrition.sodium,
+      sugar: foodNutrition.sugar,
+      vitaminA: foodNutrition.vitaminA,
+      vitaminC: foodNutrition.vitaminC,
+      vitaminD: foodNutrition.vitaminD,
+      createdAtDate: DateTime.now(),
+    );
   }
 
   double _parseInput(String input) => double.tryParse(input) ?? 0;

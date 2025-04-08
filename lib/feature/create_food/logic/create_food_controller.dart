@@ -4,10 +4,10 @@ import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
 import 'package:calorietracker/feature/create_food/data/food_error.dart';
 import 'package:calorietracker/feature/create_food/ui/food_input.dart';
-import 'package:calorietracker/shared/service/api/collection_api_service.dart';
-import 'package:calorietracker/shared/service/database/food_service.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
-import 'package:calorietracker/validators/nutrition_validator.dart';
+import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
+import 'package:calorietracker/shared/data/service/database/food_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
+import 'package:calorietracker/shared/data/validators/nutrition_validator.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
@@ -28,13 +28,13 @@ class CreateFoodController {
     isLoading.value = true;
     int? localId;
     final createdFood = await getIt<CollectionApiService>().createFood(body: foodInput.addFoodRequest).then((created) async {
-      final foodService =  getIt.get<FoodService>();
+      final foodService = getIt.get<FoodService>();
       unawaited(foodService.upsertFood(localFood: foodInput.localFood));
       return created;
     }).catchError((error, stackTrace) async {
       if (error is DioException) {
         if (error.isConnectionError) {
-          final foodService =  getIt.get<FoodService>();
+          final foodService = getIt.get<FoodService>();
           localId = await foodService.upsertFood(localFood: foodInput.localFood);
           return null;
         }

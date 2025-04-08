@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/recipes/logic/recipe_helper.dart';
-import 'package:calorietracker/shared/model/food.dart';
+import 'package:calorietracker/shared/data/model/food.dart';
+import 'package:calorietracker/shared/data/model/nutrition.dart';
+import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
+import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/shared/model/nutrition.dart';
-import 'package:calorietracker/shared/model/recipe_ingredient.dart';
-import 'package:calorietracker/shared/service/api/collection_api_service.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/shared/model/meal.dart';
-import 'package:calorietracker/shared/service/database/diary_logging_service.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
+import 'package:calorietracker/shared/data/service/database/diary_logging_service.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:calorietracker/main.dart';

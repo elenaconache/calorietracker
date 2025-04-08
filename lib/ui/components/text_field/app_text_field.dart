@@ -18,6 +18,8 @@ class AppTextField extends StatefulWidget {
   final bool? isDense;
   final String? hint;
   final Color? textColor;
+  final void Function(String?)? onChanged;
+  final String? initialValue;
 
   const AppTextField({
     super.key,
@@ -36,6 +38,8 @@ class AppTextField extends StatefulWidget {
     this.isDense,
     this.hint,
     this.textColor,
+    this.onChanged,
+    this.initialValue,
   });
 
   @override
@@ -57,6 +61,9 @@ class _AppTextFieldState extends State<AppTextField> {
     _error = ValueNotifier(null);
     _textController = (widget.controller ?? TextEditingController());
     _textController.addListener(_onTextChange);
+    if (widget.initialValue != null) {
+      _textController.text = widget.initialValue!;
+    }
   }
 
   @override
@@ -75,6 +82,7 @@ class _AppTextFieldState extends State<AppTextField> {
         valueListenable: _error,
         builder: (context, error, child) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               TextFormField(
+                  onChanged: widget.onChanged,
                   decoration: _getDecoration(context, error),
                   controller: _textController,
                   cursorWidth: 1,
@@ -87,16 +95,13 @@ class _AppTextFieldState extends State<AppTextField> {
                   validator: (value) => _validateField(value, error),
                   onTapOutside: (_) => FocusScope.of(context).unfocus(),
                   autocorrect: false,
-                  style: widget.textColor == null
-                      ? null
-                      : Theme.of(context).textTheme.bodyLarge?.copyWith(color: widget.textColor)),
+                  style: widget.textColor == null ? null : Theme.of(context).textTheme.bodyLarge?.copyWith(color: widget.textColor)),
               if (error != null)
                 Padding(
                     padding: const EdgeInsets.only(bottom: 8, left: 16),
                     child: Text(
                       error,
-                      style:
-                          Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
                     ))
             ]));
   }

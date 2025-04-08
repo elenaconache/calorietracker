@@ -1,7 +1,7 @@
 import 'package:calorietracker/feature/profile/ui/user_goals/macros_pickers.dart';
 import 'package:calorietracker/feature/profile/ui/user_goals/percentages_total.dart';
-import 'package:calorietracker/shared/model/macro.dart';
-import 'package:calorietracker/shared/model/macro_goals.dart';
+import 'package:calorietracker/shared/data/model/macro.dart';
+import 'package:calorietracker/shared/data/model/macro_goals.dart';
 import 'package:flutter/material.dart';
 
 class MacroPercentageGoals extends StatelessWidget {
@@ -16,8 +16,7 @@ class MacroPercentageGoals extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalPercentage =
-        macroGoals.roundedCarbsPercentage + macroGoals.roundedFatPercentage + macroGoals.roundedProteinPercentage;
+    final totalPercentage = macroGoals.roundedCarbsPercentage + macroGoals.roundedFatPercentage + macroGoals.roundedProteinPercentage;
     return Column(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -1,5 +1,5 @@
-import 'package:calorietracker/shared/model/food.dart';
-import 'package:calorietracker/shared/model/meal.dart';
+import 'package:calorietracker/shared/data/model/food.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
 
 class AddFoodArguments {
   final Meal? meal;

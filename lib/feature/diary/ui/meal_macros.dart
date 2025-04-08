@@ -1,7 +1,7 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/shared/model/meal.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/dot.dart';
 import 'package:flutter/material.dart';

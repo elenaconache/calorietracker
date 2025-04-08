@@ -1,10 +1,10 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
+import 'package:calorietracker/shared/data/model/macro.dart';
+import 'package:calorietracker/shared/data/model/macro_goals.dart';
+import 'package:calorietracker/shared/data/model/user_goals.dart';
+import 'package:calorietracker/shared/data/service/secure_storage_service.dart';
+import 'package:calorietracker/shared/data/service/user_service.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/shared/model/macro.dart';
-import 'package:calorietracker/shared/model/macro_goals.dart';
-import 'package:calorietracker/shared/model/user_goals.dart';
-import 'package:calorietracker/shared/service/secure_storage_service.dart';
-import 'package:calorietracker/shared/service/user_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';

@@ -12,9 +12,9 @@ import 'package:calorietracker/feature/recipes/details/recipe_details_arguments.
 import 'package:calorietracker/feature/recipes/details/recipe_details_view.dart';
 import 'package:calorietracker/feature/recipes/ui/search_recipe_view.dart';
 import 'package:calorietracker/feature/search_food/ui/search_food_view.dart';
-import 'package:calorietracker/shared/model/meal.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/generic_error_view.dart';
 import 'package:collection/collection.dart';

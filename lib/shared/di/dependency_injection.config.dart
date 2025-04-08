@@ -12,7 +12,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
-import '../../feature/add_food/logic/add_food_controller.dart' as _i247;
+import '../../feature/add_food/logic/add_food_cubit.dart' as _i980;
 import '../../feature/create_food/logic/create_food_controller.dart' as _i816;
 import '../../feature/diary/logic/diary_controller.dart' as _i425;
 import '../../feature/login/logic/login_controller.dart' as _i508;
@@ -25,25 +25,25 @@ import '../../feature/search_food/data/search_food_service.dart' as _i383;
 import '../../feature/search_food/logic/food_item_controller.dart' as _i264;
 import '../../ui/components/dropdown/app_dropdown_button_controller.dart'
     as _i211;
-import '../../validators/food_validator.dart' as _i815;
-import '../../validators/nutrition_validator.dart' as _i424;
 import '../app_environment.dart' as _i1067;
-import '../providers/app_path_provider.dart' as _i543;
-import '../providers/dio_provider.dart' as _i548;
-import '../service/api/collection_api_service.dart' as _i79;
-import '../service/api/nutritionix_api_service.dart' as _i814;
-import '../service/api/user_api_service.dart' as _i338;
-import '../service/data_sync_service.dart' as _i519;
-import '../service/database/database_repository.dart' as _i774;
-import '../service/database/diary_entry_service.dart' as _i80;
-import '../service/database/diary_logging_service.dart' as _i970;
-import '../service/database/food_service.dart' as _i994;
-import '../service/date_formatting_service.dart' as _i226;
-import '../service/diary_service.dart' as _i929;
-import '../service/logging_service.dart' as _i894;
-import '../service/numeric_formatting_service.dart' as _i808;
-import '../service/secure_storage_service.dart' as _i142;
-import '../service/user_service.dart' as _i193;
+import '../data/providers/app_path_provider.dart' as _i667;
+import '../data/providers/dio_provider.dart' as _i159;
+import '../data/service/api/collection_api_service.dart' as _i13;
+import '../data/service/api/nutritionix_api_service.dart' as _i1017;
+import '../data/service/api/user_api_service.dart' as _i376;
+import '../data/service/data_sync_service.dart' as _i999;
+import '../data/service/database/database_repository.dart' as _i379;
+import '../data/service/database/diary_entry_service.dart' as _i373;
+import '../data/service/database/diary_logging_service.dart' as _i493;
+import '../data/service/database/food_service.dart' as _i271;
+import '../data/service/date_formatting_service.dart' as _i443;
+import '../data/service/diary_service.dart' as _i615;
+import '../data/service/logging_service.dart' as _i861;
+import '../data/service/numeric_formatting_service.dart' as _i633;
+import '../data/service/secure_storage_service.dart' as _i270;
+import '../data/service/user_service.dart' as _i757;
+import '../data/validators/food_validator.dart' as _i404;
+import '../data/validators/nutrition_validator.dart' as _i2;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -62,12 +62,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i211.AppDropdownButtonController());
     gh.factoryAsync<_i1067.AppEnvironment>(
         () => _i1067.AppEnvironment.create());
-    gh.factory<_i226.DateFormattingService>(
-        () => _i226.DateFormattingService());
-    gh.factory<_i808.NumericFormattingService>(
-        () => _i808.NumericFormattingService());
-    gh.factory<_i142.SecureStorageService>(() => _i142.SecureStorageService());
-    gh.factory<_i894.LoggingService>(() => _i894.LoggingService());
+    gh.factory<_i2.NutritionValidator>(() => _i2.NutritionValidator());
+    gh.factory<_i404.FoodValidator>(() => _i404.FoodValidator());
+    gh.factory<_i443.DateFormattingService>(
+        () => _i443.DateFormattingService());
+    gh.factory<_i633.NumericFormattingService>(
+        () => _i633.NumericFormattingService());
+    gh.factory<_i270.SecureStorageService>(() => _i270.SecureStorageService());
+    gh.factory<_i861.LoggingService>(() => _i861.LoggingService());
     gh.factory<_i264.FoodItemController>(() => _i264.FoodItemController());
     gh.factory<_i517.UserGoalsController>(() => _i517.UserGoalsController());
     gh.factory<_i371.SearchRecipeController>(
@@ -80,53 +82,51 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i425.DiaryController>(() => _i425.DiaryController());
     gh.factory<_i816.CreateFoodController>(() => _i816.CreateFoodController());
     gh.factory<_i508.LoginController>(() => _i508.LoginController());
-    gh.factory<_i247.AddFoodController>(() => _i247.AddFoodController());
-    gh.factory<_i424.NutritionValidator>(() => _i424.NutritionValidator());
-    gh.factory<_i815.FoodValidator>(() => _i815.FoodValidator());
-    await gh.lazySingletonAsync<_i543.AppPathProvider>(
+    gh.factory<_i980.AddFoodCubit>(() => _i980.AddFoodCubit());
+    gh.lazySingleton<_i558.FlutterSecureStorage>(
+        () => registerModule.flutterSecureStorage);
+    gh.lazySingletonAsync<_i13.CollectionApiService>(
+        () => registerModule.collectionApiService);
+    gh.lazySingletonAsync<_i1017.NutritionixApiService>(
+        () => registerModule.nutritionixApiService);
+    gh.lazySingletonAsync<_i376.UserApiService>(
+        () => registerModule.userApiService);
+    await gh.lazySingletonAsync<_i667.AppPathProvider>(
       () {
-        final i = _i543.AppPathProvider();
+        final i = _i667.AppPathProvider();
         return i.initPath().then((_) => i);
       },
       preResolve: true,
     );
-    gh.lazySingleton<_i929.DiaryService>(() => _i929.DiaryService());
-    await gh.lazySingletonAsync<_i774.DatabaseRepository>(
+    gh.lazySingleton<_i615.DiaryService>(() => _i615.DiaryService());
+    await gh.lazySingletonAsync<_i379.DatabaseRepository>(
       () {
-        final i = _i774.DatabaseRepository();
+        final i = _i379.DatabaseRepository();
         return i.init().then((_) => i);
       },
       preResolve: true,
     );
-    gh.lazySingleton<_i970.DiaryLoggingService>(
-        () => _i970.DiaryLoggingService());
-    gh.lazySingleton<_i519.DataSyncService>(() => _i519.DataSyncService());
-    gh.lazySingleton<_i193.UserService>(() => _i193.UserService());
+    gh.lazySingleton<_i493.DiaryLoggingService>(
+        () => _i493.DiaryLoggingService());
+    gh.lazySingleton<_i999.DataSyncService>(() => _i999.DataSyncService());
+    gh.lazySingleton<_i757.UserService>(() => _i757.UserService());
     gh.lazySingleton<_i383.SearchFoodService>(() => _i383.SearchFoodService());
-    gh.lazySingleton<_i558.FlutterSecureStorage>(
-        () => registerModule.flutterSecureStorage);
-    gh.lazySingletonAsync<_i79.CollectionApiService>(
-        () => registerModule.collectionApiService);
-    gh.lazySingletonAsync<_i814.NutritionixApiService>(
-        () => registerModule.nutritionixApiService);
-    gh.lazySingletonAsync<_i338.UserApiService>(
-        () => registerModule.userApiService);
-    gh.lazySingleton<_i80.DiaryEntryService>(() => _i80.DiaryEntryService(
-        databaseRepository: gh<_i774.DatabaseRepository>()));
+    gh.lazySingleton<_i271.FoodService>(
+        () => _i271.FoodService(database: gh<_i379.DatabaseRepository>()));
     gh.factoryAsync<String>(
       () => registerModule.appDirectoryPath,
       instanceName: 'appDirectoryPath',
     );
-    gh.factoryParamAsync<_i548.DioProvider, String?, Map<String, String>?>((
+    gh.factoryParamAsync<_i159.DioProvider, String?, Map<String, String>?>((
       baseUrl,
       headers,
     ) =>
-        _i548.DioProvider.buildDio(
+        _i159.DioProvider.buildDio(
           baseUrl: baseUrl,
           headers: headers,
         ));
-    gh.lazySingleton<_i994.FoodService>(
-        () => _i994.FoodService(database: gh<_i774.DatabaseRepository>()));
+    gh.lazySingleton<_i373.DiaryEntryService>(() => _i373.DiaryEntryService(
+        databaseRepository: gh<_i379.DatabaseRepository>()));
     return this;
   }
 }

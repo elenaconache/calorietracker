@@ -6,10 +6,10 @@ import 'package:calorietracker/feature/create_food/logic/create_food_controller.
 import 'package:calorietracker/feature/create_food/data/food_error.dart';
 import 'package:calorietracker/feature/create_food/ui/food_form.dart';
 import 'package:calorietracker/feature/create_food/ui/food_input.dart';
-import 'package:calorietracker/shared/model/food.dart';
-import 'package:calorietracker/shared/model/meal.dart';
+import 'package:calorietracker/shared/data/model/food.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/error_box.dart';
 import 'package:flutter/material.dart';

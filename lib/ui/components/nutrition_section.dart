@@ -1,5 +1,5 @@
 import 'package:calorietracker/feature/add_food/ui/nutrient_row.dart';
-import 'package:calorietracker/shared/model/nutrition.dart';
+import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 

@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/shared/model/food.dart';
+import 'package:calorietracker/shared/data/model/food.dart';
+import 'package:calorietracker/shared/data/model/local/local_diary_entry.dart';
+import 'package:calorietracker/shared/data/model/local/local_food.dart';
+import 'package:calorietracker/shared/data/model/nutritionix/nutritionix_search_request.dart';
+import 'package:calorietracker/shared/data/model/nutritionix/nutritionix_search_response.dart';
+import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
+import 'package:calorietracker/shared/data/service/database/food_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
+import 'package:calorietracker/shared/data/service/api/nutritionix_api_service.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/shared/model/local/local_diary_entry.dart';
-import 'package:calorietracker/shared/model/local/local_food.dart';
-import 'package:calorietracker/shared/model/nutritionix/nutritionix_search_request.dart';
-import 'package:calorietracker/shared/model/nutritionix/nutritionix_search_response.dart';
-import 'package:calorietracker/shared/service/api/collection_api_service.dart';
-import 'package:calorietracker/shared/service/database/food_service.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
-import 'package:calorietracker/shared/service/api/nutritionix_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -66,7 +66,7 @@ class SearchFoodService {
 
   Future<void> searchLocally({required String query}) async {
     currentSearchQuery = query;
-    final foodService =  getIt.get<FoodService>();
+    final foodService = getIt.get<FoodService>();
     final results = await foodService.searchFood(query: query);
     if (currentSearchQuery != query) {
       return;

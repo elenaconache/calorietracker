@@ -1,11 +1,11 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/food_log.dart';
-import 'package:calorietracker/shared/model/food.dart';
-import 'package:calorietracker/shared/model/meal.dart';
-import 'package:calorietracker/shared/service/database/diary_logging_service.dart';
-import 'package:calorietracker/shared/service/diary_service.dart';
-import 'package:calorietracker/shared/service/logging_service.dart';
-import 'package:calorietracker/shared/service/user_service.dart';
+import 'package:calorietracker/shared/data/model/food.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
+import 'package:calorietracker/shared/data/service/database/diary_logging_service.dart';
+import 'package:calorietracker/shared/data/service/diary_service.dart';
+import 'package:calorietracker/shared/data/service/logging_service.dart';
+import 'package:calorietracker/shared/data/service/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
