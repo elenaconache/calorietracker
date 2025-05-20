@@ -53,7 +53,7 @@ class AddFoodView extends StatelessWidget {
                         )
                       : IconButton(
                           // TODO: send barcode as parameter to this view if the user scanned a barcode.
-                          onPressed: () => _confirmFood(context, state.servingSize),
+                          onPressed: () => _confirmFood(context, state.servingSize ?? 100),
                           icon: const Icon(Icons.check, size: 32),
                         ),
                 ],

@@ -9,11 +9,7 @@ part of 'collection_api_service.dart';
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
 class _CollectionApiService implements CollectionApiService {
-  _CollectionApiService(
-    this._dio, {
-    this.baseUrl,
-    this.errorLogger,
-  });
+  _CollectionApiService(this._dio, {this.baseUrl, this.errorLogger});
 
   final Dio _dio;
 
@@ -22,29 +18,24 @@ class _CollectionApiService implements CollectionApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<IdResponse> createDiaryEntry(
-      {required AddDiaryEntryRequest body}) async {
+  Future<IdResponse> createDiaryEntry({
+    required AddDiaryEntryRequest body,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(await compute(serializeAddDiaryEntryRequest, body));
-    final _options = _setStreamType<IdResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'diary-entries/add',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<IdResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'diary-entries/add',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late IdResponse _value;
     try {
@@ -65,22 +56,16 @@ class _CollectionApiService implements CollectionApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<MealEntriesResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'diary-entries/${username}/${date}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<List<MealEntriesResponse>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'diary-entries/${username}/${date}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<MealEntriesResponse> _value;
     try {
@@ -96,29 +81,24 @@ class _CollectionApiService implements CollectionApiService {
   }
 
   @override
-  Future<CreatedFoodResponse?> createFood(
-      {required AddFoodRequest body}) async {
+  Future<CreatedFoodResponse?> createFood({
+    required AddFoodRequest body,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(await compute(serializeAddFoodRequest, body));
-    final _options = _setStreamType<CreatedFoodResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'foods/add',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<CreatedFoodResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'foods/add',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
     late CreatedFoodResponse? _value;
     try {
@@ -138,22 +118,16 @@ class _CollectionApiService implements CollectionApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<CollectionFood>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'foods/find-by/${query}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<List<CollectionFood>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'foods/find-by/${query}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<CollectionFood> _value;
     try {
@@ -169,28 +143,23 @@ class _CollectionApiService implements CollectionApiService {
   }
 
   @override
-  Future<List<AddLocalDataResponse>> createFoods(
-      {required List<AddLocalFoodRequest> localFoods}) async {
+  Future<List<AddLocalDataResponse>> createFoods({
+    required List<AddLocalFoodRequest> localFoods,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = await compute(serializeAddLocalFoodRequestList, localFoods);
-    final _options = _setStreamType<List<AddLocalDataResponse>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'foods/add-list',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<List<AddLocalDataResponse>>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'foods/add-list',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<AddLocalDataResponse> _value;
     try {
@@ -206,29 +175,26 @@ class _CollectionApiService implements CollectionApiService {
   }
 
   @override
-  Future<List<AddLocalDataResponse>> createDiaryEntries(
-      {required List<AddLocalDiaryEntryRequest> localDiaryEntries}) async {
+  Future<List<AddLocalDataResponse>> createDiaryEntries({
+    required List<AddLocalDiaryEntryRequest> localDiaryEntries,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = await compute(
-        serializeAddLocalDiaryEntryRequestList, localDiaryEntries);
-    final _options = _setStreamType<List<AddLocalDataResponse>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'diary-entries/add/list',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+      serializeAddLocalDiaryEntryRequestList,
+      localDiaryEntries,
+    );
+    final _options = _setStreamType<List<AddLocalDataResponse>>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'diary-entries/add/list',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<AddLocalDataResponse> _value;
     try {
@@ -249,22 +215,16 @@ class _CollectionApiService implements CollectionApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'diary-entries/delete/${diaryEntryId}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<void>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'diary-entries/delete/${diaryEntryId}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     await _dio.fetch<void>(_options);
   }
 
@@ -275,23 +235,21 @@ class _CollectionApiService implements CollectionApiService {
     final _headers = <String, dynamic>{r'content-type': 'application/json'};
     _headers.removeWhere((k, v) => v == null);
     final _data = ids;
-    final _options = _setStreamType<void>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'application/json',
-    )
-        .compose(
-          _dio.options,
-          'diary-entries/delete/list',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<void>(
+      Options(
+        method: 'POST',
+        headers: _headers,
+        extra: _extra,
+        contentType: 'application/json',
+      )
+          .compose(
+            _dio.options,
+            'diary-entries/delete/list',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     await _dio.fetch<void>(_options);
   }
 
@@ -301,22 +259,16 @@ class _CollectionApiService implements CollectionApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<CollectionRecipeResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'recipes/find-all',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<List<CollectionRecipeResponse>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'recipes/find-all',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<CollectionRecipeResponse> _value;
     try {
@@ -338,22 +290,16 @@ class _CollectionApiService implements CollectionApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(await compute(serializeAddRecipeRequest, body));
-    final _options = _setStreamType<IdResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'recipes/add',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+    final _options = _setStreamType<IdResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'recipes/add',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late IdResponse _value;
     try {
@@ -366,29 +312,23 @@ class _CollectionApiService implements CollectionApiService {
   }
 
   @override
-  Future<List<CollectionRecipeIngredientResponse>> getRecipeIngredients(
-      {required int recipeId}) async {
+  Future<List<CollectionRecipeIngredientResponse>> getRecipeIngredients({
+    required int recipeId,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<List<CollectionRecipeIngredientResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'recipes/${recipeId}/ingredients',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
+    final _options = _setStreamType<List<CollectionRecipeIngredientResponse>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'recipes/${recipeId}/ingredients',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
     final _result = await _dio.fetch<List<dynamic>>(_options);
     late List<CollectionRecipeIngredientResponse> _value;
     try {
@@ -416,10 +356,7 @@ class _CollectionApiService implements CollectionApiService {
     return requestOptions;
   }
 
-  String _combineBaseUrls(
-    String dioBaseUrl,
-    String? baseUrl,
-  ) {
+  String _combineBaseUrls(String dioBaseUrl, String? baseUrl) {
     if (baseUrl == null || baseUrl.trim().isEmpty) {
       return dioBaseUrl;
     }

@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -13,7 +14,7 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
 import '../../feature/add_food/logic/add_food_cubit.dart' as _i980;
-import '../../feature/create_food/logic/create_food_controller.dart' as _i816;
+import '../../feature/create_food/logic/create_food_cubit.dart' as _i525;
 import '../../feature/diary/logic/diary_controller.dart' as _i425;
 import '../../feature/login/logic/login_controller.dart' as _i508;
 import '../../feature/profile/logic/user_goals_controller.dart' as _i517;
@@ -80,7 +81,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1.RecipeDetailsController>(
         () => _i1.RecipeDetailsController());
     gh.factory<_i425.DiaryController>(() => _i425.DiaryController());
-    gh.factory<_i816.CreateFoodController>(() => _i816.CreateFoodController());
+    gh.factory<_i525.CreateFoodCubit>(() => _i525.CreateFoodCubit());
     gh.factory<_i508.LoginController>(() => _i508.LoginController());
     gh.factory<_i980.AddFoodCubit>(() => _i980.AddFoodCubit());
     gh.lazySingleton<_i558.FlutterSecureStorage>(

@@ -21,222 +21,263 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(2, 2084377092419227434),
-      name: 'LocalFood',
-      lastPropertyId: const obx_int.IdUid(28, 3973348157706845018),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 4803178478840731373),
-            name: 'id',
-            type: 6,
-            flags: 129),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 7031046045764449252),
-            name: 'calories',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 7634539576413761895),
-            name: 'fat',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 9046462348331399659),
-            name: 'fatSaturated',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 3677459918824223309),
-            name: 'fatTrans',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 961629032631106028),
-            name: 'fatPolyunsaturated',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 4046681211023219992),
-            name: 'fatMonounsaturated',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(8, 2256741507766148717),
-            name: 'cholesterol',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(9, 2066609992490603651),
-            name: 'carbohydrates',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(10, 1348653668827968239),
-            name: 'fiber',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(11, 498317594279610293),
-            name: 'insolubleFiber',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(12, 3260257729852852447),
-            name: 'sugar',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(13, 2673898096093794184),
-            name: 'protein',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(14, 9114825634267802032),
-            name: 'sodium',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(15, 8686932542427004260),
-            name: 'potassium',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(16, 5632263445673722684),
-            name: 'calcium',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(17, 5491768700759782465),
-            name: 'iron',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(18, 5644706555118799676),
-            name: 'vitaminA',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(19, 2411141735171373178),
-            name: 'vitaminC',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(20, 795666330533380306),
-            name: 'vitaminD',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(21, 6936708131457988521),
-            name: 'barcode',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(22, 3251004936734939414),
-            name: 'name',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(23, 6702916557996106333),
-            name: 'brand',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(24, 1795354905629938356),
-            name: 'pushed',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(25, 4054345587206238458),
-            name: 'deleted',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(26, 4395032351356709334),
-            name: 'errorPushing',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(27, 7026930630894945364),
-            name: 'foodId',
-            type: 6,
-            flags: 32808,
-            indexId: const obx_int.IdUid(3, 3600908181472716497)),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(28, 3973348157706845018),
-            name: 'createdAtDate',
-            type: 10,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[]),
+    id: const obx_int.IdUid(2, 2084377092419227434),
+    name: 'LocalFood',
+    lastPropertyId: const obx_int.IdUid(28, 3973348157706845018),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 4803178478840731373),
+        name: 'id',
+        type: 6,
+        flags: 129,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 7031046045764449252),
+        name: 'calories',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 7634539576413761895),
+        name: 'fat',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 9046462348331399659),
+        name: 'fatSaturated',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 3677459918824223309),
+        name: 'fatTrans',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 961629032631106028),
+        name: 'fatPolyunsaturated',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 4046681211023219992),
+        name: 'fatMonounsaturated',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 2256741507766148717),
+        name: 'cholesterol',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 2066609992490603651),
+        name: 'carbohydrates',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 1348653668827968239),
+        name: 'fiber',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 498317594279610293),
+        name: 'insolubleFiber',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 3260257729852852447),
+        name: 'sugar',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(13, 2673898096093794184),
+        name: 'protein',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(14, 9114825634267802032),
+        name: 'sodium',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(15, 8686932542427004260),
+        name: 'potassium',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(16, 5632263445673722684),
+        name: 'calcium',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(17, 5491768700759782465),
+        name: 'iron',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(18, 5644706555118799676),
+        name: 'vitaminA',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(19, 2411141735171373178),
+        name: 'vitaminC',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(20, 795666330533380306),
+        name: 'vitaminD',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(21, 6936708131457988521),
+        name: 'barcode',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(22, 3251004936734939414),
+        name: 'name',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(23, 6702916557996106333),
+        name: 'brand',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(24, 1795354905629938356),
+        name: 'pushed',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(25, 4054345587206238458),
+        name: 'deleted',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(26, 4395032351356709334),
+        name: 'errorPushing',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(27, 7026930630894945364),
+        name: 'foodId',
+        type: 6,
+        flags: 32808,
+        indexId: const obx_int.IdUid(3, 3600908181472716497),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(28, 3973348157706845018),
+        name: 'createdAtDate',
+        type: 10,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(3, 1374791795697339517),
-      name: 'LocalDiaryEntry',
-      lastPropertyId: const obx_int.IdUid(11, 7449701948693482292),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 8242016826064736516),
-            name: 'localId',
-            type: 6,
-            flags: 129),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 6304783601808550241),
-            name: 'entryDate',
-            type: 10,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 8257685953655374018),
-            name: 'username',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 4245749361565746502),
-            name: 'unitId',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 9056116625569372070),
-            name: 'servingQuantity',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 3074742645711831062),
-            name: 'pushedEntry',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 7912968406558350433),
-            name: 'deletedEntry',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(8, 4843729228740525624),
-            name: 'errorPushingEntry',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(9, 1476238957923722176),
-            name: 'localFoodId',
-            type: 11,
-            flags: 520,
-            indexId: const obx_int.IdUid(4, 8329570015763613914),
-            relationTarget: 'LocalFood'),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(10, 2778872133014571154),
-            name: 'entryId',
-            type: 6,
-            flags: 32808,
-            indexId: const obx_int.IdUid(5, 1560666864061133465)),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(11, 7449701948693482292),
-            name: 'dbMeal',
-            type: 6,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[])
+    id: const obx_int.IdUid(3, 1374791795697339517),
+    name: 'LocalDiaryEntry',
+    lastPropertyId: const obx_int.IdUid(11, 7449701948693482292),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 8242016826064736516),
+        name: 'localId',
+        type: 6,
+        flags: 129,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 6304783601808550241),
+        name: 'entryDate',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 8257685953655374018),
+        name: 'username',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 4245749361565746502),
+        name: 'unitId',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 9056116625569372070),
+        name: 'servingQuantity',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 3074742645711831062),
+        name: 'pushedEntry',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 7912968406558350433),
+        name: 'deletedEntry',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 4843729228740525624),
+        name: 'errorPushingEntry',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 1476238957923722176),
+        name: 'localFoodId',
+        type: 11,
+        flags: 520,
+        indexId: const obx_int.IdUid(4, 8329570015763613914),
+        relationTarget: 'LocalFood',
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 2778872133014571154),
+        name: 'entryId',
+        type: 6,
+        flags: 32808,
+        indexId: const obx_int.IdUid(5, 1560666864061133465),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 7449701948693482292),
+        name: 'dbMeal',
+        type: 6,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -250,247 +291,390 @@ final _entities = <obx_int.ModelEntity>[
 /// For Flutter apps, also calls `loadObjectBoxLibraryAndroidCompat()` from
 /// the ObjectBox Flutter library to fix loading the native ObjectBox library
 /// on Android 6 and older.
-Future<obx.Store> openStore(
-    {String? directory,
-    int? maxDBSizeInKB,
-    int? maxDataSizeInKB,
-    int? fileMode,
-    int? maxReaders,
-    bool queriesCaseSensitiveDefault = true,
-    String? macosApplicationGroup}) async {
+Future<obx.Store> openStore({
+  String? directory,
+  int? maxDBSizeInKB,
+  int? maxDataSizeInKB,
+  int? fileMode,
+  int? maxReaders,
+  bool queriesCaseSensitiveDefault = true,
+  String? macosApplicationGroup,
+}) async {
   await loadObjectBoxLibraryAndroidCompat();
-  return obx.Store(getObjectBoxModel(),
-      directory: directory ?? (await defaultStoreDirectory()).path,
-      maxDBSizeInKB: maxDBSizeInKB,
-      maxDataSizeInKB: maxDataSizeInKB,
-      fileMode: fileMode,
-      maxReaders: maxReaders,
-      queriesCaseSensitiveDefault: queriesCaseSensitiveDefault,
-      macosApplicationGroup: macosApplicationGroup);
+  return obx.Store(
+    getObjectBoxModel(),
+    directory: directory ?? (await defaultStoreDirectory()).path,
+    maxDBSizeInKB: maxDBSizeInKB,
+    maxDataSizeInKB: maxDataSizeInKB,
+    fileMode: fileMode,
+    maxReaders: maxReaders,
+    queriesCaseSensitiveDefault: queriesCaseSensitiveDefault,
+    macosApplicationGroup: macosApplicationGroup,
+  );
 }
 
 /// Returns the ObjectBox model definition for this project for use with
 /// [obx.Store.new].
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
-      entities: _entities,
-      lastEntityId: const obx_int.IdUid(3, 1374791795697339517),
-      lastIndexId: const obx_int.IdUid(5, 1560666864061133465),
-      lastRelationId: const obx_int.IdUid(0, 0),
-      lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [5131412822362615304],
-      retiredIndexUids: const [],
-      retiredPropertyUids: const [
-        3261115456366930040,
-        6859686216847258117,
-        3992204725654785423,
-        7941509233595512949,
-        3397514877572050640,
-        1726709682213357061,
-        4162788812154352761,
-        270675761643922539,
-        6158728946300868111,
-        2914229019763343892,
-        591696758286405718
-      ],
-      retiredRelationUids: const [],
-      modelVersion: 5,
-      modelVersionParserMinimum: 5,
-      version: 1);
+    entities: _entities,
+    lastEntityId: const obx_int.IdUid(3, 1374791795697339517),
+    lastIndexId: const obx_int.IdUid(5, 1560666864061133465),
+    lastRelationId: const obx_int.IdUid(0, 0),
+    lastSequenceId: const obx_int.IdUid(0, 0),
+    retiredEntityUids: const [5131412822362615304],
+    retiredIndexUids: const [],
+    retiredPropertyUids: const [
+      3261115456366930040,
+      6859686216847258117,
+      3992204725654785423,
+      7941509233595512949,
+      3397514877572050640,
+      1726709682213357061,
+      4162788812154352761,
+      270675761643922539,
+      6158728946300868111,
+      2914229019763343892,
+      591696758286405718,
+    ],
+    retiredRelationUids: const [],
+    modelVersion: 5,
+    modelVersionParserMinimum: 5,
+    version: 1,
+  );
 
   final bindings = <Type, obx_int.EntityDefinition>{
     LocalFood: obx_int.EntityDefinition<LocalFood>(
-        model: _entities[0],
-        toOneRelations: (LocalFood object) => [],
-        toManyRelations: (LocalFood object) => {},
-        getId: (LocalFood object) => object.id,
-        setId: (LocalFood object, int id) {
-          object.id = id;
-        },
-        objectToFB: (LocalFood object, fb.Builder fbb) {
-          final barcodeOffset =
-              object.barcode == null ? null : fbb.writeString(object.barcode!);
-          final nameOffset = fbb.writeString(object.name);
-          final brandOffset =
-              object.brand == null ? null : fbb.writeString(object.brand!);
-          fbb.startTable(29);
-          fbb.addInt64(0, object.id);
-          fbb.addFloat64(1, object.calories);
-          fbb.addFloat64(2, object.fat);
-          fbb.addFloat64(3, object.fatSaturated);
-          fbb.addFloat64(4, object.fatTrans);
-          fbb.addFloat64(5, object.fatPolyunsaturated);
-          fbb.addFloat64(6, object.fatMonounsaturated);
-          fbb.addFloat64(7, object.cholesterol);
-          fbb.addFloat64(8, object.carbohydrates);
-          fbb.addFloat64(9, object.fiber);
-          fbb.addFloat64(10, object.insolubleFiber);
-          fbb.addFloat64(11, object.sugar);
-          fbb.addFloat64(12, object.protein);
-          fbb.addFloat64(13, object.sodium);
-          fbb.addFloat64(14, object.potassium);
-          fbb.addFloat64(15, object.calcium);
-          fbb.addFloat64(16, object.iron);
-          fbb.addFloat64(17, object.vitaminA);
-          fbb.addFloat64(18, object.vitaminC);
-          fbb.addFloat64(19, object.vitaminD);
-          fbb.addOffset(20, barcodeOffset);
-          fbb.addOffset(21, nameOffset);
-          fbb.addOffset(22, brandOffset);
-          fbb.addBool(23, object.pushed);
-          fbb.addBool(24, object.deleted);
-          fbb.addBool(25, object.errorPushing);
-          fbb.addInt64(26, object.foodId);
-          fbb.addInt64(27, object.createdAtDate.millisecondsSinceEpoch);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final idParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final barcodeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 44);
-          final nameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 46, '');
-          final brandParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 48);
-          final pushedParam =
-              const fb.BoolReader().vTableGet(buffer, rootOffset, 50, false);
-          final deletedParam =
-              const fb.BoolReader().vTableGet(buffer, rootOffset, 52, false);
-          final errorPushingParam =
-              const fb.BoolReader().vTableGet(buffer, rootOffset, 54, false);
-          final foodIdParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 56);
-          final createdAtDateParam = DateTime.fromMillisecondsSinceEpoch(
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 58, 0));
-          final caloriesParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0);
-          final fatParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
-          final fatTransParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0);
-          final fatSaturatedParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0);
-          final fatPolyunsaturatedParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0);
-          final fatMonounsaturatedParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0);
-          final cholesterolParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 18, 0);
-          final carbohydratesParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 20, 0);
-          final fiberParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 22, 0);
-          final insolubleFiberParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 24, 0);
-          final sugarParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 26, 0);
-          final proteinParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 28, 0);
-          final sodiumParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 30, 0);
-          final potassiumParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 32, 0);
-          final calciumParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 34, 0);
-          final ironParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 36, 0);
-          final vitaminAParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 38, 0);
-          final vitaminCParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 40, 0);
-          final vitaminDParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 42, 0);
-          final object = LocalFood(
-              id: idParam,
-              barcode: barcodeParam,
-              name: nameParam,
-              brand: brandParam,
-              pushed: pushedParam,
-              deleted: deletedParam,
-              errorPushing: errorPushingParam,
-              foodId: foodIdParam,
-              createdAtDate: createdAtDateParam,
-              calories: caloriesParam,
-              fat: fatParam,
-              fatTrans: fatTransParam,
-              fatSaturated: fatSaturatedParam,
-              fatPolyunsaturated: fatPolyunsaturatedParam,
-              fatMonounsaturated: fatMonounsaturatedParam,
-              cholesterol: cholesterolParam,
-              carbohydrates: carbohydratesParam,
-              fiber: fiberParam,
-              insolubleFiber: insolubleFiberParam,
-              sugar: sugarParam,
-              protein: proteinParam,
-              sodium: sodiumParam,
-              potassium: potassiumParam,
-              calcium: calciumParam,
-              iron: ironParam,
-              vitaminA: vitaminAParam,
-              vitaminC: vitaminCParam,
-              vitaminD: vitaminDParam);
+      model: _entities[0],
+      toOneRelations: (LocalFood object) => [],
+      toManyRelations: (LocalFood object) => {},
+      getId: (LocalFood object) => object.id,
+      setId: (LocalFood object, int id) {
+        object.id = id;
+      },
+      objectToFB: (LocalFood object, fb.Builder fbb) {
+        final barcodeOffset =
+            object.barcode == null ? null : fbb.writeString(object.barcode!);
+        final nameOffset = fbb.writeString(object.name);
+        final brandOffset =
+            object.brand == null ? null : fbb.writeString(object.brand!);
+        fbb.startTable(29);
+        fbb.addInt64(0, object.id);
+        fbb.addFloat64(1, object.calories);
+        fbb.addFloat64(2, object.fat);
+        fbb.addFloat64(3, object.fatSaturated);
+        fbb.addFloat64(4, object.fatTrans);
+        fbb.addFloat64(5, object.fatPolyunsaturated);
+        fbb.addFloat64(6, object.fatMonounsaturated);
+        fbb.addFloat64(7, object.cholesterol);
+        fbb.addFloat64(8, object.carbohydrates);
+        fbb.addFloat64(9, object.fiber);
+        fbb.addFloat64(10, object.insolubleFiber);
+        fbb.addFloat64(11, object.sugar);
+        fbb.addFloat64(12, object.protein);
+        fbb.addFloat64(13, object.sodium);
+        fbb.addFloat64(14, object.potassium);
+        fbb.addFloat64(15, object.calcium);
+        fbb.addFloat64(16, object.iron);
+        fbb.addFloat64(17, object.vitaminA);
+        fbb.addFloat64(18, object.vitaminC);
+        fbb.addFloat64(19, object.vitaminD);
+        fbb.addOffset(20, barcodeOffset);
+        fbb.addOffset(21, nameOffset);
+        fbb.addOffset(22, brandOffset);
+        fbb.addBool(23, object.pushed);
+        fbb.addBool(24, object.deleted);
+        fbb.addBool(25, object.errorPushing);
+        fbb.addInt64(26, object.foodId);
+        fbb.addInt64(27, object.createdAtDate.millisecondsSinceEpoch);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final barcodeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 44);
+        final nameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 46, '');
+        final brandParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 48);
+        final pushedParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          50,
+          false,
+        );
+        final deletedParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          52,
+          false,
+        );
+        final errorPushingParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          54,
+          false,
+        );
+        final foodIdParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          56,
+        );
+        final createdAtDateParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 58, 0),
+        );
+        final caloriesParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          6,
+          0,
+        );
+        final fatParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          8,
+          0,
+        );
+        final fatTransParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          12,
+          0,
+        );
+        final fatSaturatedParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          10,
+          0,
+        );
+        final fatPolyunsaturatedParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          14,
+          0,
+        );
+        final fatMonounsaturatedParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          16,
+          0,
+        );
+        final cholesterolParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          18,
+          0,
+        );
+        final carbohydratesParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          20,
+          0,
+        );
+        final fiberParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          22,
+          0,
+        );
+        final insolubleFiberParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          24,
+          0,
+        );
+        final sugarParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          26,
+          0,
+        );
+        final proteinParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          28,
+          0,
+        );
+        final sodiumParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          30,
+          0,
+        );
+        final potassiumParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          32,
+          0,
+        );
+        final calciumParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          34,
+          0,
+        );
+        final ironParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          36,
+          0,
+        );
+        final vitaminAParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          38,
+          0,
+        );
+        final vitaminCParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          40,
+          0,
+        );
+        final vitaminDParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          42,
+          0,
+        );
+        final object = LocalFood(
+          id: idParam,
+          barcode: barcodeParam,
+          name: nameParam,
+          brand: brandParam,
+          pushed: pushedParam,
+          deleted: deletedParam,
+          errorPushing: errorPushingParam,
+          foodId: foodIdParam,
+          createdAtDate: createdAtDateParam,
+          calories: caloriesParam,
+          fat: fatParam,
+          fatTrans: fatTransParam,
+          fatSaturated: fatSaturatedParam,
+          fatPolyunsaturated: fatPolyunsaturatedParam,
+          fatMonounsaturated: fatMonounsaturatedParam,
+          cholesterol: cholesterolParam,
+          carbohydrates: carbohydratesParam,
+          fiber: fiberParam,
+          insolubleFiber: insolubleFiberParam,
+          sugar: sugarParam,
+          protein: proteinParam,
+          sodium: sodiumParam,
+          potassium: potassiumParam,
+          calcium: calciumParam,
+          iron: ironParam,
+          vitaminA: vitaminAParam,
+          vitaminC: vitaminCParam,
+          vitaminD: vitaminDParam,
+        );
 
-          return object;
-        }),
+        return object;
+      },
+    ),
     LocalDiaryEntry: obx_int.EntityDefinition<LocalDiaryEntry>(
-        model: _entities[1],
-        toOneRelations: (LocalDiaryEntry object) => [object.localFood],
-        toManyRelations: (LocalDiaryEntry object) => {},
-        getId: (LocalDiaryEntry object) => object.localId,
-        setId: (LocalDiaryEntry object, int id) {
-          object.localId = id;
-        },
-        objectToFB: (LocalDiaryEntry object, fb.Builder fbb) {
-          final usernameOffset = fbb.writeString(object.username);
-          fbb.startTable(12);
-          fbb.addInt64(0, object.localId);
-          fbb.addInt64(1, object.entryDate.millisecondsSinceEpoch);
-          fbb.addOffset(2, usernameOffset);
-          fbb.addInt64(3, object.unitId);
-          fbb.addFloat64(4, object.servingQuantity);
-          fbb.addBool(5, object.pushedEntry);
-          fbb.addBool(6, object.deletedEntry);
-          fbb.addBool(7, object.errorPushingEntry);
-          fbb.addInt64(8, object.localFood.targetId);
-          fbb.addInt64(9, object.entryId);
-          fbb.addInt64(10, object.dbMeal);
-          fbb.finish(fbb.endTable());
-          return object.localId;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
+      model: _entities[1],
+      toOneRelations: (LocalDiaryEntry object) => [object.localFood],
+      toManyRelations: (LocalDiaryEntry object) => {},
+      getId: (LocalDiaryEntry object) => object.localId,
+      setId: (LocalDiaryEntry object, int id) {
+        object.localId = id;
+      },
+      objectToFB: (LocalDiaryEntry object, fb.Builder fbb) {
+        final usernameOffset = fbb.writeString(object.username);
+        fbb.startTable(12);
+        fbb.addInt64(0, object.localId);
+        fbb.addInt64(1, object.entryDate.millisecondsSinceEpoch);
+        fbb.addOffset(2, usernameOffset);
+        fbb.addInt64(3, object.unitId);
+        fbb.addFloat64(4, object.servingQuantity);
+        fbb.addBool(5, object.pushedEntry);
+        fbb.addBool(6, object.deletedEntry);
+        fbb.addBool(7, object.errorPushingEntry);
+        fbb.addInt64(8, object.localFood.targetId);
+        fbb.addInt64(9, object.entryId);
+        fbb.addInt64(10, object.dbMeal);
+        fbb.finish(fbb.endTable());
+        return object.localId;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
 
-          final object = LocalDiaryEntry()
-            ..localId =
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
-            ..entryDate = DateTime.fromMillisecondsSinceEpoch(
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0))
-            ..username = const fb.StringReader(asciiOptimization: true)
-                .vTableGet(buffer, rootOffset, 8, '')
-            ..unitId =
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)
-            ..servingQuantity =
-                const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0)
-            ..pushedEntry =
-                const fb.BoolReader().vTableGet(buffer, rootOffset, 14, false)
-            ..deletedEntry =
-                const fb.BoolReader().vTableGet(buffer, rootOffset, 16, false)
-            ..errorPushingEntry =
-                const fb.BoolReader().vTableGet(buffer, rootOffset, 18, false)
-            ..entryId =
-                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 22)
-            ..dbMeal = const fb.Int64Reader()
-                .vTableGetNullable(buffer, rootOffset, 24);
-          object.localFood.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
-          object.localFood.attach(store);
-          return object;
-        })
+        final object =
+            LocalDiaryEntry()
+              ..localId = const fb.Int64Reader().vTableGet(
+                buffer,
+                rootOffset,
+                4,
+                0,
+              )
+              ..entryDate = DateTime.fromMillisecondsSinceEpoch(
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0),
+              )
+              ..username = const fb.StringReader(
+                asciiOptimization: true,
+              ).vTableGet(buffer, rootOffset, 8, '')
+              ..unitId = const fb.Int64Reader().vTableGet(
+                buffer,
+                rootOffset,
+                10,
+                0,
+              )
+              ..servingQuantity = const fb.Float64Reader().vTableGet(
+                buffer,
+                rootOffset,
+                12,
+                0,
+              )
+              ..pushedEntry = const fb.BoolReader().vTableGet(
+                buffer,
+                rootOffset,
+                14,
+                false,
+              )
+              ..deletedEntry = const fb.BoolReader().vTableGet(
+                buffer,
+                rootOffset,
+                16,
+                false,
+              )
+              ..errorPushingEntry = const fb.BoolReader().vTableGet(
+                buffer,
+                rootOffset,
+                18,
+                false,
+              )
+              ..entryId = const fb.Int64Reader().vTableGetNullable(
+                buffer,
+                rootOffset,
+                22,
+              )
+              ..dbMeal = const fb.Int64Reader().vTableGetNullable(
+                buffer,
+                rootOffset,
+                24,
+              );
+        object.localFood.targetId = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          20,
+          0,
+        );
+        object.localFood.attach(store);
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -499,161 +683,200 @@ obx_int.ModelDefinition getObjectBoxModel() {
 /// [LocalFood] entity fields to define ObjectBox queries.
 class LocalFood_ {
   /// See [LocalFood.id].
-  static final id =
-      obx.QueryIntegerProperty<LocalFood>(_entities[0].properties[0]);
+  static final id = obx.QueryIntegerProperty<LocalFood>(
+    _entities[0].properties[0],
+  );
 
   /// See [LocalFood.calories].
-  static final calories =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[1]);
+  static final calories = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[1],
+  );
 
   /// See [LocalFood.fat].
-  static final fat =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[2]);
+  static final fat = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[2],
+  );
 
   /// See [LocalFood.fatSaturated].
-  static final fatSaturated =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[3]);
+  static final fatSaturated = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[3],
+  );
 
   /// See [LocalFood.fatTrans].
-  static final fatTrans =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[4]);
+  static final fatTrans = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[4],
+  );
 
   /// See [LocalFood.fatPolyunsaturated].
-  static final fatPolyunsaturated =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[5]);
+  static final fatPolyunsaturated = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[5],
+  );
 
   /// See [LocalFood.fatMonounsaturated].
-  static final fatMonounsaturated =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[6]);
+  static final fatMonounsaturated = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[6],
+  );
 
   /// See [LocalFood.cholesterol].
-  static final cholesterol =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[7]);
+  static final cholesterol = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[7],
+  );
 
   /// See [LocalFood.carbohydrates].
-  static final carbohydrates =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[8]);
+  static final carbohydrates = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[8],
+  );
 
   /// See [LocalFood.fiber].
-  static final fiber =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[9]);
+  static final fiber = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[9],
+  );
 
   /// See [LocalFood.insolubleFiber].
-  static final insolubleFiber =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[10]);
+  static final insolubleFiber = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[10],
+  );
 
   /// See [LocalFood.sugar].
-  static final sugar =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[11]);
+  static final sugar = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[11],
+  );
 
   /// See [LocalFood.protein].
-  static final protein =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[12]);
+  static final protein = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[12],
+  );
 
   /// See [LocalFood.sodium].
-  static final sodium =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[13]);
+  static final sodium = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[13],
+  );
 
   /// See [LocalFood.potassium].
-  static final potassium =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[14]);
+  static final potassium = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[14],
+  );
 
   /// See [LocalFood.calcium].
-  static final calcium =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[15]);
+  static final calcium = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[15],
+  );
 
   /// See [LocalFood.iron].
-  static final iron =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[16]);
+  static final iron = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[16],
+  );
 
   /// See [LocalFood.vitaminA].
-  static final vitaminA =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[17]);
+  static final vitaminA = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[17],
+  );
 
   /// See [LocalFood.vitaminC].
-  static final vitaminC =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[18]);
+  static final vitaminC = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[18],
+  );
 
   /// See [LocalFood.vitaminD].
-  static final vitaminD =
-      obx.QueryDoubleProperty<LocalFood>(_entities[0].properties[19]);
+  static final vitaminD = obx.QueryDoubleProperty<LocalFood>(
+    _entities[0].properties[19],
+  );
 
   /// See [LocalFood.barcode].
-  static final barcode =
-      obx.QueryStringProperty<LocalFood>(_entities[0].properties[20]);
+  static final barcode = obx.QueryStringProperty<LocalFood>(
+    _entities[0].properties[20],
+  );
 
   /// See [LocalFood.name].
-  static final name =
-      obx.QueryStringProperty<LocalFood>(_entities[0].properties[21]);
+  static final name = obx.QueryStringProperty<LocalFood>(
+    _entities[0].properties[21],
+  );
 
   /// See [LocalFood.brand].
-  static final brand =
-      obx.QueryStringProperty<LocalFood>(_entities[0].properties[22]);
+  static final brand = obx.QueryStringProperty<LocalFood>(
+    _entities[0].properties[22],
+  );
 
   /// See [LocalFood.pushed].
-  static final pushed =
-      obx.QueryBooleanProperty<LocalFood>(_entities[0].properties[23]);
+  static final pushed = obx.QueryBooleanProperty<LocalFood>(
+    _entities[0].properties[23],
+  );
 
   /// See [LocalFood.deleted].
-  static final deleted =
-      obx.QueryBooleanProperty<LocalFood>(_entities[0].properties[24]);
+  static final deleted = obx.QueryBooleanProperty<LocalFood>(
+    _entities[0].properties[24],
+  );
 
   /// See [LocalFood.errorPushing].
-  static final errorPushing =
-      obx.QueryBooleanProperty<LocalFood>(_entities[0].properties[25]);
+  static final errorPushing = obx.QueryBooleanProperty<LocalFood>(
+    _entities[0].properties[25],
+  );
 
   /// See [LocalFood.foodId].
-  static final foodId =
-      obx.QueryIntegerProperty<LocalFood>(_entities[0].properties[26]);
+  static final foodId = obx.QueryIntegerProperty<LocalFood>(
+    _entities[0].properties[26],
+  );
 
   /// See [LocalFood.createdAtDate].
-  static final createdAtDate =
-      obx.QueryDateProperty<LocalFood>(_entities[0].properties[27]);
+  static final createdAtDate = obx.QueryDateProperty<LocalFood>(
+    _entities[0].properties[27],
+  );
 }
 
 /// [LocalDiaryEntry] entity fields to define ObjectBox queries.
 class LocalDiaryEntry_ {
   /// See [LocalDiaryEntry.localId].
-  static final localId =
-      obx.QueryIntegerProperty<LocalDiaryEntry>(_entities[1].properties[0]);
+  static final localId = obx.QueryIntegerProperty<LocalDiaryEntry>(
+    _entities[1].properties[0],
+  );
 
   /// See [LocalDiaryEntry.entryDate].
-  static final entryDate =
-      obx.QueryDateProperty<LocalDiaryEntry>(_entities[1].properties[1]);
+  static final entryDate = obx.QueryDateProperty<LocalDiaryEntry>(
+    _entities[1].properties[1],
+  );
 
   /// See [LocalDiaryEntry.username].
-  static final username =
-      obx.QueryStringProperty<LocalDiaryEntry>(_entities[1].properties[2]);
+  static final username = obx.QueryStringProperty<LocalDiaryEntry>(
+    _entities[1].properties[2],
+  );
 
   /// See [LocalDiaryEntry.unitId].
-  static final unitId =
-      obx.QueryIntegerProperty<LocalDiaryEntry>(_entities[1].properties[3]);
+  static final unitId = obx.QueryIntegerProperty<LocalDiaryEntry>(
+    _entities[1].properties[3],
+  );
 
   /// See [LocalDiaryEntry.servingQuantity].
-  static final servingQuantity =
-      obx.QueryDoubleProperty<LocalDiaryEntry>(_entities[1].properties[4]);
+  static final servingQuantity = obx.QueryDoubleProperty<LocalDiaryEntry>(
+    _entities[1].properties[4],
+  );
 
   /// See [LocalDiaryEntry.pushedEntry].
-  static final pushedEntry =
-      obx.QueryBooleanProperty<LocalDiaryEntry>(_entities[1].properties[5]);
+  static final pushedEntry = obx.QueryBooleanProperty<LocalDiaryEntry>(
+    _entities[1].properties[5],
+  );
 
   /// See [LocalDiaryEntry.deletedEntry].
-  static final deletedEntry =
-      obx.QueryBooleanProperty<LocalDiaryEntry>(_entities[1].properties[6]);
+  static final deletedEntry = obx.QueryBooleanProperty<LocalDiaryEntry>(
+    _entities[1].properties[6],
+  );
 
   /// See [LocalDiaryEntry.errorPushingEntry].
-  static final errorPushingEntry =
-      obx.QueryBooleanProperty<LocalDiaryEntry>(_entities[1].properties[7]);
+  static final errorPushingEntry = obx.QueryBooleanProperty<LocalDiaryEntry>(
+    _entities[1].properties[7],
+  );
 
   /// See [LocalDiaryEntry.localFood].
   static final localFood = obx.QueryRelationToOne<LocalDiaryEntry, LocalFood>(
-      _entities[1].properties[8]);
+    _entities[1].properties[8],
+  );
 
   /// See [LocalDiaryEntry.entryId].
-  static final entryId =
-      obx.QueryIntegerProperty<LocalDiaryEntry>(_entities[1].properties[9]);
+  static final entryId = obx.QueryIntegerProperty<LocalDiaryEntry>(
+    _entities[1].properties[9],
+  );
 
   /// See [LocalDiaryEntry.dbMeal].
-  static final dbMeal =
-      obx.QueryIntegerProperty<LocalDiaryEntry>(_entities[1].properties[10]);
+  static final dbMeal = obx.QueryIntegerProperty<LocalDiaryEntry>(
+    _entities[1].properties[10],
+  );
 }

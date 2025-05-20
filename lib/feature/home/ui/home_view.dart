@@ -1,3 +1,4 @@
+import 'package:calorietracker/feature/create_food/logic/create_food_cubit.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/add_food/ui/add_food_view.dart';
@@ -20,6 +21,7 @@ import 'package:calorietracker/ui/components/generic_error_view.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 final diaryNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'diary');
 final recipeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'recipe');
@@ -81,7 +83,12 @@ class _HomeViewState extends State<HomeView> {
       case Routes.accounts:
         return MaterialPageRoute(builder: (context) => const AccountsView());
       case Routes.createFood:
-        return MaterialPageRoute(builder: (context) => CreateFoodView(meal: args as Meal?));
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider<CreateFoodCubit>(
+            create: (context) => getIt<CreateFoodCubit>(),
+            child: CreateFoodView(meal: args as Meal?),
+          ),
+        );
       case Routes.profile:
         return MaterialPageRoute(builder: (context) => const ProfileView());
       case Routes.userGoals:
@@ -115,7 +122,12 @@ class _HomeViewState extends State<HomeView> {
       case Routes.addFood:
         return MaterialPageRoute(builder: (context) => AddFoodView(args: args as AddFoodArguments));
       case Routes.createFood:
-        return MaterialPageRoute(builder: (context) => CreateFoodView(meal: args as Meal?));
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider<CreateFoodCubit>(
+            create: (context) => getIt<CreateFoodCubit>(),
+            child: CreateFoodView(meal: args as Meal?),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (context) => GenericErrorView(

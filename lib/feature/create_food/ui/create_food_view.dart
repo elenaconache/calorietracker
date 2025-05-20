@@ -1,8 +1,7 @@
-import 'dart:async';
-
+import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
-import 'package:calorietracker/feature/create_food/logic/create_food_controller.dart';
+import 'package:calorietracker/feature/create_food/logic/create_food_cubit.dart';
 import 'package:calorietracker/feature/create_food/data/food_error.dart';
 import 'package:calorietracker/feature/create_food/ui/food_form.dart';
 import 'package:calorietracker/feature/create_food/ui/food_input.dart';
@@ -13,6 +12,7 @@ import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/error_box.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateFoodView extends StatefulWidget {
   final Meal? meal;
@@ -47,7 +47,6 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   late final TextEditingController _vitaminCController;
   late final TextEditingController _vitaminDController;
 
-  late final CreateFoodController _controller;
   late final AnimationController _errorAnimationController;
 
   final _formKey = GlobalKey<FormState>(debugLabel: 'createFoodForm');
@@ -55,7 +54,6 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   @override
   void initState() {
     super.initState();
-    _controller = getIt<CreateFoodController>();
     _initTextControllers();
     _addTextListeners();
 
@@ -78,30 +76,61 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(AppStrings.createFoodLabel),
-            actions: [
-              ValueListenableBuilder(
-                  valueListenable: _controller.isLoading,
-                  builder: (_, isLoading, __) => isLoading
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16), child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()))
-                      : IconButton(
+    return BlocListener<CreateFoodCubit, CreateFoodState>(
+      listenWhen: (previous, current) => previous.createdFood != current.createdFood && current.createdFood.status is SuccessStatus,
+      listener: (context, state) {
+        final createdFood = state.createdFood.data;
+        if (createdFood?.localId == null && createdFood?.createdFoodId == null) {
+          getIt<LoggingService>().info('Could not save food locally neither on the API.');
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppStrings.errorCreateFood)),
+          );
+        } else {
+          final food = Food.input(foodInput: _foodInput, id: createdFood?.createdFoodId);
+          Navigator.of(context)
+              .pushNamed(Routes.addFood.path,
+                  arguments: AddFoodArguments(
+                    meal: widget.meal,
+                    food: food,
+                    localFoodId: createdFood?.localId,
+                  ))
+              .then((value) {
+            if (context.mounted) {
+              Navigator.of(context).pop(value);
+            }
+          });
+        }
+      },
+      child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(AppStrings.createFoodLabel),
+              actions: [
+                BlocBuilder<CreateFoodCubit, CreateFoodState>(
+                  builder: (context, state) {
+                    return state.createdFood.status.maybeMap(
+                      orElse: () => IconButton(
                           onPressed: () => _onDonePressed(context),
                           icon: const Icon(
                             Icons.check,
                             size: 32,
-                          )))
-            ],
-          ),
-          body: Column(
-            children: [
-              ValueListenableBuilder(
-                  valueListenable: _controller.foodError,
-                  builder: (_, foodError, __) {
+                          )),
+                      loading: (_) => const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16), child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator())),
+                    );
+                  },
+                ),
+              ],
+            ),
+            body: Column(
+              children: [
+                BlocSelector<CreateFoodCubit, CreateFoodState, FoodError?>(
+                  selector: (state) {
+                    return state.validationError;
+                  },
+                  builder: (context, foodError) {
                     if (foodError == null && _errorAnimationController.status == AnimationStatus.dismissed) {
                       return const SizedBox.shrink();
                     } else {
@@ -111,43 +140,47 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                         child: ErrorBox(
                             message: _getErrorMessage(foodError),
                             animationController: _errorAnimationController,
-                            onErrorDismissed: () => _errorAnimationController.reverse().then((value) => _controller.hideError())),
+                            onErrorDismissed: () => _errorAnimationController.reverse().then((value) => context.read<CreateFoodCubit>().hideError())),
                       );
                     }
-                  }),
-              Expanded(
-                  child: Form(
-                      key: _formKey,
-                      child: ValueListenableBuilder(
-                          valueListenable: _controller.isLoading,
-                          builder: (_, isLoading, __) => FoodForm(
-                                brandNameController: _brandNameController,
-                                caloriesController: _caloriesController,
-                                carbsController: _carbsController,
-                                fatController: _fatController,
-                                foodNameController: _foodNameController,
-                                proteinController: _proteinController,
-                                servingSizeController: _servingSizeController,
-                                sugarController: _sugarController,
-                                fiberController: _fiberController,
-                                fatSaturatedController: _fatSaturatedController,
-                                fatTransController: _fatTransController,
-                                fatMonounsaturatedController: _fatMonounsaturatedController,
-                                fatPolyunsaturatedController: _fatPolyunsaturatedController,
-                                cholesterolController: _cholesterolController,
-                                ironController: _ironController,
-                                potassiumController: _potassiumController,
-                                saltController: _saltController,
-                                calciumController: _calciumController,
-                                vitaminAController: _vitaminAController,
-                                vitaminCController: _vitaminCController,
-                                vitaminDController: _vitaminDController,
-                                insolubleFiberController: _insolubleFiberController,
-                                enabled: !isLoading,
-                              ))))
-            ],
-          ),
-        ));
+                  },
+                ),
+                BlocBuilder<CreateFoodCubit, CreateFoodState>(
+                  builder: (context, state) {
+                    return Expanded(
+                        child: Form(
+                            key: _formKey,
+                            child: FoodForm(
+                              brandNameController: _brandNameController,
+                              caloriesController: _caloriesController,
+                              carbsController: _carbsController,
+                              fatController: _fatController,
+                              foodNameController: _foodNameController,
+                              proteinController: _proteinController,
+                              servingSizeController: _servingSizeController,
+                              sugarController: _sugarController,
+                              fiberController: _fiberController,
+                              fatSaturatedController: _fatSaturatedController,
+                              fatTransController: _fatTransController,
+                              fatMonounsaturatedController: _fatMonounsaturatedController,
+                              fatPolyunsaturatedController: _fatPolyunsaturatedController,
+                              cholesterolController: _cholesterolController,
+                              ironController: _ironController,
+                              potassiumController: _potassiumController,
+                              saltController: _saltController,
+                              calciumController: _calciumController,
+                              vitaminAController: _vitaminAController,
+                              vitaminCController: _vitaminCController,
+                              vitaminDController: _vitaminDController,
+                              insolubleFiberController: _insolubleFiberController,
+                              enabled: state.createdFood.status is! LoadingStatus,
+                            )));
+                  },
+                )
+              ],
+            ),
+          )),
+    );
   }
 
   String _getErrorMessage(FoodError? foodError) => foodError == null
@@ -166,36 +199,10 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
 
   void _onDonePressed(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      final isNutritionValid = _controller.validateNutrition(foodInput: _foodInput);
+      final cubit = context.read<CreateFoodCubit>();
+      final isNutritionValid = cubit.validateNutrition(foodInput: _foodInput);
       if (isNutritionValid) {
-        unawaited(_controller.createFood(foodInput: _foodInput).then((response) {
-          if (response.localId == null && response.createdFoodId == null) {
-            getIt<LoggingService>().info('Could not save food locally neither on the API.');
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(AppStrings.errorCreateFood)),
-              );
-            }
-          } else {
-            if (context.mounted) {
-              final food = Food.input(foodInput: _foodInput, id: response.createdFoodId);
-              Navigator.of(context)
-                  .pushNamed(Routes.addFood.path,
-                      arguments: AddFoodArguments(
-                        meal: widget.meal,
-                        food: food,
-                        localFoodId: response.localId,
-                      ))
-                  .then((value) {
-                if (context.mounted) {
-                  Navigator.of(context).pop(value);
-                }
-              });
-            } else {
-              getIt<LoggingService>().info('Could not navigate to add food screen. Context unmounted.');
-            }
-          }
-        }));
+        cubit.createFood(foodInput: _foodInput);
       }
     }
   }
@@ -245,78 +252,86 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   }
 
   void _addTextListeners() {
-    _foodNameController.addListener(_controller.hideError);
-    _brandNameController.addListener(_controller.hideError);
-    _servingSizeController.addListener(_controller.hideError);
-    _caloriesController.addListener(_controller.hideError);
-    _carbsController.addListener(_controller.hideError);
-    _fatController.addListener(_controller.hideError);
-    _proteinController.addListener(_controller.hideError);
-    _fiberController.addListener(_controller.hideError);
-    _insolubleFiberController.addListener(_controller.hideError);
-    _sugarController.addListener(_controller.hideError);
-    _fatSaturatedController.addListener(_controller.hideError);
-    _fatTransController.addListener(_controller.hideError);
-    _fatMonounsaturatedController.addListener(_controller.hideError);
-    _fatPolyunsaturatedController.addListener(_controller.hideError);
-    _cholesterolController.addListener(_controller.hideError);
-    _saltController.addListener(_controller.hideError);
-    _potassiumController.addListener(_controller.hideError);
-    _calciumController.addListener(_controller.hideError);
-    _ironController.addListener(_controller.hideError);
-    _vitaminAController.addListener(_controller.hideError);
-    _vitaminCController.addListener(_controller.hideError);
-    _vitaminDController.addListener(_controller.hideError);
+    final cubit = context.read<CreateFoodCubit>();
+    for (var element in [
+      _foodNameController,
+      _brandNameController,
+      _servingSizeController,
+      _caloriesController,
+      _carbsController,
+      _fatController,
+      _proteinController,
+      _fiberController,
+      _insolubleFiberController,
+      _sugarController,
+      _fatSaturatedController,
+      _fatTransController,
+      _cholesterolController,
+      _saltController,
+      _potassiumController,
+      _calciumController,
+      _ironController,
+      _vitaminAController,
+      _vitaminCController,
+      _vitaminDController,
+    ]) {
+      element.addListener(cubit.hideError);
+    }
   }
 
   void _removeTextListeners() {
-    _foodNameController.removeListener(_controller.hideError);
-    _brandNameController.removeListener(_controller.hideError);
-    _servingSizeController.removeListener(_controller.hideError);
-    _caloriesController.removeListener(_controller.hideError);
-    _carbsController.removeListener(_controller.hideError);
-    _fatController.removeListener(_controller.hideError);
-    _proteinController.removeListener(_controller.hideError);
-    _fiberController.removeListener(_controller.hideError);
-    _insolubleFiberController.removeListener(_controller.hideError);
-    _sugarController.removeListener(_controller.hideError);
-    _fatSaturatedController.removeListener(_controller.hideError);
-    _fatTransController.removeListener(_controller.hideError);
-    _fatMonounsaturatedController.removeListener(_controller.hideError);
-    _fatPolyunsaturatedController.removeListener(_controller.hideError);
-    _cholesterolController.removeListener(_controller.hideError);
-    _saltController.removeListener(_controller.hideError);
-    _potassiumController.removeListener(_controller.hideError);
-    _calciumController.removeListener(_controller.hideError);
-    _ironController.removeListener(_controller.hideError);
-    _vitaminAController.removeListener(_controller.hideError);
-    _vitaminCController.removeListener(_controller.hideError);
-    _vitaminDController.removeListener(_controller.hideError);
+    final cubit = context.read<CreateFoodCubit>();
+    for (var element in [
+      _foodNameController,
+      _brandNameController,
+      _servingSizeController,
+      _caloriesController,
+      _carbsController,
+      _fatController,
+      _proteinController,
+      _fiberController,
+      _insolubleFiberController,
+      _sugarController,
+      _fatSaturatedController,
+      _fatTransController,
+      _cholesterolController,
+      _saltController,
+      _potassiumController,
+      _calciumController,
+      _ironController,
+      _vitaminAController,
+      _vitaminCController,
+      _vitaminDController,
+    ]) {
+      element.removeListener(cubit.hideError);
+    }
   }
 
   void _disposeTextControllers() {
-    _foodNameController.dispose();
-    _brandNameController.dispose();
-    _servingSizeController.dispose();
-    _caloriesController.dispose();
-    _carbsController.dispose();
-    _fatController.dispose();
-    _proteinController.dispose();
-    _fiberController.dispose();
-    _insolubleFiberController.dispose();
-    _sugarController.dispose();
-    _fatSaturatedController.dispose();
-    _fatTransController.dispose();
-    _fatPolyunsaturatedController.dispose();
-    _fatMonounsaturatedController.dispose();
-    _cholesterolController.dispose();
-    _saltController.dispose();
-    _potassiumController.dispose();
-    _calciumController.dispose();
-    _ironController.dispose();
-    _vitaminAController.dispose();
-    _vitaminCController.dispose();
-    _vitaminDController.dispose();
+    for (var element in [
+      _foodNameController,
+      _brandNameController,
+      _servingSizeController,
+      _caloriesController,
+      _carbsController,
+      _fatController,
+      _proteinController,
+      _fiberController,
+      _insolubleFiberController,
+      _sugarController,
+      _fatSaturatedController,
+      _fatTransController,
+      _cholesterolController,
+      _saltController,
+      _potassiumController,
+      _calciumController,
+      _ironController,
+      _vitaminAController,
+      _vitaminCController,
+      _vitaminDController,
+    ]) {
+      element.dispose();
+    }
   }
 
   FoodInput get _foodInput => FoodInput(
