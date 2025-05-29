@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
-import 'package:calorietracker/feature/login/data/login_error.dart';
-import 'package:calorietracker/feature/login/data/login_state.dart';
+import 'package:calorietracker/feature/auth/data/auth_error.dart';
+import 'package:calorietracker/feature/auth/data/login_state.dart';
 import 'package:calorietracker/shared/data/model/user.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/shared/data/service/secure_storage_service.dart';
@@ -21,7 +21,7 @@ class LoginController {
 
   Future<void> login({
     required String username,
-    required Function(LoginError loginError) onError,
+    required Function(AuthError loginError) onError,
     required VoidCallback onSuccess,
   }) async {
     loginState.value = const LoginState(
@@ -29,7 +29,7 @@ class LoginController {
       isDisabled: true,
     );
     if (await _isUserAlreadySaved(username)) {
-      onError(LoginError.alreadyLoggedIn);
+      onError(AuthError.alreadyLoggedIn);
     } else {
       final apiService = await getIt.getAsync<UserApiService>();
       await apiService.getUserId(username: username).then((user) async {
@@ -37,22 +37,22 @@ class LoginController {
           await _saveUser(user.username);
           onSuccess();
         } else {
-          onError(LoginError.unknown);
+          onError(AuthError.unknown);
         }
       }).catchError((error, stackTrace) {
-        final LoginError loginError;
+        final AuthError loginError;
         getIt<LoggingService>().handle(error, stackTrace);
         if (error is DioException) {
           if (error.isConnectionError) {
-            loginError = LoginError.connection;
+            loginError = AuthError.connection;
           } else if (error.response?.statusCode == HttpStatus.notFound) {
-            loginError = LoginError.notFound;
+            loginError = AuthError.notFound;
           } else {
-            loginError = LoginError.unknown;
+            loginError = AuthError.unknown;
           }
           onError(loginError);
         } else {
-          onError(LoginError.unknown);
+          onError(AuthError.unknown);
         }
       });
     }

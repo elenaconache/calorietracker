@@ -16,7 +16,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import '../../feature/add_food/logic/add_food_cubit.dart' as _i980;
 import '../../feature/create_food/logic/create_food_cubit.dart' as _i525;
 import '../../feature/diary/logic/diary_bloc.dart' as _i738;
-import '../../feature/login/logic/login_controller.dart' as _i508;
+import '../../feature/auth/logic/login_controller.dart' as _i508;
 import '../../feature/profile/logic/user_goals_controller.dart' as _i517;
 import '../../feature/recipes/details/recipe_details_controller.dart' as _i1;
 import '../../feature/recipes/logic/create_recipe_controller.dart' as _i169;

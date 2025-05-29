@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/login/logic/login_controller.dart';
-import 'package:calorietracker/feature/login/data/login_error.dart';
+import 'package:calorietracker/feature/auth/logic/login_controller.dart';
+import 'package:calorietracker/feature/auth/data/auth_error.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
@@ -22,10 +22,10 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
+    super.initState();
     _usernameController = TextEditingController();
     _loginController = getIt<LoginController>();
     _usernameController.addListener(_onUsernameChanged);
-    super.initState();
   }
 
   @override
@@ -88,17 +88,17 @@ class _LoginViewState extends State<LoginView> {
           if (context.mounted) {
             final String errorMessage;
             switch (loginError) {
-              case LoginError.alreadyLoggedIn:
+              case AuthError.alreadyLoggedIn:
                 errorMessage = AppStrings.alreadyLoggedInMessage;
                 Navigator.of(context).pushReplacementNamed(Routes.home.path);
                 break;
-              case LoginError.notFound:
+              case AuthError.notFound:
                 errorMessage = AppStrings.userNotFoundError;
                 break;
-              case LoginError.connection:
+              case AuthError.connection:
                 errorMessage = AppStrings.connectionErrorMessage;
                 break;
-              case LoginError.unknown:
+              case AuthError.unknown:
                 errorMessage = AppStrings.generalErrorMessage;
                 break;
             }

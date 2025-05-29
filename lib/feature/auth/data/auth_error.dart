@@ -1,4 +1,4 @@
-enum LoginError {
+enum AuthError {
   alreadyLoggedIn,
   notFound,
   connection,
