@@ -5,7 +5,7 @@ import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/shared/data/model/collection/created_food_response.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
-import 'package:calorietracker/feature/create_food/data/food_error.dart';
+import 'package:calorietracker/feature/create_food/domain/food_error.dart';
 import 'package:calorietracker/feature/create_food/ui/food_input.dart';
 import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
 import 'package:calorietracker/shared/data/service/database/food_service.dart';

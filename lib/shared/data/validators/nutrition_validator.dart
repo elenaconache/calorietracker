@@ -1,4 +1,4 @@
-import 'package:calorietracker/feature/create_food/data/food_error.dart';
+import 'package:calorietracker/feature/create_food/domain/food_error.dart';
 import 'package:calorietracker/feature/create_food/ui/food_input.dart';
 import 'package:injectable/injectable.dart';
 

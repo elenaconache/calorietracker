@@ -2,10 +2,10 @@ PODS:
   - Flutter (1.0.0)
   - flutter_secure_storage (6.0.0):
     - Flutter
-  - ObjectBox (4.1.0-sync)
+  - ObjectBox (4.2.0-sync)
   - objectbox_sync_flutter_libs (0.0.1):
     - Flutter
-    - ObjectBox (= 4.1.0-sync)
+    - ObjectBox (= 4.2.0-sync)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -33,8 +33,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
-  ObjectBox: 82ecd5139c750d0c152f78cbe0440db3bbe5e4a1
-  objectbox_sync_flutter_libs: fa82af74a6ae10113b74a7a541d0951ccdc25fe1
+  ObjectBox: d447255148c0479c1b17f00900dff834a33fe124
+  objectbox_sync_flutter_libs: aae7c95f707b2d48a9956720406986aaf6e0f129
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
 
 PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011

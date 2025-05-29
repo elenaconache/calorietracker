@@ -2,7 +2,7 @@ import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/create_food/logic/create_food_cubit.dart';
-import 'package:calorietracker/feature/create_food/data/food_error.dart';
+import 'package:calorietracker/feature/create_food/domain/food_error.dart';
 import 'package:calorietracker/feature/create_food/ui/food_form.dart';
 import 'package:calorietracker/feature/create_food/ui/food_input.dart';
 import 'package:calorietracker/shared/data/model/food.dart';

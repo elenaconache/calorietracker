@@ -15,7 +15,7 @@ import 'package:injectable/injectable.dart' as _i526;
 
 import '../../feature/add_food/logic/add_food_cubit.dart' as _i980;
 import '../../feature/create_food/logic/create_food_cubit.dart' as _i525;
-import '../../feature/diary/logic/diary_controller.dart' as _i425;
+import '../../feature/diary/logic/diary_bloc.dart' as _i738;
 import '../../feature/login/logic/login_controller.dart' as _i508;
 import '../../feature/profile/logic/user_goals_controller.dart' as _i517;
 import '../../feature/recipes/details/recipe_details_controller.dart' as _i1;
@@ -80,7 +80,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i412.RecipeHelper>(() => _i412.RecipeHelper());
     gh.factory<_i1.RecipeDetailsController>(
         () => _i1.RecipeDetailsController());
-    gh.factory<_i425.DiaryController>(() => _i425.DiaryController());
+    gh.factory<_i738.DiaryBloc>(() => _i738.DiaryBloc());
     gh.factory<_i525.CreateFoodCubit>(() => _i525.CreateFoodCubit());
     gh.factory<_i508.LoginController>(() => _i508.LoginController());
     gh.factory<_i980.AddFoodCubit>(() => _i980.AddFoodCubit());
