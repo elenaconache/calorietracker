@@ -33,7 +33,6 @@ class DiaryService {
   DiaryService(
     this._authRepository,
     this._dateFormattingService,
-    this.selectedDay,
     this._loggingService,
     this._collectionApiService,
     this._diaryEntryService,

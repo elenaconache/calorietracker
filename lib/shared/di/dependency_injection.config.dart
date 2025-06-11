@@ -9,7 +9,6 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i409;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
@@ -140,7 +139,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i615.DiaryService>(() => _i615.DiaryService(
           gh<_i566.AuthRepository>(),
           gh<_i443.DateFormattingService>(),
-          gh<_i409.ValueNotifier<String>>(),
           gh<_i861.LoggingService>(),
           gh<_i13.CollectionApiService>(),
           gh<_i373.DiaryEntryService>(),
