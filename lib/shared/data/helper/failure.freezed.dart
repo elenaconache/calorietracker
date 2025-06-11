@@ -16,52 +16,50 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Failure {
-  String? get message => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) generalFailure,
+    required TResult Function(AuthError type) auth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String? message)? generalFailure,
+    TResult? Function(AuthError type)? auth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? generalFailure,
+    TResult Function(AuthError type)? auth,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralFailure value) generalFailure,
+    required TResult Function(AuthFailure value) auth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GeneralFailure value)? generalFailure,
+    TResult? Function(AuthFailure value)? auth,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralFailure value)? generalFailure,
+    TResult Function(AuthFailure value)? auth,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  /// Create a copy of Failure
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $FailureCopyWith<Failure> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $FailureCopyWith<$Res> {
   factory $FailureCopyWith(Failure value, $Res Function(Failure) then) =
       _$FailureCopyWithImpl<$Res, Failure>;
-  @useResult
-  $Res call({String? message});
 }
 
 /// @nodoc
@@ -76,27 +74,13 @@ class _$FailureCopyWithImpl<$Res, $Val extends Failure>
 
   /// Create a copy of Failure
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = freezed,
-  }) {
-    return _then(_value.copyWith(
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$GeneralFailureImplCopyWith<$Res>
-    implements $FailureCopyWith<$Res> {
+abstract class _$$GeneralFailureImplCopyWith<$Res> {
   factory _$$GeneralFailureImplCopyWith(_$GeneralFailureImpl value,
           $Res Function(_$GeneralFailureImpl) then) =
       __$$GeneralFailureImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String? message});
 }
@@ -162,6 +146,7 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) generalFailure,
+    required TResult Function(AuthError type) auth,
   }) {
     return generalFailure(message);
   }
@@ -170,6 +155,7 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String? message)? generalFailure,
+    TResult? Function(AuthError type)? auth,
   }) {
     return generalFailure?.call(message);
   }
@@ -178,6 +164,7 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? generalFailure,
+    TResult Function(AuthError type)? auth,
     required TResult orElse(),
   }) {
     if (generalFailure != null) {
@@ -190,6 +177,7 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralFailure value) generalFailure,
+    required TResult Function(AuthFailure value) auth,
   }) {
     return generalFailure(this);
   }
@@ -198,6 +186,7 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GeneralFailure value)? generalFailure,
+    TResult? Function(AuthFailure value)? auth,
   }) {
     return generalFailure?.call(this);
   }
@@ -206,6 +195,7 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralFailure value)? generalFailure,
+    TResult Function(AuthFailure value)? auth,
     required TResult orElse(),
   }) {
     if (generalFailure != null) {
@@ -218,13 +208,152 @@ class _$GeneralFailureImpl implements GeneralFailure {
 abstract class GeneralFailure implements Failure {
   const factory GeneralFailure({final String? message}) = _$GeneralFailureImpl;
 
-  @override
   String? get message;
 
   /// Create a copy of Failure
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GeneralFailureImplCopyWith<_$GeneralFailureImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AuthFailureImplCopyWith<$Res> {
+  factory _$$AuthFailureImplCopyWith(
+          _$AuthFailureImpl value, $Res Function(_$AuthFailureImpl) then) =
+      __$$AuthFailureImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({AuthError type});
+}
+
+/// @nodoc
+class __$$AuthFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$AuthFailureImpl>
+    implements _$$AuthFailureImplCopyWith<$Res> {
+  __$$AuthFailureImplCopyWithImpl(
+      _$AuthFailureImpl _value, $Res Function(_$AuthFailureImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = null,
+  }) {
+    return _then(_$AuthFailureImpl(
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as AuthError,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AuthFailureImpl implements AuthFailure {
+  const _$AuthFailureImpl({this.type = AuthError.unknown});
+
+  @override
+  @JsonKey()
+  final AuthError type;
+
+  @override
+  String toString() {
+    return 'Failure.auth(type: $type)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AuthFailureImpl &&
+            (identical(other.type, type) || other.type == type));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, type);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AuthFailureImplCopyWith<_$AuthFailureImpl> get copyWith =>
+      __$$AuthFailureImplCopyWithImpl<_$AuthFailureImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) generalFailure,
+    required TResult Function(AuthError type) auth,
+  }) {
+    return auth(type);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? generalFailure,
+    TResult? Function(AuthError type)? auth,
+  }) {
+    return auth?.call(type);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? generalFailure,
+    TResult Function(AuthError type)? auth,
+    required TResult orElse(),
+  }) {
+    if (auth != null) {
+      return auth(type);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GeneralFailure value) generalFailure,
+    required TResult Function(AuthFailure value) auth,
+  }) {
+    return auth(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GeneralFailure value)? generalFailure,
+    TResult? Function(AuthFailure value)? auth,
+  }) {
+    return auth?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GeneralFailure value)? generalFailure,
+    TResult Function(AuthFailure value)? auth,
+    required TResult orElse(),
+  }) {
+    if (auth != null) {
+      return auth(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AuthFailure implements Failure {
+  const factory AuthFailure({final AuthError type}) = _$AuthFailureImpl;
+
+  AuthError get type;
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AuthFailureImplCopyWith<_$AuthFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -42,7 +42,7 @@ class CreateRecipeController {
 
   Future<CreateRecipeError> saveRecipe({required String name, required int cookedQuantity}) async {
     isLoading.value = true;
-    final apiService = await getIt.getAsync<CollectionApiService>();
+    final apiService = getIt.get<CollectionApiService>();
     return apiService
         .createRecipe(
           body: AddRecipeRequest(

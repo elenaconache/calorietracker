@@ -1,9 +1,9 @@
+import 'package:calorietracker/feature/auth/domain/auth_repository.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/data/model/macro.dart';
 import 'package:calorietracker/shared/data/model/macro_goals.dart';
 import 'package:calorietracker/shared/data/model/user_goals.dart';
 import 'package:calorietracker/shared/data/service/secure_storage_service.dart';
-import 'package:calorietracker/shared/data/service/user_service.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +17,13 @@ class UserGoalsController {
 
   late final ValueNotifier<MacroGoals> macroGoals;
 
+  final AuthRepository _authRepository;
+
+  UserGoalsController(this._authRepository);
+
   Future<void> fetchStoredUserGoals() async {
     final storageService = getIt<SecureStorageService>();
-    final currentUser = getIt<UserService>().selectedUser.value?.username;
+    final currentUser = _authRepository.selectedUser?.username;
     if (currentUser == null) {
       userGoals.value = FutureError();
     } else {

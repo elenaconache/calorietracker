@@ -8,6 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart' hide Order;
 
 @lazySingleton
+@preResolve
 class DatabaseRepository {
   late final Store _store;
 

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/data/model/collection/add_local_data_error.dart';
 import 'package:calorietracker/shared/data/model/collection/add_local_data_error_response.dart';
 import 'package:calorietracker/shared/data/model/collection/add_local_data_response.dart';
@@ -9,7 +8,6 @@ import 'package:calorietracker/shared/data/model/local/local_food.dart';
 import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
 import 'package:calorietracker/shared/data/service/database/food_service.dart';
 import 'package:calorietracker/shared/data/service/database/diary_entry_service.dart';
-import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -18,28 +16,32 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class DataSyncService {
   bool isUploadInProgress = false;
+  final DiaryEntryService _diaryEntryService;
+  final CollectionApiService _collectionApiService;
+  final LoggingService _loggingService;
+  final FoodService _foodService;
+
+  DataSyncService(this._diaryEntryService, this._collectionApiService, this._loggingService, this._foodService);
 
   Future<void> uploadLocalData() async {
     if (isUploadInProgress) {
       return;
     }
     isUploadInProgress = true;
-    getIt<LoggingService>().info('Local data upload started: ${DateTime.now()}');
-    final diaryEntriesService = getIt.get<DiaryEntryService>();
-    final foodService = getIt.get<FoodService>();
-    final pendingFoods = await foodService.getFoodsPendingUpload();
+    _loggingService.info('Local data upload started: ${DateTime.now()}');
+    final pendingFoods = await _foodService.getFoodsPendingUpload();
     final addedFoods = await _uploadFoods(pendingFoods: pendingFoods);
     await _markPushedLocalFoods(pendingFoods: pendingFoods, addedFoods: addedFoods);
 
-    final pendingEntries = await diaryEntriesService.getDiaryEntries(filterPending: true);
+    final pendingEntries = await _diaryEntryService.getDiaryEntries(filterPending: true);
     await _updateLocalDiaryFoods(pendingEntries: pendingEntries, addedFoods: addedFoods);
-    final uploadReadyEntries = await diaryEntriesService.getDiaryEntries(filterUploadReady: true);
+    final uploadReadyEntries = await _diaryEntryService.getDiaryEntries(filterUploadReady: true);
     final uploadedEntriesIds = await _pushDiary(uploadReadyEntries: uploadReadyEntries);
     await _markPushedLocalDiary(addedEntries: uploadedEntriesIds, pendingEntries: uploadReadyEntries);
 
-    getIt<LoggingService>().info('Local data upload done: ${DateTime.now()}');
+    _loggingService.info('Local data upload done: ${DateTime.now()}');
 
-    unawaited(getIt<DiaryService>().fetchDiary());
+    // unawaited(getIt<DiaryService>().fetchDiary());// TODO: db stream should trigger updates from diary bloc
     isUploadInProgress = false;
   }
 
@@ -61,8 +63,7 @@ class DataSyncService {
       food.foodId = addedFoodsSet.firstWhereOrNull((addedFood) => addedFood.localResourceId == food.id)?.resourceId;
     }
 
-    final foodService = getIt.get<FoodService>();
-    await foodService.upsertFoods(localFoods: foodsToUpdate.toList());
+    await _foodService.upsertFoods(localFoods: foodsToUpdate.toList());
   }
 
   Future<void> _markPushedLocalDiary({
@@ -83,8 +84,7 @@ class DataSyncService {
       diaryEntry.entryId = addedEntriesSet.firstWhereOrNull((addedEntry) => addedEntry.localResourceId == diaryEntry.localId)?.resourceId;
     }
 
-    final diaryEntriesService = getIt.get<DiaryEntryService>();
-    await diaryEntriesService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
+    await _diaryEntryService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
   }
 
   Future<void> _updateLocalDiaryFoods({
@@ -107,8 +107,7 @@ class DataSyncService {
           ?.resourceId;
     }
 
-    final diaryEntriesService = getIt.get<DiaryEntryService>();
-    await diaryEntriesService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
+    await _diaryEntryService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
   }
 
   Future<List<AddLocalDataResponse>> _uploadFoods({required List<LocalFood> pendingFoods}) async {
@@ -117,16 +116,15 @@ class DataSyncService {
     }
 
     final requestFoods = pendingFoods.map((localFood) => localFood.addLocalFoodRequest).toList();
-    final apiService = await getIt.getAsync<CollectionApiService>();
-    final addedFoods = await (apiService.createFoods(localFoods: requestFoods).catchError((error, stackTrace) async {
+    final addedFoods = await (_collectionApiService.createFoods(localFoods: requestFoods).catchError((error, stackTrace) async {
       if (_isPartiallyInvalid(error)) {
-        getIt<LoggingService>().info('Invalid food error while calling foods bulk insert API.'
+        _loggingService.info('Invalid food error while calling foods bulk insert API.'
             ' Response: ${error.response?.data}');
         final errorResponse = AddLocalDataErrorResponse.fromJson(error.response?.data);
         _markInvalidLocalFoods(pendingFoods: pendingFoods, errors: errorResponse.errors ?? []);
         return _retryUploadValidFoods(errorResponse, pendingFoods);
       } else {
-        getIt<LoggingService>().handle(error, stackTrace);
+        _loggingService.handle(error, stackTrace);
         return <AddLocalDataResponse>[];
       }
     }));
@@ -145,35 +143,32 @@ class DataSyncService {
   }
 
   Future<void> _deleteRemoteDiaryEntries(List<LocalDiaryEntry> uploadReadyEntries) async {
-    final apiService = await getIt.getAsync<CollectionApiService>();
     final entriesToDelete = uploadReadyEntries.where((entry) => entry.deletedEntry && entry.entryId != null).map((entry) => entry.entryId!).toList();
     if (entriesToDelete.isEmpty) {
       return;
     }
-    unawaited(apiService.deleteDiaryEntries(ids: entriesToDelete).then((_) async {
-      final diaryEntriesService = getIt.get<DiaryEntryService>();
-      await diaryEntriesService.deleteDiaryEntries(
+    unawaited(_collectionApiService.deleteDiaryEntries(ids: entriesToDelete).then((_) async {
+      await _diaryEntryService.deleteDiaryEntries(
           localEntries: uploadReadyEntries.where((entry) => entry.deletedEntry && entry.entryId != null).map((entry) => entry.localId).toList());
     }).catchError((error, stackTrace) {
-      getIt<LoggingService>().handle(error, stackTrace);
+      _loggingService.handle(error, stackTrace);
     }));
   }
 
   Future<List<AddLocalDataResponse>> _createRemoteDiaryEntries(List<LocalDiaryEntry> uploadReadyEntries) async {
-    final apiService = await getIt.getAsync<CollectionApiService>();
     final entriesToCreate =
         uploadReadyEntries.whereNot((entry) => entry.deletedEntry).map((localDiaryEntry) => localDiaryEntry.addLocalDiaryEntryRequest).toList();
     if (entriesToCreate.isEmpty) {
       return [];
     }
-    final createdEntriesIds = await (apiService.createDiaryEntries(localDiaryEntries: entriesToCreate).catchError((error, stackTrace) {
+    final createdEntriesIds = await (_collectionApiService.createDiaryEntries(localDiaryEntries: entriesToCreate).catchError((error, stackTrace) {
       if (_isPartiallyInvalid(error)) {
-        getIt<LoggingService>().info('Conflict while calling diary bulk insert API. Response: ${error.response?.data}');
+        _loggingService.info('Conflict while calling diary bulk insert API. Response: ${error.response?.data}');
         final errorResponse = AddLocalDataErrorResponse.fromJson(error.response?.data);
         _markInvalidLocalDiaryEntries(pendingEntries: uploadReadyEntries, errors: errorResponse.errors ?? []);
         return _retryUploadValidDiaryEntries(errorResponse, uploadReadyEntries);
       } else {
-        getIt<LoggingService>().handle(error, stackTrace);
+        _loggingService.handle(error, stackTrace);
         return <AddLocalDataResponse>[];
       }
     }));
@@ -196,10 +191,9 @@ class DataSyncService {
     }
     final retryRequestFoods = foodsToRetry.map((localFood) => localFood.addLocalFoodRequest).toList();
 
-    final apiService = await getIt.getAsync<CollectionApiService>();
-    final addedFoods = await (apiService.createFoods(localFoods: retryRequestFoods)
+    final addedFoods = await (_collectionApiService.createFoods(localFoods: retryRequestFoods)
       ..catchError((error, stackTrace) {
-        getIt<LoggingService>().handle(error, stackTrace);
+        _loggingService.handle(error, stackTrace);
         return <AddLocalDataResponse>[];
       }));
     return addedFoods;
@@ -218,10 +212,9 @@ class DataSyncService {
     }
     final retryRequestEntries = entriesToRetry.map((localDiaryEntry) => localDiaryEntry.addLocalDiaryEntryRequest).toList();
 
-    final apiService = await getIt.getAsync<CollectionApiService>();
-    final addedEntries = await (apiService.createDiaryEntries(localDiaryEntries: retryRequestEntries)
+    final addedEntries = await (_collectionApiService.createDiaryEntries(localDiaryEntries: retryRequestEntries)
       ..catchError((error, stackTrace) {
-        getIt<LoggingService>().handle(error, stackTrace);
+        _loggingService.handle(error, stackTrace);
         return <AddLocalDataResponse>[];
       }));
     return addedEntries;
@@ -243,8 +236,7 @@ class DataSyncService {
       food.errorPushing = true;
     }
 
-    final diaryEntriesService = getIt.get<DiaryEntryService>();
-    final pendingDiaryEntries = await diaryEntriesService.getDiaryEntries(filterPending: true);
+    final pendingDiaryEntries = await _diaryEntryService.getDiaryEntries(filterPending: true);
     final diaryEntriesWithFoodError = pendingDiaryEntries
         .where(
           (entry) => foodsToUpdate.any((localFood) => entry.localFood.targetId == localFood.id),
@@ -253,9 +245,8 @@ class DataSyncService {
     for (final entry in diaryEntriesWithFoodError) {
       entry.errorPushingEntry = true;
     }
-    await diaryEntriesService.upsertDiaryEntries(localEntries: diaryEntriesWithFoodError);
-    final foodService = getIt.get<FoodService>();
-    await foodService.upsertFoods(localFoods: foodsToUpdate.toList());
+    await _diaryEntryService.upsertDiaryEntries(localEntries: diaryEntriesWithFoodError);
+    await _foodService.upsertFoods(localFoods: foodsToUpdate.toList());
   }
 
   Future<void> _markInvalidLocalDiaryEntries({
@@ -274,7 +265,6 @@ class DataSyncService {
       entry.errorPushingEntry = true;
     }
 
-    final diaryEntriesService = getIt.get<DiaryEntryService>();
-    await diaryEntriesService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
+    await _diaryEntryService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
   }
 }

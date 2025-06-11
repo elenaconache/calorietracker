@@ -24,7 +24,7 @@ class RecipeDetailsController {
       );
 
   Future<void> initializeRecipe({required int recipeId, required int cookedQuantity}) async {
-    final apiService = await getIt.getAsync<CollectionApiService>();
+    final apiService = getIt.get<CollectionApiService>();
     FutureResponse<List<RecipeIngredient>> ingredientsResponse = FutureLoading();
     await Future.wait([
       apiService.getRecipeIngredients(recipeId: recipeId).then((recipeIngredients) {

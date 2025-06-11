@@ -1,11 +1,9 @@
-import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/main.dart';
+import 'package:calorietracker/feature/auth/logic/auth_bloc.dart';
 import 'package:calorietracker/shared/data/model/user.dart';
-import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/data/service/user_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/initials_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserItem extends StatelessWidget {
   final User user;
@@ -23,8 +21,10 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authBloc = context.read<AuthBloc>();
     return InkWell(
-      onTap: () => getIt<UserService>().selectUser(user.username),
+      key: UniqueKey(),
+      onTap: isLarge ? null : () => authBloc.add(AuthEvent.userSelected(username: user.username)),
       child: DecoratedBox(
           decoration: BoxDecoration(
             border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor)),
@@ -52,10 +52,7 @@ class UserItem extends StatelessWidget {
   }
 
   void _onLogoutPressed(BuildContext context) {
-    final userService = getIt<UserService>();
-    userService.logout(username: user.username);
-    if (userService.selectedUser.value == null) {
-      Navigator.of(rootNavigatorKey.currentContext!).pushNamedAndRemoveUntil(Routes.login.path, (route) => false);
-    }
+    final authBloc = context.read<AuthBloc>();
+    authBloc.add(AuthEvent.logout(username: user.username));
   }
 }

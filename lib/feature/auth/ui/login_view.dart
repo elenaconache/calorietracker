@@ -1,13 +1,14 @@
-import 'dart:async';
-
+import 'package:calorietracker/feature/auth/logic/auth_bloc.dart';
+import 'package:calorietracker/feature/auth/logic/login_cubit.dart';
+import 'package:calorietracker/shared/data/helper/failure.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
-import 'package:calorietracker/feature/auth/logic/login_controller.dart';
 import 'package:calorietracker/feature/auth/data/auth_error.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -18,13 +19,11 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _usernameController;
-  late final LoginController _loginController;
 
   @override
   void initState() {
     super.initState();
     _usernameController = TextEditingController();
-    _loginController = getIt<LoginController>();
     _usernameController.addListener(_onUsernameChanged);
   }
 
@@ -32,85 +31,91 @@ class _LoginViewState extends State<LoginView> {
   void dispose() {
     _usernameController.removeListener(_onUsernameChanged);
     _usernameController.dispose();
-    _loginController.loginState.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.loginTitle)),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 120),
-            Padding(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        final cubit = context.read<LoginCubit>();
+        state.selectedUser.status.maybeWhen(
+          success: () {
+            if (context.mounted) {
+              if ((state.users.data?.length ?? 0) > 1) {
+                Navigator.of(context).pop();
+              } else {
+                Navigator.of(context).pushReplacementNamed(Routes.diary.path);
+              }
+            } else {
+              getIt<LoggingService>().info('Could not navigate home. Context unmounted.');
+            }
+            cubit.onLoginResult();
+          },
+          failure: () {
+            final failure = state.selectedUser.failure;
+            if (context.mounted && failure is AuthFailure) {
+              final String errorMessage;
+              switch (failure.type) {
+                case AuthError.notFound:
+                  errorMessage = AppStrings.userNotFoundError;
+                  break;
+                case AuthError.connection:
+                  errorMessage = AppStrings.connectionErrorMessage;
+                  break;
+                case AuthError.unknown:
+                  errorMessage = AppStrings.generalErrorMessage;
+                  break;
+              }
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+            }
+            cubit.onLoginResult();
+          },
+          loading: cubit.onLoginSubmit,
+          orElse: () {},
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text(AppStrings.loginTitle)),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 120),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: AppTextField(
+                    action: TextInputAction.done,
+                    labelText: AppStrings.usernameLabel,
+                    controller: _usernameController,
+                  )),
+              const SizedBox(height: 40),
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: AppTextField(
-                  action: TextInputAction.done,
-                  labelText: AppStrings.usernameLabel,
-                  controller: _usernameController,
-                )),
-            const SizedBox(height: 40),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: ValueListenableBuilder(
-                    valueListenable: _loginController.loginState,
-                    builder: (context, loginState, _) => loginState.isLoading
-                        ? const Center(child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()))
-                        : FilledButton(
-                            onPressed: loginState.isDisabled
-                                ? null
-                                : () {
-                                    _onLoginPressed(context);
-                                  },
-                            style: ButtonStyle(
-                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4.0),
-                              )),
-                            ),
-                            child: Text(AppStrings.continueLabel))))
-          ],
+                child: BlocBuilder<LoginCubit, LoginState>(
+                  builder: (context, state) => FilledButton(
+                    onPressed: state.enabled && !state.loading ? () => _onLoginPressed(context) : null,
+                    style: ButtonStyle(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      )),
+                    ),
+                    child: Text(AppStrings.continueLabel),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   void _onUsernameChanged() {
-    _loginController.onUsernameChanged(username: _usernameController.text);
+    context.read<LoginCubit>().onUsernameChanged(username: _usernameController.text);
   }
 
   void _onLoginPressed(BuildContext context) {
-    unawaited(_loginController.login(
-        username: _usernameController.text,
-        onError: (loginError) {
-          if (context.mounted) {
-            final String errorMessage;
-            switch (loginError) {
-              case AuthError.alreadyLoggedIn:
-                errorMessage = AppStrings.alreadyLoggedInMessage;
-                Navigator.of(context).pushReplacementNamed(Routes.home.path);
-                break;
-              case AuthError.notFound:
-                errorMessage = AppStrings.userNotFoundError;
-                break;
-              case AuthError.connection:
-                errorMessage = AppStrings.connectionErrorMessage;
-                break;
-              case AuthError.unknown:
-                errorMessage = AppStrings.generalErrorMessage;
-                break;
-            }
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
-          }
-        },
-        onSuccess: () {
-          if (context.mounted) {
-            Navigator.of(context).pushReplacementNamed(Routes.home.path);
-          } else {
-            getIt<LoggingService>().info('Could not navigate home. Context unmounted.');
-          }
-        }));
+    context.read<AuthBloc>().add(AuthEvent.logIn(username: _usernameController.text));
   }
 }

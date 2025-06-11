@@ -1,3 +1,4 @@
+import 'package:calorietracker/feature/auth/domain/auth_repository.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/food_log.dart';
 import 'package:calorietracker/shared/data/model/food.dart';
@@ -5,13 +6,15 @@ import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/data/service/database/diary_logging_service.dart';
 import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
-import 'package:calorietracker/shared/data/service/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class FoodItemController {
   final ValueNotifier<bool> isLoggingLoading = ValueNotifier(false);
+  final AuthRepository _authRepository;
+
+  FoodItemController(this._authRepository);
 
   Future<bool> logFood({
     int? remoteFoodId,
@@ -27,7 +30,7 @@ class FoodItemController {
       added = false;
       getIt<LoggingService>().info('Could not log food. No selected diary date.');
     } else {
-      final username = getIt<UserService>().selectedUser.value?.username;
+      final username = _authRepository.selectedUser?.username;
       if (username == null) {
         added = false;
         getIt<LoggingService>().info('Could not log food. Missing username.');

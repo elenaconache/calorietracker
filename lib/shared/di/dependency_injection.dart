@@ -10,4 +10,4 @@ final getIt = GetIt.instance;
   preferRelativeImports: true,
   generateForDir: ['lib'],
 )
-Future<void> configureDependencies() async => getIt.init();
+Future<void> configureDependencies() => getIt.init();

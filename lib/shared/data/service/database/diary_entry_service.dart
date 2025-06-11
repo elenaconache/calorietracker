@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:calorietracker/feature/auth/domain/auth_repository.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/data/model/diary_entry.dart';
 import 'package:calorietracker/shared/data/model/local/local_diary_entry.dart';
@@ -8,15 +9,15 @@ import 'package:calorietracker/shared/data/model/meal_entries_list.dart';
 import 'package:calorietracker/shared/data/service/database/database_repository.dart';
 import 'package:calorietracker/shared/data/service/date_formatting_service.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
-import 'package:calorietracker/shared/data/service/user_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class DiaryEntryService {
-  final DatabaseRepository databaseRepository;
+  final DatabaseRepository _databaseRepository;
+  final AuthRepository _authRepository;
 
-  DiaryEntryService({required this.databaseRepository});
+  DiaryEntryService(this._databaseRepository, this._authRepository);
 
   Future<void> upsertDiaryEntries({required List<LocalDiaryEntry> localEntries, bool pushFoods = false}) async {
     await _writeDiaryEntries(localEntries, pushFoods).catchError((error, stackTrace) {
@@ -39,20 +40,20 @@ class DiaryEntryService {
     );
   }
 
-  Future<int?> _writeDiaryEntry(LocalDiaryEntry entry) async {
-    return databaseRepository.upsert(item: entry);
+  Future<int?> _writeDiaryEntry(LocalDiaryEntry entry) {
+    return _databaseRepository.upsert(item: entry);
   }
 
   Future<void> _writeDiaryEntries(List<LocalDiaryEntry> entries, bool pushFoods) async {
     if (pushFoods) {
-      await databaseRepository.writeDiaryEntriesRecursively(entries: entries);
+      await _databaseRepository.writeDiaryEntriesRecursively(entries: entries);
     } else {
-      await databaseRepository.upsertList(items: entries);
+      await _databaseRepository.upsertList(items: entries);
     }
   }
 
   Future<void> _deleteDiaryEntries(List<int> entries) async {
-    await databaseRepository.removeList<LocalDiaryEntry>(ids: entries);
+    await _databaseRepository.removeList<LocalDiaryEntry>(ids: entries);
   }
 
   Future<List<LocalDiaryEntry>> _readDiaryEntries({
@@ -63,13 +64,13 @@ class DiaryEntryService {
     DateTime? dateFilter,
     List<int>? localFoodIds,
   }) async {
-    final currentUsername = getIt<UserService>().selectedUser.value?.username;
+    final currentUsername = _authRepository.selectedUser?.username;
     if (currentUsername == null) {
       getIt<LoggingService>().info('Could not fetch local diary entries. Missing username.');
       return [];
     }
 
-    return databaseRepository.readDiaryEntries(
+    return _databaseRepository.readDiaryEntries(
       username: currentUsername,
       dateFilter: dateFilter,
       filterPending: filterPending,
@@ -106,7 +107,7 @@ class DiaryEntryService {
       return [];
     }
 
-    return databaseRepository.readDiaryEntriesByIds(entries: entries);
+    return _databaseRepository.readDiaryEntriesByIds(entries: entries);
   }
 
   Future<List<LocalDiaryEntry>> getDiaryEntriesByIds({required List<DiaryEntry> entries}) async {
@@ -124,7 +125,7 @@ class DiaryEntryService {
   }
 
   Future<LocalDiaryEntry?> _readDiaryEntry({int? collectionId, int? localId}) {
-    return databaseRepository.readDiaryEntry(entryId: collectionId, localId: localId);
+    return _databaseRepository.readDiaryEntry(entryId: collectionId, localId: localId);
   }
 
   Future<List<MealEntriesList>> getDisplayDiaryEntries({required String date, bool filterPending = false}) async {

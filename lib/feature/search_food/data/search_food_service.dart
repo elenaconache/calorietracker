@@ -45,7 +45,7 @@ class SearchFoodService {
   }
 
   Future<void> _searchCollection({required String query}) async {
-    final collectionApiService = await getIt.getAsync<CollectionApiService>();
+    final collectionApiService = getIt.get<CollectionApiService>();
     collectionSearchResponse.value = FutureLoading();
     localSearchResponse.value = FutureInitialState();
     await collectionApiService.searchFood(query: query).then((response) {

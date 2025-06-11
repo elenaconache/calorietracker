@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:calorietracker/feature/auth/domain/auth_repository.dart';
 import 'package:calorietracker/shared/constants.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
@@ -15,7 +16,6 @@ import 'package:calorietracker/shared/data/service/database/food_service.dart';
 import 'package:calorietracker/shared/data/service/date_formatting_service.dart';
 import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
-import 'package:calorietracker/shared/data/service/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
@@ -23,6 +23,9 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class DiaryLoggingService {
   final ValueNotifier<Map<Meal, bool>> mealsLoading = ValueNotifier({});
+  final AuthRepository _authRepository;
+
+  DiaryLoggingService(this._authRepository);
 
   Future<bool> copyDiary({Meal? meal, DateTime? fromDate, DateTime? toDate}) async {
     _updateLoadingState(meal, true);
@@ -131,7 +134,7 @@ class DiaryLoggingService {
     required DateTime toDate,
   }) async {
     final diaryEntriesService = getIt.get<DiaryEntryService>();
-    final username = getIt<UserService>().selectedUser.value?.username;
+    final username = _authRepository.selectedUser?.username;
     if (username == null) {
       return false;
     } else {

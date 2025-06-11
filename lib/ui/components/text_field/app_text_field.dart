@@ -18,7 +18,7 @@ class AppTextField extends StatefulWidget {
   final bool? isDense;
   final String? hint;
   final Color? textColor;
-  final void Function(String?)? onChanged;
+  final void Function(String? value)? onChanged;
   final String? initialValue;
 
   const AppTextField({

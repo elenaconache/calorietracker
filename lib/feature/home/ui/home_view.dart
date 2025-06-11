@@ -1,3 +1,4 @@
+import 'package:calorietracker/feature/auth/logic/login_cubit.dart';
 import 'package:calorietracker/feature/create_food/logic/create_food_cubit.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
@@ -79,7 +80,12 @@ class _HomeViewState extends State<HomeView> {
       case Routes.addFood:
         return MaterialPageRoute(builder: (context) => AddFoodView(args: args as AddFoodArguments));
       case Routes.login:
-        return MaterialPageRoute(builder: (context) => const LoginView());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => LoginCubit(),
+            child: LoginView(),
+          ),
+        );
       case Routes.accounts:
         return MaterialPageRoute(builder: (context) => const AccountsView());
       case Routes.createFood:

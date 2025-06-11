@@ -14,7 +14,7 @@ class SearchRecipeController {
 
   Future<void> fetchRecipes() async {
     recipes.value = FutureLoading();
-    final apiService = await getIt.getAsync<CollectionApiService>();
+    final apiService = getIt.get<CollectionApiService>();
     unawaited(
       apiService.getRecipes().then((response) {
         recipes.value = FutureSuccess(
