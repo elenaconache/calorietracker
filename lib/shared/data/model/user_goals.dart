@@ -36,4 +36,10 @@ class UserGoals {
         fatPercentage: fatPercentage ?? this.fatPercentage,
         proteinPercentage: proteinPercentage ?? this.proteinPercentage,
       );
+
+  double get carbsGramsGoal => calories * carbsPercentage / 100 / 4;
+
+  double get proteinGramsGoal => calories * proteinPercentage / 100 / 4;
+
+  double get fatGramsGoal => calories * fatPercentage / 100 / 9;
 }

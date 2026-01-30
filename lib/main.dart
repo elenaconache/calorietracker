@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           scaffoldBackgroundColor: primaryColor.shade50,
           cardColor: primaryColor.shade100,
-          appBarTheme: AppBarTheme(color: primaryColor.shade50),
+          appBarTheme: AppBarTheme(backgroundColor: primaryColor.shade50),
         ),
         darkTheme: ThemeData(
           colorScheme: _defaultDarkColorScheme,

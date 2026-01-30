@@ -353,11 +353,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
         object.id = id;
       },
       objectToFB: (LocalFood object, fb.Builder fbb) {
-        final barcodeOffset =
-            object.barcode == null ? null : fbb.writeString(object.barcode!);
+        final barcodeOffset = object.barcode == null
+            ? null
+            : fbb.writeString(object.barcode!);
         final nameOffset = fbb.writeString(object.name);
-        final brandOffset =
-            object.brand == null ? null : fbb.writeString(object.brand!);
+        final brandOffset = object.brand == null
+            ? null
+            : fbb.writeString(object.brand!);
         fbb.startTable(29);
         fbb.addInt64(0, object.id);
         fbb.addFloat64(1, object.calories);
@@ -611,60 +613,49 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final buffer = fb.BufferContext(fbData);
         final rootOffset = buffer.derefObject(0);
 
-        final object =
-            LocalDiaryEntry()
-              ..localId = const fb.Int64Reader().vTableGet(
-                buffer,
-                rootOffset,
-                4,
-                0,
-              )
-              ..entryDate = DateTime.fromMillisecondsSinceEpoch(
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0),
-              )
-              ..username = const fb.StringReader(
-                asciiOptimization: true,
-              ).vTableGet(buffer, rootOffset, 8, '')
-              ..unitId = const fb.Int64Reader().vTableGet(
-                buffer,
-                rootOffset,
-                10,
-                0,
-              )
-              ..servingQuantity = const fb.Float64Reader().vTableGet(
-                buffer,
-                rootOffset,
-                12,
-                0,
-              )
-              ..pushedEntry = const fb.BoolReader().vTableGet(
-                buffer,
-                rootOffset,
-                14,
-                false,
-              )
-              ..deletedEntry = const fb.BoolReader().vTableGet(
-                buffer,
-                rootOffset,
-                16,
-                false,
-              )
-              ..errorPushingEntry = const fb.BoolReader().vTableGet(
-                buffer,
-                rootOffset,
-                18,
-                false,
-              )
-              ..entryId = const fb.Int64Reader().vTableGetNullable(
-                buffer,
-                rootOffset,
-                22,
-              )
-              ..dbMeal = const fb.Int64Reader().vTableGetNullable(
-                buffer,
-                rootOffset,
-                24,
-              );
+        final object = LocalDiaryEntry()
+          ..localId = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+          ..entryDate = DateTime.fromMillisecondsSinceEpoch(
+            const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0),
+          )
+          ..username = const fb.StringReader(
+            asciiOptimization: true,
+          ).vTableGet(buffer, rootOffset, 8, '')
+          ..unitId = const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)
+          ..servingQuantity = const fb.Float64Reader().vTableGet(
+            buffer,
+            rootOffset,
+            12,
+            0,
+          )
+          ..pushedEntry = const fb.BoolReader().vTableGet(
+            buffer,
+            rootOffset,
+            14,
+            false,
+          )
+          ..deletedEntry = const fb.BoolReader().vTableGet(
+            buffer,
+            rootOffset,
+            16,
+            false,
+          )
+          ..errorPushingEntry = const fb.BoolReader().vTableGet(
+            buffer,
+            rootOffset,
+            18,
+            false,
+          )
+          ..entryId = const fb.Int64Reader().vTableGetNullable(
+            buffer,
+            rootOffset,
+            22,
+          )
+          ..dbMeal = const fb.Int64Reader().vTableGetNullable(
+            buffer,
+            rootOffset,
+            24,
+          );
         object.localFood.targetId = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,

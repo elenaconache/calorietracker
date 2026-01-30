@@ -21,7 +21,8 @@ import '../../feature/auth/logic/auth_bloc.dart' as _i128;
 import '../../feature/auth/logic/login_cubit.dart' as _i867;
 import '../../feature/create_food/logic/create_food_cubit.dart' as _i525;
 import '../../feature/diary/logic/diary_bloc.dart' as _i738;
-import '../../feature/profile/logic/user_goals_controller.dart' as _i517;
+import '../../feature/profile/domain/goals_repository.dart' as _i924;
+import '../../feature/profile/logic/user_goals_cubit.dart' as _i98;
 import '../../feature/recipes/details/recipe_details_controller.dart' as _i1;
 import '../../feature/recipes/logic/create_recipe_controller.dart' as _i169;
 import '../../feature/recipes/logic/recipe_helper.dart' as _i412;
@@ -128,14 +129,14 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i264.FoodItemController>(
         () => _i264.FoodItemController(gh<_i566.AuthRepository>()));
-    gh.factory<_i517.UserGoalsController>(
-        () => _i517.UserGoalsController(gh<_i566.AuthRepository>()));
     gh.lazySingleton<_i493.DiaryLoggingService>(
         () => _i493.DiaryLoggingService(gh<_i566.AuthRepository>()));
     gh.lazySingleton<_i373.DiaryEntryService>(() => _i373.DiaryEntryService(
           gh<_i379.DatabaseRepository>(),
           gh<_i566.AuthRepository>(),
         ));
+    gh.factory<_i924.GoalsRepository>(
+        () => _i924.GoalsRepository(gh<_i270.SecureStorageService>()));
     gh.lazySingleton<_i615.DiaryService>(() => _i615.DiaryService(
           gh<_i566.AuthRepository>(),
           gh<_i443.DateFormattingService>(),
@@ -161,6 +162,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i566.AuthRepository>(),
           gh<_i861.LoggingService>(),
           gh<_i615.DiaryService>(),
+        ));
+    gh.factory<_i98.UserGoalsCubit>(() => _i98.UserGoalsCubit(
+          gh<_i566.AuthRepository>(),
+          gh<_i924.GoalsRepository>(),
+          gh<_i861.LoggingService>(),
         ));
     await gh.lazySingletonAsync<_i376.UserApiService>(
       () => registerModule.userApiService,
