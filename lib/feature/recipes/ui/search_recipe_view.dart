@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:calorietracker/shared/di/dependency_injection.dart';
+import 'package:calorietracker/feature/recipes/logic/search_recipe_cubit.dart';
+import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/feature/recipes/ui/recipe_item.dart';
-import 'package:calorietracker/feature/recipes/logic/search_recipe_controller.dart';
-import 'package:calorietracker/shared/data/model/recipe.dart';
-import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
@@ -12,6 +10,7 @@ import 'package:calorietracker/ui/components/empty_view.dart';
 import 'package:calorietracker/ui/components/general_error_view.dart';
 import 'package:calorietracker/ui/components/text_field/search_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchRecipeView extends StatefulWidget {
   const SearchRecipeView({super.key});
@@ -22,21 +21,17 @@ class SearchRecipeView extends StatefulWidget {
 
 class _SearchRecipeViewState extends State<SearchRecipeView> {
   late final TextEditingController _searchFieldController;
-  late final SearchRecipeController _controller;
 
   @override
   void initState() {
     super.initState();
     _searchFieldController = TextEditingController()..addListener(_onSearchQueryChanged);
-    _controller = getIt<SearchRecipeController>();
-    WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(_controller.fetchRecipes()));
   }
 
   @override
   void dispose() {
     _searchFieldController.removeListener(_onSearchQueryChanged);
     _searchFieldController.dispose();
-    _controller.recipes.dispose();
     super.dispose();
   }
 
@@ -54,10 +49,9 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: SearchTextField(
-                    labelText: AppStrings.searchRecipeLabel,
-                    controller: _searchFieldController,
-                    onSubmitted: (query) => _controller.searchRecipe(query: query),
-                  ),
+                      labelText: AppStrings.searchRecipeLabel,
+                      controller: _searchFieldController,
+                      onSubmitted: (query) => context.read<SearchRecipeCubit>().searchRecipe(query: query)),
                 ),
                 const SizedBox(width: 4),
                 IconButton(
@@ -74,31 +68,30 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
             const SizedBox(height: 12),
             const AppDivider(),
             Expanded(
-              child: ValueListenableBuilder(
-                valueListenable: _controller.recipes,
-                builder: (_, recipes, __) {
-                  return switch (recipes) {
-                    FutureLoading _ => const Center(child: CircularProgressIndicator()),
-                    FutureError _ => RefreshIndicator(
-                        onRefresh: () => _searchFieldController.text.isEmpty
-                            ? _controller.fetchRecipes()
-                            : _controller.searchRecipe(query: _searchFieldController.text),
-                        child: ListView(children: const [Center(child: GeneralErrorView())])),
-                    FutureSuccess<List<Recipe>> response => RefreshIndicator(
-                        onRefresh: () => _searchFieldController.text.isEmpty
-                            ? _controller.fetchRecipes()
-                            : _controller.searchRecipe(query: _searchFieldController.text),
-                        child: response.data.isEmpty
+              child: BlocBuilder<SearchRecipeCubit, SearchRecipeState>(
+                builder: (context, state) {
+                  final searchResults = state.searchResults;
+                  final allRecipes = state.allRecipes.data ?? [];
+                  final query = _searchFieldController.text;
+                  final results = query.isEmpty ? allRecipes : searchResults;
+
+                  return switch (state.allRecipes.status) {
+                    LoadingStatus _ => const Center(child: CircularProgressIndicator()),
+                    FailureStatus _ => RefreshIndicator(
+                        onRefresh: () async => await _refreshRecipes(context), child: ListView(children: const [Center(child: GeneralErrorView())])),
+                    SuccessStatus _ => RefreshIndicator(
+                        onRefresh: () async => await _refreshRecipes(context),
+                        child: results.isEmpty
                             ? ListView(children: const [EmptyView()])
                             : ListView.builder(
-                                itemBuilder: (context, index) => RecipeItem(
-                                  recipe: response.data[index],
+                                itemBuilder: (_, index) => RecipeItem(
+                                  recipe: results[index],
                                   showTopDivider: index != 0,
                                 ),
-                                itemCount: response.data.length,
+                                itemCount: results.length,
                               ),
                       ),
-                    FutureInitialState _ => const SizedBox.shrink(),
+                    _ => const SizedBox.shrink(),
                   };
                 },
               ),
@@ -109,11 +102,13 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
     );
   }
 
-  void _onSearchQueryChanged() {
-    if (_searchFieldController.text.isEmpty) {
-      _controller.clearResults();
-    }
+  Future<void> _refreshRecipes(BuildContext context) async {
+    final cubit = context.read<SearchRecipeCubit>();
+    final query = _searchFieldController.text;
+    query.isEmpty ? await cubit.fetchRecipes() : cubit.searchRecipe(query: query);
   }
+
+  void _onSearchQueryChanged() => _refreshRecipes(context);
 
   void _onCreateRecipePressed() => Navigator.of(context).pushNamed(Routes.createRecipe.name);
 }

@@ -1,6 +1,7 @@
 import 'package:calorietracker/feature/auth/logic/login_cubit.dart';
 import 'package:calorietracker/feature/create_food/logic/create_food_cubit.dart';
 import 'package:calorietracker/feature/profile/logic/user_goals_cubit.dart';
+import 'package:calorietracker/feature/recipes/logic/search_recipe_cubit.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/add_food/ui/add_food_view.dart';
@@ -59,7 +60,10 @@ class _HomeViewState extends State<HomeView> {
           );
         } else if (index == 1) {
           return CupertinoTabView(
-            builder: (context) => const SearchRecipeView(),
+            builder: (_) => BlocProvider<SearchRecipeCubit>(
+              create: (_) => getIt<SearchRecipeCubit>(),
+              child: const SearchRecipeView(),
+            ),
             onGenerateRoute: _onGenerateRecipesRoute,
             navigatorKey: recipeNavigatorKey,
           );
@@ -124,7 +128,12 @@ class _HomeViewState extends State<HomeView> {
     final args = settings.arguments;
     switch (matchingRoute) {
       case Routes.recipes:
-        return MaterialPageRoute(builder: (context) => const SearchRecipeView());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider<SearchRecipeCubit>(
+            create: (_) => getIt<SearchRecipeCubit>(),
+            child: const SearchRecipeView(),
+          ),
+        );
       case Routes.createRecipe:
         return MaterialPageRoute(builder: (context) => const CreateRecipeView());
       case Routes.recipe:
