@@ -84,7 +84,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
                 valueListenable: _controller.isLoading,
                 builder: (_, isLoading, __) => RecipeNameField(
                   formKey: _formKey,
-                  isLoading: isLoading,
+                  enabled: !isLoading,
                   textController: _nameTextFieldController,
                 ),
               ),
@@ -97,7 +97,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
                 valueListenable: _controller.isLoading,
                 builder: (_, isLoading, __) => RecipeServingsField(
                   textController: _servingSizeTextController,
-                  isLoading: isLoading,
+                  enabled: !isLoading,
                 ),
               ),
             ),

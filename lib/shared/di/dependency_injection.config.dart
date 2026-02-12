@@ -23,10 +23,11 @@ import '../../feature/create_food/logic/create_food_cubit.dart' as _i525;
 import '../../feature/diary/logic/diary_bloc.dart' as _i738;
 import '../../feature/profile/domain/goals_repository.dart' as _i924;
 import '../../feature/profile/logic/user_goals_cubit.dart' as _i98;
+import '../../feature/recipe_details/data/recipe_details_repository.dart'
+    as _i879;
+import '../../feature/recipe_details/logic/recipe_details_cubit.dart' as _i301;
 import '../../feature/recipes/data/search_recipe_repository.dart' as _i27;
-import '../../feature/recipes/details/recipe_details_controller.dart' as _i1;
 import '../../feature/recipes/logic/create_recipe_controller.dart' as _i169;
-import '../../feature/recipes/logic/recipe_helper.dart' as _i412;
 import '../../feature/recipes/logic/search_recipe_cubit.dart' as _i909;
 import '../../feature/search_food/data/search_food_service.dart' as _i383;
 import '../../feature/search_food/logic/food_item_controller.dart' as _i264;
@@ -51,6 +52,7 @@ import '../data/service/numeric_formatting_service.dart' as _i633;
 import '../data/service/secure_storage_service.dart' as _i270;
 import '../data/validators/food_validator.dart' as _i404;
 import '../data/validators/nutrition_validator.dart' as _i2;
+import '../helpers/recipe_helper.dart' as _i510;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -82,11 +84,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i867.LoginCubit>(() => _i867.LoginCubit());
     gh.factory<_i169.CreateRecipeController>(
         () => _i169.CreateRecipeController());
-    gh.factory<_i412.RecipeHelper>(() => _i412.RecipeHelper());
-    gh.factory<_i1.RecipeDetailsController>(
-        () => _i1.RecipeDetailsController());
     gh.factory<_i738.DiaryBloc>(() => _i738.DiaryBloc());
     gh.factory<_i525.CreateFoodCubit>(() => _i525.CreateFoodCubit());
+    gh.factory<_i510.RecipeHelper>(() => _i510.RecipeHelper());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
         () => registerModule.flutterSecureStorage);
     gh.lazySingletonAsync<_i1017.NutritionixApiService>(
@@ -116,6 +116,8 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i27.SearchRecipeRepository>(
         () => _i27.SearchRecipeRepository(gh<_i13.CollectionApiService>()));
+    gh.factory<_i879.RecipeDetailsRepository>(
+        () => _i879.RecipeDetailsRepository(gh<_i13.CollectionApiService>()));
     gh.factoryAsync<String>(
       () => registerModule.appDirectoryPath,
       instanceName: 'appDirectoryPath',
@@ -150,6 +152,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i13.CollectionApiService>(),
           gh<_i861.LoggingService>(),
           gh<_i271.FoodService>(),
+        ));
+    gh.factory<_i301.RecipeDetailsCubit>(() => _i301.RecipeDetailsCubit(
+          gh<_i510.RecipeHelper>(),
+          gh<_i879.RecipeDetailsRepository>(),
+          gh<_i861.LoggingService>(),
         ));
     gh.factory<_i980.AddFoodCubit>(() => _i980.AddFoodCubit(
           gh<_i566.AuthRepository>(),

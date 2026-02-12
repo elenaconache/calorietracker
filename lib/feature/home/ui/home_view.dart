@@ -1,6 +1,7 @@
 import 'package:calorietracker/feature/auth/logic/login_cubit.dart';
 import 'package:calorietracker/feature/create_food/logic/create_food_cubit.dart';
 import 'package:calorietracker/feature/profile/logic/user_goals_cubit.dart';
+import 'package:calorietracker/feature/recipe_details/logic/recipe_details_cubit.dart';
 import 'package:calorietracker/feature/recipes/logic/search_recipe_cubit.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
@@ -12,8 +13,8 @@ import 'package:calorietracker/feature/profile/ui/accounts/accounts_view.dart';
 import 'package:calorietracker/feature/profile/ui/profile_view.dart';
 import 'package:calorietracker/feature/profile/ui/user_goals/user_goals_view.dart';
 import 'package:calorietracker/feature/recipes/ui/create_recipe/create_recipe_view.dart';
-import 'package:calorietracker/feature/recipes/details/recipe_details_arguments.dart';
-import 'package:calorietracker/feature/recipes/details/recipe_details_view.dart';
+import 'package:calorietracker/feature/recipe_details/ui/recipe_details_arguments.dart';
+import 'package:calorietracker/feature/recipe_details/ui/recipe_details_view.dart';
 import 'package:calorietracker/feature/recipes/ui/search_recipe_view.dart';
 import 'package:calorietracker/feature/search_food/ui/search_food_view.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
@@ -137,7 +138,12 @@ class _HomeViewState extends State<HomeView> {
       case Routes.createRecipe:
         return MaterialPageRoute(builder: (context) => const CreateRecipeView());
       case Routes.recipe:
-        return MaterialPageRoute(builder: (context) => RecipeDetailsView(arguments: args as RecipeDetailsArguments));
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<RecipeDetailsCubit>(),
+            child: RecipeDetailsView(arguments: args as RecipeDetailsArguments),
+          ),
+        );
       case Routes.foodSearch:
         return MaterialPageRoute(builder: (context) => const SearchFoodView());
       case Routes.addFood:

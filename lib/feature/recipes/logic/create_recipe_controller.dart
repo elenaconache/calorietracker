@@ -4,7 +4,7 @@ import 'package:calorietracker/shared/constants.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/extension/dio_extensions.dart';
 import 'package:calorietracker/feature/recipes/data/create_recipe_error.dart';
-import 'package:calorietracker/feature/recipes/logic/recipe_helper.dart';
+import 'package:calorietracker/shared/helpers/recipe_helper.dart';
 import 'package:calorietracker/shared/data/model/collection/add_recipe_request.dart';
 import 'package:calorietracker/shared/data/model/collection/collection_recipe_ingredient.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';

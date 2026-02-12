@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 
 class RecipeNameField extends StatelessWidget {
   final GlobalKey<FormState> formKey;
-  final bool isLoading;
   final TextEditingController textController;
   final bool enabled;
 
   const RecipeNameField({
     super.key,
     required this.formKey,
-    required this.isLoading,
     required this.textController,
     this.enabled = true,
   });
@@ -24,10 +22,10 @@ class RecipeNameField extends StatelessWidget {
         labelText: AppStrings.recipeNameLabel,
         action: TextInputAction.next,
         maxLength: 30,
-        enabled: enabled && !isLoading,
+        enabled: enabled,
         validate: _validateRecipeName,
         controller: textController,
-        textColor: !isLoading ? Theme.of(context).textTheme.bodyLarge?.color : null,
+        textColor: !enabled ? Theme.of(context).textTheme.bodyLarge?.color : null,
       ),
     );
   }
