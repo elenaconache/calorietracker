@@ -2,6 +2,7 @@ import 'package:calorietracker/feature/auth/logic/login_cubit.dart';
 import 'package:calorietracker/feature/create_food/logic/create_food_cubit.dart';
 import 'package:calorietracker/feature/profile/logic/user_goals_cubit.dart';
 import 'package:calorietracker/feature/recipe_details/logic/recipe_details_cubit.dart';
+import 'package:calorietracker/feature/recipes/logic/create_recipe_cubit.dart';
 import 'package:calorietracker/feature/recipes/logic/search_recipe_cubit.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
@@ -136,7 +137,9 @@ class _HomeViewState extends State<HomeView> {
           ),
         );
       case Routes.createRecipe:
-        return MaterialPageRoute(builder: (context) => const CreateRecipeView());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider<CreateRecipeCubit>(create: (_) => getIt<CreateRecipeCubit>(), child: const CreateRecipeView()),
+        );
       case Routes.recipe:
         return MaterialPageRoute(
           builder: (context) => BlocProvider(

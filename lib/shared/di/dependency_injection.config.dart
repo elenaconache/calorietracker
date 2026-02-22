@@ -26,8 +26,9 @@ import '../../feature/profile/logic/user_goals_cubit.dart' as _i98;
 import '../../feature/recipe_details/data/recipe_details_repository.dart'
     as _i879;
 import '../../feature/recipe_details/logic/recipe_details_cubit.dart' as _i301;
+import '../../feature/recipes/data/create_recipe_repository.dart' as _i527;
 import '../../feature/recipes/data/search_recipe_repository.dart' as _i27;
-import '../../feature/recipes/logic/create_recipe_controller.dart' as _i169;
+import '../../feature/recipes/logic/create_recipe_cubit.dart' as _i1072;
 import '../../feature/recipes/logic/search_recipe_cubit.dart' as _i909;
 import '../../feature/search_food/data/search_food_service.dart' as _i383;
 import '../../feature/search_food/logic/food_item_controller.dart' as _i264;
@@ -82,8 +83,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i270.SecureStorageService>(() => _i270.SecureStorageService());
     gh.factory<_i861.LoggingService>(() => _i861.LoggingService());
     gh.factory<_i867.LoginCubit>(() => _i867.LoginCubit());
-    gh.factory<_i169.CreateRecipeController>(
-        () => _i169.CreateRecipeController());
     gh.factory<_i738.DiaryBloc>(() => _i738.DiaryBloc());
     gh.factory<_i525.CreateFoodCubit>(() => _i525.CreateFoodCubit());
     gh.factory<_i510.RecipeHelper>(() => _i510.RecipeHelper());
@@ -122,6 +121,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.appDirectoryPath,
       instanceName: 'appDirectoryPath',
     );
+    gh.factory<_i527.CreateRecipeRepository>(() => _i527.CreateRecipeRepository(
+          gh<_i13.CollectionApiService>(),
+          gh<_i861.LoggingService>(),
+        ));
     gh.factoryParam<_i159.DioProvider, String?, Map<String, String>?>((
       baseUrl,
       headers,
@@ -137,6 +140,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i373.DiaryEntryService>(() => _i373.DiaryEntryService(
           gh<_i379.DatabaseRepository>(),
           gh<_i566.AuthRepository>(),
+        ));
+    gh.factory<_i1072.CreateRecipeCubit>(() => _i1072.CreateRecipeCubit(
+          gh<_i510.RecipeHelper>(),
+          gh<_i527.CreateRecipeRepository>(),
         ));
     gh.factory<_i924.GoalsRepository>(
         () => _i924.GoalsRepository(gh<_i270.SecureStorageService>()));

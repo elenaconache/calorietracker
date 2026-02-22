@@ -1,18 +1,18 @@
-import 'package:calorietracker/shared/di/dependency_injection.dart';
+import 'package:calorietracker/feature/recipes/logic/create_recipe_cubit.dart';
+import 'package:calorietracker/shared/data/helper/async_state.dart';
+import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/recipes/ui/nutrition_tile.dart';
 import 'package:calorietracker/feature/recipes/ui/recipe_name_field.dart';
 import 'package:calorietracker/feature/recipes/ui/recipe_servings_field.dart';
-import 'package:calorietracker/feature/recipes/logic/create_recipe_controller.dart';
-import 'package:calorietracker/feature/recipes/data/create_recipe_error.dart';
 import 'package:calorietracker/feature/recipes/ui/create_recipe/ingredient_item.dart';
 import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/components/app_divider.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateRecipeView extends StatefulWidget {
   const CreateRecipeView({super.key});
@@ -22,7 +22,6 @@ class CreateRecipeView extends StatefulWidget {
 }
 
 class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerProviderStateMixin {
-  late final CreateRecipeController _controller;
   late final ScrollController _scrollController;
   late final TextEditingController _servingSizeTextController;
   late final TextEditingController _nameTextFieldController;
@@ -31,7 +30,6 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
   @override
   void initState() {
     super.initState();
-    _controller = getIt<CreateRecipeController>();
     _scrollController = ScrollController();
     _formKey = GlobalKey<FormState>(debugLabel: 'createRecipeForm');
     _servingSizeTextController = TextEditingController()
@@ -52,125 +50,118 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppStrings.createRecipeTitle),
-        actions: [
-          ValueListenableBuilder(
-            valueListenable: _controller.isLoading,
-            builder: (_, isLoading, __) => isLoading
-                ? const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(),
+    return BlocConsumer<CreateRecipeCubit, CreateRecipeState>(
+      listener: (context, state) {
+        _handleCreateRecipeResult(state.createRecipeStatus);
+      },
+      listenWhen: (previous, current) => previous.createRecipeStatus != current.createRecipeStatus,
+      buildWhen: (previous, current) => previous.createRecipeStatus != current.createRecipeStatus,
+      builder: (context, state) {
+        final isLoading = state.createRecipeStatus.status is LoadingStatus;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(AppStrings.createRecipeTitle),
+            actions: [
+              if (isLoading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else
+                IconButton(onPressed: _saveRecipe, icon: const Icon(Icons.check, size: 32)),
+            ],
+          ),
+          body: CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
+                sliver: SliverToBoxAdapter(
+                  child: RecipeNameField(
+                    formKey: _formKey,
+                    enabled: !isLoading,
+                    textController: _nameTextFieldController,
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 12, left: 16, right: 16),
+                sliver: SliverToBoxAdapter(
+                  child: RecipeServingsField(
+                    textController: _servingSizeTextController,
+                    enabled: !isLoading,
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 12, left: 18, right: 12),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    AppStrings.summary100GramsMessage,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: BlocSelector<CreateRecipeCubit, CreateRecipeState, Nutrition>(
+                  selector: (state) => state.nutrition,
+                  builder: (context, state) => Column(
+                    children: [
+                      CaloriesMacrosSection(nutrition: state),
+                      AppDivider(height: 2),
+                      NutritionTile(nutrition: state),
+                    ],
+                  ),
+                ),
+              ),
+              const SliverToBoxAdapter(child: AppDivider(height: 2)),
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 16, left: 18, right: 12),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    AppStrings.ingredientsTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              ),
+              const SliverPadding(padding: EdgeInsets.only(top: 16)),
+              BlocSelector<CreateRecipeCubit, CreateRecipeState, List<RecipeIngredient>>(
+                selector: (state) => state.ingredients,
+                builder: (context, ingredients) => SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (_, index) => IngredientItem(
+                      ingredient: ingredients[index],
+                      onSwipe: () => context.read<CreateRecipeCubit>().removeIngredient(
+                            index: index,
+                            cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+                          ),
+                      onTap: () => _navigateToIngredientDetails(index),
                     ),
-                  )
-                : IconButton(
-                    onPressed: _saveRecipe,
-                    icon: const Icon(Icons.check, size: 32),
+                    childCount: ingredients.length,
                   ),
-          )
-        ],
-      ),
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
-            sliver: SliverToBoxAdapter(
-              child: ValueListenableBuilder(
-                valueListenable: _controller.isLoading,
-                builder: (_, isLoading, __) => RecipeNameField(
-                  formKey: _formKey,
-                  enabled: !isLoading,
-                  textController: _nameTextFieldController,
                 ),
               ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 12, left: 16, right: 16),
-            sliver: SliverToBoxAdapter(
-              child: ValueListenableBuilder(
-                valueListenable: _controller.isLoading,
-                builder: (_, isLoading, __) => RecipeServingsField(
-                  textController: _servingSizeTextController,
-                  enabled: !isLoading,
-                ),
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 12, left: 18, right: 12),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                AppStrings.summary100GramsMessage,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: ValueListenableBuilder(
-              valueListenable: _controller.recipeNutrition,
-              builder: (_, nutrition, __) => CaloriesMacrosSection(
-                nutrition: nutrition,
-              ),
-            ),
-          ),
-          const SliverToBoxAdapter(child: AppDivider(height: 2)),
-          ValueListenableBuilder(
-            valueListenable: _controller.recipeNutrition,
-            builder: (_, nutrition, __) => SliverToBoxAdapter(
-              child: NutritionTile(nutrition: nutrition),
-            ),
-          ),
-          const SliverToBoxAdapter(child: AppDivider(height: 2)),
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 16, left: 18, right: 12),
-            sliver: SliverToBoxAdapter(
-              child: Text(
-                AppStrings.ingredientsTitle,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ),
-          const SliverPadding(padding: EdgeInsets.only(top: 16)),
-          ValueListenableBuilder(
-            valueListenable: _controller.ingredients,
-            builder: (_, ingredients, __) => SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (_, index) => IngredientItem(
-                  ingredient: ingredients[index],
-                  onSwipe: () => _controller.removeIngredient(
-                    index: index,
-                    cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+              SliverToBoxAdapter(
+                child: Center(
+                  child: TextButton(
+                    onPressed: isLoading ? null : _navigateToSearchFood,
+                    child: Text(AppStrings.addIngredientTitle.toUpperCase()),
                   ),
-                  onTap: () => _navigateToIngredientDetails(index),
-                ),
-                childCount: ingredients.length,
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Center(
-              child: ValueListenableBuilder(
-                valueListenable: _controller.isLoading,
-                builder: (_, isLoading, __) => TextButton(
-                  onPressed: isLoading ? null : _navigateToSearchFood,
-                  child: Text(AppStrings.addIngredientTitle.toUpperCase()),
                 ),
               ),
-            ),
+              SliverPadding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom,
+                ),
+              ),
+            ],
           ),
-          SliverPadding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).padding.bottom,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -183,52 +174,52 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
   }
 
   void _onIngredientAdded(RecipeIngredient result) {
-    _controller.addIngredient(
-      ingredient: result,
-      cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+    if (!mounted) return;
+    context.read<CreateRecipeCubit>().addIngredient(
+          ingredient: result,
+          cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+        );
+    FocusScope.of(context).unfocus();
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent + MediaQuery.of(context).padding.bottom,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
     );
-    if (context.mounted) {
-      FocusScope.of(context).unfocus();
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent + MediaQuery.of(context).padding.bottom,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    }
   }
 
-  void _onServingSizeChanged() => _controller.updateNutrition(
-        cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
-      );
+  void _onServingSizeChanged() {
+    if (!mounted) return;
+    context.read<CreateRecipeCubit>().updateCookedQuantity(
+          cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+        );
+  }
 
   void _saveRecipe() {
     if (_formKey.currentState?.validate() ?? false) {
-      _controller
-          .saveRecipe(cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 0, name: _nameTextFieldController.text)
-          .then(_handleCreateRecipeResult);
+      if (!mounted) return;
+      context.read<CreateRecipeCubit>().saveRecipe(
+            cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 0,
+            name: _nameTextFieldController.text,
+          );
     }
   }
 
-  void _handleCreateRecipeResult(CreateRecipeError error) {
-    if (error == CreateRecipeError.none) {
-      if (context.mounted) {
+  void _handleCreateRecipeResult(AsyncState createRecipeResult) {
+    if (!mounted) return;
+    switch (createRecipeResult.status) {
+      case SuccessStatus _:
         Navigator.of(context).pop();
-      } else {
-        getIt<LoggingService>().info('Context unmounted. Could not pop create recipe screen.');
-      }
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppStrings.errorCreatingRecipeMessage)),
-        );
-      } else {
-        getIt<LoggingService>().info('Could not show error snack bar. Context unmounted.');
-      }
+        break;
+      case FailureStatus _:
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.errorCreatingRecipeMessage)));
+      default:
     }
   }
 
   void _navigateToIngredientDetails(int index) async {
-    final ingredient = _controller.ingredients.value[index];
+    if (!mounted) return;
+    final cubit = context.read<CreateRecipeCubit>();
+    final ingredient = cubit.state.ingredients[index];
     final result = await Navigator.of(context).pushNamed(
       Routes.addFood.path,
       arguments: AddFoodArguments(
@@ -239,7 +230,7 @@ class _CreateRecipeViewState extends State<CreateRecipeView> with SingleTickerPr
       ),
     );
     if (result is RecipeIngredient) {
-      _controller.updateIngredientQuantity(
+      cubit.updateIngredientQuantity(
         index: index,
         ingredientQuantity: result.servingQuantity,
         cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,

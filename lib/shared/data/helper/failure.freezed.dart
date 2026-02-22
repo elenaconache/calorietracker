@@ -19,38 +19,50 @@ mixin _$Failure {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) generalFailure,
+    required TResult Function(String? message) connection,
     required TResult Function(AuthError type) auth,
+    required TResult Function(CreateRecipeError type) createRecipe,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String? message)? generalFailure,
+    TResult? Function(String? message)? connection,
     TResult? Function(AuthError type)? auth,
+    TResult? Function(CreateRecipeError type)? createRecipe,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? generalFailure,
+    TResult Function(String? message)? connection,
     TResult Function(AuthError type)? auth,
+    TResult Function(CreateRecipeError type)? createRecipe,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralFailure value) generalFailure,
+    required TResult Function(ConnectionFailure value) connection,
     required TResult Function(AuthFailure value) auth,
+    required TResult Function(CreateRecipeFailure value) createRecipe,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GeneralFailure value)? generalFailure,
+    TResult? Function(ConnectionFailure value)? connection,
     TResult? Function(AuthFailure value)? auth,
+    TResult? Function(CreateRecipeFailure value)? createRecipe,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralFailure value)? generalFailure,
+    TResult Function(ConnectionFailure value)? connection,
     TResult Function(AuthFailure value)? auth,
+    TResult Function(CreateRecipeFailure value)? createRecipe,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -146,7 +158,9 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) generalFailure,
+    required TResult Function(String? message) connection,
     required TResult Function(AuthError type) auth,
+    required TResult Function(CreateRecipeError type) createRecipe,
   }) {
     return generalFailure(message);
   }
@@ -155,7 +169,9 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String? message)? generalFailure,
+    TResult? Function(String? message)? connection,
     TResult? Function(AuthError type)? auth,
+    TResult? Function(CreateRecipeError type)? createRecipe,
   }) {
     return generalFailure?.call(message);
   }
@@ -164,7 +180,9 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? generalFailure,
+    TResult Function(String? message)? connection,
     TResult Function(AuthError type)? auth,
+    TResult Function(CreateRecipeError type)? createRecipe,
     required TResult orElse(),
   }) {
     if (generalFailure != null) {
@@ -177,7 +195,9 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralFailure value) generalFailure,
+    required TResult Function(ConnectionFailure value) connection,
     required TResult Function(AuthFailure value) auth,
+    required TResult Function(CreateRecipeFailure value) createRecipe,
   }) {
     return generalFailure(this);
   }
@@ -186,7 +206,9 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GeneralFailure value)? generalFailure,
+    TResult? Function(ConnectionFailure value)? connection,
     TResult? Function(AuthFailure value)? auth,
+    TResult? Function(CreateRecipeFailure value)? createRecipe,
   }) {
     return generalFailure?.call(this);
   }
@@ -195,7 +217,9 @@ class _$GeneralFailureImpl implements GeneralFailure {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralFailure value)? generalFailure,
+    TResult Function(ConnectionFailure value)? connection,
     TResult Function(AuthFailure value)? auth,
+    TResult Function(CreateRecipeFailure value)? createRecipe,
     required TResult orElse(),
   }) {
     if (generalFailure != null) {
@@ -214,6 +238,160 @@ abstract class GeneralFailure implements Failure {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GeneralFailureImplCopyWith<_$GeneralFailureImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ConnectionFailureImplCopyWith<$Res> {
+  factory _$$ConnectionFailureImplCopyWith(_$ConnectionFailureImpl value,
+          $Res Function(_$ConnectionFailureImpl) then) =
+      __$$ConnectionFailureImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String? message});
+}
+
+/// @nodoc
+class __$$ConnectionFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$ConnectionFailureImpl>
+    implements _$$ConnectionFailureImplCopyWith<$Res> {
+  __$$ConnectionFailureImplCopyWithImpl(_$ConnectionFailureImpl _value,
+      $Res Function(_$ConnectionFailureImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = freezed,
+  }) {
+    return _then(_$ConnectionFailureImpl(
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ConnectionFailureImpl implements ConnectionFailure {
+  const _$ConnectionFailureImpl({this.message});
+
+  @override
+  final String? message;
+
+  @override
+  String toString() {
+    return 'Failure.connection(message: $message)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ConnectionFailureImpl &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ConnectionFailureImplCopyWith<_$ConnectionFailureImpl> get copyWith =>
+      __$$ConnectionFailureImplCopyWithImpl<_$ConnectionFailureImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) generalFailure,
+    required TResult Function(String? message) connection,
+    required TResult Function(AuthError type) auth,
+    required TResult Function(CreateRecipeError type) createRecipe,
+  }) {
+    return connection(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? generalFailure,
+    TResult? Function(String? message)? connection,
+    TResult? Function(AuthError type)? auth,
+    TResult? Function(CreateRecipeError type)? createRecipe,
+  }) {
+    return connection?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? generalFailure,
+    TResult Function(String? message)? connection,
+    TResult Function(AuthError type)? auth,
+    TResult Function(CreateRecipeError type)? createRecipe,
+    required TResult orElse(),
+  }) {
+    if (connection != null) {
+      return connection(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GeneralFailure value) generalFailure,
+    required TResult Function(ConnectionFailure value) connection,
+    required TResult Function(AuthFailure value) auth,
+    required TResult Function(CreateRecipeFailure value) createRecipe,
+  }) {
+    return connection(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GeneralFailure value)? generalFailure,
+    TResult? Function(ConnectionFailure value)? connection,
+    TResult? Function(AuthFailure value)? auth,
+    TResult? Function(CreateRecipeFailure value)? createRecipe,
+  }) {
+    return connection?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GeneralFailure value)? generalFailure,
+    TResult Function(ConnectionFailure value)? connection,
+    TResult Function(AuthFailure value)? auth,
+    TResult Function(CreateRecipeFailure value)? createRecipe,
+    required TResult orElse(),
+  }) {
+    if (connection != null) {
+      return connection(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ConnectionFailure implements Failure {
+  const factory ConnectionFailure({final String? message}) =
+      _$ConnectionFailureImpl;
+
+  String? get message;
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ConnectionFailureImplCopyWith<_$ConnectionFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -287,7 +465,9 @@ class _$AuthFailureImpl implements AuthFailure {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String? message) generalFailure,
+    required TResult Function(String? message) connection,
     required TResult Function(AuthError type) auth,
+    required TResult Function(CreateRecipeError type) createRecipe,
   }) {
     return auth(type);
   }
@@ -296,7 +476,9 @@ class _$AuthFailureImpl implements AuthFailure {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String? message)? generalFailure,
+    TResult? Function(String? message)? connection,
     TResult? Function(AuthError type)? auth,
+    TResult? Function(CreateRecipeError type)? createRecipe,
   }) {
     return auth?.call(type);
   }
@@ -305,7 +487,9 @@ class _$AuthFailureImpl implements AuthFailure {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? message)? generalFailure,
+    TResult Function(String? message)? connection,
     TResult Function(AuthError type)? auth,
+    TResult Function(CreateRecipeError type)? createRecipe,
     required TResult orElse(),
   }) {
     if (auth != null) {
@@ -318,7 +502,9 @@ class _$AuthFailureImpl implements AuthFailure {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralFailure value) generalFailure,
+    required TResult Function(ConnectionFailure value) connection,
     required TResult Function(AuthFailure value) auth,
+    required TResult Function(CreateRecipeFailure value) createRecipe,
   }) {
     return auth(this);
   }
@@ -327,7 +513,9 @@ class _$AuthFailureImpl implements AuthFailure {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GeneralFailure value)? generalFailure,
+    TResult? Function(ConnectionFailure value)? connection,
     TResult? Function(AuthFailure value)? auth,
+    TResult? Function(CreateRecipeFailure value)? createRecipe,
   }) {
     return auth?.call(this);
   }
@@ -336,7 +524,9 @@ class _$AuthFailureImpl implements AuthFailure {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralFailure value)? generalFailure,
+    TResult Function(ConnectionFailure value)? connection,
     TResult Function(AuthFailure value)? auth,
+    TResult Function(CreateRecipeFailure value)? createRecipe,
     required TResult orElse(),
   }) {
     if (auth != null) {
@@ -355,5 +545,160 @@ abstract class AuthFailure implements Failure {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthFailureImplCopyWith<_$AuthFailureImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CreateRecipeFailureImplCopyWith<$Res> {
+  factory _$$CreateRecipeFailureImplCopyWith(_$CreateRecipeFailureImpl value,
+          $Res Function(_$CreateRecipeFailureImpl) then) =
+      __$$CreateRecipeFailureImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CreateRecipeError type});
+}
+
+/// @nodoc
+class __$$CreateRecipeFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$CreateRecipeFailureImpl>
+    implements _$$CreateRecipeFailureImplCopyWith<$Res> {
+  __$$CreateRecipeFailureImplCopyWithImpl(_$CreateRecipeFailureImpl _value,
+      $Res Function(_$CreateRecipeFailureImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = null,
+  }) {
+    return _then(_$CreateRecipeFailureImpl(
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as CreateRecipeError,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CreateRecipeFailureImpl implements CreateRecipeFailure {
+  const _$CreateRecipeFailureImpl({this.type = CreateRecipeError.unknown});
+
+  @override
+  @JsonKey()
+  final CreateRecipeError type;
+
+  @override
+  String toString() {
+    return 'Failure.createRecipe(type: $type)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CreateRecipeFailureImpl &&
+            (identical(other.type, type) || other.type == type));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, type);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CreateRecipeFailureImplCopyWith<_$CreateRecipeFailureImpl> get copyWith =>
+      __$$CreateRecipeFailureImplCopyWithImpl<_$CreateRecipeFailureImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) generalFailure,
+    required TResult Function(String? message) connection,
+    required TResult Function(AuthError type) auth,
+    required TResult Function(CreateRecipeError type) createRecipe,
+  }) {
+    return createRecipe(type);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? generalFailure,
+    TResult? Function(String? message)? connection,
+    TResult? Function(AuthError type)? auth,
+    TResult? Function(CreateRecipeError type)? createRecipe,
+  }) {
+    return createRecipe?.call(type);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? generalFailure,
+    TResult Function(String? message)? connection,
+    TResult Function(AuthError type)? auth,
+    TResult Function(CreateRecipeError type)? createRecipe,
+    required TResult orElse(),
+  }) {
+    if (createRecipe != null) {
+      return createRecipe(type);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GeneralFailure value) generalFailure,
+    required TResult Function(ConnectionFailure value) connection,
+    required TResult Function(AuthFailure value) auth,
+    required TResult Function(CreateRecipeFailure value) createRecipe,
+  }) {
+    return createRecipe(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GeneralFailure value)? generalFailure,
+    TResult? Function(ConnectionFailure value)? connection,
+    TResult? Function(AuthFailure value)? auth,
+    TResult? Function(CreateRecipeFailure value)? createRecipe,
+  }) {
+    return createRecipe?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GeneralFailure value)? generalFailure,
+    TResult Function(ConnectionFailure value)? connection,
+    TResult Function(AuthFailure value)? auth,
+    TResult Function(CreateRecipeFailure value)? createRecipe,
+    required TResult orElse(),
+  }) {
+    if (createRecipe != null) {
+      return createRecipe(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CreateRecipeFailure implements Failure {
+  const factory CreateRecipeFailure({final CreateRecipeError type}) =
+      _$CreateRecipeFailureImpl;
+
+  CreateRecipeError get type;
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CreateRecipeFailureImplCopyWith<_$CreateRecipeFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
