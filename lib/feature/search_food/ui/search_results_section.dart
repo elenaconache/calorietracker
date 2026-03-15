@@ -1,8 +1,9 @@
-import 'package:calorietracker/feature/search_food/ui/branded_results_section.dart';
+import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
+import 'package:calorietracker/feature/search_food/ui/discover_results_section.dart';
 import 'package:calorietracker/feature/search_food/ui/collection_results_section.dart';
-import 'package:calorietracker/feature/search_food/ui/common_results_section.dart';
 import 'package:calorietracker/feature/search_food/ui/powered_by_nutritionix_wrapper.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
+import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -21,11 +22,12 @@ class _SearchResultsSectionState extends State<SearchResultsSection> with Single
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
+    final foodSearchService = getIt<SearchFoodService>();
     return SafeArea(
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         TabBar(
@@ -39,13 +41,7 @@ class _SearchResultsSectionState extends State<SearchResultsSection> with Single
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Text(
-                  AppStrings.commonLabel,
-                  style: Theme.of(context).textTheme.titleMedium,
-                )),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  AppStrings.brandedLabel,
+                  AppStrings.discoverLabel,
                   style: Theme.of(context).textTheme.titleMedium,
                 )),
           ],
@@ -56,8 +52,17 @@ class _SearchResultsSectionState extends State<SearchResultsSection> with Single
             controller: _tabController,
             children: [
               CollectionResultsSection(meal: widget.meal),
-              PoweredByNutritionixWrapper(child: CommonResultsSection(meal: widget.meal)),
-              PoweredByNutritionixWrapper(child: BrandedResultsSection(meal: widget.meal)),
+              PoweredByWrapper(
+                child: ValueListenableBuilder(
+                  valueListenable: foodSearchService.usdaSearchResponse,
+                  builder: (context, searchResponse, child) {
+                    return DiscoverResultsSection(
+                      meal: widget.meal,
+                      response: searchResponse,
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         )

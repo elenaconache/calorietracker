@@ -12,7 +12,7 @@
   "searchFoodsLabel": "Search food",
   "searchForFoodLabel": "Search for a food",
   "generalErrorMessage": "An error occurred.",
-  "poweredByNutritionixLabel": "Powered by Nutritionix",
+  "usdaDataSource": "Data source: USDA FoodData Central",
   "caloriesServingShortLabel": "{calories} cal, {servingQuantity} {servingUnit}",
   "@caloriesServingShortLabel": {
     "placeholder": {
@@ -27,8 +27,7 @@
       }
     }
   },
-  "commonLabel": "Common",
-  "brandedLabel": "Branded",
+  "discoverLabel": "Discover",
   "noResultsTitle": "There were no results matching your search",
   "breakfastLabel": "Breakfast",
   "lunchLabel": "Lunch",

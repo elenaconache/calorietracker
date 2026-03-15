@@ -20,8 +20,6 @@ class NutritionValidator {
       return MacrosNotMatchingServingSizeError(_macrosMatchServingSize(nutritionInput).expectedServingSize);
     } else if (nutritionInput.nutrition.sugar > nutritionInput.nutrition.netCarbs) {
       return SugarsExceedNetCarbsError();
-    } else if (!_hasValidFats(nutritionInput).match) {
-      return FatsSumExceedsTotalFatError(_hasValidFats(nutritionInput).expectedFat);
     } else if (nutritionInput.nutrition.cholesterol > nutritionInput.nutrition.fat * 1000) {
       return CholesterolExceedsTotalFatError();
     } else if (nutritionInput.nutrition.cholesterol > _getMaxCholesterol(nutritionInput)) {
@@ -65,12 +63,6 @@ class NutritionValidator {
     final expectedCalories = userSubmittedNutrition.expectedCalories.toInt();
     final difference = (expectedCalories - userSubmittedNutrition.calories).abs();
     return (expectedCalories: expectedCalories, match: difference <= _acceptableMacrosCaloriesOffset);
-  }
-
-  ({int expectedFat, bool match}) _hasValidFats(FoodInput nutritionInput) {
-    final nutrition = nutritionInput.nutrition;
-    final totalFats = nutrition.fatSaturated + nutrition.fatTrans + nutrition.fatMonounsaturated + nutrition.fatPolyunsaturated;
-    return (expectedFat: totalFats.toInt(), match: totalFats <= nutrition.fat);
   }
 
   ({int expectedServingSize, bool match}) _macrosMatchServingSize(FoodInput nutritionInput) {

@@ -5,7 +5,6 @@ import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/add_food/logic/add_food_cubit.dart';
 import 'package:calorietracker/feature/add_food/data/food_log.dart';
-import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
 import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/ui/components/calories_macros_section.dart';
@@ -141,7 +140,6 @@ class AddFoodView extends StatelessWidget {
         StackTrace.current,
       );
     } else {
-      getIt<SearchFoodService>().clearResults();
       if (args.meal == null) {
         _confirmRecipeIngredient(context, servingQuantity);
       } else {

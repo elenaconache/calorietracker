@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 class DioProvider {
   late final Dio dio;
 
-  DioProvider({@factoryParam String? baseUrl, @factoryParam Map<String, String>? headers}) {
+  DioProvider({@factoryParam String? baseUrl}) {
     final cacheOptions = CacheOptions(
       store: MemCacheStore(),
       hitCacheOnErrorExcept: [
@@ -26,7 +26,6 @@ class DioProvider {
     ));
     dio.interceptors.add(cacheInterceptor);
     dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
-    dio.options.headers = headers ?? {};
     this.dio = dio;
   }
 }

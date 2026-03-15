@@ -15,8 +15,6 @@ class FoodInput {
   final String insolubleFiber;
   final String saturatedFat;
   final String transFat;
-  final String monoFat;
-  final String polyFat;
   final String cholesterol;
   final String salt;
   final String iron;
@@ -39,8 +37,6 @@ class FoodInput {
     required this.insolubleFiber,
     required this.saturatedFat,
     required this.transFat,
-    required this.monoFat,
-    required this.polyFat,
     required this.cholesterol,
     required this.salt,
     required this.iron,
@@ -61,8 +57,6 @@ class FoodInput {
         insolubleFiber: _parseInput(insolubleFiber),
         fatSaturated: _parseInput(saturatedFat),
         fatTrans: _parseInput(transFat),
-        fatMonounsaturated: _parseInput(monoFat),
-        fatPolyunsaturated: _parseInput(polyFat),
         cholesterol: _parseInput(cholesterol),
         sodium: 0.393 * saltValue * 1000,
         iron: _parseInput(iron),
@@ -109,8 +103,6 @@ class FoodInput {
       carbohydrates: foodNutrition.carbohydrates,
       cholesterol: foodNutrition.cholesterol,
       fat: foodNutrition.fat,
-      fatMonounsaturated: foodNutrition.fatMonounsaturated,
-      fatPolyunsaturated: foodNutrition.fatPolyunsaturated,
       fatSaturated: foodNutrition.fatSaturated,
       fatTrans: foodNutrition.fatTrans,
       fiber: foodNutrition.fiber,

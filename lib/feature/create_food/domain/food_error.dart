@@ -14,12 +14,6 @@ class MacrosNotMatchingServingSizeError extends FoodError {
 
 class SugarsExceedNetCarbsError extends FoodError {}
 
-class FatsSumExceedsTotalFatError extends FoodError {
-  final int expectedFat;
-
-  FatsSumExceedsTotalFatError(this.expectedFat);
-}
-
 class CholesterolExceedsTotalFatError extends FoodError {}
 
 class CholesterolExceedsMaxPerServingError extends FoodError {

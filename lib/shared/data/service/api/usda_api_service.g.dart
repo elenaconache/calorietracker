@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'nutritionix_api_service.dart';
+part of 'usda_api_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'nutritionix_api_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
-class _NutritionixApiService implements NutritionixApiService {
-  _NutritionixApiService(this._dio, {this.baseUrl, this.errorLogger});
+class _UsdaApiService implements UsdaApiService {
+  _UsdaApiService(this._dio, {this.baseUrl, this.errorLogger});
 
   final Dio _dio;
 
@@ -18,31 +18,35 @@ class _NutritionixApiService implements NutritionixApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<NutritionixSearchResponse> searchFood({
-    required NutritionixSearchRequest body,
+  Future<UsdaSearchResponse> searchFood({
+    required String apiKey,
+    required String query,
+    int pageSize = 40,
+    int pageNumber = 1,
   }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'api_key': apiKey,
+      r'query': query,
+      r'pageSize': pageSize,
+      r'pageNumber': pageNumber,
+    };
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(await compute(serializeNutritionixSearchRequest, body));
-    final _options = _setStreamType<NutritionixSearchResponse>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<UsdaSearchResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'v2/search/instant',
+            'v1/foods/search',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late NutritionixSearchResponse _value;
+    late UsdaSearchResponse _value;
     try {
-      _value = await compute(
-        deserializeNutritionixSearchResponse,
-        _result.data!,
-      );
+      _value = await compute(deserializeUsdaSearchResponse, _result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

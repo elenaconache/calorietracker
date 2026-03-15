@@ -15,8 +15,6 @@ class NutritionSection extends StatelessWidget {
         NutrientRow(name: AppStrings.caloriesLabel, displayValue: nutrition.formattedCalories),
         NutrientRow(name: AppStrings.fatLabel, displayValue: nutrition.formattedFat),
         NutrientRow(name: AppStrings.saturatedFatLabel, displayValue: nutrition.formattedSaturatedFat),
-        NutrientRow(name: AppStrings.polyunsaturatedFatLabel, displayValue: nutrition.formattedPolyunsaturatedFat),
-        NutrientRow(name: AppStrings.monounsaturatedFatLabel, displayValue: nutrition.formattedMonounsaturatedFat),
         NutrientRow(name: AppStrings.transFatLabel, displayValue: nutrition.formattedTransFat),
         NutrientRow(name: AppStrings.cholesterolLabel, displayValue: nutrition.formattedCholesterol),
         NutrientRow(name: AppStrings.sodiumLabel, displayValue: nutrition.formattedSodium),

@@ -81,7 +81,7 @@ class DiaryLoggingService {
             format: collectionApiDateFormat,
           ),
           userId: username,
-          foodUnitId: gramsUnitId,
+          foodUnitId: collectionGramsUnitId,
           meal: foodLog.meal,
           foodId: remoteFoodId,
           servingQuantity: foodLog.servingQuantity,
@@ -124,7 +124,7 @@ class DiaryLoggingService {
         localFoodId: localDiaryFood.id,
         entryDate: foodLog.date,
         servingQuantity: foodLog.servingQuantity,
-        unitId: gramsUnitId,
+        unitId: collectionGramsUnitId,
         username: userId!,
       )..meal = foodLog.meal;
 

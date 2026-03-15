@@ -57,18 +57,6 @@ final _entities = <obx_int.ModelEntity>[
         flags: 0,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(6, 961629032631106028),
-        name: 'fatPolyunsaturated',
-        type: 8,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(7, 4046681211023219992),
-        name: 'fatMonounsaturated',
-        type: 8,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
         id: const obx_int.IdUid(8, 2256741507766148717),
         name: 'cholesterol',
         type: 8,
@@ -336,6 +324,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
       6158728946300868111,
       2914229019763343892,
       591696758286405718,
+      961629032631106028,
+      4046681211023219992,
     ],
     retiredRelationUids: const [],
     modelVersion: 5,
@@ -366,8 +356,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addFloat64(2, object.fat);
         fbb.addFloat64(3, object.fatSaturated);
         fbb.addFloat64(4, object.fatTrans);
-        fbb.addFloat64(5, object.fatPolyunsaturated);
-        fbb.addFloat64(6, object.fatMonounsaturated);
         fbb.addFloat64(7, object.cholesterol);
         fbb.addFloat64(8, object.carbohydrates);
         fbb.addFloat64(9, object.fiber);
@@ -458,18 +446,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           buffer,
           rootOffset,
           10,
-          0,
-        );
-        final fatPolyunsaturatedParam = const fb.Float64Reader().vTableGet(
-          buffer,
-          rootOffset,
-          14,
-          0,
-        );
-        final fatMonounsaturatedParam = const fb.Float64Reader().vTableGet(
-          buffer,
-          rootOffset,
-          16,
           0,
         );
         final cholesterolParam = const fb.Float64Reader().vTableGet(
@@ -564,8 +540,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fat: fatParam,
           fatTrans: fatTransParam,
           fatSaturated: fatSaturatedParam,
-          fatPolyunsaturated: fatPolyunsaturatedParam,
-          fatMonounsaturated: fatMonounsaturatedParam,
           cholesterol: cholesterolParam,
           carbohydrates: carbohydratesParam,
           fiber: fiberParam,
@@ -698,119 +672,109 @@ class LocalFood_ {
     _entities[0].properties[4],
   );
 
-  /// See [LocalFood.fatPolyunsaturated].
-  static final fatPolyunsaturated = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[5],
-  );
-
-  /// See [LocalFood.fatMonounsaturated].
-  static final fatMonounsaturated = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[6],
-  );
-
   /// See [LocalFood.cholesterol].
   static final cholesterol = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[7],
+    _entities[0].properties[5],
   );
 
   /// See [LocalFood.carbohydrates].
   static final carbohydrates = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[8],
+    _entities[0].properties[6],
   );
 
   /// See [LocalFood.fiber].
   static final fiber = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[9],
+    _entities[0].properties[7],
   );
 
   /// See [LocalFood.insolubleFiber].
   static final insolubleFiber = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[10],
+    _entities[0].properties[8],
   );
 
   /// See [LocalFood.sugar].
   static final sugar = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[11],
+    _entities[0].properties[9],
   );
 
   /// See [LocalFood.protein].
   static final protein = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[12],
+    _entities[0].properties[10],
   );
 
   /// See [LocalFood.sodium].
   static final sodium = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[13],
+    _entities[0].properties[11],
   );
 
   /// See [LocalFood.potassium].
   static final potassium = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[14],
+    _entities[0].properties[12],
   );
 
   /// See [LocalFood.calcium].
   static final calcium = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[15],
+    _entities[0].properties[13],
   );
 
   /// See [LocalFood.iron].
   static final iron = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[16],
+    _entities[0].properties[14],
   );
 
   /// See [LocalFood.vitaminA].
   static final vitaminA = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[17],
+    _entities[0].properties[15],
   );
 
   /// See [LocalFood.vitaminC].
   static final vitaminC = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[18],
+    _entities[0].properties[16],
   );
 
   /// See [LocalFood.vitaminD].
   static final vitaminD = obx.QueryDoubleProperty<LocalFood>(
-    _entities[0].properties[19],
+    _entities[0].properties[17],
   );
 
   /// See [LocalFood.barcode].
   static final barcode = obx.QueryStringProperty<LocalFood>(
-    _entities[0].properties[20],
+    _entities[0].properties[18],
   );
 
   /// See [LocalFood.name].
   static final name = obx.QueryStringProperty<LocalFood>(
-    _entities[0].properties[21],
+    _entities[0].properties[19],
   );
 
   /// See [LocalFood.brand].
   static final brand = obx.QueryStringProperty<LocalFood>(
-    _entities[0].properties[22],
+    _entities[0].properties[20],
   );
 
   /// See [LocalFood.pushed].
   static final pushed = obx.QueryBooleanProperty<LocalFood>(
-    _entities[0].properties[23],
+    _entities[0].properties[21],
   );
 
   /// See [LocalFood.deleted].
   static final deleted = obx.QueryBooleanProperty<LocalFood>(
-    _entities[0].properties[24],
+    _entities[0].properties[22],
   );
 
   /// See [LocalFood.errorPushing].
   static final errorPushing = obx.QueryBooleanProperty<LocalFood>(
-    _entities[0].properties[25],
+    _entities[0].properties[23],
   );
 
   /// See [LocalFood.foodId].
   static final foodId = obx.QueryIntegerProperty<LocalFood>(
-    _entities[0].properties[26],
+    _entities[0].properties[24],
   );
 
   /// See [LocalFood.createdAtDate].
   static final createdAtDate = obx.QueryDateProperty<LocalFood>(
-    _entities[0].properties[27],
+    _entities[0].properties[25],
   );
 }
 

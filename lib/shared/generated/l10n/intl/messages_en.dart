@@ -81,7 +81,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "You are already logged in with this account."),
         "brandNameLabel":
             MessageLookupByLibrary.simpleMessage("Brand name (optional)"),
-        "brandedLabel": MessageLookupByLibrary.simpleMessage("Branded"),
         "breakfastLabel": MessageLookupByLibrary.simpleMessage("Breakfast"),
         "calciumExceedsMaxPerServingError": m0,
         "calciumLabel": MessageLookupByLibrary.simpleMessage("Calcium"),
@@ -104,7 +103,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "cholesterolMgLabel":
             MessageLookupByLibrary.simpleMessage("Cholesterol (mg)"),
         "collectionLabel": MessageLookupByLibrary.simpleMessage("Collection"),
-        "commonLabel": MessageLookupByLibrary.simpleMessage("Common"),
         "connectionErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Could not connect to the server."),
         "continueLabel": MessageLookupByLibrary.simpleMessage("Continue"),
@@ -123,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Delete entry"),
         "diaryTitle": MessageLookupByLibrary.simpleMessage("Diary"),
         "dinnerLabel": MessageLookupByLibrary.simpleMessage("Dinner"),
+        "discoverLabel": MessageLookupByLibrary.simpleMessage("Discover"),
         "emptyFoodNameError":
             MessageLookupByLibrary.simpleMessage("Food name can\'t be empty."),
         "emptyRecipeNameError":
@@ -199,8 +198,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "potassiumLabel": MessageLookupByLibrary.simpleMessage("Potassium"),
         "potassiumMgLabel":
             MessageLookupByLibrary.simpleMessage("Potassium (mg)"),
-        "poweredByNutritionixLabel":
-            MessageLookupByLibrary.simpleMessage("Powered by Nutritionix"),
         "profileTitle": MessageLookupByLibrary.simpleMessage("Profile"),
         "proteinGramsLabel":
             MessageLookupByLibrary.simpleMessage("Protein (g)"),
@@ -251,6 +248,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "transFatLabel": MessageLookupByLibrary.simpleMessage("Trans fat"),
         "updateLogError": MessageLookupByLibrary.simpleMessage(
             "Could not update diary entry. Please try again later."),
+        "usdaDataSource": MessageLookupByLibrary.simpleMessage(
+            "Data source: USDA FoodData Central"),
         "userNotFoundError": MessageLookupByLibrary.simpleMessage(
             "The username you entered was not found."),
         "usernameLabel": MessageLookupByLibrary.simpleMessage("Username"),

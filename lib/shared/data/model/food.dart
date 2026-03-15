@@ -3,7 +3,7 @@ import 'package:calorietracker/shared/data/model/collection/add_food_request.dar
 import 'package:calorietracker/shared/data/model/collection/collection_food.dart';
 import 'package:calorietracker/shared/data/model/local/local_food.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';
-import 'package:calorietracker/shared/data/model/nutritionix/nutritionix_food_response.dart';
+import 'package:calorietracker/shared/data/model/usda/usda_food.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'food.g.dart';
@@ -26,10 +26,10 @@ class Food {
     this.localId,
   });
 
-  Food.nutritionix({required NutritionixFoodResponse nutritionixFoodResponse})
-      : name = nutritionixFoodResponse.name,
-        nutrition = nutritionixFoodResponse.nutritionPer100Grams,
-        brandName = nutritionixFoodResponse.brandName,
+  Food.usda({required UsdaFood usdaFood})
+      : name = usdaFood.name,
+        nutrition = usdaFood.nutrition,
+        brandName = usdaFood.brandOwner,
         barcode = null,
         id = null,
         localId = null;
@@ -67,8 +67,6 @@ class Food {
       carbohydrates: nutrition.carbohydrates,
       cholesterol: nutrition.cholesterol,
       fat: nutrition.fat,
-      fatMonounsaturated: nutrition.fatMonounsaturated,
-      fatPolyunsaturated: nutrition.fatPolyunsaturated,
       fatSaturated: nutrition.fatSaturated,
       fatTrans: nutrition.fatTrans,
       fiber: nutrition.fiber,

@@ -106,8 +106,6 @@ class DiaryService {
         fat: previousValue.fat + nutritionPerServing.fat,
         fatSaturated: previousValue.fatSaturated + nutritionPerServing.fatSaturated,
         fatTrans: previousValue.fatTrans + nutritionPerServing.fatTrans,
-        fatPolyunsaturated: previousValue.fatPolyunsaturated + nutritionPerServing.fatPolyunsaturated,
-        fatMonounsaturated: previousValue.fatMonounsaturated + nutritionPerServing.fatMonounsaturated,
         cholesterol: previousValue.cholesterol + nutritionPerServing.cholesterol,
         carbohydrates: previousValue.carbohydrates + nutritionPerServing.carbohydrates,
         fiber: previousValue.fiber + nutritionPerServing.fiber,

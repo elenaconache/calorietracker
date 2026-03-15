@@ -170,11 +170,11 @@ class S {
     );
   }
 
-  /// `Powered by Nutritionix`
-  String get poweredByNutritionixLabel {
+  /// `Data source: USDA FoodData Central`
+  String get usdaDataSource {
     return Intl.message(
-      'Powered by Nutritionix',
-      name: 'poweredByNutritionixLabel',
+      'Data source: USDA FoodData Central',
+      name: 'usdaDataSource',
       desc: '',
       args: [],
     );
@@ -191,21 +191,11 @@ class S {
     );
   }
 
-  /// `Common`
-  String get commonLabel {
+  /// `Discover`
+  String get discoverLabel {
     return Intl.message(
-      'Common',
-      name: 'commonLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Branded`
-  String get brandedLabel {
-    return Intl.message(
-      'Branded',
-      name: 'brandedLabel',
+      'Discover',
+      name: 'discoverLabel',
       desc: '',
       args: [],
     );

@@ -30,7 +30,7 @@ class CreateRecipeRepository {
           ingredients: ingredients
               .map((recipeIngredient) => CollectionRecipeIngredient(
                     foodId: recipeIngredient.food.id!,
-                    foodUnitId: gramsUnitId,
+                    foodUnitId: collectionGramsUnitId,
                     quantity: recipeIngredient.servingQuantity,
                   ))
               .toList(),

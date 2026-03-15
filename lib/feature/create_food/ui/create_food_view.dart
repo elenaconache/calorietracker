@@ -36,8 +36,6 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   late final TextEditingController _insolubleFiberController;
   late final TextEditingController _fatSaturatedController;
   late final TextEditingController _fatTransController;
-  late final TextEditingController _fatPolyunsaturatedController;
-  late final TextEditingController _fatMonounsaturatedController;
   late final TextEditingController _cholesterolController;
   late final TextEditingController _saltController;
   late final TextEditingController _potassiumController;
@@ -162,8 +160,6 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                               fiberController: _fiberController,
                               fatSaturatedController: _fatSaturatedController,
                               fatTransController: _fatTransController,
-                              fatMonounsaturatedController: _fatMonounsaturatedController,
-                              fatPolyunsaturatedController: _fatPolyunsaturatedController,
                               cholesterolController: _cholesterolController,
                               ironController: _ironController,
                               potassiumController: _potassiumController,
@@ -212,7 +208,6 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
       MacrosNotMatchingCaloriesError _ => AppStrings.macrosOrCaloriesError(foodError.expectedCalories),
       MacrosNotMatchingServingSizeError _ => AppStrings.macrosExceedServingSizeError(foodError.expectedServingSize),
       SugarsExceedNetCarbsError _ => AppStrings.sugarsExceedNetCarbsLabel,
-      FatsSumExceedsTotalFatError _ => AppStrings.sumFatsExceedsTotalFatError(foodError.expectedFat),
       CholesterolExceedsTotalFatError _ => AppStrings.cholesterolExceedsFatError,
       CholesterolExceedsMaxPerServingError _ => AppStrings.cholesterolExceedsMaxPerServingError(foodError.expectedCholesterolMg),
       InsolubleFiberExceedsFiberError _ => AppStrings.insolubleFiberExceedsFiberError,
@@ -239,8 +234,6 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     _sugarController = TextEditingController();
     _fatSaturatedController = TextEditingController();
     _fatTransController = TextEditingController();
-    _fatMonounsaturatedController = TextEditingController();
-    _fatPolyunsaturatedController = TextEditingController();
     _cholesterolController = TextEditingController();
     _saltController = TextEditingController();
     _potassiumController = TextEditingController();
@@ -347,8 +340,6 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
         insolubleFiber: _insolubleFiberController.text,
         saturatedFat: _fatSaturatedController.text,
         transFat: _fatTransController.text,
-        monoFat: _fatMonounsaturatedController.text,
-        polyFat: _fatPolyunsaturatedController.text,
         cholesterol: _cholesterolController.text,
         salt: _saltController.text,
         iron: _ironController.text,

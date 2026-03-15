@@ -9,8 +9,6 @@ class Nutrition {
   final double fat;
   final double fatSaturated;
   final double fatTrans;
-  final double fatPolyunsaturated;
-  final double fatMonounsaturated;
   final double cholesterol;
 
   final double carbohydrates;
@@ -30,8 +28,6 @@ class Nutrition {
   const Nutrition({
     this.fatSaturated = 0,
     this.fatTrans = 0,
-    this.fatPolyunsaturated = 0,
-    this.fatMonounsaturated = 0,
     this.cholesterol = 0,
     this.sodium = 0,
     this.potassium = 0,
@@ -77,8 +73,6 @@ class Nutrition {
         carbohydrates = _getNutrientPerServing(nutritionPer100Grams.carbohydrates, servingSizeGrams),
         fatSaturated = _getNutrientPerServing(nutritionPer100Grams.fatSaturated, servingSizeGrams),
         fatTrans = _getNutrientPerServing(nutritionPer100Grams.fatTrans, servingSizeGrams),
-        fatPolyunsaturated = _getNutrientPerServing(nutritionPer100Grams.fatPolyunsaturated, servingSizeGrams),
-        fatMonounsaturated = _getNutrientPerServing(nutritionPer100Grams.fatMonounsaturated, servingSizeGrams),
         cholesterol = _getNutrientPerServing(nutritionPer100Grams.cholesterol, servingSizeGrams),
         sodium = _getNutrientPerServing(nutritionPer100Grams.sodium, servingSizeGrams),
         potassium = _getNutrientPerServing(nutritionPer100Grams.potassium, servingSizeGrams),
@@ -100,8 +94,6 @@ class Nutrition {
         carbohydrates = getNutrientFromServing(nutritionPerServing.carbohydrates, servingSizeGrams),
         fatSaturated = getNutrientFromServing(nutritionPerServing.fatSaturated, servingSizeGrams),
         fatTrans = getNutrientFromServing(nutritionPerServing.fatTrans, servingSizeGrams),
-        fatPolyunsaturated = getNutrientFromServing(nutritionPerServing.fatPolyunsaturated, servingSizeGrams),
-        fatMonounsaturated = getNutrientFromServing(nutritionPerServing.fatMonounsaturated, servingSizeGrams),
         cholesterol = getNutrientFromServing(nutritionPerServing.cholesterol, servingSizeGrams),
         sodium = getNutrientFromServing(nutritionPerServing.sodium, servingSizeGrams),
         potassium = getNutrientFromServing(nutritionPerServing.potassium, servingSizeGrams),
@@ -118,27 +110,6 @@ class Nutrition {
 
   factory Nutrition.fromJson(Map<String, dynamic> json) => _$NutritionFromJson(json);
 
-  // LocalFoodNutrition get localFoodNutrition => LocalFoodNutrition()
-  //   ..fatSaturated = fatSaturated
-  //   ..fatTrans = fatTrans
-  //   ..fatPolyunsaturated = fatPolyunsaturated
-  //   ..fatMonounsaturated = fatMonounsaturated
-  //   ..cholesterol = cholesterol
-  //   ..sodium = sodium
-  //   ..potassium = potassium
-  //   ..calcium = calcium
-  //   ..iron = iron
-  //   ..vitaminA = vitaminA
-  //   ..vitaminC = vitaminC
-  //   ..vitaminD = vitaminD
-  //   ..carbohydrates = carbohydrates
-  //   ..fat = fat
-  //   ..protein = protein
-  //   ..calories = calories
-  //   ..sugar = sugar
-  //   ..fiber = fiber
-  //   ..insolubleFiber = insolubleFiber;
-
   Map<String, dynamic> toJson() => _$NutritionToJson(this);
 
   static double _getNutrientPerServing(double? nutrientPer100Grams, double servingSizeGrams) => (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
@@ -150,10 +121,6 @@ class Nutrition {
   String get formattedFat => '${fat.toStringAsFixed(1)} g';
 
   String get formattedSaturatedFat => '${fatSaturated.toStringAsFixed(1)} g';
-
-  String get formattedPolyunsaturatedFat => '${fatPolyunsaturated.toStringAsFixed(1)} g';
-
-  String get formattedMonounsaturatedFat => '${fatMonounsaturated.toStringAsFixed(1)} g';
 
   String get formattedTransFat => '${fatTrans.toStringAsFixed(1)} g';
 
@@ -190,8 +157,6 @@ class Nutrition {
         fat: fat.toPrecision(2),
         fatSaturated: fatSaturated.toPrecision(2),
         fatTrans: fatTrans.toPrecision(2),
-        fatPolyunsaturated: fatPolyunsaturated.toPrecision(2),
-        fatMonounsaturated: fatMonounsaturated.toPrecision(2),
         cholesterol: cholesterol.toPrecision(2),
         sodium: sodium.toPrecision(2),
         potassium: potassium.toPrecision(2),
@@ -230,8 +195,6 @@ class Nutrition {
         carbohydrates: nutrition.carbohydrates + carbohydrates,
         cholesterol: nutrition.cholesterol + cholesterol,
         fat: nutrition.fat + fat,
-        fatMonounsaturated: nutrition.fatMonounsaturated + fatMonounsaturated,
-        fatPolyunsaturated: nutrition.fatPolyunsaturated + fatPolyunsaturated,
         fatSaturated: nutrition.fatSaturated + fatSaturated,
         fatTrans: nutrition.fatTrans + fatTrans,
         fiber: nutrition.fiber + fiber,

@@ -9,8 +9,6 @@ part of 'nutrition.dart';
 Nutrition _$NutritionFromJson(Map<String, dynamic> json) => Nutrition(
       fatSaturated: (json['fatSaturated'] as num?)?.toDouble() ?? 0,
       fatTrans: (json['fatTrans'] as num?)?.toDouble() ?? 0,
-      fatPolyunsaturated: (json['fatPolyunsaturated'] as num?)?.toDouble() ?? 0,
-      fatMonounsaturated: (json['fatMonounsaturated'] as num?)?.toDouble() ?? 0,
       cholesterol: (json['cholesterol'] as num?)?.toDouble() ?? 0,
       sodium: (json['sodium'] as num?)?.toDouble() ?? 0,
       potassium: (json['potassium'] as num?)?.toDouble() ?? 0,
@@ -33,8 +31,6 @@ Map<String, dynamic> _$NutritionToJson(Nutrition instance) => <String, dynamic>{
       'fat': instance.fat,
       'fatSaturated': instance.fatSaturated,
       'fatTrans': instance.fatTrans,
-      'fatPolyunsaturated': instance.fatPolyunsaturated,
-      'fatMonounsaturated': instance.fatMonounsaturated,
       'cholesterol': instance.cholesterol,
       'carbohydrates': instance.carbohydrates,
       'fiber': instance.fiber,

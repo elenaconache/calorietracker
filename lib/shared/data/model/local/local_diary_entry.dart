@@ -49,7 +49,7 @@ class LocalDiaryEntry {
     this.localId = 0,
     required this.entryDate,
     required this.username,
-    this.unitId = gramsUnitId,
+    this.unitId = collectionGramsUnitId,
     required this.servingQuantity,
     this.pushedEntry = false,
     this.deletedEntry = false,
@@ -58,7 +58,6 @@ class LocalDiaryEntry {
     this.entryId,
   }) {
     localFood.targetId = localFoodId;
-    // this.localFood.target = localFood;
   }
 
   // @ignore

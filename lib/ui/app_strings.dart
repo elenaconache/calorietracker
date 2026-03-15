@@ -27,14 +27,12 @@ class AppStrings {
 
   static String get generalErrorMessage => S.current.generalErrorMessage;
 
-  static String get poweredByNutritionixLabel => S.current.poweredByNutritionixLabel;
+  static String get usdaDataSource => S.current.usdaDataSource;
 
   static String caloriesServingShortLabel(calories, servingQuantity, servingUnit) =>
       S.current.caloriesServingShortLabel(calories, servingQuantity, servingUnit);
 
-  static String get commonLabel => S.current.commonLabel;
-
-  static String get brandedLabel => S.current.brandedLabel;
+  static String get discoverLabel => S.current.discoverLabel;
 
   static String get noResultsTitle => S.current.noResultsTitle;
 
@@ -57,10 +55,6 @@ class AppStrings {
   static String get caloriesShortGenericLabel => S.current.caloriesShortGenericLabel;
 
   static String get saturatedFatLabel => S.current.saturatedFatLabel;
-
-  static String get polyunsaturatedFatLabel => S.current.polyunsaturatedFatLabel;
-
-  static String get monounsaturatedFatLabel => S.current.monounsaturatedFatLabel;
 
   static String get transFatLabel => S.current.transFatLabel;
 

@@ -11,8 +11,6 @@ class LocalFood {
   double fat;
   double fatSaturated;
   double fatTrans;
-  double fatPolyunsaturated;
-  double fatMonounsaturated;
   double cholesterol;
   double carbohydrates;
   double fiber;
@@ -53,8 +51,6 @@ class LocalFood {
         carbohydrates: carbohydrates,
         cholesterol: cholesterol,
         fat: fat,
-        fatMonounsaturated: fatMonounsaturated,
-        fatPolyunsaturated: fatPolyunsaturated,
         fatSaturated: fatSaturated,
         fatTrans: fatTrans,
         fiber: fiber,
@@ -78,8 +74,6 @@ class LocalFood {
           fat: fat,
           fatSaturated: fatSaturated,
           fatTrans: fatTrans,
-          fatPolyunsaturated: fatPolyunsaturated,
-          fatMonounsaturated: fatMonounsaturated,
           cholesterol: cholesterol,
           carbohydrates: carbohydrates,
           fiber: fiber,
@@ -112,8 +106,6 @@ class LocalFood {
     this.fat = 0,
     this.fatTrans = 0,
     this.fatSaturated = 0,
-    this.fatPolyunsaturated = 0,
-    this.fatMonounsaturated = 0,
     this.cholesterol = 0,
     this.carbohydrates = 0,
     this.fiber = 0,

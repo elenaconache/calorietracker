@@ -20,8 +20,6 @@ class FoodForm extends StatelessWidget {
   final TextEditingController insolubleFiberController;
   final TextEditingController fatSaturatedController;
   final TextEditingController fatTransController;
-  final TextEditingController fatPolyunsaturatedController;
-  final TextEditingController fatMonounsaturatedController;
   final TextEditingController cholesterolController;
   final TextEditingController saltController;
   final TextEditingController potassiumController;
@@ -45,8 +43,6 @@ class FoodForm extends StatelessWidget {
     required this.fiberController,
     required this.fatSaturatedController,
     required this.fatTransController,
-    required this.fatPolyunsaturatedController,
-    required this.fatMonounsaturatedController,
     required this.cholesterolController,
     required this.saltController,
     required this.potassiumController,
@@ -141,18 +137,6 @@ class FoodForm extends StatelessWidget {
               firstController: fatSaturatedController,
               secondLabel: AppStrings.transFatGramsLabel,
               secondController: fatTransController,
-              firstValidation: validator.validateMicronutrient,
-              secondValidation: validator.validateMicronutrient,
-              enabled: enabled,
-            )),
-        const SizedBox(height: 8),
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: FoodFormRow(
-              firstLabel: AppStrings.monoFatGramsLabel,
-              firstController: fatMonounsaturatedController,
-              secondLabel: AppStrings.polyFatGramsLabel,
-              secondController: fatPolyunsaturatedController,
               firstValidation: validator.validateMicronutrient,
               secondValidation: validator.validateMicronutrient,
               enabled: enabled,

@@ -39,7 +39,7 @@ import '../data/model/user.dart' as _i548;
 import '../data/providers/app_path_provider.dart' as _i667;
 import '../data/providers/dio_provider.dart' as _i159;
 import '../data/service/api/collection_api_service.dart' as _i13;
-import '../data/service/api/nutritionix_api_service.dart' as _i1017;
+import '../data/service/api/usda_api_service.dart' as _i818;
 import '../data/service/api/user_api_service.dart' as _i376;
 import '../data/service/data_sync_service.dart' as _i999;
 import '../data/service/database/database_repository.dart' as _i379;
@@ -88,7 +88,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i510.RecipeHelper>(() => _i510.RecipeHelper());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
         () => registerModule.flutterSecureStorage);
-    gh.lazySingletonAsync<_i1017.NutritionixApiService>(
+    gh.lazySingletonAsync<_i818.UsdaApiService>(
         () => registerModule.nutritionixApiService);
     await gh.lazySingletonAsync<_i667.AppPathProvider>(
       () {
@@ -125,14 +125,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i13.CollectionApiService>(),
           gh<_i861.LoggingService>(),
         ));
-    gh.factoryParam<_i159.DioProvider, String?, Map<String, String>?>((
-      baseUrl,
-      headers,
-    ) =>
-        _i159.DioProvider(
-          baseUrl: baseUrl,
-          headers: headers,
-        ));
     gh.factory<_i264.FoodItemController>(
         () => _i264.FoodItemController(gh<_i566.AuthRepository>()));
     gh.lazySingleton<_i493.DiaryLoggingService>(
@@ -141,6 +133,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i379.DatabaseRepository>(),
           gh<_i566.AuthRepository>(),
         ));
+    gh.factoryParam<_i159.DioProvider, String?, dynamic>((
+      baseUrl,
+      _,
+    ) =>
+        _i159.DioProvider(baseUrl: baseUrl));
     gh.factory<_i1072.CreateRecipeCubit>(() => _i1072.CreateRecipeCubit(
           gh<_i510.RecipeHelper>(),
           gh<_i527.CreateRecipeRepository>(),

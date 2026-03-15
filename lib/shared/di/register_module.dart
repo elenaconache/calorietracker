@@ -6,7 +6,7 @@ import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/data/providers/app_path_provider.dart';
 import 'package:calorietracker/shared/data/providers/dio_provider.dart';
 import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
-import 'package:calorietracker/shared/data/service/api/nutritionix_api_service.dart';
+import 'package:calorietracker/shared/data/service/api/usda_api_service.dart';
 import 'package:calorietracker/shared/data/service/api/user_api_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -18,12 +18,11 @@ abstract class RegisterModule {
   FlutterSecureStorage get flutterSecureStorage => FlutterSecureStorage();
 
   @lazySingleton
-  Future<NutritionixApiService> get nutritionixApiService async {
+  Future<UsdaApiService> get nutritionixApiService async {
     final env = await getIt.getAsync<AppEnvironment>();
-    final baseUrl = env.getString(key: nutritionixApiBaseUrlKey);
-    final dioProvider = getIt<DioProvider>(
-        param1: baseUrl, param2: {'x-app-id': env.getString(key: nutritionixAppIdKey), 'x-app-key': env.getString(key: nutritionixAppKey)});
-    return NutritionixApiService(dioProvider.dio);
+    final baseUrl = env.getString(key: usdaBaseUrlKey);
+    final dioProvider = getIt<DioProvider>(param1: baseUrl);
+    return UsdaApiService(dioProvider.dio);
   }
 
   @LazySingleton(order: 1)

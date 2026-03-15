@@ -1,24 +1,22 @@
 import 'package:calorietracker/shared/data/model/nutrient.dart';
 
-const nutrientsAttributes = {
-  Nutrient.fat: 204,
-  Nutrient.fatSaturated: 606,
-  Nutrient.fatTrans: 605,
-  Nutrient.fatPolyunsaturated: 646,
-  Nutrient.fatMonounsaturated: 645,
-  Nutrient.cholesterol: 601,
-  Nutrient.carbohydrates: 205,
-  Nutrient.fiber: 291,
-  Nutrient.sugar: 269,
-  Nutrient.protein: 203,
-  Nutrient.sodium: 307,
-  Nutrient.potassium: 306,
-  Nutrient.calcium: 301,
-  Nutrient.iron: 303,
-  Nutrient.vitaminA: 318,
-  Nutrient.vitaminC: 401,
-  Nutrient.vitaminD: 328,
-  Nutrient.calories: 208,
+const usdaNutrientMap = {
+  Nutrient.fat: 1004,
+  Nutrient.fatSaturated: 1258,
+  Nutrient.fatTrans: 1257,
+  Nutrient.cholesterol: 1253,
+  Nutrient.carbohydrates: 1005,
+  Nutrient.fiber: 1079,
+  Nutrient.sugar: 2000,
+  Nutrient.protein: 1003,
+  Nutrient.sodium: 1093,
+  Nutrient.potassium: 1092,
+  Nutrient.calcium: 1087,
+  Nutrient.iron: 1089,
+  Nutrient.vitaminA: 1104,
+  Nutrient.vitaminC: 1162,
+  Nutrient.vitaminD: 1110,
+  Nutrient.calories: 1008,
 };
 
-const gramsUnitId = 1;
+const collectionGramsUnitId = 1;
