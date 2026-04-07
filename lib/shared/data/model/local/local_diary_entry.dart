@@ -60,7 +60,6 @@ class LocalDiaryEntry {
     localFood.targetId = localFoodId;
   }
 
-  // @ignore
   AddLocalDiaryEntryRequest get addLocalDiaryEntryRequest {
     if (!localFood.hasValue) {
       getIt<LoggingService>().info('Missing food for adding diary entry');

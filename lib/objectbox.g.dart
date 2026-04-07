@@ -247,6 +247,7 @@ final _entities = <obx_int.ModelEntity>[
         type: 11,
         flags: 520,
         indexId: const obx_int.IdUid(4, 8329570015763613914),
+        relationField: 'localFood',
         relationTarget: 'LocalFood',
       ),
       obx_int.ModelProperty(
@@ -305,12 +306,17 @@ Future<obx.Store> openStore({
 /// [obx.Store.new].
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
+    // If this version is not found, it means that this file was generated
+    // with an older version of the ObjectBox Dart generator.
+    // Please regenerate this file with the current generator version.
+    // Typically, this is done with `dart run build_runner build`.
+    generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(3, 1374791795697339517),
-    lastIndexId: const obx_int.IdUid(5, 1560666864061133465),
+    lastEntityId: const obx_int.IdUid(4, 4051744504196569127),
+    lastIndexId: const obx_int.IdUid(6, 8686187288313460713),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
-    retiredEntityUids: const [5131412822362615304],
+    retiredEntityUids: const [5131412822362615304, 4051744504196569127],
     retiredIndexUids: const [],
     retiredPropertyUids: const [
       3261115456366930040,
@@ -326,6 +332,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
       591696758286405718,
       961629032631106028,
       4046681211023219992,
+      585367144979769244,
+      2782017045749439043,
+      4114004290538447732,
+      3332488447018901331,
+      7742182620258255731,
+      3727038019724864095,
     ],
     retiredRelationUids: const [],
     modelVersion: 5,

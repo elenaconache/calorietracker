@@ -37,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(selectedUser: AsyncState.loading()));
     try {
       await _authRepository.login(username: username);
+      await _fetchUsers(emit);
     } catch (error) {
       final failure = AuthError.values.firstWhere((element) => error.toString().contains(element.name), orElse: () => AuthError.unknown);
       emit(state.copyWith(selectedUser: AsyncState.failure(AuthFailure(type: failure))));
@@ -86,7 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _logOut(String username, Emitter<AuthState> emit) async {
-    emit(state.copyWith(selectedUser: AsyncState.loading(), users: AsyncState.loading()));
+    emit(state.copyWith(users: AsyncState.loading()));
     try {
       await _authRepository.logOut(username: username);
     } catch (e, stackTrace) {

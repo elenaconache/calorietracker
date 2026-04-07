@@ -27,8 +27,7 @@ class AuthRepository {
   );
 
   Future<void> logOut({required String username}) async {
-    final updatedUsers = await fetchUsers();
-    updatedUsers.removeWhere((user) => user.username == username);
+    final updatedUsers = (await fetchUsers()).where((user) => user.username != username).toList();
 
     if (updatedUsers.isEmpty) {
       await _secureStorageService.delete(key: usersKey);
@@ -45,9 +44,9 @@ class AuthRepository {
   }
 
   Future<List<User>> fetchUsers() => _secureStorageService.getList(
-      key: usersKey,
-      fromJson: (json) => User.fromJson(json),
-    );
+        key: usersKey,
+        fromJson: (json) => User.fromJson(json),
+      );
 
   void dispose() => _selectedUserController.close();
 
@@ -109,17 +108,19 @@ class AuthRepository {
 
   Future<void> fetchLoggedInState() async {
     final username = await _secureStorageService.get(key: selectedUserKey);
+    final users = await _secureStorageService.getList(
+      key: usersKey,
+      fromJson: (json) => User.fromJson(json),
+    );
     if (username != null) {
-      final users = await _secureStorageService.getList(
-        key: usersKey,
-        fromJson: (json) => User.fromJson(json),
-      );
-
-      final username = await _secureStorageService.get(key: selectedUserKey);
       final selectedUser = users.firstWhereOrNull((element) => element.username == username);
       _selectedUserController.add(selectedUser);
     } else {
-      _selectedUserController.add(null);
+      if (users.isNotEmpty) {
+        _selectedUserController.add(users.first);
+      } else {
+        _selectedUserController.add(null);
+      }
     }
   }
 
@@ -132,7 +133,7 @@ class AuthRepository {
 
   Future<void> selectUser({String? username}) async {
     final users = await fetchUsers();
-    final selection = users.firstWhereOrNull((element) => element.username == username);
+    final selection = users.toList().firstWhereOrNull((element) => element.username == username);
     _selectedUserController.add(selection);
 
     if (selection != null) {

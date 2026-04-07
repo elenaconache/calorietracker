@@ -6,5 +6,9 @@
     "gitlens.currentLine.enabled": false,
     "gitlens.codeLens.authors.enabled": false,
     "gitlens.codeLens.recentChange.enabled": false,
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "arb-editor.suppressedWarnings": [
+        "missing_metadata_for_key",
+        "placeholder_without_metadata"
+    ],
 }

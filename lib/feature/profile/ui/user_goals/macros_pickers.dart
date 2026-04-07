@@ -7,8 +7,9 @@ import 'package:flutter/cupertino.dart';
 class MacrosPickers extends StatelessWidget {
   final MacroGoals macroGoals;
   final Function(Macro macro, int pickedValue) onValuePicked;
+  final bool enabled;
 
-  const MacrosPickers({super.key, required this.macroGoals, required this.onValuePicked});
+  const MacrosPickers({super.key, required this.macroGoals, required this.onValuePicked, required this.enabled});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class MacrosPickers extends StatelessWidget {
       children: [
         Expanded(
           child: AppPicker(
+            enabled: enabled,
             label: AppStrings.carbsLabel,
             initialValue: macroGoals.roundedCarbsPercentage,
             onValuePicked: (value) => onValuePicked(Macro.carbohydrates, value),
@@ -24,6 +26,7 @@ class MacrosPickers extends StatelessWidget {
         ),
         Expanded(
           child: AppPicker(
+            enabled: enabled,
             label: AppStrings.proteinLabel,
             initialValue: macroGoals.roundedProteinPercentage,
             onValuePicked: (value) => onValuePicked(Macro.protein, value),
@@ -31,6 +34,7 @@ class MacrosPickers extends StatelessWidget {
         ),
         Expanded(
           child: AppPicker(
+            enabled: enabled,
             label: AppStrings.fatLabel,
             initialValue: macroGoals.roundedFatPercentage,
             onValuePicked: (value) => onValuePicked(Macro.fat, value),

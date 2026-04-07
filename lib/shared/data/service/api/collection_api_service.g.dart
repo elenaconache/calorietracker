@@ -2,11 +2,13 @@
 
 part of 'collection_api_service.dart';
 
+// dart format off
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main
 
 class _CollectionApiService implements CollectionApiService {
   _CollectionApiService(this._dio, {this.baseUrl, this.errorLogger});
@@ -41,7 +43,7 @@ class _CollectionApiService implements CollectionApiService {
     try {
       _value = await compute(deserializeIdResponse, _result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -74,7 +76,7 @@ class _CollectionApiService implements CollectionApiService {
         _result.data!.cast<Map<String, dynamic>>(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -89,7 +91,7 @@ class _CollectionApiService implements CollectionApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(await compute(serializeAddFoodRequest, body));
-    final _options = _setStreamType<CreatedFoodResponse>(
+    final _options = _setStreamType<CreatedFoodResponse?>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -106,7 +108,7 @@ class _CollectionApiService implements CollectionApiService {
           ? null
           : await compute(deserializeCreatedFoodResponse, _result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -136,7 +138,7 @@ class _CollectionApiService implements CollectionApiService {
         _result.data!.cast<Map<String, dynamic>>(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -168,7 +170,7 @@ class _CollectionApiService implements CollectionApiService {
         _result.data!.cast<Map<String, dynamic>>(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -203,7 +205,7 @@ class _CollectionApiService implements CollectionApiService {
         _result.data!.cast<Map<String, dynamic>>(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -277,7 +279,7 @@ class _CollectionApiService implements CollectionApiService {
         _result.data!.cast<Map<String, dynamic>>(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -305,7 +307,7 @@ class _CollectionApiService implements CollectionApiService {
     try {
       _value = await compute(deserializeIdResponse, _result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -337,7 +339,7 @@ class _CollectionApiService implements CollectionApiService {
         _result.data!.cast<Map<String, dynamic>>(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -370,3 +372,5 @@ class _CollectionApiService implements CollectionApiService {
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }
+
+// dart format on

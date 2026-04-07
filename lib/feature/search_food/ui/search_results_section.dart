@@ -1,7 +1,7 @@
 import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
 import 'package:calorietracker/feature/search_food/ui/discover_results_section.dart';
 import 'package:calorietracker/feature/search_food/ui/collection_results_section.dart';
-import 'package:calorietracker/feature/search_food/ui/powered_by_nutritionix_wrapper.dart';
+import 'package:calorietracker/feature/search_food/ui/powered_by_wrapper.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/ui/app_strings.dart';

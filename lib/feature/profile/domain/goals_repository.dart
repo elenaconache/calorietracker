@@ -23,13 +23,29 @@ class GoalsRepository {
         UserGoals(username: username);
   }
 
+  Future<void> saveUserGoals({required UserGoals goals}) async {
+    List<UserGoals> allUsersGoals = await _secureStorageService.getList(
+      key: usersGoalsKey,
+      fromJson: UserGoals.fromJson,
+    );
+
+    final index = allUsersGoals.indexWhere((element) => element.username == goals.username);
+    if (index == -1) {
+      allUsersGoals.add(goals);
+    } else {
+      allUsersGoals[index] = goals;
+    }
+
+    await _secureStorageService.saveList(key: usersGoalsKey, list: allUsersGoals, toJson: (goals) => goals.toJson());
+  }
+
   MacroGoals calculateMacroGoalsFromMacrosGrams({
     required UserGoals userGoals,
     double? protein,
     double? fat,
     double? carb,
   }) {
-    final goals = _calculateUserGoalsFromMacrosGrams(userGoals: userGoals, protein: protein, fat: fat, carb: carb);
+    final goals = calculateUserGoalsFromMacrosGrams(userGoals: userGoals, protein: protein, fat: fat, carb: carb);
 
     int roundedProteinPercentage = goals.proteinPercentage.round();
     int roundedFatPercentage = goals.fatPercentage.round();
@@ -55,16 +71,16 @@ class GoalsRepository {
     }
 
     return MacroGoals(
-        calories: goals.calories.round(),
-        roundedCarbsGrams: goals.carbsGramsGoal.round(),
-        roundedProteinGrams: goals.proteinGramsGoal.round(),
-        roundedFatGrams: goals.fatGramsGoal.round(),
+        calories: goals.calories.floor(),
+        roundedCarbsGrams: goals.carbsGramsGoal.floor(),
+        roundedProteinGrams: goals.proteinGramsGoal.floor(),
+        roundedFatGrams: goals.fatGramsGoal.floor(),
         roundedCarbsPercentage: roundedCarbsPercentage,
         roundedProteinPercentage: roundedProteinPercentage,
         roundedFatPercentage: roundedFatPercentage);
   }
 
-  UserGoals _calculateUserGoalsFromMacrosGrams({
+  UserGoals calculateUserGoalsFromMacrosGrams({
     required UserGoals userGoals,
     double? protein,
     double? fat,
@@ -96,12 +112,12 @@ class GoalsRepository {
     final fatGrams = totalCalories / 9 / 100 * currentUserGoals.fatPercentage;
     final carbGrams = totalCalories / 4 / 100 * currentUserGoals.carbsPercentage;
 
-    int roundedProteinGrams = proteinGrams.round();
-    int roundedFatGrams = fatGrams.round();
-    int roundedCarbsGrams = carbGrams.round();
+    int roundedProteinGrams = proteinGrams.floor();
+    int roundedFatGrams = fatGrams.floor();
+    int roundedCarbsGrams = carbGrams.floor();
 
     return MacroGoals(
-        calories: totalCalories.round(),
+        calories: totalCalories.floor(),
         roundedCarbsGrams: roundedCarbsGrams,
         roundedProteinGrams: roundedProteinGrams,
         roundedFatGrams: roundedFatGrams,

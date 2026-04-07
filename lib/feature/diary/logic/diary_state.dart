@@ -1,7 +1,7 @@
 part of 'diary_bloc.dart';
 
 @freezed
-class DiaryState with _$DiaryState {
+abstract class DiaryState with _$DiaryState {
   const factory DiaryState({
     required bool macrosPercentageEnabled,
   }) = _DiaryState;

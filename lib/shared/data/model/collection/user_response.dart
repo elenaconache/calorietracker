@@ -7,10 +7,10 @@ class UserResponse {
   @JsonKey(required: true)
   final String username;
 
-  @JsonKey(required: true)
+  @JsonKey(required: true, name: 'first_name')
   final String firstName;
 
-  @JsonKey(required: true)
+  @JsonKey(required: true, name: 'last_name')
   final String lastName;
 
   const UserResponse({

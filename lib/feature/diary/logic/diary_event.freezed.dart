@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,168 +9,208 @@ part of 'diary_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$DiaryEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() toggleMacroPercentage,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? toggleMacroPercentage,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? toggleMacroPercentage,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ToggleMacroPercentageEvent value)
-        toggleMacroPercentage,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ToggleMacroPercentageEvent value)? toggleMacroPercentage,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ToggleMacroPercentageEvent value)? toggleMacroPercentage,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DiaryEventCopyWith<$Res> {
-  factory $DiaryEventCopyWith(
-          DiaryEvent value, $Res Function(DiaryEvent) then) =
-      _$DiaryEventCopyWithImpl<$Res, DiaryEvent>;
-}
-
-/// @nodoc
-class _$DiaryEventCopyWithImpl<$Res, $Val extends DiaryEvent>
-    implements $DiaryEventCopyWith<$Res> {
-  _$DiaryEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of DiaryEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$ToggleMacroPercentageEventImplCopyWith<$Res> {
-  factory _$$ToggleMacroPercentageEventImplCopyWith(
-          _$ToggleMacroPercentageEventImpl value,
-          $Res Function(_$ToggleMacroPercentageEventImpl) then) =
-      __$$ToggleMacroPercentageEventImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$ToggleMacroPercentageEventImplCopyWithImpl<$Res>
-    extends _$DiaryEventCopyWithImpl<$Res, _$ToggleMacroPercentageEventImpl>
-    implements _$$ToggleMacroPercentageEventImplCopyWith<$Res> {
-  __$$ToggleMacroPercentageEventImplCopyWithImpl(
-      _$ToggleMacroPercentageEventImpl _value,
-      $Res Function(_$ToggleMacroPercentageEventImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of DiaryEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$ToggleMacroPercentageEventImpl implements ToggleMacroPercentageEvent {
-  const _$ToggleMacroPercentageEventImpl();
-
-  @override
-  String toString() {
-    return 'DiaryEvent.toggleMacroPercentage()';
-  }
-
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ToggleMacroPercentageEventImpl);
+        (other.runtimeType == runtimeType && other is DiaryEvent);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() toggleMacroPercentage,
-  }) {
-    return toggleMacroPercentage();
+  String toString() {
+    return 'DiaryEvent()';
   }
+}
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? toggleMacroPercentage,
-  }) {
-    return toggleMacroPercentage?.call();
-  }
+/// @nodoc
+class $DiaryEventCopyWith<$Res> {
+  $DiaryEventCopyWith(DiaryEvent _, $Res Function(DiaryEvent) __);
+}
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? toggleMacroPercentage,
-    required TResult orElse(),
-  }) {
-    if (toggleMacroPercentage != null) {
-      return toggleMacroPercentage();
-    }
-    return orElse();
-  }
+/// Adds pattern-matching-related methods to [DiaryEvent].
+extension DiaryEventPatterns on DiaryEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ToggleMacroPercentageEvent value)
-        toggleMacroPercentage,
-  }) {
-    return toggleMacroPercentage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ToggleMacroPercentageEvent value)? toggleMacroPercentage,
-  }) {
-    return toggleMacroPercentage?.call(this);
-  }
-
-  @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ToggleMacroPercentageEvent value)? toggleMacroPercentage,
     required TResult orElse(),
   }) {
-    if (toggleMacroPercentage != null) {
-      return toggleMacroPercentage(this);
+    final _that = this;
+    switch (_that) {
+      case ToggleMacroPercentageEvent() when toggleMacroPercentage != null:
+        return toggleMacroPercentage(_that);
+      case _:
+        return orElse();
     }
-    return orElse();
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ToggleMacroPercentageEvent value)
+        toggleMacroPercentage,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ToggleMacroPercentageEvent():
+        return toggleMacroPercentage(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ToggleMacroPercentageEvent value)? toggleMacroPercentage,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ToggleMacroPercentageEvent() when toggleMacroPercentage != null:
+        return toggleMacroPercentage(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? toggleMacroPercentage,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ToggleMacroPercentageEvent() when toggleMacroPercentage != null:
+        return toggleMacroPercentage();
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() toggleMacroPercentage,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ToggleMacroPercentageEvent():
+        return toggleMacroPercentage();
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? toggleMacroPercentage,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case ToggleMacroPercentageEvent() when toggleMacroPercentage != null:
+        return toggleMacroPercentage();
+      case _:
+        return null;
+    }
   }
 }
 
-abstract class ToggleMacroPercentageEvent implements DiaryEvent {
-  const factory ToggleMacroPercentageEvent() = _$ToggleMacroPercentageEventImpl;
+/// @nodoc
+
+class ToggleMacroPercentageEvent implements DiaryEvent {
+  const ToggleMacroPercentageEvent();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ToggleMacroPercentageEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'DiaryEvent.toggleMacroPercentage()';
+  }
 }
+
+// dart format on

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,347 +9,45 @@ part of 'auth_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AuthEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String username) logIn,
-    required TResult Function() authSubscriptionRequested,
-    required TResult Function(String username) userSelected,
-    required TResult Function(String username) logout,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String username)? logIn,
-    TResult? Function()? authSubscriptionRequested,
-    TResult? Function(String username)? userSelected,
-    TResult? Function(String username)? logout,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String username)? logIn,
-    TResult Function()? authSubscriptionRequested,
-    TResult Function(String username)? userSelected,
-    TResult Function(String username)? logout,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LogIn value) logIn,
-    required TResult Function(_AuthSubscriptionRequested value)
-        authSubscriptionRequested,
-    required TResult Function(_UserSelected value) userSelected,
-    required TResult Function(_LogOut value) logout,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LogIn value)? logIn,
-    TResult? Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult? Function(_UserSelected value)? userSelected,
-    TResult? Function(_LogOut value)? logout,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LogIn value)? logIn,
-    TResult Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult Function(_UserSelected value)? userSelected,
-    TResult Function(_LogOut value)? logout,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $AuthEventCopyWith<$Res> {
-  factory $AuthEventCopyWith(AuthEvent value, $Res Function(AuthEvent) then) =
-      _$AuthEventCopyWithImpl<$Res, AuthEvent>;
-}
-
-/// @nodoc
-class _$AuthEventCopyWithImpl<$Res, $Val extends AuthEvent>
-    implements $AuthEventCopyWith<$Res> {
-  _$AuthEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$LogInImplCopyWith<$Res> {
-  factory _$$LogInImplCopyWith(
-          _$LogInImpl value, $Res Function(_$LogInImpl) then) =
-      __$$LogInImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String username});
-}
-
-/// @nodoc
-class __$$LogInImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$LogInImpl>
-    implements _$$LogInImplCopyWith<$Res> {
-  __$$LogInImplCopyWithImpl(
-      _$LogInImpl _value, $Res Function(_$LogInImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? username = null,
-  }) {
-    return _then(_$LogInImpl(
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$LogInImpl implements _LogIn {
-  const _$LogInImpl({required this.username});
-
-  @override
-  final String username;
-
-  @override
-  String toString() {
-    return 'AuthEvent.logIn(username: $username)';
-  }
-
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LogInImpl &&
-            (identical(other.username, username) ||
-                other.username == username));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, username);
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LogInImplCopyWith<_$LogInImpl> get copyWith =>
-      __$$LogInImplCopyWithImpl<_$LogInImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String username) logIn,
-    required TResult Function() authSubscriptionRequested,
-    required TResult Function(String username) userSelected,
-    required TResult Function(String username) logout,
-  }) {
-    return logIn(username);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String username)? logIn,
-    TResult? Function()? authSubscriptionRequested,
-    TResult? Function(String username)? userSelected,
-    TResult? Function(String username)? logout,
-  }) {
-    return logIn?.call(username);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String username)? logIn,
-    TResult Function()? authSubscriptionRequested,
-    TResult Function(String username)? userSelected,
-    TResult Function(String username)? logout,
-    required TResult orElse(),
-  }) {
-    if (logIn != null) {
-      return logIn(username);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LogIn value) logIn,
-    required TResult Function(_AuthSubscriptionRequested value)
-        authSubscriptionRequested,
-    required TResult Function(_UserSelected value) userSelected,
-    required TResult Function(_LogOut value) logout,
-  }) {
-    return logIn(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LogIn value)? logIn,
-    TResult? Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult? Function(_UserSelected value)? userSelected,
-    TResult? Function(_LogOut value)? logout,
-  }) {
-    return logIn?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LogIn value)? logIn,
-    TResult Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult Function(_UserSelected value)? userSelected,
-    TResult Function(_LogOut value)? logout,
-    required TResult orElse(),
-  }) {
-    if (logIn != null) {
-      return logIn(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LogIn implements AuthEvent {
-  const factory _LogIn({required final String username}) = _$LogInImpl;
-
-  String get username;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LogInImplCopyWith<_$LogInImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$AuthSubscriptionRequestedImplCopyWith<$Res> {
-  factory _$$AuthSubscriptionRequestedImplCopyWith(
-          _$AuthSubscriptionRequestedImpl value,
-          $Res Function(_$AuthSubscriptionRequestedImpl) then) =
-      __$$AuthSubscriptionRequestedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$AuthSubscriptionRequestedImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$AuthSubscriptionRequestedImpl>
-    implements _$$AuthSubscriptionRequestedImplCopyWith<$Res> {
-  __$$AuthSubscriptionRequestedImplCopyWithImpl(
-      _$AuthSubscriptionRequestedImpl _value,
-      $Res Function(_$AuthSubscriptionRequestedImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$AuthSubscriptionRequestedImpl implements _AuthSubscriptionRequested {
-  const _$AuthSubscriptionRequestedImpl();
-
-  @override
-  String toString() {
-    return 'AuthEvent.authSubscriptionRequested()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AuthSubscriptionRequestedImpl);
+        (other.runtimeType == runtimeType && other is AuthEvent);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String username) logIn,
-    required TResult Function() authSubscriptionRequested,
-    required TResult Function(String username) userSelected,
-    required TResult Function(String username) logout,
-  }) {
-    return authSubscriptionRequested();
+  String toString() {
+    return 'AuthEvent()';
   }
+}
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String username)? logIn,
-    TResult? Function()? authSubscriptionRequested,
-    TResult? Function(String username)? userSelected,
-    TResult? Function(String username)? logout,
-  }) {
-    return authSubscriptionRequested?.call();
-  }
+/// @nodoc
+class $AuthEventCopyWith<$Res> {
+  $AuthEventCopyWith(AuthEvent _, $Res Function(AuthEvent) __);
+}
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String username)? logIn,
-    TResult Function()? authSubscriptionRequested,
-    TResult Function(String username)? userSelected,
-    TResult Function(String username)? logout,
-    required TResult orElse(),
-  }) {
-    if (authSubscriptionRequested != null) {
-      return authSubscriptionRequested();
-    }
-    return orElse();
-  }
+/// Adds pattern-matching-related methods to [AuthEvent].
+extension AuthEventPatterns on AuthEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LogIn value) logIn,
-    required TResult Function(_AuthSubscriptionRequested value)
-        authSubscriptionRequested,
-    required TResult Function(_UserSelected value) userSelected,
-    required TResult Function(_LogOut value) logout,
-  }) {
-    return authSubscriptionRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LogIn value)? logIn,
-    TResult? Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult? Function(_UserSelected value)? userSelected,
-    TResult? Function(_LogOut value)? logout,
-  }) {
-    return authSubscriptionRequested?.call(this);
-  }
-
-  @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LogIn value)? logIn,
@@ -359,44 +57,253 @@ class _$AuthSubscriptionRequestedImpl implements _AuthSubscriptionRequested {
     TResult Function(_LogOut value)? logout,
     required TResult orElse(),
   }) {
-    if (authSubscriptionRequested != null) {
-      return authSubscriptionRequested(this);
+    final _that = this;
+    switch (_that) {
+      case _LogIn() when logIn != null:
+        return logIn(_that);
+      case _AuthSubscriptionRequested() when authSubscriptionRequested != null:
+        return authSubscriptionRequested(_that);
+      case _UserSelected() when userSelected != null:
+        return userSelected(_that);
+      case _LogOut() when logout != null:
+        return logout(_that);
+      case _:
+        return orElse();
     }
-    return orElse();
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LogIn value) logIn,
+    required TResult Function(_AuthSubscriptionRequested value)
+        authSubscriptionRequested,
+    required TResult Function(_UserSelected value) userSelected,
+    required TResult Function(_LogOut value) logout,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LogIn():
+        return logIn(_that);
+      case _AuthSubscriptionRequested():
+        return authSubscriptionRequested(_that);
+      case _UserSelected():
+        return userSelected(_that);
+      case _LogOut():
+        return logout(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LogIn value)? logIn,
+    TResult? Function(_AuthSubscriptionRequested value)?
+        authSubscriptionRequested,
+    TResult? Function(_UserSelected value)? userSelected,
+    TResult? Function(_LogOut value)? logout,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LogIn() when logIn != null:
+        return logIn(_that);
+      case _AuthSubscriptionRequested() when authSubscriptionRequested != null:
+        return authSubscriptionRequested(_that);
+      case _UserSelected() when userSelected != null:
+        return userSelected(_that);
+      case _LogOut() when logout != null:
+        return logout(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String username)? logIn,
+    TResult Function()? authSubscriptionRequested,
+    TResult Function(String username)? userSelected,
+    TResult Function(String username)? logout,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LogIn() when logIn != null:
+        return logIn(_that.username);
+      case _AuthSubscriptionRequested() when authSubscriptionRequested != null:
+        return authSubscriptionRequested();
+      case _UserSelected() when userSelected != null:
+        return userSelected(_that.username);
+      case _LogOut() when logout != null:
+        return logout(_that.username);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String username) logIn,
+    required TResult Function() authSubscriptionRequested,
+    required TResult Function(String username) userSelected,
+    required TResult Function(String username) logout,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LogIn():
+        return logIn(_that.username);
+      case _AuthSubscriptionRequested():
+        return authSubscriptionRequested();
+      case _UserSelected():
+        return userSelected(_that.username);
+      case _LogOut():
+        return logout(_that.username);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String username)? logIn,
+    TResult? Function()? authSubscriptionRequested,
+    TResult? Function(String username)? userSelected,
+    TResult? Function(String username)? logout,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _LogIn() when logIn != null:
+        return logIn(_that.username);
+      case _AuthSubscriptionRequested() when authSubscriptionRequested != null:
+        return authSubscriptionRequested();
+      case _UserSelected() when userSelected != null:
+        return userSelected(_that.username);
+      case _LogOut() when logout != null:
+        return logout(_that.username);
+      case _:
+        return null;
+    }
   }
 }
 
-abstract class _AuthSubscriptionRequested implements AuthEvent {
-  const factory _AuthSubscriptionRequested() = _$AuthSubscriptionRequestedImpl;
+/// @nodoc
+
+class _LogIn implements AuthEvent {
+  const _LogIn({required this.username});
+
+  final String username;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LogInCopyWith<_LogIn> get copyWith =>
+      __$LogInCopyWithImpl<_LogIn>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _LogIn &&
+            (identical(other.username, username) ||
+                other.username == username));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, username);
+
+  @override
+  String toString() {
+    return 'AuthEvent.logIn(username: $username)';
+  }
 }
 
 /// @nodoc
-abstract class _$$UserSelectedImplCopyWith<$Res> {
-  factory _$$UserSelectedImplCopyWith(
-          _$UserSelectedImpl value, $Res Function(_$UserSelectedImpl) then) =
-      __$$UserSelectedImplCopyWithImpl<$Res>;
+abstract mixin class _$LogInCopyWith<$Res> implements $AuthEventCopyWith<$Res> {
+  factory _$LogInCopyWith(_LogIn value, $Res Function(_LogIn) _then) =
+      __$LogInCopyWithImpl;
   @useResult
   $Res call({String username});
 }
 
 /// @nodoc
-class __$$UserSelectedImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$UserSelectedImpl>
-    implements _$$UserSelectedImplCopyWith<$Res> {
-  __$$UserSelectedImplCopyWithImpl(
-      _$UserSelectedImpl _value, $Res Function(_$UserSelectedImpl) _then)
-      : super(_value, _then);
+class __$LogInCopyWithImpl<$Res> implements _$LogInCopyWith<$Res> {
+  __$LogInCopyWithImpl(this._self, this._then);
+
+  final _LogIn _self;
+  final $Res Function(_LogIn) _then;
 
   /// Create a copy of AuthEvent
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? username = null,
   }) {
-    return _then(_$UserSelectedImpl(
+    return _then(_LogIn(
       username: null == username
-          ? _value.username
+          ? _self.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -405,155 +312,84 @@ class __$$UserSelectedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UserSelectedImpl implements _UserSelected {
-  const _$UserSelectedImpl({required this.username});
+class _AuthSubscriptionRequested implements AuthEvent {
+  const _AuthSubscriptionRequested();
 
   @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _AuthSubscriptionRequested);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AuthEvent.authSubscriptionRequested()';
+  }
+}
+
+/// @nodoc
+
+class _UserSelected implements AuthEvent {
+  const _UserSelected({required this.username});
+
   final String username;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$UserSelectedCopyWith<_UserSelected> get copyWith =>
+      __$UserSelectedCopyWithImpl<_UserSelected>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _UserSelected &&
+            (identical(other.username, username) ||
+                other.username == username));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, username);
 
   @override
   String toString() {
     return 'AuthEvent.userSelected(username: $username)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UserSelectedImpl &&
-            (identical(other.username, username) ||
-                other.username == username));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, username);
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$UserSelectedImplCopyWith<_$UserSelectedImpl> get copyWith =>
-      __$$UserSelectedImplCopyWithImpl<_$UserSelectedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String username) logIn,
-    required TResult Function() authSubscriptionRequested,
-    required TResult Function(String username) userSelected,
-    required TResult Function(String username) logout,
-  }) {
-    return userSelected(username);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String username)? logIn,
-    TResult? Function()? authSubscriptionRequested,
-    TResult? Function(String username)? userSelected,
-    TResult? Function(String username)? logout,
-  }) {
-    return userSelected?.call(username);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String username)? logIn,
-    TResult Function()? authSubscriptionRequested,
-    TResult Function(String username)? userSelected,
-    TResult Function(String username)? logout,
-    required TResult orElse(),
-  }) {
-    if (userSelected != null) {
-      return userSelected(username);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LogIn value) logIn,
-    required TResult Function(_AuthSubscriptionRequested value)
-        authSubscriptionRequested,
-    required TResult Function(_UserSelected value) userSelected,
-    required TResult Function(_LogOut value) logout,
-  }) {
-    return userSelected(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LogIn value)? logIn,
-    TResult? Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult? Function(_UserSelected value)? userSelected,
-    TResult? Function(_LogOut value)? logout,
-  }) {
-    return userSelected?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LogIn value)? logIn,
-    TResult Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult Function(_UserSelected value)? userSelected,
-    TResult Function(_LogOut value)? logout,
-    required TResult orElse(),
-  }) {
-    if (userSelected != null) {
-      return userSelected(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _UserSelected implements AuthEvent {
-  const factory _UserSelected({required final String username}) =
-      _$UserSelectedImpl;
-
-  String get username;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserSelectedImplCopyWith<_$UserSelectedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LogOutImplCopyWith<$Res> {
-  factory _$$LogOutImplCopyWith(
-          _$LogOutImpl value, $Res Function(_$LogOutImpl) then) =
-      __$$LogOutImplCopyWithImpl<$Res>;
+abstract mixin class _$UserSelectedCopyWith<$Res>
+    implements $AuthEventCopyWith<$Res> {
+  factory _$UserSelectedCopyWith(
+          _UserSelected value, $Res Function(_UserSelected) _then) =
+      __$UserSelectedCopyWithImpl;
   @useResult
   $Res call({String username});
 }
 
 /// @nodoc
-class __$$LogOutImplCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$LogOutImpl>
-    implements _$$LogOutImplCopyWith<$Res> {
-  __$$LogOutImplCopyWithImpl(
-      _$LogOutImpl _value, $Res Function(_$LogOutImpl) _then)
-      : super(_value, _then);
+class __$UserSelectedCopyWithImpl<$Res>
+    implements _$UserSelectedCopyWith<$Res> {
+  __$UserSelectedCopyWithImpl(this._self, this._then);
+
+  final _UserSelected _self;
+  final $Res Function(_UserSelected) _then;
 
   /// Create a copy of AuthEvent
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? username = null,
   }) {
-    return _then(_$LogOutImpl(
+    return _then(_UserSelected(
       username: null == username
-          ? _value.username
+          ? _self.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -562,22 +398,23 @@ class __$$LogOutImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LogOutImpl implements _LogOut {
-  const _$LogOutImpl({required this.username});
+class _LogOut implements AuthEvent {
+  const _LogOut({required this.username});
 
-  @override
   final String username;
 
-  @override
-  String toString() {
-    return 'AuthEvent.logout(username: $username)';
-  }
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LogOutCopyWith<_LogOut> get copyWith =>
+      __$LogOutCopyWithImpl<_LogOut>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LogOutImpl &&
+            other is _LogOut &&
             (identical(other.username, username) ||
                 other.username == username));
   }
@@ -585,243 +422,60 @@ class _$LogOutImpl implements _LogOut {
   @override
   int get hashCode => Object.hash(runtimeType, username);
 
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$LogOutImplCopyWith<_$LogOutImpl> get copyWith =>
-      __$$LogOutImplCopyWithImpl<_$LogOutImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String username) logIn,
-    required TResult Function() authSubscriptionRequested,
-    required TResult Function(String username) userSelected,
-    required TResult Function(String username) logout,
-  }) {
-    return logout(username);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String username)? logIn,
-    TResult? Function()? authSubscriptionRequested,
-    TResult? Function(String username)? userSelected,
-    TResult? Function(String username)? logout,
-  }) {
-    return logout?.call(username);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String username)? logIn,
-    TResult Function()? authSubscriptionRequested,
-    TResult Function(String username)? userSelected,
-    TResult Function(String username)? logout,
-    required TResult orElse(),
-  }) {
-    if (logout != null) {
-      return logout(username);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LogIn value) logIn,
-    required TResult Function(_AuthSubscriptionRequested value)
-        authSubscriptionRequested,
-    required TResult Function(_UserSelected value) userSelected,
-    required TResult Function(_LogOut value) logout,
-  }) {
-    return logout(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LogIn value)? logIn,
-    TResult? Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult? Function(_UserSelected value)? userSelected,
-    TResult? Function(_LogOut value)? logout,
-  }) {
-    return logout?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LogIn value)? logIn,
-    TResult Function(_AuthSubscriptionRequested value)?
-        authSubscriptionRequested,
-    TResult Function(_UserSelected value)? userSelected,
-    TResult Function(_LogOut value)? logout,
-    required TResult orElse(),
-  }) {
-    if (logout != null) {
-      return logout(this);
-    }
-    return orElse();
+  String toString() {
+    return 'AuthEvent.logout(username: $username)';
   }
 }
 
-abstract class _LogOut implements AuthEvent {
-  const factory _LogOut({required final String username}) = _$LogOutImpl;
+/// @nodoc
+abstract mixin class _$LogOutCopyWith<$Res>
+    implements $AuthEventCopyWith<$Res> {
+  factory _$LogOutCopyWith(_LogOut value, $Res Function(_LogOut) _then) =
+      __$LogOutCopyWithImpl;
+  @useResult
+  $Res call({String username});
+}
 
-  String get username;
+/// @nodoc
+class __$LogOutCopyWithImpl<$Res> implements _$LogOutCopyWith<$Res> {
+  __$LogOutCopyWithImpl(this._self, this._then);
+
+  final _LogOut _self;
+  final $Res Function(_LogOut) _then;
 
   /// Create a copy of AuthEvent
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LogOutImplCopyWith<_$LogOutImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$AuthState {
-  AsyncState<User> get selectedUser => throw _privateConstructorUsedError;
-  AsyncState<List<User>> get users => throw _privateConstructorUsedError;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $AuthStateCopyWith<AuthState> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $AuthStateCopyWith<$Res> {
-  factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
-      _$AuthStateCopyWithImpl<$Res, AuthState>;
-  @useResult
-  $Res call({AsyncState<User> selectedUser, AsyncState<List<User>> users});
-
-  $AsyncStateCopyWith<User, $Res> get selectedUser;
-  $AsyncStateCopyWith<List<User>, $Res> get users;
-}
-
-/// @nodoc
-class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
-    implements $AuthStateCopyWith<$Res> {
-  _$AuthStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? selectedUser = null,
-    Object? users = null,
+    Object? username = null,
   }) {
-    return _then(_value.copyWith(
-      selectedUser: null == selectedUser
-          ? _value.selectedUser
-          : selectedUser // ignore: cast_nullable_to_non_nullable
-              as AsyncState<User>,
-      users: null == users
-          ? _value.users
-          : users // ignore: cast_nullable_to_non_nullable
-              as AsyncState<List<User>>,
-    ) as $Val);
-  }
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AsyncStateCopyWith<User, $Res> get selectedUser {
-    return $AsyncStateCopyWith<User, $Res>(_value.selectedUser, (value) {
-      return _then(_value.copyWith(selectedUser: value) as $Val);
-    });
-  }
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AsyncStateCopyWith<List<User>, $Res> get users {
-    return $AsyncStateCopyWith<List<User>, $Res>(_value.users, (value) {
-      return _then(_value.copyWith(users: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$AuthStateImplCopyWith<$Res>
-    implements $AuthStateCopyWith<$Res> {
-  factory _$$AuthStateImplCopyWith(
-          _$AuthStateImpl value, $Res Function(_$AuthStateImpl) then) =
-      __$$AuthStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({AsyncState<User> selectedUser, AsyncState<List<User>> users});
-
-  @override
-  $AsyncStateCopyWith<User, $Res> get selectedUser;
-  @override
-  $AsyncStateCopyWith<List<User>, $Res> get users;
-}
-
-/// @nodoc
-class __$$AuthStateImplCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthStateImpl>
-    implements _$$AuthStateImplCopyWith<$Res> {
-  __$$AuthStateImplCopyWithImpl(
-      _$AuthStateImpl _value, $Res Function(_$AuthStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? selectedUser = null,
-    Object? users = null,
-  }) {
-    return _then(_$AuthStateImpl(
-      selectedUser: null == selectedUser
-          ? _value.selectedUser
-          : selectedUser // ignore: cast_nullable_to_non_nullable
-              as AsyncState<User>,
-      users: null == users
-          ? _value.users
-          : users // ignore: cast_nullable_to_non_nullable
-              as AsyncState<List<User>>,
+    return _then(_LogOut(
+      username: null == username
+          ? _self.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
+mixin _$AuthState {
+  AsyncState<User> get selectedUser;
+  AsyncState<List<User>> get users;
 
-class _$AuthStateImpl implements _AuthState {
-  const _$AuthStateImpl({required this.selectedUser, required this.users});
-
-  @override
-  final AsyncState<User> selectedUser;
-  @override
-  final AsyncState<List<User>> users;
-
-  @override
-  String toString() {
-    return 'AuthState(selectedUser: $selectedUser, users: $users)';
-  }
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AuthStateCopyWith<AuthState> get copyWith =>
+      _$AuthStateCopyWithImpl<AuthState>(this as AuthState, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthStateImpl &&
+            other is AuthState &&
             (identical(other.selectedUser, selectedUser) ||
                 other.selectedUser == selectedUser) &&
             (identical(other.users, users) || other.users == users));
@@ -830,29 +484,333 @@ class _$AuthStateImpl implements _AuthState {
   @override
   int get hashCode => Object.hash(runtimeType, selectedUser, users);
 
+  @override
+  String toString() {
+    return 'AuthState(selectedUser: $selectedUser, users: $users)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $AuthStateCopyWith<$Res> {
+  factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) =
+      _$AuthStateCopyWithImpl;
+  @useResult
+  $Res call({AsyncState<User> selectedUser, AsyncState<List<User>> users});
+
+  $AsyncStateCopyWith<User, $Res> get selectedUser;
+  $AsyncStateCopyWith<List<User>, $Res> get users;
+}
+
+/// @nodoc
+class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
+  _$AuthStateCopyWithImpl(this._self, this._then);
+
+  final AuthState _self;
+  final $Res Function(AuthState) _then;
+
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? selectedUser = null,
+    Object? users = null,
+  }) {
+    return _then(_self.copyWith(
+      selectedUser: null == selectedUser
+          ? _self.selectedUser
+          : selectedUser // ignore: cast_nullable_to_non_nullable
+              as AsyncState<User>,
+      users: null == users
+          ? _self.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as AsyncState<List<User>>,
+    ));
+  }
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$AuthStateImplCopyWith<_$AuthStateImpl> get copyWith =>
-      __$$AuthStateImplCopyWithImpl<_$AuthStateImpl>(this, _$identity);
+  $AsyncStateCopyWith<User, $Res> get selectedUser {
+    return $AsyncStateCopyWith<User, $Res>(_self.selectedUser, (value) {
+      return _then(_self.copyWith(selectedUser: value));
+    });
+  }
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<List<User>, $Res> get users {
+    return $AsyncStateCopyWith<List<User>, $Res>(_self.users, (value) {
+      return _then(_self.copyWith(users: value));
+    });
+  }
 }
 
-abstract class _AuthState implements AuthState {
-  const factory _AuthState(
-      {required final AsyncState<User> selectedUser,
-      required final AsyncState<List<User>> users}) = _$AuthStateImpl;
+/// Adds pattern-matching-related methods to [AuthState].
+extension AuthStatePatterns on AuthState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_AuthState value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _AuthState() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_AuthState value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _AuthState():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_AuthState value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _AuthState() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            AsyncState<User> selectedUser, AsyncState<List<User>> users)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _AuthState() when $default != null:
+        return $default(_that.selectedUser, _that.users);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            AsyncState<User> selectedUser, AsyncState<List<User>> users)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _AuthState():
+        return $default(_that.selectedUser, _that.users);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            AsyncState<User> selectedUser, AsyncState<List<User>> users)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _AuthState() when $default != null:
+        return $default(_that.selectedUser, _that.users);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+
+class _AuthState implements AuthState {
+  const _AuthState({required this.selectedUser, required this.users});
 
   @override
-  AsyncState<User> get selectedUser;
+  final AsyncState<User> selectedUser;
   @override
-  AsyncState<List<User>> get users;
+  final AsyncState<List<User>> users;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AuthStateImplCopyWith<_$AuthStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$AuthStateCopyWith<_AuthState> get copyWith =>
+      __$AuthStateCopyWithImpl<_AuthState>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _AuthState &&
+            (identical(other.selectedUser, selectedUser) ||
+                other.selectedUser == selectedUser) &&
+            (identical(other.users, users) || other.users == users));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, selectedUser, users);
+
+  @override
+  String toString() {
+    return 'AuthState(selectedUser: $selectedUser, users: $users)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$AuthStateCopyWith<$Res>
+    implements $AuthStateCopyWith<$Res> {
+  factory _$AuthStateCopyWith(
+          _AuthState value, $Res Function(_AuthState) _then) =
+      __$AuthStateCopyWithImpl;
+  @override
+  @useResult
+  $Res call({AsyncState<User> selectedUser, AsyncState<List<User>> users});
+
+  @override
+  $AsyncStateCopyWith<User, $Res> get selectedUser;
+  @override
+  $AsyncStateCopyWith<List<User>, $Res> get users;
+}
+
+/// @nodoc
+class __$AuthStateCopyWithImpl<$Res> implements _$AuthStateCopyWith<$Res> {
+  __$AuthStateCopyWithImpl(this._self, this._then);
+
+  final _AuthState _self;
+  final $Res Function(_AuthState) _then;
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? selectedUser = null,
+    Object? users = null,
+  }) {
+    return _then(_AuthState(
+      selectedUser: null == selectedUser
+          ? _self.selectedUser
+          : selectedUser // ignore: cast_nullable_to_non_nullable
+              as AsyncState<User>,
+      users: null == users
+          ? _self.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as AsyncState<List<User>>,
+    ));
+  }
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<User, $Res> get selectedUser {
+    return $AsyncStateCopyWith<User, $Res>(_self.selectedUser, (value) {
+      return _then(_self.copyWith(selectedUser: value));
+    });
+  }
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<List<User>, $Res> get users {
+    return $AsyncStateCopyWith<List<User>, $Res>(_self.users, (value) {
+      return _then(_self.copyWith(users: value));
+    });
+  }
+}
+
+// dart format on

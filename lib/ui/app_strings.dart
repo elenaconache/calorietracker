@@ -273,4 +273,5 @@ class AppStrings {
   static String get totalLabel => S.current.totalLabel;
 
   static String get macroPercentagesSumMessage => S.current.macroPercentagesSumMessage;
+  static String get macroGoalsError => S.current.macroGoalsError;
 }

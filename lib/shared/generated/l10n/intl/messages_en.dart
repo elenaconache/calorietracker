@@ -171,6 +171,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutLabel": MessageLookupByLibrary.simpleMessage("Logout"),
         "lunchLabel": MessageLookupByLibrary.simpleMessage("Lunch"),
+        "macroGoalsError": MessageLookupByLibrary.simpleMessage(
+            "Could not save goals. Macros percentages sum must be 100%."),
         "macroPercentagesSumMessage":
             MessageLookupByLibrary.simpleMessage("Must be equal to 100%"),
         "macrosExceedServingSizeError": m10,

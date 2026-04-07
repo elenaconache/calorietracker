@@ -1,5 +1,5 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // InjectableConfigGenerator
@@ -68,28 +68,25 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
-    gh.factory<_i211.AppDropdownButtonController>(
-        () => _i211.AppDropdownButtonController());
-    gh.factory<_i222.BehaviorSubject<_i548.User?>>(
-        () => registerModule.selectedUserController);
+    gh.factory<_i867.LoginCubit>(() => _i867.LoginCubit());
+    gh.factory<_i525.CreateFoodCubit>(() => _i525.CreateFoodCubit());
+    gh.factory<_i738.DiaryBloc>(() => _i738.DiaryBloc());
     gh.factoryAsync<_i1067.AppEnvironment>(
         () => _i1067.AppEnvironment.create());
-    gh.factory<_i2.NutritionValidator>(() => _i2.NutritionValidator());
-    gh.factory<_i404.FoodValidator>(() => _i404.FoodValidator());
     gh.factory<_i443.DateFormattingService>(
         () => _i443.DateFormattingService());
+    gh.factory<_i861.LoggingService>(() => _i861.LoggingService());
     gh.factory<_i633.NumericFormattingService>(
         () => _i633.NumericFormattingService());
     gh.factory<_i270.SecureStorageService>(() => _i270.SecureStorageService());
-    gh.factory<_i861.LoggingService>(() => _i861.LoggingService());
-    gh.factory<_i867.LoginCubit>(() => _i867.LoginCubit());
-    gh.factory<_i738.DiaryBloc>(() => _i738.DiaryBloc());
-    gh.factory<_i525.CreateFoodCubit>(() => _i525.CreateFoodCubit());
+    gh.factory<_i404.FoodValidator>(() => _i404.FoodValidator());
+    gh.factory<_i2.NutritionValidator>(() => _i2.NutritionValidator());
+    gh.factory<_i222.BehaviorSubject<_i548.User?>>(
+        () => registerModule.selectedUserController);
     gh.factory<_i510.RecipeHelper>(() => _i510.RecipeHelper());
-    gh.lazySingleton<_i558.FlutterSecureStorage>(
-        () => registerModule.flutterSecureStorage);
-    gh.lazySingletonAsync<_i818.UsdaApiService>(
-        () => registerModule.nutritionixApiService);
+    gh.factory<_i211.AppDropdownButtonController>(
+        () => _i211.AppDropdownButtonController());
+    gh.lazySingleton<_i383.SearchFoodService>(() => _i383.SearchFoodService());
     await gh.lazySingletonAsync<_i667.AppPathProvider>(
       () {
         final i = _i667.AppPathProvider();
@@ -104,7 +101,10 @@ extension GetItInjectableX on _i174.GetIt {
       },
       preResolve: true,
     );
-    gh.lazySingleton<_i383.SearchFoodService>(() => _i383.SearchFoodService());
+    gh.lazySingleton<_i558.FlutterSecureStorage>(
+        () => registerModule.flutterSecureStorage);
+    gh.lazySingletonAsync<_i818.UsdaApiService>(
+        () => registerModule.nutritionixApiService);
     gh.lazySingleton<_i271.FoodService>(
         () => _i271.FoodService(database: gh<_i379.DatabaseRepository>()));
     gh.lazySingleton<_i566.AuthRepository>(() => _i566.AuthRepository(
@@ -113,10 +113,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i430.BehaviorSubject<_i548.User?>>(),
           gh<_i376.UserApiService>(),
         ));
-    gh.factory<_i27.SearchRecipeRepository>(
-        () => _i27.SearchRecipeRepository(gh<_i13.CollectionApiService>()));
     gh.factory<_i879.RecipeDetailsRepository>(
         () => _i879.RecipeDetailsRepository(gh<_i13.CollectionApiService>()));
+    gh.factory<_i27.SearchRecipeRepository>(
+        () => _i27.SearchRecipeRepository(gh<_i13.CollectionApiService>()));
     gh.factoryAsync<String>(
       () => registerModule.appDirectoryPath,
       instanceName: 'appDirectoryPath',

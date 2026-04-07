@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,154 +9,27 @@ part of 'user_goals_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UserGoalsState {
-  AsyncState<UserGoals> get userGoals => throw _privateConstructorUsedError;
-  AsyncState<MacroGoals> get macroGoals => throw _privateConstructorUsedError;
+  AsyncState<UserGoals> get userGoals;
+  AsyncState<MacroGoals> get macroGoals;
 
   /// Create a copy of UserGoalsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $UserGoalsStateCopyWith<UserGoalsState> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $UserGoalsStateCopyWith<$Res> {
-  factory $UserGoalsStateCopyWith(
-          UserGoalsState value, $Res Function(UserGoalsState) then) =
-      _$UserGoalsStateCopyWithImpl<$Res, UserGoalsState>;
-  @useResult
-  $Res call(
-      {AsyncState<UserGoals> userGoals, AsyncState<MacroGoals> macroGoals});
-
-  $AsyncStateCopyWith<UserGoals, $Res> get userGoals;
-  $AsyncStateCopyWith<MacroGoals, $Res> get macroGoals;
-}
-
-/// @nodoc
-class _$UserGoalsStateCopyWithImpl<$Res, $Val extends UserGoalsState>
-    implements $UserGoalsStateCopyWith<$Res> {
-  _$UserGoalsStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of UserGoalsState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? userGoals = null,
-    Object? macroGoals = null,
-  }) {
-    return _then(_value.copyWith(
-      userGoals: null == userGoals
-          ? _value.userGoals
-          : userGoals // ignore: cast_nullable_to_non_nullable
-              as AsyncState<UserGoals>,
-      macroGoals: null == macroGoals
-          ? _value.macroGoals
-          : macroGoals // ignore: cast_nullable_to_non_nullable
-              as AsyncState<MacroGoals>,
-    ) as $Val);
-  }
-
-  /// Create a copy of UserGoalsState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AsyncStateCopyWith<UserGoals, $Res> get userGoals {
-    return $AsyncStateCopyWith<UserGoals, $Res>(_value.userGoals, (value) {
-      return _then(_value.copyWith(userGoals: value) as $Val);
-    });
-  }
-
-  /// Create a copy of UserGoalsState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AsyncStateCopyWith<MacroGoals, $Res> get macroGoals {
-    return $AsyncStateCopyWith<MacroGoals, $Res>(_value.macroGoals, (value) {
-      return _then(_value.copyWith(macroGoals: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$UserGoalsStateImplCopyWith<$Res>
-    implements $UserGoalsStateCopyWith<$Res> {
-  factory _$$UserGoalsStateImplCopyWith(_$UserGoalsStateImpl value,
-          $Res Function(_$UserGoalsStateImpl) then) =
-      __$$UserGoalsStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {AsyncState<UserGoals> userGoals, AsyncState<MacroGoals> macroGoals});
-
-  @override
-  $AsyncStateCopyWith<UserGoals, $Res> get userGoals;
-  @override
-  $AsyncStateCopyWith<MacroGoals, $Res> get macroGoals;
-}
-
-/// @nodoc
-class __$$UserGoalsStateImplCopyWithImpl<$Res>
-    extends _$UserGoalsStateCopyWithImpl<$Res, _$UserGoalsStateImpl>
-    implements _$$UserGoalsStateImplCopyWith<$Res> {
-  __$$UserGoalsStateImplCopyWithImpl(
-      _$UserGoalsStateImpl _value, $Res Function(_$UserGoalsStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of UserGoalsState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? userGoals = null,
-    Object? macroGoals = null,
-  }) {
-    return _then(_$UserGoalsStateImpl(
-      userGoals: null == userGoals
-          ? _value.userGoals
-          : userGoals // ignore: cast_nullable_to_non_nullable
-              as AsyncState<UserGoals>,
-      macroGoals: null == macroGoals
-          ? _value.macroGoals
-          : macroGoals // ignore: cast_nullable_to_non_nullable
-              as AsyncState<MacroGoals>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$UserGoalsStateImpl implements _UserGoalsState {
-  const _$UserGoalsStateImpl(
-      {required this.userGoals, required this.macroGoals});
-
-  @override
-  final AsyncState<UserGoals> userGoals;
-  @override
-  final AsyncState<MacroGoals> macroGoals;
-
-  @override
-  String toString() {
-    return 'UserGoalsState(userGoals: $userGoals, macroGoals: $macroGoals)';
-  }
+      _$UserGoalsStateCopyWithImpl<UserGoalsState>(
+          this as UserGoalsState, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserGoalsStateImpl &&
+            other is UserGoalsState &&
             (identical(other.userGoals, userGoals) ||
                 other.userGoals == userGoals) &&
             (identical(other.macroGoals, macroGoals) ||
@@ -166,30 +39,339 @@ class _$UserGoalsStateImpl implements _UserGoalsState {
   @override
   int get hashCode => Object.hash(runtimeType, userGoals, macroGoals);
 
+  @override
+  String toString() {
+    return 'UserGoalsState(userGoals: $userGoals, macroGoals: $macroGoals)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $UserGoalsStateCopyWith<$Res> {
+  factory $UserGoalsStateCopyWith(
+          UserGoalsState value, $Res Function(UserGoalsState) _then) =
+      _$UserGoalsStateCopyWithImpl;
+  @useResult
+  $Res call(
+      {AsyncState<UserGoals> userGoals, AsyncState<MacroGoals> macroGoals});
+
+  $AsyncStateCopyWith<UserGoals, $Res> get userGoals;
+  $AsyncStateCopyWith<MacroGoals, $Res> get macroGoals;
+}
+
+/// @nodoc
+class _$UserGoalsStateCopyWithImpl<$Res>
+    implements $UserGoalsStateCopyWith<$Res> {
+  _$UserGoalsStateCopyWithImpl(this._self, this._then);
+
+  final UserGoalsState _self;
+  final $Res Function(UserGoalsState) _then;
+
   /// Create a copy of UserGoalsState
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? userGoals = null,
+    Object? macroGoals = null,
+  }) {
+    return _then(_self.copyWith(
+      userGoals: null == userGoals
+          ? _self.userGoals
+          : userGoals // ignore: cast_nullable_to_non_nullable
+              as AsyncState<UserGoals>,
+      macroGoals: null == macroGoals
+          ? _self.macroGoals
+          : macroGoals // ignore: cast_nullable_to_non_nullable
+              as AsyncState<MacroGoals>,
+    ));
+  }
+
+  /// Create a copy of UserGoalsState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$UserGoalsStateImplCopyWith<_$UserGoalsStateImpl> get copyWith =>
-      __$$UserGoalsStateImplCopyWithImpl<_$UserGoalsStateImpl>(
-          this, _$identity);
+  $AsyncStateCopyWith<UserGoals, $Res> get userGoals {
+    return $AsyncStateCopyWith<UserGoals, $Res>(_self.userGoals, (value) {
+      return _then(_self.copyWith(userGoals: value));
+    });
+  }
+
+  /// Create a copy of UserGoalsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<MacroGoals, $Res> get macroGoals {
+    return $AsyncStateCopyWith<MacroGoals, $Res>(_self.macroGoals, (value) {
+      return _then(_self.copyWith(macroGoals: value));
+    });
+  }
 }
 
-abstract class _UserGoalsState implements UserGoalsState {
-  const factory _UserGoalsState(
-      {required final AsyncState<UserGoals> userGoals,
-      required final AsyncState<MacroGoals> macroGoals}) = _$UserGoalsStateImpl;
+/// Adds pattern-matching-related methods to [UserGoalsState].
+extension UserGoalsStatePatterns on UserGoalsState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_UserGoalsState value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _UserGoalsState() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_UserGoalsState value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _UserGoalsState():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_UserGoalsState value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _UserGoalsState() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            AsyncState<UserGoals> userGoals, AsyncState<MacroGoals> macroGoals)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _UserGoalsState() when $default != null:
+        return $default(_that.userGoals, _that.macroGoals);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            AsyncState<UserGoals> userGoals, AsyncState<MacroGoals> macroGoals)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _UserGoalsState():
+        return $default(_that.userGoals, _that.macroGoals);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            AsyncState<UserGoals> userGoals, AsyncState<MacroGoals> macroGoals)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _UserGoalsState() when $default != null:
+        return $default(_that.userGoals, _that.macroGoals);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+
+class _UserGoalsState implements UserGoalsState {
+  const _UserGoalsState({required this.userGoals, required this.macroGoals});
 
   @override
-  AsyncState<UserGoals> get userGoals;
+  final AsyncState<UserGoals> userGoals;
   @override
-  AsyncState<MacroGoals> get macroGoals;
+  final AsyncState<MacroGoals> macroGoals;
 
   /// Create a copy of UserGoalsState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserGoalsStateImplCopyWith<_$UserGoalsStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$UserGoalsStateCopyWith<_UserGoalsState> get copyWith =>
+      __$UserGoalsStateCopyWithImpl<_UserGoalsState>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _UserGoalsState &&
+            (identical(other.userGoals, userGoals) ||
+                other.userGoals == userGoals) &&
+            (identical(other.macroGoals, macroGoals) ||
+                other.macroGoals == macroGoals));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, userGoals, macroGoals);
+
+  @override
+  String toString() {
+    return 'UserGoalsState(userGoals: $userGoals, macroGoals: $macroGoals)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$UserGoalsStateCopyWith<$Res>
+    implements $UserGoalsStateCopyWith<$Res> {
+  factory _$UserGoalsStateCopyWith(
+          _UserGoalsState value, $Res Function(_UserGoalsState) _then) =
+      __$UserGoalsStateCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {AsyncState<UserGoals> userGoals, AsyncState<MacroGoals> macroGoals});
+
+  @override
+  $AsyncStateCopyWith<UserGoals, $Res> get userGoals;
+  @override
+  $AsyncStateCopyWith<MacroGoals, $Res> get macroGoals;
+}
+
+/// @nodoc
+class __$UserGoalsStateCopyWithImpl<$Res>
+    implements _$UserGoalsStateCopyWith<$Res> {
+  __$UserGoalsStateCopyWithImpl(this._self, this._then);
+
+  final _UserGoalsState _self;
+  final $Res Function(_UserGoalsState) _then;
+
+  /// Create a copy of UserGoalsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? userGoals = null,
+    Object? macroGoals = null,
+  }) {
+    return _then(_UserGoalsState(
+      userGoals: null == userGoals
+          ? _self.userGoals
+          : userGoals // ignore: cast_nullable_to_non_nullable
+              as AsyncState<UserGoals>,
+      macroGoals: null == macroGoals
+          ? _self.macroGoals
+          : macroGoals // ignore: cast_nullable_to_non_nullable
+              as AsyncState<MacroGoals>,
+    ));
+  }
+
+  /// Create a copy of UserGoalsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<UserGoals, $Res> get userGoals {
+    return $AsyncStateCopyWith<UserGoals, $Res>(_self.userGoals, (value) {
+      return _then(_self.copyWith(userGoals: value));
+    });
+  }
+
+  /// Create a copy of UserGoalsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<MacroGoals, $Res> get macroGoals {
+    return $AsyncStateCopyWith<MacroGoals, $Res>(_self.macroGoals, (value) {
+      return _then(_self.copyWith(macroGoals: value));
+    });
+  }
+}
+
+// dart format on

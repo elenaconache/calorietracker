@@ -1,21 +1,14 @@
 {
   "@@locale": "en",
-  "diaryTitle": "Diary",
-  "todayTitle": "Today",
-  "nutrientsLabel": "Nutrients",
-  "carbsLabel": "Carbs",
-  "fatLabel": "Fat",
-  "proteinLabel": "Protein",
-  "caloriesLabel": "Calories",
-  "mealsLabel": "Meals",
-  "logFoodLabel": "Log food",
-  "searchFoodsLabel": "Search food",
-  "searchForFoodLabel": "Search for a food",
-  "generalErrorMessage": "An error occurred.",
-  "usdaDataSource": "Data source: USDA FoodData Central",
-  "caloriesServingShortLabel": "{calories} cal, {servingQuantity} {servingUnit}",
+  "@calciumExceedsMaxPerServingError": {
+    "placeholders": {
+      "calcium": {
+        "type": "int"
+      }
+    }
+  },
   "@caloriesServingShortLabel": {
-    "placeholder": {
+    "placeholders": {
       "calories": {
         "type": "String"
       },
@@ -27,253 +20,261 @@
       }
     }
   },
-  "discoverLabel": "Discover",
-  "noResultsTitle": "There were no results matching your search",
-  "breakfastLabel": "Breakfast",
-  "lunchLabel": "Lunch",
-  "dinnerLabel": "Dinner",
-  "snacksLabel": "Snacks",
-  "noFoodLoggedMessage": "You didn't log foods for this meal yet.",
-  "caloriesShortLabel": "{calories} cal",
   "@caloriesShortLabel": {
-    "placeholder": {
+    "placeholders": {
       "calories": {
         "type": "int"
       }
     }
   },
-  "mealLabel": "Meal",
-  "servingsLabel": "Serving size (g)",
-  "caloriesShortGenericLabel": "cal",
-  "saturatedFatLabel": "Saturated fat",
-  "polyunsaturatedFatLabel": "Polyunsaturated fat",
-  "monounsaturatedFatLabel": "Monounsaturated fat",
-  "transFatLabel": "Trans fat",
-  "cholesterolLabel": "Cholesterol",
-  "sodiumLabel": "Sodium",
-  "potassiumLabel": "Potassium",
-  "carbohydratesLabel": "Carbohydrates",
-  "fiberLabel": "Fiber",
-  "sugarLabel": "Sugar",
-  "vitaminALabel": "Vitamin A",
-  "vitaminCLabel": "Vitamin C",
-  "calciumLabel": "Calcium",
-  "ironLabel": "Iron",
-  "vitaminDLabel": "Vitamin D",
-  "carbsValue": "Carbs {value}g",
-  "@carbsValue": {
-    "placeholder": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "fatValue": "Fat {value}g",
-  "@fatValue": {
-    "placeholder": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "proteinValue": "Protein {value}g",
-  "@proteinValue": {
-    "placeholder": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
-  "loginTitle": "Login",
-  "usernameLabel": "Username",
-  "userNotFoundError": "The username you entered was not found.",
-  "carbsPercentageValue": "Carbs {percentage}%",
   "@carbsPercentageValue": {
-    "placeholder": {
+    "placeholders": {
       "percentage": {
         "type": "int"
       }
     }
   },
-  "fatPercentageValue": "Fat {percentage}%",
-  "@fatPercentageValue": {
-    "placeholder": {
-      "percentage": {
+  "@carbsValue": {
+    "placeholders": {
+      "value": {
         "type": "int"
       }
     }
   },
-  "proteinPercentageValue": "Protein {percentage}%",
-  "@proteinPercentageValue": {
-    "placeholder": {
-      "percentage": {
-        "type": "int"
-      }
-    }
-  },
-  "accountsTitle": "Accounts",
-  "logoutLabel": "Logout",
-  "addAccountLabel": "Add account",
-  "continueLabel": "Continue",
-  "alreadyLoggedInMessage": "You are already logged in with this account.",
-  "connectionErrorMessage": "Could not connect to the server.",
-  "createFoodLabel": "Create food",
-  "foodLabel": "Food",
-  "brandNameLabel": "Brand name (optional)",
-  "emptyFoodNameError": "Food name can't be empty.",
-  "emptyServingError": "Serving size can't be empty.",
-  "invalidServingError": "Invalid serving size.",
-  "requiredError": "Required",
-  "invalidError": "Invalid",
-  "macrosOrCaloriesError": "The macronutrients and calories values do not match. Expected calories for these macros: {calories}.",
-  "@macrosOrCaloriesError": {
-    "placeholder": {
-      "calories": {
-        "type": "int"
-      }
-    }
-  },
-  "insolubleFiberLabel": "Insoluble fiber",
-  "sugarsExceedNetCarbsError": "Sugar must be less than or equal to net carbs.",
-  "sumFatsExceedsTotalFatError": "The sum of saturated, trans, mono and polyunsaturated fats must not exceed the total fat. Expected minimum fat: {fat}.",
-  "@sumFatsExceedsTotalFatError": {
-    "placeholder": {
-      "fat": {
-        "type": "int"
-      }
-    }
-  },
-  "cholesterolExceedsFatError": "Cholesterol in grams must be less than or equal to total fat in grams.",
-  "macrosExceedServingSizeError": "The sum of macronutrients must not exceed the serving size in grams. Expected serving size of at least {servingSize}g.",
-  "@macrosExceedServingSizeError": {
-    "placeholder": {
-      "servingSize": {
-        "type": "int"
-      }
-    }
-  },
-  "cholesterolExceedsMaxPerServingError": "Cholesterol must be less than or equal to {cholesterol}mg for this serving size.",
   "@cholesterolExceedsMaxPerServingError": {
-    "placeholder": {
+    "placeholders": {
       "cholesterol": {
         "type": "int"
       }
     }
   },
-  "insolubleFiberExceedsFiberError": "Insoluble fiber must be less than or equal to fiber.",
-  "saltExceedsServingSizeError": "Salt must be less than or equal to serving size.",
-  "ironExceedsMaxPerServingError": "Iron must be less than or equal to {iron}mg for this serving size.",
+  "@fatPercentageValue": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "@fatValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "@gramsValue": {
+    "placeholders": {
+      "grams": {
+        "type": "double"
+      }
+    }
+  },
   "@ironExceedsMaxPerServingError": {
-    "placeholder": {
+    "placeholders": {
       "iron": {
         "type": "int"
       }
     }
   },
-  "potassiumExceedsMaxPerServingError": "Potassium must be less than or equal to {potassium}mg for this serving size.",
+  "@macrosExceedServingSizeError": {
+    "placeholders": {
+      "servingSize": {
+        "type": "int"
+      }
+    }
+  },
+  "@macrosOrCaloriesError": {
+    "placeholders": {
+      "calories": {
+        "type": "int"
+      }
+    }
+  },
   "@potassiumExceedsMaxPerServingError": {
-    "placeholder": {
+    "placeholders": {
       "potassium": {
         "type": "int"
       }
     }
   },
-  "calciumExceedsMaxPerServingError": "Calcium must be less than or equal to {calcium}mg for this serving size.",
-  "@calciumExceedsMaxPerServingError": {
-    "placeholder": {
-      "calcium": {
+  "@proteinPercentageValue": {
+    "placeholders": {
+      "percentage": {
         "type": "int"
       }
     }
   },
-  "vitaminAExceedsMaxPerServingError": "Vitamin A must be less than or equal to {vitaminA} IU for this serving size.",
+  "@proteinValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "@sumFatsExceedsTotalFatError": {
+    "placeholders": {
+      "fat": {
+        "type": "int"
+      }
+    }
+  },
   "@vitaminAExceedsMaxPerServingError": {
-    "placeholder": {
+    "placeholders": {
       "vitaminA": {
         "type": "int"
       }
     }
   },
-  "vitaminCExceedsMaxPerServingError": "Vitamin C must be less than or equal to {vitaminC}mg for this serving size.",
   "@vitaminCExceedsMaxPerServingError": {
-    "placeholder": {
+    "placeholders": {
       "vitaminC": {
         "type": "int"
       }
     }
   },
-  "vitaminDExceedsMaxPerServingError": "Vitamin D must be less than or equal to {vitaminD} IU for this serving size.",
   "@vitaminDExceedsMaxPerServingError": {
-    "placeholder": {
+    "placeholders": {
       "vitaminD": {
         "type": "int"
       }
     }
   },
-  "carbsGramsLabel": "Carbs (g)",
-  "fatGramsLabel": "Fat (g)",
-  "proteinGramsLabel": "Protein (g)",
-  "saturatedFatGramsLabel": "Saturated fat (g)",
-  "polyFatGramsLabel": "Poly fat (g)",
-  "monoFatGramsLabel": "Mono fat (g)",
-  "transFatGramsLabel": "Trans fat (g)",
-  "cholesterolMgLabel": "Cholesterol (mg)",
-  "saltGramsLabel": "Salt (g)",
-  "potassiumMgLabel": "Potassium (mg)",
-  "calciumMgLabel": "Calcium (mg)",
-  "ironMgLabel": "Iron (mg)",
-  "fiberGramsLabel": "Fiber (g)",
-  "sugarGramsLabel": "Sugar (g)",
-  "vitaminAIULabel": "Vitamin A (IU)",
-  "vitaminCMgLabel": "Vitamin C (mg)",
-  "vitaminDIULabel": "Vitamin D (IU)",
-  "insolubleFiberGramsLabel": "Insoluble fiber (g)",
-  "gramsValue": "{grams}g",
-  "@gramsValue": {
-    "placeholder": {
-      "grams": {
-        "type": "int"
-      }
-    }
-  },
-  "collectionLabel": "Collection",
-  "gramsShortLabel": "g",
-  "netCarbsLabel": "Net carbs",
-  "errorAddFood": "Could not save food to diary. Please try again later.",
-  "errorSavingEntry": "Error saving entry.",
-  "profileTitle": "Profile",
-  "switchAccountLabel": "Switch account",
-  "syncDataLabel": "Sync data",
-  "deleteEntryLabel": "Delete entry",
-  "deleteEntriesTitle": "Delete entries",
-  "errorCreateFood": "Could not save food. Please use a similar food from collection or try again later.",
-  "recipesTitle": "Recipes",
-  "searchRecipeLabel": "Search for a recipe",
-  "createRecipeTitle": "Create recipe",
-  "recipeNameLabel": "Recipe name",
-  "ingredientsTitle": "Ingredients",
-  "searchIngredientTitle": "Search ingredient",
-  "addIngredientTitle": "Add ingredient",
-  "nutritionTitle": "Nutrition",
-  "cookedQuantityGramsLabel": "Cooked quantity (grams)",
-  "summary100GramsMessage": "Summary for 100g cooked product",
-  "errorCreatingRecipeMessage": "Could not create recipe.",
-  "emptyRecipeNameError": "Recipe name can't be empty",
+  "accountsTitle": "Accounts",
+  "addAccountLabel": "Add account",
   "addIngredientError": "Could not add ingredient to recipe",
-  "recipeDetailsTitle": "Recipe details",
-  "yesterdayLabel": "Yesterday",
-  "tomorrowLabel": "Tomorrow",
+  "addIngredientTitle": "Add ingredient",
+  "alreadyLoggedInMessage": "You are already logged in with this account.",
+  "brandNameLabel": "Brand name (optional)",
+  "breakfastLabel": "Breakfast",
+  "calciumExceedsMaxPerServingError": "Calcium must be less than or equal to {calcium}mg for this serving size.",
+  "calciumLabel": "Calcium",
+  "calciumMgLabel": "Calcium (mg)",
+  "caloriesLabel": "Calories",
+  "caloriesServingShortLabel": "{calories} cal, {servingQuantity} {servingUnit}",
+  "caloriesShortGenericLabel": "cal",
+  "caloriesShortLabel": "{calories} cal",
+  "carbohydratesLabel": "Carbohydrates",
+  "carbsGramsLabel": "Carbs (g)",
+  "carbsLabel": "Carbs",
+  "carbsPercentageValue": "Carbs {percentage}%",
+  "carbsValue": "Carbs {value}g",
+  "cholesterolExceedsFatError": "Cholesterol in grams must be less than or equal to total fat in grams.",
+  "cholesterolExceedsMaxPerServingError": "Cholesterol must be less than or equal to {cholesterol}mg for this serving size.",
+  "cholesterolLabel": "Cholesterol",
+  "cholesterolMgLabel": "Cholesterol (mg)",
+  "collectionLabel": "Collection",
+  "connectionErrorMessage": "Could not connect to the server.",
+  "continueLabel": "Continue",
+  "cookedQuantityGramsLabel": "Cooked quantity (grams)",
+  "copyDiaryError": "Could not copy diary logs",
   "copyDiaryTitle": "Copy diary entries",
+  "createFoodLabel": "Create food",
+  "createRecipeTitle": "Create recipe",
+  "deleteEntriesTitle": "Delete entries",
+  "deleteEntryLabel": "Delete entry",
+  "diaryTitle": "Diary",
+  "dinnerLabel": "Dinner",
+  "discoverLabel": "Discover",
+  "emptyFoodNameError": "Food name can't be empty.",
+  "emptyRecipeNameError": "Recipe name can't be empty",
+  "emptyServingError": "Serving size can't be empty.",
+  "errorAddFood": "Could not save food to diary. Please try again later.",
+  "errorCreateFood": "Could not save food. Please use a similar food from collection or try again later.",
+  "errorCreatingRecipeMessage": "Could not create recipe.",
+  "errorSavingEntry": "Error saving entry.",
+  "fatGramsLabel": "Fat (g)",
+  "fatLabel": "Fat",
+  "fatPercentageValue": "Fat {percentage}%",
+  "fatValue": "Fat {value}g",
+  "fiberGramsLabel": "Fiber (g)",
+  "fiberLabel": "Fiber",
+  "foodLabel": "Food",
+  "foodLoggedMessage": "Food logged!",
   "fromAnotherDayLabel": "From another day",
   "fromPreviousDayLabel": "From previous day",
-  "copyDiaryError": "Could not copy diary logs",
+  "generalErrorMessage": "An error occurred.",
+  "gramsLabel": "Grams",
+  "gramsShortLabel": "g",
+  "gramsValue": "{grams}g",
+  "ingredientsTitle": "Ingredients",
+  "insolubleFiberExceedsFiberError": "Insoluble fiber must be less than or equal to fiber.",
+  "insolubleFiberGramsLabel": "Insoluble fiber (g)",
+  "insolubleFiberLabel": "Insoluble fiber",
+  "invalidError": "Invalid",
+  "invalidServingError": "Invalid serving size.",
+  "ironExceedsMaxPerServingError": "Iron must be less than or equal to {iron}mg for this serving size.",
+  "ironLabel": "Iron",
+  "ironMgLabel": "Iron (mg)",
+  "logFoodLabel": "Log food",
+  "loginTitle": "Login",
+  "logoutLabel": "Logout",
+  "lunchLabel": "Lunch",
+  "macroGoalsError": "Could not save goals. Macros percentages sum must be 100%.",
+  "macroPercentagesSumMessage": "Must be equal to 100%",
+  "macrosExceedServingSizeError": "The sum of macronutrients must not exceed the serving size in grams. Expected serving size of at least {servingSize}g.",
+  "macrosOrCaloriesError": "The macronutrients and calories values do not match. Expected calories for these macros: {calories}.",
+  "mealLabel": "Meal",
+  "mealsLabel": "Meals",
+  "monoFatGramsLabel": "Mono fat (g)",
+  "monounsaturatedFatLabel": "Monounsaturated fat",
+  "myGoalsLabel": "My goals",
+  "netCarbsLabel": "Net carbs",
+  "noFoodLoggedMessage": "You didn't log foods for this meal yet.",
+  "noResultsTitle": "There were no results matching your search",
+  "nutrientsLabel": "Nutrients",
+  "nutritionTitle": "Nutrition",
+  "percentagesLabel": "Percentages",
+  "polyFatGramsLabel": "Poly fat (g)",
+  "polyunsaturatedFatLabel": "Polyunsaturated fat",
+  "potassiumExceedsMaxPerServingError": "Potassium must be less than or equal to {potassium}mg for this serving size.",
+  "potassiumLabel": "Potassium",
+  "potassiumMgLabel": "Potassium (mg)",
+  "profileTitle": "Profile",
+  "proteinGramsLabel": "Protein (g)",
+  "proteinLabel": "Protein",
+  "proteinPercentageValue": "Protein {percentage}%",
+  "proteinValue": "Protein {value}g",
+  "recipeDetailsTitle": "Recipe details",
+  "recipeNameLabel": "Recipe name",
+  "recipesTitle": "Recipes",
+  "requiredError": "Required",
+  "saltExceedsServingSizeError": "Salt must be less than or equal to serving size.",
+  "saltGramsLabel": "Salt (g)",
+  "saturatedFatGramsLabel": "Saturated fat (g)",
+  "saturatedFatLabel": "Saturated fat",
+  "searchFoodsLabel": "Search food",
+  "searchForFoodLabel": "Search for a food",
+  "searchIngredientTitle": "Search ingredient",
+  "searchRecipeLabel": "Search for a recipe",
+  "servingsLabel": "Serving size (g)",
+  "snacksLabel": "Snacks",
+  "sodiumLabel": "Sodium",
+  "sugarGramsLabel": "Sugar (g)",
+  "sugarLabel": "Sugar",
+  "sugarsExceedNetCarbsError": "Sugar must be less than or equal to net carbs.",
+  "sumFatsExceedsTotalFatError": "The sum of saturated, trans, mono and polyunsaturated fats must not exceed the total fat. Expected minimum fat: {fat}.",
+  "summary100GramsMessage": "Summary for 100g cooked product",
+  "switchAccountLabel": "Switch account",
+  "syncDataLabel": "Sync data",
   "toAnotherDayLabel": "To another day",
   "toTodayLabel": "To today",
-  "foodLoggedMessage": "Food logged!",
-  "updateLogError": "Could not update diary entry. Please try again later.",
-  "myGoalsLabel": "My goals",
-  "gramsLabel": "Grams",
-  "percentagesLabel": "Percentages",
+  "todayTitle": "Today",
+  "tomorrowLabel": "Tomorrow",
   "totalLabel": "Total",
-  "macroPercentagesSumMessage": "Must be equal to 100%"
+  "transFatGramsLabel": "Trans fat (g)",
+  "transFatLabel": "Trans fat",
+  "updateLogError": "Could not update diary entry. Please try again later.",
+  "usdaDataSource": "Data source: USDA FoodData Central",
+  "userNotFoundError": "The username you entered was not found.",
+  "usernameLabel": "Username",
+  "vitaminAExceedsMaxPerServingError": "Vitamin A must be less than or equal to {vitaminA} IU for this serving size.",
+  "vitaminAIULabel": "Vitamin A (IU)",
+  "vitaminALabel": "Vitamin A",
+  "vitaminCExceedsMaxPerServingError": "Vitamin C must be less than or equal to {vitaminC}mg for this serving size.",
+  "vitaminCLabel": "Vitamin C",
+  "vitaminCMgLabel": "Vitamin C (mg)",
+  "vitaminDExceedsMaxPerServingError": "Vitamin D must be less than or equal to {vitaminD} IU for this serving size.",
+  "vitaminDIULabel": "Vitamin D (IU)",
+  "vitaminDLabel": "Vitamin D",
+  "yesterdayLabel": "Yesterday"
 }

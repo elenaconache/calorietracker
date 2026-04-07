@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,28 +9,48 @@ part of 'search_recipe_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SearchRecipeState {
-  AsyncState<List<Recipe>> get allRecipes => throw _privateConstructorUsedError;
-  List<Recipe> get searchResults => throw _privateConstructorUsedError;
+  AsyncState<List<Recipe>> get allRecipes;
+  List<Recipe> get searchResults;
 
   /// Create a copy of SearchRecipeState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $SearchRecipeStateCopyWith<SearchRecipeState> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$SearchRecipeStateCopyWithImpl<SearchRecipeState>(
+          this as SearchRecipeState, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SearchRecipeState &&
+            (identical(other.allRecipes, allRecipes) ||
+                other.allRecipes == allRecipes) &&
+            const DeepCollectionEquality()
+                .equals(other.searchResults, searchResults));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, allRecipes,
+      const DeepCollectionEquality().hash(searchResults));
+
+  @override
+  String toString() {
+    return 'SearchRecipeState(allRecipes: $allRecipes, searchResults: $searchResults)';
+  }
 }
 
 /// @nodoc
-abstract class $SearchRecipeStateCopyWith<$Res> {
+abstract mixin class $SearchRecipeStateCopyWith<$Res> {
   factory $SearchRecipeStateCopyWith(
-          SearchRecipeState value, $Res Function(SearchRecipeState) then) =
-      _$SearchRecipeStateCopyWithImpl<$Res, SearchRecipeState>;
+          SearchRecipeState value, $Res Function(SearchRecipeState) _then) =
+      _$SearchRecipeStateCopyWithImpl;
   @useResult
   $Res call({AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults});
 
@@ -38,14 +58,12 @@ abstract class $SearchRecipeStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SearchRecipeStateCopyWithImpl<$Res, $Val extends SearchRecipeState>
+class _$SearchRecipeStateCopyWithImpl<$Res>
     implements $SearchRecipeStateCopyWith<$Res> {
-  _$SearchRecipeStateCopyWithImpl(this._value, this._then);
+  _$SearchRecipeStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final SearchRecipeState _self;
+  final $Res Function(SearchRecipeState) _then;
 
   /// Create a copy of SearchRecipeState
   /// with the given fields replaced by the non-null parameter values.
@@ -55,16 +73,16 @@ class _$SearchRecipeStateCopyWithImpl<$Res, $Val extends SearchRecipeState>
     Object? allRecipes = null,
     Object? searchResults = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       allRecipes: null == allRecipes
-          ? _value.allRecipes
+          ? _self.allRecipes
           : allRecipes // ignore: cast_nullable_to_non_nullable
               as AsyncState<List<Recipe>>,
       searchResults: null == searchResults
-          ? _value.searchResults
+          ? _self.searchResults
           : searchResults // ignore: cast_nullable_to_non_nullable
               as List<Recipe>,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of SearchRecipeState
@@ -72,59 +90,179 @@ class _$SearchRecipeStateCopyWithImpl<$Res, $Val extends SearchRecipeState>
   @override
   @pragma('vm:prefer-inline')
   $AsyncStateCopyWith<List<Recipe>, $Res> get allRecipes {
-    return $AsyncStateCopyWith<List<Recipe>, $Res>(_value.allRecipes, (value) {
-      return _then(_value.copyWith(allRecipes: value) as $Val);
+    return $AsyncStateCopyWith<List<Recipe>, $Res>(_self.allRecipes, (value) {
+      return _then(_self.copyWith(allRecipes: value));
     });
   }
 }
 
-/// @nodoc
-abstract class _$$SearchRecipeStateImplCopyWith<$Res>
-    implements $SearchRecipeStateCopyWith<$Res> {
-  factory _$$SearchRecipeStateImplCopyWith(_$SearchRecipeStateImpl value,
-          $Res Function(_$SearchRecipeStateImpl) then) =
-      __$$SearchRecipeStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults});
+/// Adds pattern-matching-related methods to [SearchRecipeState].
+extension SearchRecipeStatePatterns on SearchRecipeState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  $AsyncStateCopyWith<List<Recipe>, $Res> get allRecipes;
-}
-
-/// @nodoc
-class __$$SearchRecipeStateImplCopyWithImpl<$Res>
-    extends _$SearchRecipeStateCopyWithImpl<$Res, _$SearchRecipeStateImpl>
-    implements _$$SearchRecipeStateImplCopyWith<$Res> {
-  __$$SearchRecipeStateImplCopyWithImpl(_$SearchRecipeStateImpl _value,
-      $Res Function(_$SearchRecipeStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of SearchRecipeState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? allRecipes = null,
-    Object? searchResults = null,
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_SearchRecipeState value)? $default, {
+    required TResult orElse(),
   }) {
-    return _then(_$SearchRecipeStateImpl(
-      allRecipes: null == allRecipes
-          ? _value.allRecipes
-          : allRecipes // ignore: cast_nullable_to_non_nullable
-              as AsyncState<List<Recipe>>,
-      searchResults: null == searchResults
-          ? _value._searchResults
-          : searchResults // ignore: cast_nullable_to_non_nullable
-              as List<Recipe>,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _SearchRecipeState() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_SearchRecipeState value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SearchRecipeState():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_SearchRecipeState value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SearchRecipeState() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SearchRecipeState() when $default != null:
+        return $default(_that.allRecipes, _that.searchResults);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SearchRecipeState():
+        return $default(_that.allRecipes, _that.searchResults);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SearchRecipeState() when $default != null:
+        return $default(_that.allRecipes, _that.searchResults);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$SearchRecipeStateImpl implements _SearchRecipeState {
-  const _$SearchRecipeStateImpl(
+class _SearchRecipeState implements SearchRecipeState {
+  const _SearchRecipeState(
       {required this.allRecipes, required final List<Recipe> searchResults})
       : _searchResults = searchResults;
 
@@ -138,16 +276,19 @@ class _$SearchRecipeStateImpl implements _SearchRecipeState {
     return EqualUnmodifiableListView(_searchResults);
   }
 
+  /// Create a copy of SearchRecipeState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SearchRecipeState(allRecipes: $allRecipes, searchResults: $searchResults)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SearchRecipeStateCopyWith<_SearchRecipeState> get copyWith =>
+      __$SearchRecipeStateCopyWithImpl<_SearchRecipeState>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SearchRecipeStateImpl &&
+            other is _SearchRecipeState &&
             (identical(other.allRecipes, allRecipes) ||
                 other.allRecipes == allRecipes) &&
             const DeepCollectionEquality()
@@ -158,30 +299,63 @@ class _$SearchRecipeStateImpl implements _SearchRecipeState {
   int get hashCode => Object.hash(runtimeType, allRecipes,
       const DeepCollectionEquality().hash(_searchResults));
 
+  @override
+  String toString() {
+    return 'SearchRecipeState(allRecipes: $allRecipes, searchResults: $searchResults)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$SearchRecipeStateCopyWith<$Res>
+    implements $SearchRecipeStateCopyWith<$Res> {
+  factory _$SearchRecipeStateCopyWith(
+          _SearchRecipeState value, $Res Function(_SearchRecipeState) _then) =
+      __$SearchRecipeStateCopyWithImpl;
+  @override
+  @useResult
+  $Res call({AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults});
+
+  @override
+  $AsyncStateCopyWith<List<Recipe>, $Res> get allRecipes;
+}
+
+/// @nodoc
+class __$SearchRecipeStateCopyWithImpl<$Res>
+    implements _$SearchRecipeStateCopyWith<$Res> {
+  __$SearchRecipeStateCopyWithImpl(this._self, this._then);
+
+  final _SearchRecipeState _self;
+  final $Res Function(_SearchRecipeState) _then;
+
   /// Create a copy of SearchRecipeState
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$SearchRecipeStateImplCopyWith<_$SearchRecipeStateImpl> get copyWith =>
-      __$$SearchRecipeStateImplCopyWithImpl<_$SearchRecipeStateImpl>(
-          this, _$identity);
-}
-
-abstract class _SearchRecipeState implements SearchRecipeState {
-  const factory _SearchRecipeState(
-      {required final AsyncState<List<Recipe>> allRecipes,
-      required final List<Recipe> searchResults}) = _$SearchRecipeStateImpl;
-
-  @override
-  AsyncState<List<Recipe>> get allRecipes;
-  @override
-  List<Recipe> get searchResults;
+  $Res call({
+    Object? allRecipes = null,
+    Object? searchResults = null,
+  }) {
+    return _then(_SearchRecipeState(
+      allRecipes: null == allRecipes
+          ? _self.allRecipes
+          : allRecipes // ignore: cast_nullable_to_non_nullable
+              as AsyncState<List<Recipe>>,
+      searchResults: null == searchResults
+          ? _self._searchResults
+          : searchResults // ignore: cast_nullable_to_non_nullable
+              as List<Recipe>,
+    ));
+  }
 
   /// Create a copy of SearchRecipeState
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SearchRecipeStateImplCopyWith<_$SearchRecipeStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<List<Recipe>, $Res> get allRecipes {
+    return $AsyncStateCopyWith<List<Recipe>, $Res>(_self.allRecipes, (value) {
+      return _then(_self.copyWith(allRecipes: value));
+    });
+  }
 }
+
+// dart format on

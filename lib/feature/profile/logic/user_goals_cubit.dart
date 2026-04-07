@@ -70,10 +70,19 @@ class UserGoalsCubit extends Cubit<UserGoalsState> {
       fat: macro == Macro.fat ? value.toDouble() : null,
       userGoals: state.userGoals.data!,
     );
-    emit(state.copyWith(
-      macroGoals: AsyncState.success(calculatedGoals),
-      userGoals: AsyncState.success(goals.copyWith()),
-    ));
+    emit(
+      state.copyWith(
+        macroGoals: AsyncState.success(calculatedGoals),
+        userGoals: AsyncState.success(
+          _goalsRepository.calculateUserGoalsFromMacrosGrams(
+            userGoals: goals,
+            carb: macro == Macro.carbohydrates ? value.toDouble() : null,
+            protein: macro == Macro.protein ? value.toDouble() : null,
+            fat: macro == Macro.fat ? value.toDouble() : null,
+          ),
+        ),
+      ),
+    );
   }
 
   void onCaloriesChanged({required double calories}) {
@@ -102,10 +111,47 @@ class UserGoalsCubit extends Cubit<UserGoalsState> {
       _loggingService.info('No goals found');
       return;
     }
-    emit(state.copyWith(
-      macroGoals: AsyncState.success(
-        _goalsRepository.updateMacroPercentage(macroGoals: macroGoals, calories: goals.calories, macro: macro, percentage: value),
+    final updatedMacros = _goalsRepository.updateMacroPercentage(
+      macroGoals: macroGoals,
+      calories: goals.calories,
+      macro: macro,
+      percentage: value,
+    );
+    emit(
+      state.copyWith(
+        macroGoals: AsyncState.success(updatedMacros),
+        userGoals: AsyncState.success(
+          goals.copyWith(
+            carbsPercentage: macro == Macro.carbohydrates ? value.toDouble() : null,
+            proteinPercentage: macro == Macro.protein ? value.toDouble() : null,
+            fatPercentage: macro == Macro.fat ? value.toDouble() : null,
+          ),
+        ),
       ),
-    ));
+    );
+  }
+
+  void saveUserGoals() async {
+    final goals = state.userGoals.data;
+    final macroGoals = state.macroGoals.data;
+
+    if (goals == null || macroGoals == null) {
+      _loggingService.info('Could not save user goals');
+      return;
+    }
+
+    emit(state.copyWith(userGoals: AsyncState.loading()));
+
+    try {
+      await Future.wait([
+        _goalsRepository.saveUserGoals(goals: goals),
+        Future.delayed(const Duration(milliseconds: 600)),
+      ]);
+
+      emit(state.copyWith(macroGoals: AsyncState.success(macroGoals), userGoals: AsyncState.success(goals)));
+    } catch (e, stackTrace) {
+      _loggingService.handle(e, stackTrace);
+      emit(state.copyWith(macroGoals: AsyncState.failure(GeneralFailure()), userGoals: AsyncState.failure(GeneralFailure())));
+    }
   }
 }

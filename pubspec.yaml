@@ -34,7 +34,7 @@ dependencies:
     sdk: flutter
   intl: ^0.20.2
   get_it: ^8.0.3
-  retrofit: ^4.4.2
+  retrofit: ^4.9.2
   dio: ^5.6.0
   json_annotation: ^4.9.0
   dio_cache_interceptor: ^3.5.0
@@ -44,12 +44,12 @@ dependencies:
   collection: ^1.18.0
   flutter_secure_storage: ^9.2.2
   smooth_page_indicator: ^1.2.0
-  objectbox: ^4.1.0
-  objectbox_sync_flutter_libs: ^4.1.0
+  objectbox: ^5.3.1
+  objectbox_sync_flutter_libs: ^5.3.1
   intl_utils: ^2.8.8
   flutter_dotenv: ^5.2.1
   injectable: ^2.5.0
-  freezed_annotation: ^2.4.4
+  freezed_annotation: ^3.1.0
   flutter_bloc: ^9.1.0
   rxdart: ^0.28.0
 
@@ -59,20 +59,18 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
   json_serializable: ^6.8.0
-  build_runner: ^2.4.12
-  retrofit_generator: ^9.1.9
-  objectbox_generator: ^4.1.0
+  build_runner: ^2.13.1
+  retrofit_generator: ^10.2.3
+  objectbox_generator: ^5.3.1
   injectable_generator: ^2.5.0
-  freezed: ^2.5.7
+  freezed: ^3.2.5
 
 flutter:
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
   assets:
     - assets/icons/
     - assets/.env
+  generate: true
 
 flutter_intl:
   enabled: true

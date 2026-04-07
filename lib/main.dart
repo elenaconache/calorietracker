@@ -49,9 +49,7 @@ class MyApp extends StatelessWidget {
         home: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (previous, current) =>
               previous.selectedUser.status is InitialStatus ||
-              current.selectedUser.status is! LoadingStatus &&
-                  previous.selectedUser != current.selectedUser &&
-                  (previous.users.data?.isEmpty != current.users.data?.isEmpty),
+              current.selectedUser.status is! LoadingStatus && previous.selectedUser != current.selectedUser,
           builder: (context, state) {
             return state.selectedUser.status.maybeMap(
               failure: (_) => BlocProvider(

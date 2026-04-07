@@ -7,29 +7,30 @@ import 'package:flutter/material.dart';
 class MacroPercentageGoals extends StatelessWidget {
   final MacroGoals macroGoals;
   final Function(Macro selectedMacro, int selectedPercentage) onMacroPercentagePicked;
+  final bool enabled;
 
   const MacroPercentageGoals({
     super.key,
     required this.macroGoals,
     required this.onMacroPercentagePicked,
+    required this.enabled,
   });
 
   @override
   Widget build(BuildContext context) {
     final totalPercentage = macroGoals.roundedCarbsPercentage + macroGoals.roundedFatPercentage + macroGoals.roundedProteinPercentage;
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          flex: 4,
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: MacrosPickers(macroGoals: macroGoals, onValuePicked: onMacroPercentagePicked),
+            child: SizedBox(
+              height: 300,
+              child: MacrosPickers(enabled: enabled, macroGoals: macroGoals, onValuePicked: onMacroPercentagePicked),
+            ),
           ),
         ),
-        Expanded(
-          flex: 1,
+        SliverToBoxAdapter(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -58,9 +59,17 @@ class MacroPercentageGoals extends StatelessWidget {
             ],
           ),
         ),
-        const Spacer(),
-        PercentagesTotal(totalPercentage: totalPercentage),
-        SizedBox(height: MediaQuery.of(context).padding.bottom),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              PercentagesTotal(totalPercentage: totalPercentage),
+              SizedBox(height: MediaQuery.of(context).padding.bottom),
+            ],
+          ),
+        ),
       ],
     );
   }

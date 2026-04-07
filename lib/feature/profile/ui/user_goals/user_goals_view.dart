@@ -54,6 +54,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(AppStrings.myGoalsLabel),
         actions: [
@@ -76,12 +77,10 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
             _addMacrosListeners();
           }
         },
-        buildWhen: (previous, current) =>
-            previous.userGoals.status != current.userGoals.status || previous.macroGoals.status != current.macroGoals.status,
+        buildWhen: (previous, current) => previous.userGoals.status != current.userGoals.status || previous.macroGoals != current.macroGoals,
         builder: (context, state) {
           return switch (state.userGoals.status) {
-            LoadingStatus _ => const Center(child: CircularProgressIndicator()),
-            SuccessStatus _ => Column(
+            AsyncStatus s when [LoadingStatus, SuccessStatus].contains(s.runtimeType) => Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   const SizedBox(height: 16),
@@ -97,6 +96,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
                         labelText: AppStrings.caloriesLabel,
                         inputType: TextInputType.number,
                         action: TextInputAction.next,
+                        enabled: s is! LoadingStatus,
                       ),
                     ),
                   ),
@@ -132,11 +132,13 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
                             carbsController: _carbsController,
                             proteinController: _proteinController,
                             fatController: _fatController,
+                            enabled: s is! LoadingStatus,
                           ),
                         ),
                         state.macroGoals.data == null
                             ? const SizedBox.shrink()
                             : MacroPercentageGoals(
+                                enabled: s is! LoadingStatus,
                                 macroGoals: state.macroGoals.data!,
                                 onMacroPercentagePicked: _onMacroPercentagePicked,
                               ),
@@ -210,6 +212,16 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
   }
 
   void _onDonePressed() {
-    if (_formKey.currentState?.validate() ?? false) {}
+    final isValid = _formKey.currentState?.validate();
+    if (isValid == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppStrings.macroGoalsError),
+        ),
+      );
+    } else if (isValid == true) {
+      final cubit = context.read<UserGoalsCubit>();
+      cubit.saveUserGoals();
+    }
   }
 }
