@@ -1,7 +1,7 @@
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/shared/data/model/local/local_diary_entry.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
-import 'package:calorietracker/ui/components/empty_view.dart';
+import 'package:calorietracker/ui/widgets/empty_view.dart';
 import 'package:calorietracker/feature/search_food/ui/food_item.dart';
 import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
 import 'package:calorietracker/shared/data/model/food.dart';
@@ -9,7 +9,7 @@ import 'package:calorietracker/shared/data/model/local/local_food.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/general_error_view.dart';
+import 'package:calorietracker/ui/widgets/general_error_view.dart';
 import 'package:flutter/material.dart';
 
 class CollectionResultsSection extends StatefulWidget {

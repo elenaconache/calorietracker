@@ -13,9 +13,9 @@ import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_divider.dart';
-import 'package:calorietracker/ui/components/calories_macros_section.dart';
-import 'package:calorietracker/ui/components/general_error_view.dart';
+import 'package:calorietracker/ui/widgets/app_divider.dart';
+import 'package:calorietracker/ui/widgets/calories_macros_section.dart';
+import 'package:calorietracker/ui/widgets/general_error_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

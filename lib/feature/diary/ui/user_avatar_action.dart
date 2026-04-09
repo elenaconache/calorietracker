@@ -1,6 +1,6 @@
 import 'package:calorietracker/feature/auth/logic/auth_bloc.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/ui/components/initials_avatar.dart';
+import 'package:calorietracker/ui/widgets/initials_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -2,8 +2,8 @@ import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/create_food/ui/food_form_row.dart';
 import 'package:calorietracker/feature/create_food/ui/macros_inputs.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_divider.dart';
-import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
+import 'package:calorietracker/ui/widgets/app_divider.dart';
+import 'package:calorietracker/ui/widgets/text_field/app_text_field.dart';
 import 'package:calorietracker/shared/data/validators/food_validator.dart';
 import 'package:flutter/material.dart';
 

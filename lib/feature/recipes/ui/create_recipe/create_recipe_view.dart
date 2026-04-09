@@ -9,8 +9,8 @@ import 'package:calorietracker/feature/recipes/ui/create_recipe/ingredient_item.
 import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_divider.dart';
-import 'package:calorietracker/ui/components/calories_macros_section.dart';
+import 'package:calorietracker/ui/widgets/app_divider.dart';
+import 'package:calorietracker/ui/widgets/calories_macros_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

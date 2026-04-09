@@ -6,8 +6,8 @@ import 'package:calorietracker/feature/profile/ui/user_goals/macros_form.dart';
 import 'package:calorietracker/shared/data/model/macro.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/general_error_view.dart';
-import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
+import 'package:calorietracker/ui/widgets/general_error_view.dart';
+import 'package:calorietracker/ui/widgets/text_field/app_text_field.dart';
 import 'package:calorietracker/shared/data/validators/food_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +37,12 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
     _tabController = TabController(length: 2, vsync: this);
     _caloriesController.addListener(_onCaloriesChanged);
     _formKey = GlobalKey<FormState>(debugLabel: 'goalsForm');
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        final initialState = context.read<UserGoalsCubit>().state;
+        _updateTextFields(initialState);
+      },
+    );
   }
 
   @override
@@ -66,17 +72,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
       ),
       body: BlocConsumer<UserGoalsCubit, UserGoalsState>(
         listenWhen: (previous, current) => previous.macroGoals.data != current.macroGoals.data || previous.userGoals.data != current.userGoals.data,
-        listener: (context, state) {
-          final goals = state.macroGoals.data;
-          if (goals != null) {
-            _caloriesController.text = goals.calories.toString();
-            _carbsController.text = goals.roundedCarbsGrams.toString();
-            _proteinController.text = goals.roundedProteinGrams.toString();
-            _fatController.text = goals.roundedFatGrams.toString();
-
-            _addMacrosListeners();
-          }
-        },
+        listener: (context, state) => _updateTextFields(state),
         buildWhen: (previous, current) => previous.userGoals.status != current.userGoals.status || previous.macroGoals != current.macroGoals,
         builder: (context, state) {
           return switch (state.userGoals.status) {
@@ -153,6 +149,18 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
         },
       ),
     );
+  }
+
+  void _updateTextFields(UserGoalsState state) {
+    final goals = state.macroGoals.data;
+    if (goals != null) {
+      _caloriesController.text = goals.calories.toString();
+      _carbsController.text = goals.roundedCarbsGrams.toString();
+      _proteinController.text = goals.roundedProteinGrams.toString();
+      _fatController.text = goals.roundedFatGrams.toString();
+
+      _addMacrosListeners();
+    }
   }
 
   void _onMacroPercentagePicked(Macro macro, int pickedValue) {

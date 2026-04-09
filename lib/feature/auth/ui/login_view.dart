@@ -4,7 +4,7 @@ import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/shared/data/helper/failure.dart';
 import 'package:calorietracker/feature/auth/data/auth_error.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
+import 'package:calorietracker/ui/widgets/text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

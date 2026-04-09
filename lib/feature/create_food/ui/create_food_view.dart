@@ -10,7 +10,7 @@ import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/error_box.dart';
+import 'package:calorietracker/ui/widgets/error_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

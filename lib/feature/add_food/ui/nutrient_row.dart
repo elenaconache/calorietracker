@@ -1,4 +1,4 @@
-import 'package:calorietracker/ui/components/app_divider.dart';
+import 'package:calorietracker/ui/widgets/app_divider.dart';
 import 'package:flutter/material.dart';
 
 class NutrientRow extends StatelessWidget {

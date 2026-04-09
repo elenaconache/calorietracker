@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:calorietracker/feature/auth/logic/auth_bloc.dart';
 import 'package:calorietracker/feature/auth/logic/login_cubit.dart';
+import 'package:calorietracker/feature/profile/logic/user_goals_cubit.dart';
 import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/home/ui/home_view.dart';
@@ -63,7 +64,10 @@ class MyApp extends StatelessWidget {
                     child: LoginView(),
                   );
                 } else {
-                  return HomeView();
+                  return BlocProvider(
+                    create: (context) => getIt<UserGoalsCubit>(),
+                    child: HomeView(),
+                  );
                 }
               },
               orElse: () => Scaffold(
@@ -87,6 +91,10 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: primaryColor.shade50,
           cardColor: primaryColor.shade100,
           appBarTheme: AppBarTheme(backgroundColor: primaryColor.shade50),
+          progressIndicatorTheme: ProgressIndicatorThemeData(
+            borderRadius: BorderRadius.circular(8),
+            linearMinHeight: 2,
+          ),
         ),
         darkTheme: ThemeData(
           colorScheme: _defaultDarkColorScheme,
@@ -95,6 +103,10 @@ class MyApp extends StatelessWidget {
           snackBarTheme: SnackBarThemeData(
             backgroundColor: _defaultDarkColorScheme.surface,
             contentTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: _defaultDarkColorScheme.tertiary),
+          ),
+          progressIndicatorTheme: ProgressIndicatorThemeData(
+            borderRadius: BorderRadius.circular(8),
+            linearMinHeight: 2,
           ),
         ),
         themeMode: ThemeMode.dark,

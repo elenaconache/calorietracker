@@ -591,6 +591,16 @@ class S {
     );
   }
 
+  /// `Goal`
+  String get goalLabel {
+    return Intl.message(
+      'Goal',
+      name: 'goalLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Grams`
   String get gramsLabel {
     return Intl.message(
@@ -706,6 +716,16 @@ class S {
     return Intl.message(
       'Iron (mg)',
       name: 'ironMgLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Left`
+  String get leftLabel {
+    return Intl.message(
+      'Left',
+      name: 'leftLabel',
       desc: '',
       args: [],
     );

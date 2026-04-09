@@ -6,7 +6,7 @@ import 'package:calorietracker/shared/data/service/database/diary_logging_servic
 import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/copy_diary_modal.dart';
+import 'package:calorietracker/ui/widgets/copy_diary_modal.dart';
 import 'package:flutter/material.dart';
 
 class MealTitle extends StatelessWidget {

@@ -7,14 +7,14 @@ import 'package:calorietracker/feature/add_food/logic/add_food_cubit.dart';
 import 'package:calorietracker/feature/add_food/data/food_log.dart';
 import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/data/service/diary_service.dart';
-import 'package:calorietracker/ui/components/calories_macros_section.dart';
-import 'package:calorietracker/ui/components/nutrition_section.dart';
+import 'package:calorietracker/ui/widgets/calories_macros_section.dart';
+import 'package:calorietracker/ui/widgets/nutrition_section.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_divider.dart';
-import 'package:calorietracker/ui/components/text_field/app_text_field.dart';
-import 'package:calorietracker/ui/components/dropdown/app_dropdown_button.dart';
+import 'package:calorietracker/ui/widgets/app_divider.dart';
+import 'package:calorietracker/ui/widgets/text_field/app_text_field.dart';
+import 'package:calorietracker/ui/widgets/dropdown/app_dropdown_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,96 +38,94 @@ class AddFoodView extends StatelessWidget {
       child: BlocBuilder<AddFoodCubit, AddFoodState>(
         builder: (context, state) {
           return Scaffold(
-              appBar: AppBar(
-                title: Text(args.meal == null ? AppStrings.addIngredientTitle : AppStrings.logFoodLabel),
-                actions: [
-                  state.isLoading
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
-                      : IconButton(
-                          // TODO: send barcode as parameter to this view if the user scanned a barcode.
-                          onPressed: () => _confirmFood(context, state.servingSize ?? 100),
-                          icon: const Icon(Icons.check, size: 32),
+            appBar: AppBar(
+              title: Text(args.meal == null ? AppStrings.addIngredientTitle : AppStrings.logFoodLabel),
+              actions: [
+                state.isLoading
+                    ? const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(),
                         ),
-                ],
-              ),
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
-                      child: Text(
-                        args.food.name,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                      )
+                    : IconButton(
+                        // TODO: send barcode as parameter to this view if the user scanned a barcode.
+                        onPressed: () => _confirmFood(context, state.servingSize ?? 100),
+                        icon: const Icon(Icons.check, size: 32),
                       ),
-                    ),
-                    if (args.food.brandName != null)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16),
-                        child: Text(
-                          args.food.brandName!,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ),
-                    const SizedBox(height: 12),
-                    const AppDivider(),
-                    const SizedBox(height: 24),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: AppTextField(
-                        enabled: !state.isLoading,
-                        initialValue: (args.servingSize ?? 100).toString(),
-                        labelText: AppStrings.servingsLabel,
-                        suffixIcon: Icons.clear,
-                        onSuffixIconPressed: () => _onServingSizeChanged(context, ''),
-                        onChanged: (value) => _onServingSizeChanged(context, value),
-                        inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
-                        maxLength: 6,
-                        autofocus: true,
-                        action: TextInputAction.done,
-                      ),
-                    ),
-                    if (args.meal != null) ...[
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: AppDropdownButton<Meal>(
-                          hint: AppStrings.mealLabel,
-                          onChanged: (selectedMeal) => context.read<AddFoodCubit>().selectMeal(meal: selectedMeal),
-                          optionNameMapper: (meal) => meal.label,
-                          options: Meal.values,
-                          selectedOption: state.selectedMeal,
-                          enabled: !state.isLoading,
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 24),
-                    const AppDivider(),
-                    CaloriesMacrosSection(
-                      nutrition: Nutrition.perServing(
-                        nutritionPer100Grams: state.nutrition,
-                        servingSizeGrams: state.servingSize ?? 100,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const AppDivider(),
-                    NutritionSection(
-                      nutrition: Nutrition.perServing(
-                        nutritionPer100Grams: state.nutrition,
-                        servingSizeGrams: state.servingSize ?? 100,
-                      ),
-                    ),
-                    const SizedBox(height: 100),
-                  ],
+              ],
+            ),
+            body: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
+                  child: Text(
+                    args.food.name,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ));
+                if (args.food.brandName != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Text(
+                      args.food.brandName!,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                const SizedBox(height: 12),
+                const AppDivider(),
+                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: AppTextField(
+                    enabled: !state.isLoading,
+                    initialValue: (args.servingSize ?? 100).toString(),
+                    labelText: AppStrings.servingsLabel,
+                    suffixIcon: Icons.clear,
+                    onSuffixIconPressed: () => _onServingSizeChanged(context, ''),
+                    onChanged: (value) => _onServingSizeChanged(context, value),
+                    inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
+                    maxLength: 6,
+                    autofocus: true,
+                    action: TextInputAction.done,
+                  ),
+                ),
+                if (args.meal != null) ...[
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: AppDropdownButton<Meal>(
+                      hint: AppStrings.mealLabel,
+                      onChanged: (selectedMeal) => context.read<AddFoodCubit>().selectMeal(meal: selectedMeal),
+                      optionNameMapper: (meal) => meal.label,
+                      options: Meal.values,
+                      selectedOption: state.selectedMeal,
+                      enabled: !state.isLoading,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 24),
+                const AppDivider(),
+                CaloriesMacrosSection(
+                  nutrition: Nutrition.perServing(
+                    nutritionPer100Grams: state.nutrition,
+                    servingSizeGrams: state.servingSize ?? 100,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const AppDivider(),
+                NutritionSection(
+                  nutrition: Nutrition.perServing(
+                    nutritionPer100Grams: state.nutrition,
+                    servingSizeGrams: state.servingSize ?? 100,
+                  ),
+                ),
+                const SizedBox(height: 100),
+              ],
+            ),
+          );
         },
       ),
     );

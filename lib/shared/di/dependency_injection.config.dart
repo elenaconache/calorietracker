@@ -32,7 +32,7 @@ import '../../feature/recipes/logic/create_recipe_cubit.dart' as _i1072;
 import '../../feature/recipes/logic/search_recipe_cubit.dart' as _i909;
 import '../../feature/search_food/data/search_food_service.dart' as _i383;
 import '../../feature/search_food/logic/food_item_controller.dart' as _i264;
-import '../../ui/components/dropdown/app_dropdown_button_controller.dart'
+import '../../ui/widgets/dropdown/app_dropdown_button_controller.dart'
     as _i211;
 import '../app_environment.dart' as _i1067;
 import '../data/model/user.dart' as _i548;

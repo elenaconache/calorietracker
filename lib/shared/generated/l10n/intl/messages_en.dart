@@ -151,6 +151,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("From previous day"),
         "generalErrorMessage":
             MessageLookupByLibrary.simpleMessage("An error occurred."),
+        "goalLabel": MessageLookupByLibrary.simpleMessage("Goal"),
         "gramsLabel": MessageLookupByLibrary.simpleMessage("Grams"),
         "gramsShortLabel": MessageLookupByLibrary.simpleMessage("g"),
         "gramsValue": m8,
@@ -167,6 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ironExceedsMaxPerServingError": m9,
         "ironLabel": MessageLookupByLibrary.simpleMessage("Iron"),
         "ironMgLabel": MessageLookupByLibrary.simpleMessage("Iron (mg)"),
+        "leftLabel": MessageLookupByLibrary.simpleMessage("Left"),
         "logFoodLabel": MessageLookupByLibrary.simpleMessage("Log food"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutLabel": MessageLookupByLibrary.simpleMessage("Logout"),

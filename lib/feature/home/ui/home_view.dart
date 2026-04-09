@@ -22,7 +22,7 @@ import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/generic_error_view.dart';
+import 'package:calorietracker/ui/widgets/generic_error_view.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +81,9 @@ class _HomeViewState extends State<HomeView> {
     final args = settings.arguments;
     switch (matchingRoute) {
       case Routes.diary:
-        return MaterialPageRoute(builder: (context) => const DiaryView());
+        return MaterialPageRoute(
+          builder: (context) => const DiaryView(),
+        );
       case Routes.foodSearch:
         return MaterialPageRoute(builder: (context) => SearchFoodView(meal: args as Meal));
       case Routes.addFood:
@@ -103,13 +105,12 @@ class _HomeViewState extends State<HomeView> {
           ),
         );
       case Routes.profile:
-        return MaterialPageRoute(builder: (context) => const ProfileView());
+        return MaterialPageRoute(
+          builder: (context) => const ProfileView(),
+        );
       case Routes.userGoals:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider<UserGoalsCubit>(
-            create: (context) => getIt<UserGoalsCubit>(),
-            child: const UserGoalsView(),
-          ),
+          builder: (context) => const UserGoalsView(),
         );
       default:
         return MaterialPageRoute(

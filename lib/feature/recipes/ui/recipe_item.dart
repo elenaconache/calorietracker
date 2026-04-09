@@ -1,7 +1,7 @@
 import 'package:calorietracker/feature/recipe_details/ui/recipe_details_arguments.dart';
 import 'package:calorietracker/shared/data/model/recipe.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
-import 'package:calorietracker/ui/components/app_divider.dart';
+import 'package:calorietracker/ui/widgets/app_divider.dart';
 import 'package:flutter/material.dart';
 
 class RecipeItem extends StatelessWidget {

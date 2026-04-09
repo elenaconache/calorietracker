@@ -8,7 +8,7 @@ import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/text_field/search_text_field.dart';
+import 'package:calorietracker/ui/widgets/text_field/search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

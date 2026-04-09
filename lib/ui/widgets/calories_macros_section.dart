@@ -1,5 +1,5 @@
 import 'package:calorietracker/shared/data/model/nutrition.dart';
-import 'package:calorietracker/ui/components/calories_macros_pie_chart.dart';
+import 'package:calorietracker/ui/widgets/calories_macros_pie_chart.dart';
 import 'package:calorietracker/feature/add_food/ui/macro_item.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/colors.dart';
@@ -25,6 +25,7 @@ class CaloriesMacrosSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const SizedBox(width: 16),
+        
         Expanded(
             flex: 2,
             child: CaloriesMacrosPieChart(
@@ -33,7 +34,7 @@ class CaloriesMacrosSection extends StatelessWidget {
               protein: proteinPercentage.toDouble(),
               calories: calories,
               carbsColor: _carbsColor,
-              fatColor: _fatColor,
+              fatColor: const Color.fromARGB(255, 41, 43, 43),
               proteinColor: _proteinColor,
               defaultMacroNutrient: _unknownMacroColor,
             )),

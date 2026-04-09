@@ -1,7 +1,7 @@
 import 'package:calorietracker/shared/data/model/macro.dart';
 import 'package:calorietracker/shared/data/model/macro_goals.dart';
 import 'package:calorietracker/ui/app_strings.dart';
-import 'package:calorietracker/ui/components/app_picker.dart';
+import 'package:calorietracker/ui/widgets/app_picker.dart';
 import 'package:flutter/cupertino.dart';
 
 class MacrosPickers extends StatelessWidget {
