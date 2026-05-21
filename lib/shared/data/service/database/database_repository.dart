@@ -25,12 +25,12 @@ class DatabaseRepository {
     return _store.box<T>().putAsync(item);
   }
 
-  Future<void> writeDiaryEntriesRecursively({required List<LocalDiaryEntry> entries}) async {
-    await _store.runInTransactionAsync(TxMode.write, writeDiaryEntriesAndFoods, entries);
+  Future<List<int>> writeDiaryEntriesRecursively({required List<LocalDiaryEntry> entries}) {
+    return _store.runInTransactionAsync(TxMode.write, writeDiaryEntriesAndFoods, entries);
   }
 
-  Future<void> removeList<T>({required List<int> ids}) {
-    return _store.box<T>().removeManyAsync(ids);
+  void removeList<T>({required List<int> ids}) {
+    _store.box<T>().removeMany(ids);
   }
 
   Future<List<LocalDiaryEntry>> readDiaryEntries({
@@ -73,11 +73,29 @@ class DatabaseRepository {
         .toList();
   }
 
+  Stream<List<LocalDiaryEntry>> watchDiaryEntries({required DateTime dateFilter, required String username}) {
+    Condition<LocalDiaryEntry> condition = LocalDiaryEntry_.username.equals(username).and(LocalDiaryEntry_.deletedEntry.equals(false));
+
+    final lowerBoundDate = DateTime(
+      dateFilter.year,
+      dateFilter.month,
+      dateFilter.day,
+    );
+    final upperBoundDate = lowerBoundDate.copyWith(hour: 23, minute: 59);
+    condition = condition & LocalDiaryEntry_.entryDate.betweenDate(lowerBoundDate, upperBoundDate);
+
+    final queryBuilder = _store.box<LocalDiaryEntry>().query(condition);
+    queryBuilder.link(LocalDiaryEntry_.localFood);
+    return queryBuilder.watch(triggerImmediately: true).map((query) {
+      return query.find();
+    });
+  }
+
   Future<List<LocalDiaryEntry>> readDiaryEntriesByIds({required List<DiaryEntry> entries}) async {
     final queryBuilder = _store.box<LocalDiaryEntry>().query(LocalDiaryEntry_.localId.oneOf(entries.map((e) => e.localId).nonNulls.toList()) |
         LocalDiaryEntry_.entryId.oneOf(entries.map((e) => e.collectionId).nonNulls.toList()));
     queryBuilder.link(LocalDiaryEntry_.localFood);
-    return queryBuilder.build().findAsync();
+    return await queryBuilder.build().findAsync();
   }
 
   Future<LocalDiaryEntry?> readDiaryEntry({int? entryId, int? localId}) {
@@ -113,7 +131,7 @@ class DatabaseRepository {
   }
 }
 
-void writeDiaryEntriesAndFoods(Store store, List<LocalDiaryEntry> entries) {
+List<int> writeDiaryEntriesAndFoods(Store store, List<LocalDiaryEntry> entries) {
   final foodsBox = store.box<LocalFood>();
   final foods = entries.map((entry) => entry.localFood.target).whereType<LocalFood>().toList();
   final addedFoodsIds = foodsBox.putMany(foods);
@@ -123,7 +141,7 @@ void writeDiaryEntriesAndFoods(Store store, List<LocalDiaryEntry> entries) {
     final entry = entries[index];
     return entry..localFood.targetId = addedFoodsIds[index];
   });
-  diaryEntriesBox.putMany(diaryEntries);
+  return diaryEntriesBox.putMany(diaryEntries);
 }
 
 Map<LocalFood, LocalDiaryEntry?> searchDiaryFoods(Store store, String searchQuery) {

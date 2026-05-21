@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:calorietracker/shared/data/model/collection/add_diary_entry_request.dart';
 import 'package:calorietracker/shared/data/model/collection/add_food_request.dart';
 import 'package:calorietracker/shared/data/model/collection/add_local_diary_entry_request.dart';
 import 'package:calorietracker/shared/data/model/collection/add_local_food_request.dart';
@@ -21,9 +20,6 @@ part 'collection_api_service.g.dart';
 @RestApi(parser: Parser.FlutterCompute)
 abstract class CollectionApiService {
   factory CollectionApiService(Dio dio, {String baseUrl}) = _CollectionApiService;
-
-  @POST('diary-entries/add')
-  Future<IdResponse> createDiaryEntry({@Body() required AddDiaryEntryRequest body});
 
   @GET('diary-entries/{username}/{date}')
   Future<List<MealEntriesResponse>> getDiaryEntries({

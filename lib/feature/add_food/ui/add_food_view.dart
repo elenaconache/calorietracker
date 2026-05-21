@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:calorietracker/feature/diary/logic/diary_bloc.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/add_food/logic/add_food_cubit.dart';
 import 'package:calorietracker/feature/add_food/data/food_log.dart';
 import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
-import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/ui/widgets/calories_macros_section.dart';
 import 'package:calorietracker/ui/widgets/nutrition_section.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
@@ -141,28 +141,29 @@ class AddFoodView extends StatelessWidget {
       if (args.meal == null) {
         _confirmRecipeIngredient(context, servingQuantity);
       } else {
-        final date = DateTime.tryParse(getIt<DiaryService>().selectedDay.value);
-        if (date == null) {
-          getIt<LoggingService>().info('Could not log to diary. Missing date.');
-        } else {
-          _confirmDiaryLog(servingQuantity, date, context);
-        }
+        final date = context.read<DiaryBloc>().state.selectedDay;
+        _confirmDiaryLog(servingQuantity, date, context);
       }
     }
   }
 
   void _confirmDiaryLog(double servingQuantity, DateTime date, BuildContext context) {
+    final cubit = context.read<AddFoodCubit>();
     final foodLog = FoodLog(
-      meal: args.meal!,
+      meal: cubit.state.selectedMeal ?? args.meal!,
       food: args.food,
       servingQuantity: servingQuantity,
       localFoodId: args.localFoodId,
       date: date,
     );
     unawaited(
-      context
-          .read<AddFoodCubit>()
-          .logFood(foodLog: foodLog, remoteDiaryEntryId: args.diaryEntryId, localDiaryEntryId: args.localDiaryEntryId, initialMeal: args.meal)
+      cubit
+          .logFood(
+        foodLog: foodLog,
+        remoteDiaryEntryId: args.diaryEntryId,
+        localDiaryEntryId: args.localDiaryEntryId,
+        initialMeal: args.meal,
+      )
           .then((_) {
         if (context.mounted) {
           Navigator.pop(context);

@@ -15,6 +15,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryState {
   bool get macrosPercentageEnabled;
+  DateTime get selectedDay;
+  AsyncState<List<MealEntriesList>> get selectedDayMealEntries;
+  bool get editMode;
+  List<DiaryEntry> get checkedEntries;
 
   /// Create a copy of DiaryState
   /// with the given fields replaced by the non-null parameter values.
@@ -30,15 +34,29 @@ mixin _$DiaryState {
             other is DiaryState &&
             (identical(
                     other.macrosPercentageEnabled, macrosPercentageEnabled) ||
-                other.macrosPercentageEnabled == macrosPercentageEnabled));
+                other.macrosPercentageEnabled == macrosPercentageEnabled) &&
+            (identical(other.selectedDay, selectedDay) ||
+                other.selectedDay == selectedDay) &&
+            (identical(other.selectedDayMealEntries, selectedDayMealEntries) ||
+                other.selectedDayMealEntries == selectedDayMealEntries) &&
+            (identical(other.editMode, editMode) ||
+                other.editMode == editMode) &&
+            const DeepCollectionEquality()
+                .equals(other.checkedEntries, checkedEntries));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, macrosPercentageEnabled);
+  int get hashCode => Object.hash(
+      runtimeType,
+      macrosPercentageEnabled,
+      selectedDay,
+      selectedDayMealEntries,
+      editMode,
+      const DeepCollectionEquality().hash(checkedEntries));
 
   @override
   String toString() {
-    return 'DiaryState(macrosPercentageEnabled: $macrosPercentageEnabled)';
+    return 'DiaryState(macrosPercentageEnabled: $macrosPercentageEnabled, selectedDay: $selectedDay, selectedDayMealEntries: $selectedDayMealEntries, editMode: $editMode, checkedEntries: $checkedEntries)';
   }
 }
 
@@ -48,7 +66,14 @@ abstract mixin class $DiaryStateCopyWith<$Res> {
           DiaryState value, $Res Function(DiaryState) _then) =
       _$DiaryStateCopyWithImpl;
   @useResult
-  $Res call({bool macrosPercentageEnabled});
+  $Res call(
+      {bool macrosPercentageEnabled,
+      DateTime selectedDay,
+      AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+      bool editMode,
+      List<DiaryEntry> checkedEntries});
+
+  $AsyncStateCopyWith<List<MealEntriesList>, $Res> get selectedDayMealEntries;
 }
 
 /// @nodoc
@@ -64,13 +89,44 @@ class _$DiaryStateCopyWithImpl<$Res> implements $DiaryStateCopyWith<$Res> {
   @override
   $Res call({
     Object? macrosPercentageEnabled = null,
+    Object? selectedDay = null,
+    Object? selectedDayMealEntries = null,
+    Object? editMode = null,
+    Object? checkedEntries = null,
   }) {
     return _then(_self.copyWith(
       macrosPercentageEnabled: null == macrosPercentageEnabled
           ? _self.macrosPercentageEnabled
           : macrosPercentageEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedDay: null == selectedDay
+          ? _self.selectedDay
+          : selectedDay // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      selectedDayMealEntries: null == selectedDayMealEntries
+          ? _self.selectedDayMealEntries
+          : selectedDayMealEntries // ignore: cast_nullable_to_non_nullable
+              as AsyncState<List<MealEntriesList>>,
+      editMode: null == editMode
+          ? _self.editMode
+          : editMode // ignore: cast_nullable_to_non_nullable
+              as bool,
+      checkedEntries: null == checkedEntries
+          ? _self.checkedEntries
+          : checkedEntries // ignore: cast_nullable_to_non_nullable
+              as List<DiaryEntry>,
     ));
+  }
+
+  /// Create a copy of DiaryState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<List<MealEntriesList>, $Res> get selectedDayMealEntries {
+    return $AsyncStateCopyWith<List<MealEntriesList>, $Res>(
+        _self.selectedDayMealEntries, (value) {
+      return _then(_self.copyWith(selectedDayMealEntries: value));
+    });
   }
 }
 
@@ -176,16 +232,30 @@ extension DiaryStatePatterns on DiaryState {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(bool macrosPercentageEnabled)? $default, {
-    TResult Function(bool macrosPercentageEnabled)? initial,
+    TResult Function(
+            bool macrosPercentageEnabled,
+            DateTime selectedDay,
+            AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+            bool editMode,
+            List<DiaryEntry> checkedEntries)?
+        $default, {
+    TResult Function(
+            bool macrosPercentageEnabled,
+            DateTime selectedDay,
+            AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+            bool editMode,
+            List<DiaryEntry> checkedEntries)?
+        initial,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _DiaryState() when $default != null:
-        return $default(_that.macrosPercentageEnabled);
+        return $default(_that.macrosPercentageEnabled, _that.selectedDay,
+            _that.selectedDayMealEntries, _that.editMode, _that.checkedEntries);
       case InitialDiaryState() when initial != null:
-        return initial(_that.macrosPercentageEnabled);
+        return initial(_that.macrosPercentageEnabled, _that.selectedDay,
+            _that.selectedDayMealEntries, _that.editMode, _that.checkedEntries);
       case _:
         return orElse();
     }
@@ -206,15 +276,29 @@ extension DiaryStatePatterns on DiaryState {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(bool macrosPercentageEnabled) $default, {
-    required TResult Function(bool macrosPercentageEnabled) initial,
+    TResult Function(
+            bool macrosPercentageEnabled,
+            DateTime selectedDay,
+            AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+            bool editMode,
+            List<DiaryEntry> checkedEntries)
+        $default, {
+    required TResult Function(
+            bool macrosPercentageEnabled,
+            DateTime selectedDay,
+            AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+            bool editMode,
+            List<DiaryEntry> checkedEntries)
+        initial,
   }) {
     final _that = this;
     switch (_that) {
       case _DiaryState():
-        return $default(_that.macrosPercentageEnabled);
+        return $default(_that.macrosPercentageEnabled, _that.selectedDay,
+            _that.selectedDayMealEntries, _that.editMode, _that.checkedEntries);
       case InitialDiaryState():
-        return initial(_that.macrosPercentageEnabled);
+        return initial(_that.macrosPercentageEnabled, _that.selectedDay,
+            _that.selectedDayMealEntries, _that.editMode, _that.checkedEntries);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -234,15 +318,29 @@ extension DiaryStatePatterns on DiaryState {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(bool macrosPercentageEnabled)? $default, {
-    TResult? Function(bool macrosPercentageEnabled)? initial,
+    TResult? Function(
+            bool macrosPercentageEnabled,
+            DateTime selectedDay,
+            AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+            bool editMode,
+            List<DiaryEntry> checkedEntries)?
+        $default, {
+    TResult? Function(
+            bool macrosPercentageEnabled,
+            DateTime selectedDay,
+            AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+            bool editMode,
+            List<DiaryEntry> checkedEntries)?
+        initial,
   }) {
     final _that = this;
     switch (_that) {
       case _DiaryState() when $default != null:
-        return $default(_that.macrosPercentageEnabled);
+        return $default(_that.macrosPercentageEnabled, _that.selectedDay,
+            _that.selectedDayMealEntries, _that.editMode, _that.checkedEntries);
       case InitialDiaryState() when initial != null:
-        return initial(_that.macrosPercentageEnabled);
+        return initial(_that.macrosPercentageEnabled, _that.selectedDay,
+            _that.selectedDayMealEntries, _that.editMode, _that.checkedEntries);
       case _:
         return null;
     }
@@ -252,10 +350,32 @@ extension DiaryStatePatterns on DiaryState {
 /// @nodoc
 
 class _DiaryState implements DiaryState {
-  const _DiaryState({required this.macrosPercentageEnabled});
+  const _DiaryState(
+      {this.macrosPercentageEnabled = false,
+      required this.selectedDay,
+      required this.selectedDayMealEntries,
+      this.editMode = false,
+      final List<DiaryEntry> checkedEntries = const []})
+      : _checkedEntries = checkedEntries;
 
   @override
+  @JsonKey()
   final bool macrosPercentageEnabled;
+  @override
+  final DateTime selectedDay;
+  @override
+  final AsyncState<List<MealEntriesList>> selectedDayMealEntries;
+  @override
+  @JsonKey()
+  final bool editMode;
+  final List<DiaryEntry> _checkedEntries;
+  @override
+  @JsonKey()
+  List<DiaryEntry> get checkedEntries {
+    if (_checkedEntries is EqualUnmodifiableListView) return _checkedEntries;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_checkedEntries);
+  }
 
   /// Create a copy of DiaryState
   /// with the given fields replaced by the non-null parameter values.
@@ -272,15 +392,29 @@ class _DiaryState implements DiaryState {
             other is _DiaryState &&
             (identical(
                     other.macrosPercentageEnabled, macrosPercentageEnabled) ||
-                other.macrosPercentageEnabled == macrosPercentageEnabled));
+                other.macrosPercentageEnabled == macrosPercentageEnabled) &&
+            (identical(other.selectedDay, selectedDay) ||
+                other.selectedDay == selectedDay) &&
+            (identical(other.selectedDayMealEntries, selectedDayMealEntries) ||
+                other.selectedDayMealEntries == selectedDayMealEntries) &&
+            (identical(other.editMode, editMode) ||
+                other.editMode == editMode) &&
+            const DeepCollectionEquality()
+                .equals(other._checkedEntries, _checkedEntries));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, macrosPercentageEnabled);
+  int get hashCode => Object.hash(
+      runtimeType,
+      macrosPercentageEnabled,
+      selectedDay,
+      selectedDayMealEntries,
+      editMode,
+      const DeepCollectionEquality().hash(_checkedEntries));
 
   @override
   String toString() {
-    return 'DiaryState(macrosPercentageEnabled: $macrosPercentageEnabled)';
+    return 'DiaryState(macrosPercentageEnabled: $macrosPercentageEnabled, selectedDay: $selectedDay, selectedDayMealEntries: $selectedDayMealEntries, editMode: $editMode, checkedEntries: $checkedEntries)';
   }
 }
 
@@ -292,7 +426,15 @@ abstract mixin class _$DiaryStateCopyWith<$Res>
       __$DiaryStateCopyWithImpl;
   @override
   @useResult
-  $Res call({bool macrosPercentageEnabled});
+  $Res call(
+      {bool macrosPercentageEnabled,
+      DateTime selectedDay,
+      AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+      bool editMode,
+      List<DiaryEntry> checkedEntries});
+
+  @override
+  $AsyncStateCopyWith<List<MealEntriesList>, $Res> get selectedDayMealEntries;
 }
 
 /// @nodoc
@@ -308,24 +450,76 @@ class __$DiaryStateCopyWithImpl<$Res> implements _$DiaryStateCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   $Res call({
     Object? macrosPercentageEnabled = null,
+    Object? selectedDay = null,
+    Object? selectedDayMealEntries = null,
+    Object? editMode = null,
+    Object? checkedEntries = null,
   }) {
     return _then(_DiaryState(
       macrosPercentageEnabled: null == macrosPercentageEnabled
           ? _self.macrosPercentageEnabled
           : macrosPercentageEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedDay: null == selectedDay
+          ? _self.selectedDay
+          : selectedDay // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      selectedDayMealEntries: null == selectedDayMealEntries
+          ? _self.selectedDayMealEntries
+          : selectedDayMealEntries // ignore: cast_nullable_to_non_nullable
+              as AsyncState<List<MealEntriesList>>,
+      editMode: null == editMode
+          ? _self.editMode
+          : editMode // ignore: cast_nullable_to_non_nullable
+              as bool,
+      checkedEntries: null == checkedEntries
+          ? _self._checkedEntries
+          : checkedEntries // ignore: cast_nullable_to_non_nullable
+              as List<DiaryEntry>,
     ));
+  }
+
+  /// Create a copy of DiaryState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<List<MealEntriesList>, $Res> get selectedDayMealEntries {
+    return $AsyncStateCopyWith<List<MealEntriesList>, $Res>(
+        _self.selectedDayMealEntries, (value) {
+      return _then(_self.copyWith(selectedDayMealEntries: value));
+    });
   }
 }
 
 /// @nodoc
 
 class InitialDiaryState implements DiaryState {
-  const InitialDiaryState({this.macrosPercentageEnabled = false});
+  const InitialDiaryState(
+      {this.macrosPercentageEnabled = false,
+      required this.selectedDay,
+      required this.selectedDayMealEntries,
+      this.editMode = false,
+      final List<DiaryEntry> checkedEntries = const []})
+      : _checkedEntries = checkedEntries;
 
   @override
   @JsonKey()
   final bool macrosPercentageEnabled;
+  @override
+  final DateTime selectedDay;
+  @override
+  final AsyncState<List<MealEntriesList>> selectedDayMealEntries;
+  @override
+  @JsonKey()
+  final bool editMode;
+  final List<DiaryEntry> _checkedEntries;
+  @override
+  @JsonKey()
+  List<DiaryEntry> get checkedEntries {
+    if (_checkedEntries is EqualUnmodifiableListView) return _checkedEntries;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_checkedEntries);
+  }
 
   /// Create a copy of DiaryState
   /// with the given fields replaced by the non-null parameter values.
@@ -342,15 +536,29 @@ class InitialDiaryState implements DiaryState {
             other is InitialDiaryState &&
             (identical(
                     other.macrosPercentageEnabled, macrosPercentageEnabled) ||
-                other.macrosPercentageEnabled == macrosPercentageEnabled));
+                other.macrosPercentageEnabled == macrosPercentageEnabled) &&
+            (identical(other.selectedDay, selectedDay) ||
+                other.selectedDay == selectedDay) &&
+            (identical(other.selectedDayMealEntries, selectedDayMealEntries) ||
+                other.selectedDayMealEntries == selectedDayMealEntries) &&
+            (identical(other.editMode, editMode) ||
+                other.editMode == editMode) &&
+            const DeepCollectionEquality()
+                .equals(other._checkedEntries, _checkedEntries));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, macrosPercentageEnabled);
+  int get hashCode => Object.hash(
+      runtimeType,
+      macrosPercentageEnabled,
+      selectedDay,
+      selectedDayMealEntries,
+      editMode,
+      const DeepCollectionEquality().hash(_checkedEntries));
 
   @override
   String toString() {
-    return 'DiaryState.initial(macrosPercentageEnabled: $macrosPercentageEnabled)';
+    return 'DiaryState.initial(macrosPercentageEnabled: $macrosPercentageEnabled, selectedDay: $selectedDay, selectedDayMealEntries: $selectedDayMealEntries, editMode: $editMode, checkedEntries: $checkedEntries)';
   }
 }
 
@@ -362,7 +570,15 @@ abstract mixin class $InitialDiaryStateCopyWith<$Res>
       _$InitialDiaryStateCopyWithImpl;
   @override
   @useResult
-  $Res call({bool macrosPercentageEnabled});
+  $Res call(
+      {bool macrosPercentageEnabled,
+      DateTime selectedDay,
+      AsyncState<List<MealEntriesList>> selectedDayMealEntries,
+      bool editMode,
+      List<DiaryEntry> checkedEntries});
+
+  @override
+  $AsyncStateCopyWith<List<MealEntriesList>, $Res> get selectedDayMealEntries;
 }
 
 /// @nodoc
@@ -379,13 +595,44 @@ class _$InitialDiaryStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? macrosPercentageEnabled = null,
+    Object? selectedDay = null,
+    Object? selectedDayMealEntries = null,
+    Object? editMode = null,
+    Object? checkedEntries = null,
   }) {
     return _then(InitialDiaryState(
       macrosPercentageEnabled: null == macrosPercentageEnabled
           ? _self.macrosPercentageEnabled
           : macrosPercentageEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedDay: null == selectedDay
+          ? _self.selectedDay
+          : selectedDay // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      selectedDayMealEntries: null == selectedDayMealEntries
+          ? _self.selectedDayMealEntries
+          : selectedDayMealEntries // ignore: cast_nullable_to_non_nullable
+              as AsyncState<List<MealEntriesList>>,
+      editMode: null == editMode
+          ? _self.editMode
+          : editMode // ignore: cast_nullable_to_non_nullable
+              as bool,
+      checkedEntries: null == checkedEntries
+          ? _self._checkedEntries
+          : checkedEntries // ignore: cast_nullable_to_non_nullable
+              as List<DiaryEntry>,
     ));
+  }
+
+  /// Create a copy of DiaryState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncStateCopyWith<List<MealEntriesList>, $Res> get selectedDayMealEntries {
+    return $AsyncStateCopyWith<List<MealEntriesList>, $Res>(
+        _self.selectedDayMealEntries, (value) {
+      return _then(_self.copyWith(selectedDayMealEntries: value));
+    });
   }
 }
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:calorietracker/feature/auth/domain/auth_repository.dart';
-import 'package:calorietracker/shared/extension/dio_extensions.dart';
 import 'package:calorietracker/feature/add_food/data/food_log.dart';
 import 'package:calorietracker/shared/data/model/collection/create_food_errors_response.dart';
 import 'package:calorietracker/shared/data/model/food.dart';
@@ -9,8 +8,6 @@ import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
 import 'package:calorietracker/shared/data/service/database/diary_logging_service.dart';
-import 'package:calorietracker/shared/data/service/database/food_service.dart';
-import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,18 +21,14 @@ part 'add_food_cubit.freezed.dart';
 class AddFoodCubit extends Cubit<AddFoodState> {
   final AuthRepository _authRepository;
   final LoggingService _loggingService;
-  final DiaryService _diaryService;
   final DiaryLoggingService _diaryLoggingService;
   final CollectionApiService _collectionApiService;
-  final FoodService _foodService;
 
   AddFoodCubit(
     this._authRepository,
     this._loggingService,
-    this._diaryService,
     this._diaryLoggingService,
     this._collectionApiService,
-    this._foodService,
   ) : super(AddFoodState(
           selectedMeal: null,
           isLoading: false,
@@ -73,50 +66,15 @@ class AddFoodCubit extends Cubit<AddFoodState> {
       _loggingService.info('Could not log food. Missing username.');
       // TODO: navigate to login screen and show a snack bar saying the session expired
     } else {
-      final updatesExistingLog = [remoteDiaryEntryId, localDiaryEntryId].any((id) => id != null);
       showLoading();
-
-      // TODO: API call to update entry; on error, call remove and create locally
-      if (updatesExistingLog) {
-        await _diaryService.removeSingleDiaryEntry(meal: foodLog.meal, collectionId: remoteDiaryEntryId, localId: localDiaryEntryId);
-      }
-
-      if (foodLog.localFoodId != null) {
-        await _diaryLoggingService.saveDiaryEntryLocally(foodLog, selectedUser.username);
+      if (localDiaryEntryId != null) {
+        await _diaryLoggingService.updateDiaryEntryLocally(localId: localDiaryEntryId, foodLog: foodLog, username: selectedUser.username);
       } else {
-        await _saveRemotely(selectedUser.username, foodLog);
+        await _diaryLoggingService.saveDiaryEntryLocally( foodLog,  selectedUser.username);
       }
+
       hideLoading();
     }
-  }
-
-  Future<void> _saveRemotely(String userId, FoodLog foodLog) async {
-    int? remoteFoodId;
-    int? localFoodId;
-    if (foodLog.food.id == null) {
-      final createdFoodId = await (createFood(food: foodLog.food).then((createdFood) {
-        unawaited(_saveFoodLocally(foodLog, userId));
-        return createdFood;
-      }).catchError((error, stackTrace) async {
-        if (error is DioException && error.isConnectionError) {
-          localFoodId = await _saveFoodLocally(foodLog, userId);
-        } else {
-          _loggingService.handle(error, stackTrace);
-          hideLoading();
-          throw error;
-        }
-        return null;
-      }));
-      remoteFoodId = createdFoodId;
-    } else {
-      remoteFoodId = foodLog.food.id;
-    }
-    await _diaryLoggingService.createDiaryEntry(
-      remoteFoodId: remoteFoodId,
-      username: userId,
-      foodLog: foodLog,
-      localFoodId: localFoodId,
-    );
   }
 
   Future<int?> createFood({required Food food}) async {
@@ -130,16 +88,6 @@ class AddFoodCubit extends Cubit<AddFoodState> {
         return null;
       }
     });
-  }
-
-  Future<int?> _saveFoodLocally(FoodLog foodLog, String userId) async {
-    final localFoodId = await _foodService.upsertFood(localFood: foodLog.food.localFood);
-    if (localFoodId == null) {
-      _loggingService.info('Could not save food locally: ${foodLog.food}');
-      emit(state.copyWith(isLoading: false));
-      throw Exception('Could not save food locally. Food: ${foodLog.food}.');
-    }
-    return localFoodId;
   }
 
   void showLoading() => emit(state.copyWith(isLoading: true));

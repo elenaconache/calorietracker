@@ -1,35 +1,38 @@
-import 'package:calorietracker/shared/di/dependency_injection.dart';
+import 'package:calorietracker/feature/diary/domain/diary_state_extension.dart';
+import 'package:calorietracker/feature/diary/logic/diary_bloc.dart';
+import 'package:calorietracker/feature/diary/logic/diary_event.dart';
 import 'package:calorietracker/shared/data/model/diary_entry.dart';
-import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DiaryRowCheckBox extends StatelessWidget {
   final DiaryEntry diaryEntry;
+  final DiaryState diary;
 
-  const DiaryRowCheckBox({super.key, required this.diaryEntry});
+  const DiaryRowCheckBox({
+    super.key,
+    required this.diary,
+    required this.diaryEntry,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final diaryService = getIt<DiaryService>();
-    return ValueListenableBuilder(
-        valueListenable: diaryService.dayMealEntries,
-        builder: (context, _, __) => ValueListenableBuilder(
-            valueListenable: diaryService.diaryEditModeEnabled,
-            builder: (context, editable, _) => editable
-                ? ValueListenableBuilder(
-                    valueListenable: diaryService.checkedDiaryEntries,
-                    builder: (context, _, __) => Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: Checkbox(
-                          value: diaryService.isEntryChecked(entry: diaryEntry),
-                          onChanged: (checked) => diaryService.onDiaryEntryCheckChanged(entry: diaryEntry, checked: checked),
-                        ),
-                      ),
+    final editable = diary.editMode;
+    final isChecked = diary.isEntryChecked(entry: diaryEntry);
+    return editable
+        ? Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: SizedBox(
+              height: 24,
+              width: 24,
+              child: Checkbox(
+                value: isChecked,
+                onChanged: (checked) => context.read<DiaryBloc>().add(
+                      EntryCheckChanged(checked: checked ?? false, entry: diaryEntry),
                     ),
-                  )
-                : const SizedBox.shrink()));
+              ),
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }

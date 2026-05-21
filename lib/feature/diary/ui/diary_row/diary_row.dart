@@ -1,3 +1,4 @@
+import 'package:calorietracker/feature/diary/logic/diary_bloc.dart';
 import 'package:calorietracker/shared/extension/numeric_extensions.dart';
 import 'package:calorietracker/feature/diary/ui/diary_row/diary_row_check_box.dart';
 import 'package:calorietracker/shared/data/model/diary_entry.dart';
@@ -7,8 +8,9 @@ import 'package:flutter/material.dart';
 
 class DiaryRow extends StatelessWidget {
   final DiaryEntry diaryEntry;
+  final DiaryState diary;
 
-  const DiaryRow({super.key, required this.diaryEntry});
+  const DiaryRow({super.key, required this.diaryEntry, required this.diary});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,10 @@ class DiaryRow extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DiaryRowCheckBox(diaryEntry: diaryEntry),
+                    DiaryRowCheckBox(
+                      diaryEntry: diaryEntry,
+                      diary: diary,
+                    ),
                     Expanded(
                       flex: 4,
                       child: Column(

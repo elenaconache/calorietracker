@@ -20,36 +20,6 @@ class _CollectionApiService implements CollectionApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<IdResponse> createDiaryEntry({
-    required AddDiaryEntryRequest body,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(await compute(serializeAddDiaryEntryRequest, body));
-    final _options = _setStreamType<IdResponse>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            'diary-entries/add',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late IdResponse _value;
-    try {
-      _value = await compute(deserializeIdResponse, _result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
   Future<List<MealEntriesResponse>> getDiaryEntries({
     required String username,
     required String date,

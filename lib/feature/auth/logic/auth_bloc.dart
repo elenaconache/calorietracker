@@ -5,7 +5,6 @@ import 'package:calorietracker/feature/auth/domain/auth_repository.dart';
 import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/shared/data/helper/failure.dart';
 import 'package:calorietracker/shared/data/model/user.dart';
-import 'package:calorietracker/shared/data/service/diary_service.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -19,10 +18,11 @@ part 'auth_bloc.freezed.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
   final LoggingService _loggingService;
-  final DiaryService _diaryService;
 
-  AuthBloc(this._authRepository, this._loggingService, this._diaryService)
-      : super(AuthState(selectedUser: AsyncState.initial(), users: AsyncState.initial())) {
+  AuthBloc(this._authRepository, this._loggingService)
+      : super(
+          AuthState(selectedUser: AsyncState.initial(), users: AsyncState.initial()),
+        ) {
     on<AuthEvent>((event, emit) async {
       await event.when(
         logIn: (username) => _logIn(username, emit),
@@ -52,7 +52,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await emit.forEach(
       _authRepository.selectedUserStream,
       onData: (data) {
-        _diaryService.fetchDiary();
         return state.copyWith(selectedUser: data == null ? AsyncState.failure(AuthFailure()) : AsyncState.success(data));
       },
       onError: (error, stackTrace) {

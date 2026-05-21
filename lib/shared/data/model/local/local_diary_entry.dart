@@ -12,10 +12,13 @@ class LocalDiaryEntry {
   @Id(assignable: true)
   int localId = 0;
 
+  @Index()
   @Property(type: PropertyType.date)
   late DateTime entryDate;
 
+  @Index()
   late String username;
+
   late int unitId;
   late double servingQuantity;
 
@@ -35,7 +38,10 @@ class LocalDiaryEntry {
   }
 
   bool pushedEntry = false;
+
+  @Index()
   bool deletedEntry = false;
+
   bool errorPushingEntry = false;
 
   final localFood = ToOne<LocalFood>();

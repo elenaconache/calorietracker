@@ -32,8 +32,7 @@ import '../../feature/recipes/logic/create_recipe_cubit.dart' as _i1072;
 import '../../feature/recipes/logic/search_recipe_cubit.dart' as _i909;
 import '../../feature/search_food/data/search_food_service.dart' as _i383;
 import '../../feature/search_food/logic/food_item_controller.dart' as _i264;
-import '../../ui/widgets/dropdown/app_dropdown_button_controller.dart'
-    as _i211;
+import '../../ui/widgets/dropdown/app_dropdown_button_controller.dart' as _i270;
 import '../app_environment.dart' as _i1067;
 import '../data/model/user.dart' as _i548;
 import '../data/providers/app_path_provider.dart' as _i667;
@@ -47,7 +46,6 @@ import '../data/service/database/diary_entry_service.dart' as _i373;
 import '../data/service/database/diary_logging_service.dart' as _i493;
 import '../data/service/database/food_service.dart' as _i271;
 import '../data/service/date_formatting_service.dart' as _i443;
-import '../data/service/diary_service.dart' as _i615;
 import '../data/service/logging_service.dart' as _i861;
 import '../data/service/numeric_formatting_service.dart' as _i633;
 import '../data/service/secure_storage_service.dart' as _i270;
@@ -70,7 +68,6 @@ extension GetItInjectableX on _i174.GetIt {
     final registerModule = _$RegisterModule();
     gh.factory<_i867.LoginCubit>(() => _i867.LoginCubit());
     gh.factory<_i525.CreateFoodCubit>(() => _i525.CreateFoodCubit());
-    gh.factory<_i738.DiaryBloc>(() => _i738.DiaryBloc());
     gh.factoryAsync<_i1067.AppEnvironment>(
         () => _i1067.AppEnvironment.create());
     gh.factory<_i443.DateFormattingService>(
@@ -84,8 +81,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i222.BehaviorSubject<_i548.User?>>(
         () => registerModule.selectedUserController);
     gh.factory<_i510.RecipeHelper>(() => _i510.RecipeHelper());
-    gh.factory<_i211.AppDropdownButtonController>(
-        () => _i211.AppDropdownButtonController());
+    gh.factory<_i270.AppDropdownButtonController>(
+        () => _i270.AppDropdownButtonController());
     gh.lazySingleton<_i383.SearchFoodService>(() => _i383.SearchFoodService());
     await gh.lazySingletonAsync<_i667.AppPathProvider>(
       () {
@@ -125,6 +122,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i13.CollectionApiService>(),
           gh<_i861.LoggingService>(),
         ));
+    gh.factory<_i128.AuthBloc>(() => _i128.AuthBloc(
+          gh<_i566.AuthRepository>(),
+          gh<_i861.LoggingService>(),
+        ));
     gh.factory<_i264.FoodItemController>(
         () => _i264.FoodItemController(gh<_i566.AuthRepository>()));
     gh.lazySingleton<_i493.DiaryLoggingService>(
@@ -133,47 +134,41 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i379.DatabaseRepository>(),
           gh<_i566.AuthRepository>(),
         ));
-    gh.factoryParam<_i159.DioProvider, String?, dynamic>((
-      baseUrl,
-      _,
-    ) =>
-        _i159.DioProvider(baseUrl: baseUrl));
-    gh.factory<_i1072.CreateRecipeCubit>(() => _i1072.CreateRecipeCubit(
-          gh<_i510.RecipeHelper>(),
-          gh<_i527.CreateRecipeRepository>(),
-        ));
-    gh.factory<_i924.GoalsRepository>(
-        () => _i924.GoalsRepository(gh<_i270.SecureStorageService>()));
-    gh.lazySingleton<_i615.DiaryService>(() => _i615.DiaryService(
-          gh<_i566.AuthRepository>(),
-          gh<_i443.DateFormattingService>(),
-          gh<_i861.LoggingService>(),
-          gh<_i13.CollectionApiService>(),
-          gh<_i373.DiaryEntryService>(),
-        ));
     gh.lazySingleton<_i999.DataSyncService>(() => _i999.DataSyncService(
           gh<_i373.DiaryEntryService>(),
           gh<_i13.CollectionApiService>(),
           gh<_i861.LoggingService>(),
           gh<_i271.FoodService>(),
+          dateFormattingService: gh<_i443.DateFormattingService>(),
+          authRepository: gh<_i566.AuthRepository>(),
         ));
-    gh.factory<_i301.RecipeDetailsCubit>(() => _i301.RecipeDetailsCubit(
-          gh<_i510.RecipeHelper>(),
-          gh<_i879.RecipeDetailsRepository>(),
+    gh.factoryParam<_i159.DioProvider, String?, dynamic>((
+      baseUrl,
+      _,
+    ) =>
+        _i159.DioProvider(baseUrl: baseUrl));
+    gh.factory<_i738.DiaryBloc>(() => _i738.DiaryBloc(
+          gh<_i566.AuthRepository>(),
+          gh<_i373.DiaryEntryService>(),
+          gh<_i493.DiaryLoggingService>(),
           gh<_i861.LoggingService>(),
+        ));
+    gh.factory<_i1072.CreateRecipeCubit>(() => _i1072.CreateRecipeCubit(
+          gh<_i510.RecipeHelper>(),
+          gh<_i527.CreateRecipeRepository>(),
         ));
     gh.factory<_i980.AddFoodCubit>(() => _i980.AddFoodCubit(
           gh<_i566.AuthRepository>(),
           gh<_i861.LoggingService>(),
-          gh<_i615.DiaryService>(),
           gh<_i493.DiaryLoggingService>(),
           gh<_i13.CollectionApiService>(),
-          gh<_i271.FoodService>(),
         ));
-    gh.factory<_i128.AuthBloc>(() => _i128.AuthBloc(
-          gh<_i566.AuthRepository>(),
+    gh.factory<_i924.GoalsRepository>(
+        () => _i924.GoalsRepository(gh<_i270.SecureStorageService>()));
+    gh.factory<_i301.RecipeDetailsCubit>(() => _i301.RecipeDetailsCubit(
+          gh<_i510.RecipeHelper>(),
+          gh<_i879.RecipeDetailsRepository>(),
           gh<_i861.LoggingService>(),
-          gh<_i615.DiaryService>(),
         ));
     gh.factory<_i909.SearchRecipeCubit>(() => _i909.SearchRecipeCubit(
           gh<_i27.SearchRecipeRepository>(),

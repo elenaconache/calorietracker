@@ -1,13 +1,19 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:calorietracker/feature/auth/domain/auth_repository.dart';
 import 'package:calorietracker/shared/data/model/collection/add_local_data_error.dart';
 import 'package:calorietracker/shared/data/model/collection/add_local_data_error_response.dart';
 import 'package:calorietracker/shared/data/model/collection/add_local_data_response.dart';
+import 'package:calorietracker/shared/data/model/collection/meal_entries_response.dart';
 import 'package:calorietracker/shared/data/model/local/local_diary_entry.dart';
 import 'package:calorietracker/shared/data/model/local/local_food.dart';
+import 'package:calorietracker/shared/data/model/meal.dart';
+import 'package:calorietracker/shared/data/model/meal_entries_list.dart';
+import 'package:calorietracker/shared/data/model/user.dart';
 import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
 import 'package:calorietracker/shared/data/service/database/food_service.dart';
 import 'package:calorietracker/shared/data/service/database/diary_entry_service.dart';
+import 'package:calorietracker/shared/data/service/date_formatting_service.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -20,10 +26,15 @@ class DataSyncService {
   final CollectionApiService _collectionApiService;
   final LoggingService _loggingService;
   final FoodService _foodService;
+  final DateFormattingService _dateFormattingService;
+  final AuthRepository _authRepository;
 
-  DataSyncService(this._diaryEntryService, this._collectionApiService, this._loggingService, this._foodService);
+  DataSyncService(this._diaryEntryService, this._collectionApiService, this._loggingService, this._foodService,
+      {required DateFormattingService dateFormattingService, required AuthRepository authRepository})
+      : _authRepository = authRepository,
+        _dateFormattingService = dateFormattingService;
 
-  Future<void> uploadLocalData() async {
+  Future<void> uploadLocalData({DateTime? selectedDay}) async {
     if (isUploadInProgress) {
       return;
     }
@@ -39,9 +50,15 @@ class DataSyncService {
     final uploadedEntriesIds = await _pushDiary(uploadReadyEntries: uploadReadyEntries);
     await _markPushedLocalDiary(addedEntries: uploadedEntriesIds, pendingEntries: uploadReadyEntries);
 
-    _loggingService.info('Local data upload done: ${DateTime.now()}');
+    // TODO : before or after, fetch from collection and merge
+    final user = _authRepository.selectedUser;
+    if (user != null) {
+      await _fetchRemoteDiary(user: user, date: selectedDay);
+    } else {
+      _loggingService.info('Could not pull remote diary, user was null');
+    }
 
-    // unawaited(getIt<DiaryService>().fetchDiary());// TODO: db stream should trigger updates from diary bloc
+    _loggingService.info('Local data upload done: ${DateTime.now()}');
     isUploadInProgress = false;
   }
 
@@ -148,8 +165,9 @@ class DataSyncService {
       return;
     }
     unawaited(_collectionApiService.deleteDiaryEntries(ids: entriesToDelete).then((_) async {
-      await _diaryEntryService.deleteDiaryEntries(
-          localEntries: uploadReadyEntries.where((entry) => entry.deletedEntry && entry.entryId != null).map((entry) => entry.localId).toList());
+      _diaryEntryService.deleteDiaryEntries(
+        uploadReadyEntries.where((entry) => entry.deletedEntry && entry.entryId != null).map((entry) => entry.localId).toList(),
+      );
     }).catchError((error, stackTrace) {
       _loggingService.handle(error, stackTrace);
     }));
@@ -266,5 +284,89 @@ class DataSyncService {
     }
 
     await _diaryEntryService.upsertDiaryEntries(localEntries: entriesToUpdate.toList());
+  }
+
+  Future<void> _fetchRemoteDiary({required User user, DateTime? date}) async {
+    try {
+      // TODO: check if it makes sense to have a repository handling date format and fetch from API
+      final day = (date ?? DateTime.now()).toString();
+      final diary = await _collectionApiService.getDiaryEntries(username: user.username, date: day);
+      await _pullCollectionLocally(collectionDiary: diary, diaryDate: date ?? DateTime.now(), userId: user.username);
+    } catch (error, stackTrace) {
+      _loggingService.handle(error, stackTrace);
+    }
+  }
+
+  Future<void> _pullCollectionLocally({
+    required List<MealEntriesResponse> collectionDiary,
+    required DateTime diaryDate,
+    required String userId,
+  }) async {
+    var remoteDiary = collectionDiary.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
+    final localDisplayDiary = await _diaryEntryService.getDisplayDiaryEntries(
+      date: diaryDate.toString(),
+      filterPending: true,
+    );
+
+    await (_upsertLocalDiary(remoteDiary, userId));
+    await (_deleteMissingPushedLocalDiaryEntries(remoteDiary, diaryDate));
+
+    var result = <MealEntriesList>[];
+    for (final meal in Meal.values) {
+      final remoteDiaryEntries =
+          remoteDiary.where((list) => list.meal == meal).map((element) => element.diaryEntries).expand((element) => element).toList();
+      final localDiaryEntries =
+          localDisplayDiary.where((list) => list.meal == meal).map((element) => element.diaryEntries).expand((element) => element).toList();
+      result.add(MealEntriesList(
+        meal: meal,
+        diaryEntries: [
+          ...remoteDiaryEntries,
+          ...localDiaryEntries,
+        ],
+      ));
+    }
+  }
+
+  Future<void> _upsertLocalDiary(List<MealEntriesList> remoteDiary, String userId) async {
+    final pushedLocalEntries = await _diaryEntryService.getDiaryEntries(filterPushed: true);
+    var mappedEntries = <LocalDiaryEntry>[];
+    for (final remoteMealEntriesList in remoteDiary) {
+      for (final entry in remoteMealEntriesList.diaryEntries) {
+        if (!pushedLocalEntries.any((localEntry) => localEntry.entryId == entry.collectionId)) {
+          mappedEntries.add(LocalDiaryEntry.withParams(
+            entryId: entry.collectionId,
+            pushedEntry: true,
+            servingQuantity: entry.servingQuantity,
+            unitId: entry.unitId,
+            entryDate: _dateFormattingService.parse(
+              formattedDate: entry.date,
+              format: collectionApiDateFormat,
+            ),
+            localFoodId: entry.food.localFood.id,
+            username: userId,
+            deletedEntry: false,
+            errorPushingEntry: false,
+          )..meal = remoteMealEntriesList.meal);
+        }
+      }
+    }
+    if (mappedEntries.isNotEmpty) {
+      _diaryEntryService.upsertDiaryEntries(localEntries: mappedEntries, pushFoods: true);
+    }
+  }
+
+  Future<void> _deleteMissingPushedLocalDiaryEntries(List<MealEntriesList> remoteDiary, DateTime diaryDate) async {
+    final pushedLocalEntries = await _diaryEntryService.getDiaryEntries(filterPushed: true, excludeDeleted: true);
+    final remoteEntries = remoteDiary.expand((mealEntriesList) => mealEntriesList.diaryEntries).toList();
+    var discardedDiaryEntriesIds = <int>[];
+
+    for (final localEntry in pushedLocalEntries) {
+      if (localEntry.entryDate == diaryDate && remoteEntries.none((remoteEntry) => localEntry.entryId == remoteEntry.collectionId)) {
+        discardedDiaryEntriesIds.add(localEntry.localId);
+      }
+    }
+    if (discardedDiaryEntriesIds.isNotEmpty) {
+      _diaryEntryService.deleteDiaryEntries(discardedDiaryEntriesIds);
+    }
   }
 }

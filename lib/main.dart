@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:calorietracker/feature/auth/logic/auth_bloc.dart';
 import 'package:calorietracker/feature/auth/logic/login_cubit.dart';
+import 'package:calorietracker/feature/diary/logic/diary_bloc.dart';
+import 'package:calorietracker/feature/diary/logic/diary_event.dart';
 import 'package:calorietracker/feature/profile/logic/user_goals_cubit.dart';
 import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
@@ -43,8 +45,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AuthBloc>()..add(AuthEvent.authSubscriptionRequested()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => getIt<AuthBloc>()..add(AuthEvent.authSubscriptionRequested()),
+        ),
+        BlocProvider(
+          create: (_) => getIt<DiaryBloc>()..add(DiaryEvent.requestAuthSubscription()),
+        ),
+      ],
       child: MaterialApp(
         navigatorKey: rootNavigatorKey,
         home: BlocBuilder<AuthBloc, AuthState>(

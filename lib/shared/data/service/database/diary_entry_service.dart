@@ -11,6 +11,7 @@ import 'package:calorietracker/shared/data/service/date_formatting_service.dart'
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @lazySingleton
 class DiaryEntryService {
@@ -22,12 +23,7 @@ class DiaryEntryService {
   Future<void> upsertDiaryEntries({required List<LocalDiaryEntry> localEntries, bool pushFoods = false}) async {
     await _writeDiaryEntries(localEntries, pushFoods).catchError((error, stackTrace) {
       getIt<LoggingService>().handle(error, stackTrace);
-    });
-  }
-
-  Future<void> deleteDiaryEntries({required List<int> localEntries}) async {
-    await _deleteDiaryEntries(localEntries).catchError((error, stackTrace) {
-      getIt<LoggingService>().handle(error, stackTrace);
+      return <int>[];
     });
   }
 
@@ -44,16 +40,16 @@ class DiaryEntryService {
     return _databaseRepository.upsert(item: entry);
   }
 
-  Future<void> _writeDiaryEntries(List<LocalDiaryEntry> entries, bool pushFoods) async {
+  Future<List<int>> _writeDiaryEntries(List<LocalDiaryEntry> entries, bool pushFoods) {
     if (pushFoods) {
-      await _databaseRepository.writeDiaryEntriesRecursively(entries: entries);
+      return _databaseRepository.writeDiaryEntriesRecursively(entries: entries);
     } else {
-      await _databaseRepository.upsertList(items: entries);
+      return _databaseRepository.upsertList(items: entries);
     }
   }
 
-  Future<void> _deleteDiaryEntries(List<int> entries) async {
-    await _databaseRepository.removeList<LocalDiaryEntry>(ids: entries);
+  void deleteDiaryEntries(List<int> entries) async {
+    _databaseRepository.removeList<LocalDiaryEntry>(ids: entries);
   }
 
   Future<List<LocalDiaryEntry>> _readDiaryEntries({
@@ -152,6 +148,39 @@ class DiaryEntryService {
         meal: meal,
         diaryEntries: map[meal]?.map((e) => DiaryEntry.local(localEntry: e)).toList() ?? [],
       );
+    });
+  }
+
+  Stream<List<MealEntriesList>> watchDisplayDiaryEntries({
+    required String date,
+    required String username,
+  }) {
+    final dateFormattingService = getIt<DateFormattingService>();
+    final formattedDate = dateFormattingService.format(
+      dateTime: date,
+      format: collectionApiDateFormat,
+    );
+    final dateFilter = dateFormattingService.parse(
+      formattedDate: formattedDate,
+      format: collectionApiDateFormat,
+    );
+    return _databaseRepository.watchDiaryEntries(
+      username: username,
+      dateFilter: dateFilter
+    ).map(
+      (entries) {
+        final map = entries.groupListsBy((element) => element.meal);
+        return List.generate(Meal.values.length, (index) {
+          final meal = Meal.values[index];
+          return MealEntriesList(
+            meal: meal,
+            diaryEntries: map[meal]?.map((e) => DiaryEntry.local(localEntry: e)).toList() ?? [],
+          );
+        });
+      },
+    ).onErrorResume((error, stackTrace) {
+      getIt<LoggingService>().handle(error, stackTrace);
+      return Stream.empty();
     });
   }
 }

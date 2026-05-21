@@ -1,11 +1,13 @@
 import 'dart:math';
 
+import 'package:calorietracker/feature/diary/logic/diary_bloc.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/profile/ui/profile_item.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/shared/data/service/data_sync_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -53,7 +55,8 @@ class _ProfileViewState extends State<ProfileView> with SingleTickerProviderStat
               final dataSyncService = getIt<DataSyncService>();
               if (!dataSyncService.isUploadInProgress) {
                 _rotationController.repeat();
-                dataSyncService.uploadLocalData().then((_) => _rotationController.stop());
+                final selectedDay = context.read<DiaryBloc>().state.selectedDay;
+                dataSyncService.uploadLocalData( selectedDay: selectedDay).then((_) => _rotationController.stop());
               }
             },
             title: AppStrings.syncDataLabel,

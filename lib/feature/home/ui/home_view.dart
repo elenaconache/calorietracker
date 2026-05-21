@@ -1,6 +1,5 @@
 import 'package:calorietracker/feature/auth/logic/login_cubit.dart';
 import 'package:calorietracker/feature/create_food/logic/create_food_cubit.dart';
-import 'package:calorietracker/feature/profile/logic/user_goals_cubit.dart';
 import 'package:calorietracker/feature/recipe_details/logic/recipe_details_cubit.dart';
 import 'package:calorietracker/feature/recipes/logic/create_recipe_cubit.dart';
 import 'package:calorietracker/feature/recipes/logic/search_recipe_cubit.dart';

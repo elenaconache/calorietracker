@@ -34,7 +34,7 @@ class CaloriesMacrosSection extends StatelessWidget {
               protein: proteinPercentage.toDouble(),
               calories: calories,
               carbsColor: _carbsColor,
-              fatColor: const Color.fromARGB(255, 41, 43, 43),
+              fatColor: _fatColor,
               proteinColor: _proteinColor,
               defaultMacroNutrient: _unknownMacroColor,
             )),

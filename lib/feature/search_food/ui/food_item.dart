@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:calorietracker/feature/diary/logic/diary_bloc.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/home/ui/home_view.dart';
@@ -15,6 +16,7 @@ import 'package:calorietracker/shared/data/service/numeric_formatting_service.da
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/widgets/app_divider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FoodItem extends StatefulWidget {
   final Food? remoteFood;
@@ -130,17 +132,21 @@ class _FoodItemState extends State<FoodItem> {
     } else if (widget.meal == null) {
       // TODO: quick add ingredient to recipe
     } else {
-      unawaited(_controller
-          .logFood(
-        food: widget.remoteFood ?? Food.local(localFood: widget.localFood!),
-        meal: widget.meal!,
-        servingQuantity: widget.servingQuantity,
-        localFoodId: widget.localFood?.id,
-        remoteFoodId: widget.remoteFood?.id ?? widget.localFood?.foodId,
-      )
-          .then((added) {
-        _handleLogFoodResult(added);
-      }));
+      final date = context.read<DiaryBloc>().state.selectedDay;
+      unawaited(
+        _controller
+            .logFood(
+          food: widget.remoteFood ?? Food.local(localFood: widget.localFood!),
+          meal: widget.meal!,
+          servingQuantity: widget.servingQuantity,
+          localFoodId: widget.localFood?.id,
+          remoteFoodId: widget.remoteFood?.id ?? widget.localFood?.foodId,
+          date: date,
+        )
+            .then((added) {
+          _handleLogFoodResult(added);
+        }),
+      );
     }
   }
 
