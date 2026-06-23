@@ -90,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "caloriesShortGenericLabel":
             MessageLookupByLibrary.simpleMessage("cal"),
         "caloriesShortLabel": m2,
+        "cancelLabel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "carbohydratesLabel":
             MessageLookupByLibrary.simpleMessage("Carbohydrates"),
         "carbsGramsLabel": MessageLookupByLibrary.simpleMessage("Carbs (g)"),
@@ -103,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cholesterolMgLabel":
             MessageLookupByLibrary.simpleMessage("Cholesterol (mg)"),
         "collectionLabel": MessageLookupByLibrary.simpleMessage("Collection"),
+        "confirmLabel": MessageLookupByLibrary.simpleMessage("Continue"),
         "connectionErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Could not connect to the server."),
         "continueLabel": MessageLookupByLibrary.simpleMessage("Continue"),
@@ -191,6 +193,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "You didn\'t log foods for this meal yet."),
         "noResultsTitle": MessageLookupByLibrary.simpleMessage(
             "There were no results matching your search"),
+        "nutrientAccurateMessage": MessageLookupByLibrary.simpleMessage(
+            "The nutritional info might not be accurate. Do you wish to continue?"),
         "nutrientsLabel": MessageLookupByLibrary.simpleMessage("Nutrients"),
         "nutritionTitle": MessageLookupByLibrary.simpleMessage("Nutrition"),
         "percentagesLabel": MessageLookupByLibrary.simpleMessage("Percentages"),
@@ -269,6 +273,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "vitaminDIULabel":
             MessageLookupByLibrary.simpleMessage("Vitamin D (IU)"),
         "vitaminDLabel": MessageLookupByLibrary.simpleMessage("Vitamin D"),
+        "warningTitle": MessageLookupByLibrary.simpleMessage("Warning"),
         "yesterdayLabel": MessageLookupByLibrary.simpleMessage("Yesterday")
       };
 }

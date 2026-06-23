@@ -152,7 +152,6 @@ class DiaryLoggingService {
         username: userId!,
       )..meal = foodLog.meal;
 
-  // TODO: call API to copy from date to date, given meal or the whole day, if online
   Future<bool> copyDiaryEntries({
     required List<MealEntriesList> mealsEntries,
     required DateTime toDate,

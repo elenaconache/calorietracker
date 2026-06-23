@@ -65,6 +65,7 @@ class CopyDiaryModal extends StatelessWidget {
       )
           .then((copied) {
         if (!copied) {
+          // TODO: Use Scaffold messenger set in Material App instead
           ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(
             SnackBar(
               content: Text(AppStrings.copyDiaryError),

@@ -50,7 +50,6 @@ class DataSyncService {
     final uploadedEntriesIds = await _pushDiary(uploadReadyEntries: uploadReadyEntries);
     await _markPushedLocalDiary(addedEntries: uploadedEntriesIds, pendingEntries: uploadReadyEntries);
 
-    // TODO : before or after, fetch from collection and merge
     final user = _authRepository.selectedUser;
     if (user != null) {
       await _fetchRemoteDiary(user: user, date: selectedDay);

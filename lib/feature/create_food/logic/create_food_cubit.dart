@@ -48,10 +48,8 @@ class CreateFoodCubit extends Cubit<CreateFoodState> {
       }
       getIt<LoggingService>().handle(error, stackTrace);
     }
-    emit(state.copyWith(
-        createdFood: AsyncState.success(CreatedFood(
-      localId: localId,
-      createdFoodId: createdFood?.id,
-    ))));
+    emit(
+      state.copyWith(createdFood: AsyncState.success(CreatedFood(localId: localId, createdFoodId: createdFood?.id))),
+    );
   }
 }

@@ -10,6 +10,7 @@ import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
+import 'package:calorietracker/ui/widgets/adaptive_dialog.dart';
 import 'package:calorietracker/ui/widgets/error_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -199,6 +200,23 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
       final isNutritionValid = cubit.validateNutrition(foodInput: _foodInput);
       if (isNutritionValid) {
         cubit.createFood(foodInput: _foodInput);
+      } else {
+        showAdaptiveDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (context) => AdaptiveDialog(
+            title: AppStrings.warningTitle,
+            message: AppStrings.nutrientAccurateMessage,
+            primaryAction: TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppStrings.cancelLabel),
+            ),
+            secondaryAction: TextButton(
+              onPressed: () => cubit.createFood(foodInput: _foodInput),
+              child: Text(AppStrings.confirmLabel),
+            ),
+          ),
+        );
       }
     }
   }

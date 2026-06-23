@@ -278,5 +278,9 @@
   "vitaminDExceedsMaxPerServingError": "Vitamin D must be less than or equal to {vitaminD} IU for this serving size.",
   "vitaminDIULabel": "Vitamin D (IU)",
   "vitaminDLabel": "Vitamin D",
-  "yesterdayLabel": "Yesterday"
+  "yesterdayLabel": "Yesterday",
+  "warningTitle": "Warning",
+  "nutrientAccurateMessage": "The nutritional info might not be accurate. Do you wish to continue?",
+  "cancelLabel": "Cancel",
+  "confirmLabel": "Continue"
 }

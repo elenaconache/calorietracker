@@ -1450,6 +1450,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Warning`
+  String get warningTitle {
+    return Intl.message(
+      'Warning',
+      name: 'warningTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The nutritional info might not be accurate. Do you wish to continue?`
+  String get nutrientAccurateMessage {
+    return Intl.message(
+      'The nutritional info might not be accurate. Do you wish to continue?',
+      name: 'nutrientAccurateMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancelLabel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancelLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get confirmLabel {
+    return Intl.message(
+      'Continue',
+      name: 'confirmLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
