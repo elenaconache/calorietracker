@@ -212,7 +212,10 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
               child: Text(AppStrings.cancelLabel),
             ),
             secondaryAction: TextButton(
-              onPressed: () => cubit.createFood(foodInput: _foodInput),
+              onPressed: () {
+                Navigator.of(context).pop();
+                cubit.createFood(foodInput: _foodInput);
+              },
               child: Text(AppStrings.confirmLabel),
             ),
           ),
@@ -291,6 +294,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   }
 
   void _removeTextListeners() {
+    if (!context.mounted) return;
     final cubit = context.read<CreateFoodCubit>();
     for (var element in [
       _foodNameController,

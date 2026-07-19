@@ -7,17 +7,17 @@ part of 'create_food_error.dart';
 // **************************************************************************
 
 CreateFoodError _$CreateFoodErrorFromJson(Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    requiredKeys: const ['resource'],
-  );
+  $checkKeys(json, requiredKeys: const ['resource']);
   return CreateFoodError(
     resource: CreateFoodErrorResource.fromJson(
-        json['resource'] as Map<String, dynamic>),
+      json['resource'] as Map<String, dynamic>,
+    ),
+    localId: (json['localId'] as num).toInt(),
   );
 }
 
 Map<String, dynamic> _$CreateFoodErrorToJson(CreateFoodError instance) =>
     <String, dynamic>{
+      'localId': instance.localId,
       'resource': instance.resource,
     };

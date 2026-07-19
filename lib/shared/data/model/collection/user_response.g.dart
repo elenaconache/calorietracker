@@ -7,10 +7,7 @@ part of 'user_response.dart';
 // **************************************************************************
 
 UserResponse _$UserResponseFromJson(Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    requiredKeys: const ['username', 'first_name', 'last_name'],
-  );
+  $checkKeys(json, requiredKeys: const ['username', 'first_name', 'last_name']);
   return UserResponse(
     username: json['username'] as String,
     firstName: json['first_name'] as String,

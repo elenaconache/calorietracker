@@ -45,18 +45,15 @@ class DatabaseRepository {
     Condition<LocalDiaryEntry> condition = LocalDiaryEntry_.username.equals(username);
     if (filterPending) condition = condition & LocalDiaryEntry_.pushedEntry.equals(false);
     if (filterUploadReady) {
-      condition = condition &
+      condition =
+          condition &
           (LocalDiaryEntry_.pushedEntry.equals(false) & LocalDiaryEntry_.localFood.notNull() | LocalDiaryEntry_.deletedEntry.equals(true));
     }
     if (filterPushed) {
       condition = condition & LocalDiaryEntry_.pushedEntry.equals(true);
     }
     if (dateFilter != null) {
-      final lowerBoundDate = DateTime(
-        dateFilter.year,
-        dateFilter.month,
-        dateFilter.day,
-      );
+      final lowerBoundDate = DateTime(dateFilter.year, dateFilter.month, dateFilter.day);
       final upperBoundDate = lowerBoundDate.copyWith(hour: 23, minute: 59);
       condition = condition & LocalDiaryEntry_.entryDate.betweenDate(lowerBoundDate, upperBoundDate);
     }
@@ -76,11 +73,7 @@ class DatabaseRepository {
   Stream<List<LocalDiaryEntry>> watchDiaryEntries({required DateTime dateFilter, required String username}) {
     Condition<LocalDiaryEntry> condition = LocalDiaryEntry_.username.equals(username).and(LocalDiaryEntry_.deletedEntry.equals(false));
 
-    final lowerBoundDate = DateTime(
-      dateFilter.year,
-      dateFilter.month,
-      dateFilter.day,
-    );
+    final lowerBoundDate = DateTime(dateFilter.year, dateFilter.month, dateFilter.day);
     final upperBoundDate = lowerBoundDate.copyWith(hour: 23, minute: 59);
     condition = condition & LocalDiaryEntry_.entryDate.betweenDate(lowerBoundDate, upperBoundDate);
 
@@ -92,8 +85,10 @@ class DatabaseRepository {
   }
 
   Future<List<LocalDiaryEntry>> readDiaryEntriesByIds({required List<DiaryEntry> entries}) async {
-    final queryBuilder = _store.box<LocalDiaryEntry>().query(LocalDiaryEntry_.localId.oneOf(entries.map((e) => e.localId).nonNulls.toList()) |
-        LocalDiaryEntry_.entryId.oneOf(entries.map((e) => e.collectionId).nonNulls.toList()));
+    final queryBuilder = _store.box<LocalDiaryEntry>().query(
+      LocalDiaryEntry_.localId.oneOf(entries.map((e) => e.localId).nonNulls.toList()) |
+          LocalDiaryEntry_.entryId.oneOf(entries.map((e) => e.collectionId).nonNulls.toList()),
+    );
     queryBuilder.link(LocalDiaryEntry_.localFood);
     return await queryBuilder.build().findAsync();
   }
@@ -129,6 +124,11 @@ class DatabaseRepository {
     }
     return _store.box<LocalFood>().query(condition).build().findFirstAsync();
   }
+
+  Future<LocalFood?> findFoodByLocalId({required int localId}) {
+    Condition<LocalFood> condition = LocalFood_.id.equals(localId);
+    return _store.box<LocalFood>().query(condition).build().findFirstAsync();
+  }
 }
 
 List<int> writeDiaryEntriesAndFoods(Store store, List<LocalDiaryEntry> entries) {
@@ -147,32 +147,33 @@ List<int> writeDiaryEntriesAndFoods(Store store, List<LocalDiaryEntry> entries) 
 Map<LocalFood, LocalDiaryEntry?> searchDiaryFoods(Store store, String searchQuery) {
   final diaryEntriesBox = store.box<LocalDiaryEntry>();
   final loggedFoodsQueryBuilder = diaryEntriesBox
-      .query(
-        LocalDiaryEntry_.errorPushingEntry.equals(false),
-      )
+      .query(LocalDiaryEntry_.errorPushingEntry.equals(false))
       .order(LocalDiaryEntry_.entryDate, flags: Order.descending);
   loggedFoodsQueryBuilder.link(
-      LocalDiaryEntry_.localFood,
-      LocalFood_.name.contains(searchQuery, caseSensitive: false) |
-          LocalFood_.brand.notNull() & LocalFood_.brand.contains(searchQuery, caseSensitive: false));
+    LocalDiaryEntry_.localFood,
+    LocalFood_.name.contains(searchQuery, caseSensitive: false) |
+        LocalFood_.brand.notNull() & LocalFood_.brand.contains(searchQuery, caseSensitive: false),
+  );
 
   final loggedFoodsEntries = loggedFoodsQueryBuilder.build().find().where((entry) => entry.localFood.target != null);
 
-  Map<LocalFood, LocalDiaryEntry?> resultsMap = Map.fromEntries(
-    loggedFoodsEntries.toList().map((entry) => MapEntry(entry.localFood.target!, entry)),
-  );
+  Map<LocalFood, LocalDiaryEntry?> resultsMap = Map.fromEntries(loggedFoodsEntries.toList().map((entry) => MapEntry(entry.localFood.target!, entry)));
 
   final foodsBox = store.box<LocalFood>();
   final createdFoodsResults = foodsBox
-      .query(LocalFood_.errorPushing.equals(false) & LocalFood_.name.contains(searchQuery, caseSensitive: false) |
-          LocalFood_.brand.notNull() & LocalFood_.brand.contains(searchQuery, caseSensitive: false))
+      .query(
+        LocalFood_.errorPushing.equals(false) & LocalFood_.name.contains(searchQuery, caseSensitive: false) |
+            LocalFood_.brand.notNull() & LocalFood_.brand.contains(searchQuery, caseSensitive: false),
+      )
       .order(LocalFood_.createdAtDate, flags: Order.descending)
       .build()
       .find();
 
-  resultsMap.addEntries(createdFoodsResults
-      .where((food) => resultsMap.keys.none((result) => result.name == food.name && result.brand == food.brand))
-      .map((food) => MapEntry(food, null)));
+  resultsMap.addEntries(
+    createdFoodsResults
+        .where((food) => resultsMap.keys.none((result) => result.name == food.name && result.brand == food.brand))
+        .map((food) => MapEntry(food, null)),
+  );
 
   return resultsMap;
 }

@@ -11,8 +11,9 @@ AddFoodRequest _$AddFoodRequestFromJson(Map<String, dynamic> json) =>
       barcode: json['barcode'] as String?,
       name: json['name'] as String,
       brand: json['brand'] as String?,
-      nutritionInfo:
-          Nutrition.fromJson(json['nutritionInfo'] as Map<String, dynamic>),
+      nutritionInfo: Nutrition.fromJson(
+        json['nutritionInfo'] as Map<String, dynamic>,
+      ),
     );
 
 Map<String, dynamic> _$AddFoodRequestToJson(AddFoodRequest instance) =>

@@ -7,10 +7,7 @@ part of 'add_local_data_error.dart';
 // **************************************************************************
 
 AddLocalDataError _$AddLocalDataErrorFromJson(Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    requiredKeys: const ['message', 'index', 'localId'],
-  );
+  $checkKeys(json, requiredKeys: const ['message', 'index', 'localId']);
   return AddLocalDataError(
     message: json['message'] as String,
     index: (json['index'] as num).toInt(),

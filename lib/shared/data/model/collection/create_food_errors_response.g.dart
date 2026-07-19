@@ -7,11 +7,9 @@ part of 'create_food_errors_response.dart';
 // **************************************************************************
 
 CreateFoodErrorsResponse _$CreateFoodErrorsResponseFromJson(
-    Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    requiredKeys: const ['errors'],
-  );
+  Map<String, dynamic> json,
+) {
+  $checkKeys(json, requiredKeys: const ['errors']);
   return CreateFoodErrorsResponse(
     errors: (json['errors'] as List<dynamic>)
         .map((e) => CreateFoodError.fromJson(e as Map<String, dynamic>))
@@ -20,7 +18,5 @@ CreateFoodErrorsResponse _$CreateFoodErrorsResponseFromJson(
 }
 
 Map<String, dynamic> _$CreateFoodErrorsResponseToJson(
-        CreateFoodErrorsResponse instance) =>
-    <String, dynamic>{
-      'errors': instance.errors,
-    };
+  CreateFoodErrorsResponse instance,
+) => <String, dynamic>{'errors': instance.errors};

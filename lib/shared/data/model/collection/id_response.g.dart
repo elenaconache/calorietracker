@@ -7,16 +7,9 @@ part of 'id_response.dart';
 // **************************************************************************
 
 IdResponse _$IdResponseFromJson(Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    requiredKeys: const ['id'],
-  );
-  return IdResponse(
-    id: (json['id'] as num).toInt(),
-  );
+  $checkKeys(json, requiredKeys: const ['id']);
+  return IdResponse(id: (json['id'] as num).toInt());
 }
 
 Map<String, dynamic> _$IdResponseToJson(IdResponse instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-    };
+    <String, dynamic>{'id': instance.id};

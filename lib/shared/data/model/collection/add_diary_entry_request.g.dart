@@ -7,26 +7,26 @@ part of 'add_diary_entry_request.dart';
 // **************************************************************************
 
 AddDiaryEntryRequest _$AddDiaryEntryRequestFromJson(
-        Map<String, dynamic> json) =>
-    AddDiaryEntryRequest(
-      entryDate: json['entryDate'] as String,
-      userId: json['userId'] as String,
-      foodUnitId: (json['foodUnitId'] as num).toInt(),
-      foodId: (json['foodId'] as num).toInt(),
-      servingQuantity: (json['servingQuantity'] as num).toDouble(),
-      meal: $enumDecode(_$MealEnumMap, json['meal']),
-    );
+  Map<String, dynamic> json,
+) => AddDiaryEntryRequest(
+  entryDate: json['entryDate'] as String,
+  userId: json['userId'] as String,
+  foodUnitId: (json['foodUnitId'] as num).toInt(),
+  foodId: (json['foodId'] as num).toInt(),
+  servingQuantity: (json['servingQuantity'] as num).toDouble(),
+  meal: $enumDecode(_$MealEnumMap, json['meal']),
+);
 
 Map<String, dynamic> _$AddDiaryEntryRequestToJson(
-        AddDiaryEntryRequest instance) =>
-    <String, dynamic>{
-      'entryDate': instance.entryDate,
-      'userId': instance.userId,
-      'foodUnitId': instance.foodUnitId,
-      'foodId': instance.foodId,
-      'servingQuantity': instance.servingQuantity,
-      'meal': _$MealEnumMap[instance.meal]!,
-    };
+  AddDiaryEntryRequest instance,
+) => <String, dynamic>{
+  'entryDate': instance.entryDate,
+  'userId': instance.userId,
+  'foodUnitId': instance.foodUnitId,
+  'foodId': instance.foodId,
+  'servingQuantity': instance.servingQuantity,
+  'meal': _$MealEnumMap[instance.meal]!,
+};
 
 const _$MealEnumMap = {
   Meal.breakfast: 'BREAKFAST',

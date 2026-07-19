@@ -7,10 +7,7 @@ part of 'add_local_data_response.dart';
 // **************************************************************************
 
 AddLocalDataResponse _$AddLocalDataResponseFromJson(Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    requiredKeys: const ['resourceId', 'localResourceId'],
-  );
+  $checkKeys(json, requiredKeys: const ['resourceId', 'localResourceId']);
   return AddLocalDataResponse(
     resourceId: (json['resourceId'] as num).toInt(),
     localResourceId: (json['localResourceId'] as num).toInt(),
@@ -18,8 +15,8 @@ AddLocalDataResponse _$AddLocalDataResponseFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$AddLocalDataResponseToJson(
-        AddLocalDataResponse instance) =>
-    <String, dynamic>{
-      'resourceId': instance.resourceId,
-      'localResourceId': instance.localResourceId,
-    };
+  AddLocalDataResponse instance,
+) => <String, dynamic>{
+  'resourceId': instance.resourceId,
+  'localResourceId': instance.localResourceId,
+};

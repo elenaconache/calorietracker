@@ -66,20 +66,18 @@ class LocalDiaryEntry {
     localFood.targetId = localFoodId;
   }
 
-  AddLocalDiaryEntryRequest get addLocalDiaryEntryRequest {
-    if (!localFood.hasValue) {
-      getIt<LoggingService>().info('Missing food for adding diary entry');
+  AddLocalDiaryEntryRequest? get addLocalDiaryEntryRequest {
+    if (localFood.target?.foodId == null) {
+      getIt<LoggingService>().info('Missing food for adding diary entry $entryDate, $meal, ${localFood.target}');
+      return null;
     }
     return AddLocalDiaryEntryRequest(
       localId: localId,
-      entryDate: getIt<DateFormattingService>().format(
-        dateTime: entryDate.toString(),
-        format: collectionApiDateFormat,
-      ),
+      entryDate: getIt<DateFormattingService>().format(dateTime: entryDate.toString(), format: collectionApiDateFormat),
       userId: username,
       servingQuantity: servingQuantity,
       meal: meal ?? Meal.values.first,
-      foodId: localFood.target?.foodId ?? 0,
+      foodId: localFood.target!.foodId!,
       foodUnitId: unitId,
     );
   }

@@ -39,7 +39,7 @@ class _AppDropdownMenuState<T> extends State<AppDropdownMenu<T>> with SingleTick
     return DecoratedBox(
         decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, borderRadius: _borderRadius),
         child: SizeTransition(
-            axisAlignment: 1,
+            alignment:  AlignmentDirectional(-1, 1),
             sizeFactor: _expandAnimation,
             child: ConstrainedBox(
                 constraints: BoxConstraints(

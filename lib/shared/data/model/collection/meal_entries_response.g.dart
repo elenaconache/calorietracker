@@ -7,10 +7,7 @@ part of 'meal_entries_response.dart';
 // **************************************************************************
 
 MealEntriesResponse _$MealEntriesResponseFromJson(Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    requiredKeys: const ['meal', 'diaryEntries'],
-  );
+  $checkKeys(json, requiredKeys: const ['meal', 'diaryEntries']);
   return MealEntriesResponse(
     meal: $enumDecode(_$MealEnumMap, json['meal']),
     diaryEntries: (json['diaryEntries'] as List<dynamic>)
@@ -20,11 +17,11 @@ MealEntriesResponse _$MealEntriesResponseFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$MealEntriesResponseToJson(
-        MealEntriesResponse instance) =>
-    <String, dynamic>{
-      'meal': _$MealEnumMap[instance.meal]!,
-      'diaryEntries': instance.diaryEntries,
-    };
+  MealEntriesResponse instance,
+) => <String, dynamic>{
+  'meal': _$MealEnumMap[instance.meal]!,
+  'diaryEntries': instance.diaryEntries,
+};
 
 const _$MealEnumMap = {
   Meal.breakfast: 'BREAKFAST',

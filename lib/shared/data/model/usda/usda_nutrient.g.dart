@@ -7,11 +7,11 @@ part of 'usda_nutrient.dart';
 // **************************************************************************
 
 UsdaNutrient _$UsdaNutrientFromJson(Map<String, dynamic> json) => UsdaNutrient(
-      value: (json['value'] as num?)?.toDouble(),
-      nutrientId: (json['nutrientId'] as num).toInt(),
-      nutrientName: json['nutrientName'] as String,
-      unitName: json['unitName'] as String,
-    );
+  value: (json['value'] as num?)?.toDouble(),
+  nutrientId: (json['nutrientId'] as num).toInt(),
+  nutrientName: json['nutrientName'] as String,
+  unitName: json['unitName'] as String,
+);
 
 Map<String, dynamic> _$UsdaNutrientToJson(UsdaNutrient instance) =>
     <String, dynamic>{

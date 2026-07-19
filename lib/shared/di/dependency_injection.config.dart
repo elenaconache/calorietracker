@@ -55,130 +55,153 @@ import '../helpers/recipe_helper.dart' as _i510;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
-// initializes the registration of main-scope dependencies inside of GetIt
+  // initializes the registration of main-scope dependencies inside of GetIt
   Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
-    final gh = _i526.GetItHelper(
-      this,
-      environment,
-      environmentFilter,
-    );
+    final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
     gh.factory<_i867.LoginCubit>(() => _i867.LoginCubit());
     gh.factory<_i525.CreateFoodCubit>(() => _i525.CreateFoodCubit());
     gh.factoryAsync<_i1067.AppEnvironment>(
-        () => _i1067.AppEnvironment.create());
+      () => _i1067.AppEnvironment.create(),
+    );
     gh.factory<_i443.DateFormattingService>(
-        () => _i443.DateFormattingService());
+      () => _i443.DateFormattingService(),
+    );
     gh.factory<_i861.LoggingService>(() => _i861.LoggingService());
     gh.factory<_i633.NumericFormattingService>(
-        () => _i633.NumericFormattingService());
+      () => _i633.NumericFormattingService(),
+    );
     gh.factory<_i270.SecureStorageService>(() => _i270.SecureStorageService());
     gh.factory<_i404.FoodValidator>(() => _i404.FoodValidator());
     gh.factory<_i2.NutritionValidator>(() => _i2.NutritionValidator());
     gh.factory<_i222.BehaviorSubject<_i548.User?>>(
-        () => registerModule.selectedUserController);
+      () => registerModule.selectedUserController,
+    );
     gh.factory<_i510.RecipeHelper>(() => _i510.RecipeHelper());
     gh.factory<_i270.AppDropdownButtonController>(
-        () => _i270.AppDropdownButtonController());
+      () => _i270.AppDropdownButtonController(),
+    );
     gh.lazySingleton<_i383.SearchFoodService>(() => _i383.SearchFoodService());
-    await gh.lazySingletonAsync<_i667.AppPathProvider>(
-      () {
-        final i = _i667.AppPathProvider();
-        return i.initPath().then((_) => i);
-      },
-      preResolve: true,
-    );
-    await gh.lazySingletonAsync<_i379.DatabaseRepository>(
-      () {
-        final i = _i379.DatabaseRepository();
-        return i.init().then((_) => i);
-      },
-      preResolve: true,
-    );
+    await gh.lazySingletonAsync<_i667.AppPathProvider>(() {
+      final i = _i667.AppPathProvider();
+      return i.initPath().then((_) => i);
+    }, preResolve: true);
+    await gh.lazySingletonAsync<_i379.DatabaseRepository>(() {
+      final i = _i379.DatabaseRepository();
+      return i.init().then((_) => i);
+    }, preResolve: true);
     gh.lazySingleton<_i558.FlutterSecureStorage>(
-        () => registerModule.flutterSecureStorage);
+      () => registerModule.flutterSecureStorage,
+    );
     gh.lazySingletonAsync<_i818.UsdaApiService>(
-        () => registerModule.nutritionixApiService);
+      () => registerModule.nutritionixApiService,
+    );
     gh.lazySingleton<_i271.FoodService>(
-        () => _i271.FoodService(database: gh<_i379.DatabaseRepository>()));
-    gh.lazySingleton<_i566.AuthRepository>(() => _i566.AuthRepository(
-          gh<_i270.SecureStorageService>(),
-          gh<_i861.LoggingService>(),
-          gh<_i430.BehaviorSubject<_i548.User?>>(),
-          gh<_i376.UserApiService>(),
-        ));
-    gh.factory<_i879.RecipeDetailsRepository>(
-        () => _i879.RecipeDetailsRepository(gh<_i13.CollectionApiService>()));
-    gh.factory<_i27.SearchRecipeRepository>(
-        () => _i27.SearchRecipeRepository(gh<_i13.CollectionApiService>()));
+      () => _i271.FoodService(database: gh<_i379.DatabaseRepository>()),
+    );
+    gh.lazySingleton<_i566.AuthRepository>(
+      () => _i566.AuthRepository(
+        gh<_i270.SecureStorageService>(),
+        gh<_i861.LoggingService>(),
+        gh<_i430.BehaviorSubject<_i548.User?>>(),
+        gh<_i376.UserApiService>(),
+      ),
+    );
+    gh.factoryParam<_i159.DioProvider, String?, dynamic>(
+      (baseUrl, _) => _i159.DioProvider(baseUrl: baseUrl),
+    );
+    gh.factory<_i924.GoalsRepository>(
+      () => _i924.GoalsRepository(gh<_i270.SecureStorageService>()),
+    );
+    gh.factory<_i527.CreateRecipeRepository>(
+      () => _i527.CreateRecipeRepository(
+        gh<_i13.CollectionApiService>(),
+        gh<_i861.LoggingService>(),
+      ),
+    );
+    gh.factory<_i1072.CreateRecipeCubit>(
+      () => _i1072.CreateRecipeCubit(
+        gh<_i510.RecipeHelper>(),
+        gh<_i527.CreateRecipeRepository>(),
+      ),
+    );
     gh.factoryAsync<String>(
       () => registerModule.appDirectoryPath,
       instanceName: 'appDirectoryPath',
     );
-    gh.factory<_i527.CreateRecipeRepository>(() => _i527.CreateRecipeRepository(
-          gh<_i13.CollectionApiService>(),
-          gh<_i861.LoggingService>(),
-        ));
-    gh.factory<_i128.AuthBloc>(() => _i128.AuthBloc(
-          gh<_i566.AuthRepository>(),
-          gh<_i861.LoggingService>(),
-        ));
-    gh.factory<_i264.FoodItemController>(
-        () => _i264.FoodItemController(gh<_i566.AuthRepository>()));
+    gh.factory<_i98.UserGoalsCubit>(
+      () => _i98.UserGoalsCubit(
+        gh<_i566.AuthRepository>(),
+        gh<_i924.GoalsRepository>(),
+        gh<_i861.LoggingService>(),
+      ),
+    );
     gh.lazySingleton<_i493.DiaryLoggingService>(
-        () => _i493.DiaryLoggingService(gh<_i566.AuthRepository>()));
-    gh.lazySingleton<_i373.DiaryEntryService>(() => _i373.DiaryEntryService(
-          gh<_i379.DatabaseRepository>(),
-          gh<_i566.AuthRepository>(),
-        ));
-    gh.lazySingleton<_i999.DataSyncService>(() => _i999.DataSyncService(
-          gh<_i373.DiaryEntryService>(),
-          gh<_i13.CollectionApiService>(),
-          gh<_i861.LoggingService>(),
-          gh<_i271.FoodService>(),
-          dateFormattingService: gh<_i443.DateFormattingService>(),
-          authRepository: gh<_i566.AuthRepository>(),
-        ));
-    gh.factoryParam<_i159.DioProvider, String?, dynamic>((
-      baseUrl,
-      _,
-    ) =>
-        _i159.DioProvider(baseUrl: baseUrl));
-    gh.factory<_i738.DiaryBloc>(() => _i738.DiaryBloc(
-          gh<_i566.AuthRepository>(),
-          gh<_i373.DiaryEntryService>(),
-          gh<_i493.DiaryLoggingService>(),
-          gh<_i861.LoggingService>(),
-        ));
-    gh.factory<_i1072.CreateRecipeCubit>(() => _i1072.CreateRecipeCubit(
-          gh<_i510.RecipeHelper>(),
-          gh<_i527.CreateRecipeRepository>(),
-        ));
-    gh.factory<_i980.AddFoodCubit>(() => _i980.AddFoodCubit(
-          gh<_i566.AuthRepository>(),
-          gh<_i861.LoggingService>(),
-          gh<_i493.DiaryLoggingService>(),
-          gh<_i13.CollectionApiService>(),
-        ));
-    gh.factory<_i924.GoalsRepository>(
-        () => _i924.GoalsRepository(gh<_i270.SecureStorageService>()));
-    gh.factory<_i301.RecipeDetailsCubit>(() => _i301.RecipeDetailsCubit(
-          gh<_i510.RecipeHelper>(),
-          gh<_i879.RecipeDetailsRepository>(),
-          gh<_i861.LoggingService>(),
-        ));
-    gh.factory<_i909.SearchRecipeCubit>(() => _i909.SearchRecipeCubit(
-          gh<_i27.SearchRecipeRepository>(),
-          gh<_i861.LoggingService>(),
-        ));
-    gh.factory<_i98.UserGoalsCubit>(() => _i98.UserGoalsCubit(
-          gh<_i566.AuthRepository>(),
-          gh<_i924.GoalsRepository>(),
-          gh<_i861.LoggingService>(),
-        ));
+      () => _i493.DiaryLoggingService(gh<_i566.AuthRepository>()),
+    );
+    gh.factory<_i264.FoodItemController>(
+      () => _i264.FoodItemController(gh<_i566.AuthRepository>()),
+    );
+    gh.lazySingleton<_i373.DiaryEntryService>(
+      () => _i373.DiaryEntryService(
+        gh<_i379.DatabaseRepository>(),
+        gh<_i566.AuthRepository>(),
+      ),
+    );
+    gh.factory<_i128.AuthBloc>(
+      () => _i128.AuthBloc(
+        gh<_i566.AuthRepository>(),
+        gh<_i861.LoggingService>(),
+      ),
+    );
+    gh.factory<_i738.DiaryBloc>(
+      () => _i738.DiaryBloc(
+        gh<_i566.AuthRepository>(),
+        gh<_i373.DiaryEntryService>(),
+        gh<_i493.DiaryLoggingService>(),
+        gh<_i861.LoggingService>(),
+      ),
+    );
+    gh.factory<_i879.RecipeDetailsRepository>(
+      () => _i879.RecipeDetailsRepository(gh<_i13.CollectionApiService>()),
+    );
+    gh.factory<_i27.SearchRecipeRepository>(
+      () => _i27.SearchRecipeRepository(gh<_i13.CollectionApiService>()),
+    );
+    gh.factory<_i301.RecipeDetailsCubit>(
+      () => _i301.RecipeDetailsCubit(
+        gh<_i510.RecipeHelper>(),
+        gh<_i879.RecipeDetailsRepository>(),
+        gh<_i861.LoggingService>(),
+      ),
+    );
+    gh.lazySingleton<_i999.DataSyncService>(
+      () => _i999.DataSyncService(
+        gh<_i373.DiaryEntryService>(),
+        gh<_i13.CollectionApiService>(),
+        gh<_i861.LoggingService>(),
+        gh<_i271.FoodService>(),
+        dateFormattingService: gh<_i443.DateFormattingService>(),
+        authRepository: gh<_i566.AuthRepository>(),
+      ),
+    );
+    gh.factory<_i980.AddFoodCubit>(
+      () => _i980.AddFoodCubit(
+        gh<_i566.AuthRepository>(),
+        gh<_i861.LoggingService>(),
+        gh<_i493.DiaryLoggingService>(),
+        gh<_i13.CollectionApiService>(),
+      ),
+    );
+    gh.factory<_i909.SearchRecipeCubit>(
+      () => _i909.SearchRecipeCubit(
+        gh<_i27.SearchRecipeRepository>(),
+        gh<_i861.LoggingService>(),
+      ),
+    );
     await gh.lazySingletonAsync<_i376.UserApiService>(
       () => registerModule.userApiService,
       preResolve: true,

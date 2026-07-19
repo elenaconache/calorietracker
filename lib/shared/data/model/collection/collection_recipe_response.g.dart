@@ -7,7 +7,8 @@ part of 'collection_recipe_response.dart';
 // **************************************************************************
 
 CollectionRecipeResponse _$CollectionRecipeResponseFromJson(
-    Map<String, dynamic> json) {
+  Map<String, dynamic> json,
+) {
   $checkKeys(
     json,
     requiredKeys: const ['id', 'name', 'description', 'cookedWeight'],
@@ -21,10 +22,10 @@ CollectionRecipeResponse _$CollectionRecipeResponseFromJson(
 }
 
 Map<String, dynamic> _$CollectionRecipeResponseToJson(
-        CollectionRecipeResponse instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'description': instance.description,
-      'cookedWeight': instance.cookedWeight,
-    };
+  CollectionRecipeResponse instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'name': instance.name,
+  'description': instance.description,
+  'cookedWeight': instance.cookedWeight,
+};

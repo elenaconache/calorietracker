@@ -35,22 +35,11 @@ class FoodService {
   }
 
   Future<void> _writeFoods(List<LocalFood> foods) async {
-    List<LocalFood> newFoods = [];
-    for (final food in foods) {
-      if (await _findLocalFood(name: food.name, brand: food.brand) == null) {
-        newFoods.add(food);
-      }
-    }
-    await database.upsertList<LocalFood>(items: newFoods);
+    await database.upsertList<LocalFood>(items: foods);
   }
 
   Future<int?> _writeFood(LocalFood food) async {
-    final existingId = await _findLocalFood(name: food.name, brand: food.brand);
-    if (existingId == null) {
-      return database.upsert<LocalFood>(item: food);
-    } else {
-      return existingId;
-    }
+    return database.upsert<LocalFood>(item: food);
   }
 
   Future<List<LocalFood>> _readPendingFoods() {
@@ -61,8 +50,12 @@ class FoodService {
     return database.searchFoods(searchQuery: query);
   }
 
-  Future<int?> _findLocalFood({required String name, String? brand}) async {
+  Future<int?> findLocalFood({required String name, String? brand}) async {
     final result = await database.findFood(name: name, brand: brand);
     return result?.id;
+  }
+
+  Future<LocalFood?> findLocalFoodById({required int id}) {
+    return database.findFoodByLocalId(localId: id);
   }
 }

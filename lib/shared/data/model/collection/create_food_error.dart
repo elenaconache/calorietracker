@@ -5,10 +5,12 @@ part 'create_food_error.g.dart';
 
 @JsonSerializable()
 class CreateFoodError {
+  final int localId;
+
   @JsonKey(required: true)
   final CreateFoodErrorResource resource;
 
-  const CreateFoodError({required this.resource});
+  const CreateFoodError({required this.resource, required this.localId});
 
   factory CreateFoodError.fromJson(Map<String, dynamic> json) => _$CreateFoodErrorFromJson(json);
 
