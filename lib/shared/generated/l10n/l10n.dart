@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,12 +56,7 @@ class S {
 
   /// `Accounts`
   String get accountsTitle {
-    return Intl.message(
-      'Accounts',
-      name: 'accountsTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Accounts', name: 'accountsTitle', desc: '', args: []);
   }
 
   /// `Add account`
@@ -132,12 +131,7 @@ class S {
 
   /// `Calcium`
   String get calciumLabel {
-    return Intl.message(
-      'Calcium',
-      name: 'calciumLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Calcium', name: 'calciumLabel', desc: '', args: []);
   }
 
   /// `Calcium (mg)`
@@ -152,17 +146,15 @@ class S {
 
   /// `Calories`
   String get caloriesLabel {
-    return Intl.message(
-      'Calories',
-      name: 'caloriesLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Calories', name: 'caloriesLabel', desc: '', args: []);
   }
 
   /// `{calories} cal, {servingQuantity} {servingUnit}`
   String caloriesServingShortLabel(
-      String calories, String servingQuantity, String servingUnit) {
+    String calories,
+    String servingQuantity,
+    String servingUnit,
+  ) {
     return Intl.message(
       '$calories cal, $servingQuantity $servingUnit',
       name: 'caloriesServingShortLabel',
@@ -213,12 +205,7 @@ class S {
 
   /// `Carbs`
   String get carbsLabel {
-    return Intl.message(
-      'Carbs',
-      name: 'carbsLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Carbs', name: 'carbsLabel', desc: '', args: []);
   }
 
   /// `Carbs {percentage}%`
@@ -303,12 +290,7 @@ class S {
 
   /// `Continue`
   String get continueLabel {
-    return Intl.message(
-      'Continue',
-      name: 'continueLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Continue', name: 'continueLabel', desc: '', args: []);
   }
 
   /// `Cooked quantity (grams)`
@@ -383,32 +365,17 @@ class S {
 
   /// `Diary`
   String get diaryTitle {
-    return Intl.message(
-      'Diary',
-      name: 'diaryTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Diary', name: 'diaryTitle', desc: '', args: []);
   }
 
   /// `Dinner`
   String get dinnerLabel {
-    return Intl.message(
-      'Dinner',
-      name: 'dinnerLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Dinner', name: 'dinnerLabel', desc: '', args: []);
   }
 
   /// `Discover`
   String get discoverLabel {
-    return Intl.message(
-      'Discover',
-      name: 'discoverLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Discover', name: 'discoverLabel', desc: '', args: []);
   }
 
   /// `Food name can't be empty.`
@@ -483,22 +450,12 @@ class S {
 
   /// `Fat (g)`
   String get fatGramsLabel {
-    return Intl.message(
-      'Fat (g)',
-      name: 'fatGramsLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Fat (g)', name: 'fatGramsLabel', desc: '', args: []);
   }
 
   /// `Fat`
   String get fatLabel {
-    return Intl.message(
-      'Fat',
-      name: 'fatLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Fat', name: 'fatLabel', desc: '', args: []);
   }
 
   /// `Fat {percentage}%`
@@ -533,22 +490,12 @@ class S {
 
   /// `Fiber`
   String get fiberLabel {
-    return Intl.message(
-      'Fiber',
-      name: 'fiberLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Fiber', name: 'fiberLabel', desc: '', args: []);
   }
 
   /// `Food`
   String get foodLabel {
-    return Intl.message(
-      'Food',
-      name: 'foodLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Food', name: 'foodLabel', desc: '', args: []);
   }
 
   /// `Food logged!`
@@ -593,32 +540,17 @@ class S {
 
   /// `Goal`
   String get goalLabel {
-    return Intl.message(
-      'Goal',
-      name: 'goalLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Goal', name: 'goalLabel', desc: '', args: []);
   }
 
   /// `Grams`
   String get gramsLabel {
-    return Intl.message(
-      'Grams',
-      name: 'gramsLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Grams', name: 'gramsLabel', desc: '', args: []);
   }
 
   /// `g`
   String get gramsShortLabel {
-    return Intl.message(
-      'g',
-      name: 'gramsShortLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('g', name: 'gramsShortLabel', desc: '', args: []);
   }
 
   /// `{grams}g`
@@ -673,12 +605,7 @@ class S {
 
   /// `Invalid`
   String get invalidError {
-    return Intl.message(
-      'Invalid',
-      name: 'invalidError',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Invalid', name: 'invalidError', desc: '', args: []);
   }
 
   /// `Invalid serving size.`
@@ -703,72 +630,37 @@ class S {
 
   /// `Iron`
   String get ironLabel {
-    return Intl.message(
-      'Iron',
-      name: 'ironLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Iron', name: 'ironLabel', desc: '', args: []);
   }
 
   /// `Iron (mg)`
   String get ironMgLabel {
-    return Intl.message(
-      'Iron (mg)',
-      name: 'ironMgLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Iron (mg)', name: 'ironMgLabel', desc: '', args: []);
   }
 
   /// `Left`
   String get leftLabel {
-    return Intl.message(
-      'Left',
-      name: 'leftLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Left', name: 'leftLabel', desc: '', args: []);
   }
 
   /// `Log food`
   String get logFoodLabel {
-    return Intl.message(
-      'Log food',
-      name: 'logFoodLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Log food', name: 'logFoodLabel', desc: '', args: []);
   }
 
   /// `Login`
   String get loginTitle {
-    return Intl.message(
-      'Login',
-      name: 'loginTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Login', name: 'loginTitle', desc: '', args: []);
   }
 
   /// `Logout`
   String get logoutLabel {
-    return Intl.message(
-      'Logout',
-      name: 'logoutLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Logout', name: 'logoutLabel', desc: '', args: []);
   }
 
   /// `Lunch`
   String get lunchLabel {
-    return Intl.message(
-      'Lunch',
-      name: 'lunchLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Lunch', name: 'lunchLabel', desc: '', args: []);
   }
 
   /// `Could not save goals. Macros percentages sum must be 100%.`
@@ -813,22 +705,12 @@ class S {
 
   /// `Meal`
   String get mealLabel {
-    return Intl.message(
-      'Meal',
-      name: 'mealLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Meal', name: 'mealLabel', desc: '', args: []);
   }
 
   /// `Meals`
   String get mealsLabel {
-    return Intl.message(
-      'Meals',
-      name: 'mealsLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Meals', name: 'mealsLabel', desc: '', args: []);
   }
 
   /// `Mono fat (g)`
@@ -853,22 +735,12 @@ class S {
 
   /// `My goals`
   String get myGoalsLabel {
-    return Intl.message(
-      'My goals',
-      name: 'myGoalsLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('My goals', name: 'myGoalsLabel', desc: '', args: []);
   }
 
   /// `Net carbs`
   String get netCarbsLabel {
-    return Intl.message(
-      'Net carbs',
-      name: 'netCarbsLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Net carbs', name: 'netCarbsLabel', desc: '', args: []);
   }
 
   /// `You didn't log foods for this meal yet.`
@@ -973,12 +845,7 @@ class S {
 
   /// `Profile`
   String get profileTitle {
-    return Intl.message(
-      'Profile',
-      name: 'profileTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Profile', name: 'profileTitle', desc: '', args: []);
   }
 
   /// `Protein (g)`
@@ -993,12 +860,7 @@ class S {
 
   /// `Protein`
   String get proteinLabel {
-    return Intl.message(
-      'Protein',
-      name: 'proteinLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Protein', name: 'proteinLabel', desc: '', args: []);
   }
 
   /// `Protein {percentage}%`
@@ -1043,22 +905,12 @@ class S {
 
   /// `Recipes`
   String get recipesTitle {
-    return Intl.message(
-      'Recipes',
-      name: 'recipesTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Recipes', name: 'recipesTitle', desc: '', args: []);
   }
 
   /// `Required`
   String get requiredError {
-    return Intl.message(
-      'Required',
-      name: 'requiredError',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Required', name: 'requiredError', desc: '', args: []);
   }
 
   /// `Salt must be less than or equal to serving size.`
@@ -1073,12 +925,7 @@ class S {
 
   /// `Salt (g)`
   String get saltGramsLabel {
-    return Intl.message(
-      'Salt (g)',
-      name: 'saltGramsLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Salt (g)', name: 'saltGramsLabel', desc: '', args: []);
   }
 
   /// `Saturated fat (g)`
@@ -1153,22 +1000,12 @@ class S {
 
   /// `Snacks`
   String get snacksLabel {
-    return Intl.message(
-      'Snacks',
-      name: 'snacksLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Snacks', name: 'snacksLabel', desc: '', args: []);
   }
 
   /// `Sodium`
   String get sodiumLabel {
-    return Intl.message(
-      'Sodium',
-      name: 'sodiumLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sodium', name: 'sodiumLabel', desc: '', args: []);
   }
 
   /// `Sugar (g)`
@@ -1183,12 +1020,7 @@ class S {
 
   /// `Sugar`
   String get sugarLabel {
-    return Intl.message(
-      'Sugar',
-      name: 'sugarLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sugar', name: 'sugarLabel', desc: '', args: []);
   }
 
   /// `Sugar must be less than or equal to net carbs.`
@@ -1233,12 +1065,7 @@ class S {
 
   /// `Sync data`
   String get syncDataLabel {
-    return Intl.message(
-      'Sync data',
-      name: 'syncDataLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sync data', name: 'syncDataLabel', desc: '', args: []);
   }
 
   /// `To another day`
@@ -1253,42 +1080,22 @@ class S {
 
   /// `To today`
   String get toTodayLabel {
-    return Intl.message(
-      'To today',
-      name: 'toTodayLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('To today', name: 'toTodayLabel', desc: '', args: []);
   }
 
   /// `Today`
   String get todayTitle {
-    return Intl.message(
-      'Today',
-      name: 'todayTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Today', name: 'todayTitle', desc: '', args: []);
   }
 
   /// `Tomorrow`
   String get tomorrowLabel {
-    return Intl.message(
-      'Tomorrow',
-      name: 'tomorrowLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tomorrow', name: 'tomorrowLabel', desc: '', args: []);
   }
 
   /// `Total`
   String get totalLabel {
-    return Intl.message(
-      'Total',
-      name: 'totalLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Total', name: 'totalLabel', desc: '', args: []);
   }
 
   /// `Trans fat (g)`
@@ -1303,12 +1110,7 @@ class S {
 
   /// `Trans fat`
   String get transFatLabel {
-    return Intl.message(
-      'Trans fat',
-      name: 'transFatLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Trans fat', name: 'transFatLabel', desc: '', args: []);
   }
 
   /// `Could not update diary entry. Please try again later.`
@@ -1343,12 +1145,7 @@ class S {
 
   /// `Username`
   String get usernameLabel {
-    return Intl.message(
-      'Username',
-      name: 'usernameLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Username', name: 'usernameLabel', desc: '', args: []);
   }
 
   /// `Vitamin A must be less than or equal to {vitaminA} IU for this serving size.`
@@ -1373,12 +1170,7 @@ class S {
 
   /// `Vitamin A`
   String get vitaminALabel {
-    return Intl.message(
-      'Vitamin A',
-      name: 'vitaminALabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vitamin A', name: 'vitaminALabel', desc: '', args: []);
   }
 
   /// `Vitamin C must be less than or equal to {vitaminC}mg for this serving size.`
@@ -1393,12 +1185,7 @@ class S {
 
   /// `Vitamin C`
   String get vitaminCLabel {
-    return Intl.message(
-      'Vitamin C',
-      name: 'vitaminCLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vitamin C', name: 'vitaminCLabel', desc: '', args: []);
   }
 
   /// `Vitamin C (mg)`
@@ -1433,12 +1220,7 @@ class S {
 
   /// `Vitamin D`
   String get vitaminDLabel {
-    return Intl.message(
-      'Vitamin D',
-      name: 'vitaminDLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Vitamin D', name: 'vitaminDLabel', desc: '', args: []);
   }
 
   /// `Yesterday`
@@ -1453,12 +1235,7 @@ class S {
 
   /// `Warning`
   String get warningTitle {
-    return Intl.message(
-      'Warning',
-      name: 'warningTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Warning', name: 'warningTitle', desc: '', args: []);
   }
 
   /// `The nutritional info might not be accurate. Do you wish to continue?`
@@ -1473,22 +1250,12 @@ class S {
 
   /// `Cancel`
   String get cancelLabel {
-    return Intl.message(
-      'Cancel',
-      name: 'cancelLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Cancel', name: 'cancelLabel', desc: '', args: []);
   }
 
   /// `Continue`
   String get confirmLabel {
-    return Intl.message(
-      'Continue',
-      name: 'confirmLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Continue', name: 'confirmLabel', desc: '', args: []);
   }
 }
 
@@ -1496,9 +1263,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();
 
   List<Locale> get supportedLocales {
-    return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en'),
-    ];
+    return const <Locale>[Locale.fromSubtags(languageCode: 'en')];
   }
 
   @override

@@ -29,26 +29,28 @@ class FoodFormRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            child: AppTextField(
-          labelText: firstLabel,
-          controller: firstController,
-          inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-          validate: firstValidation,
-          maxLength: AppTextField.maxNumericInputLength,
-          isDense: true,
-          enabled: enabled,
-        )),
+          child: AppTextField(
+            labelText: firstLabel,
+            controller: firstController,
+            inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
+            validate: firstValidation,
+            maxLength: AppTextField.maxNumericInputLength,
+            isDense: true,
+            enabled: enabled,
+          ),
+        ),
         const SizedBox(width: 12),
         Expanded(
-            child: AppTextField(
-          labelText: secondLabel,
-          controller: secondController,
-          inputType: TextInputType.number,
-          validate: secondValidation,
-          maxLength: AppTextField.maxNumericInputLength,
-          isDense: true,
-          enabled: enabled,
-        )),
+          child: AppTextField(
+            labelText: secondLabel,
+            controller: secondController,
+            inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
+            validate: secondValidation,
+            maxLength: AppTextField.maxNumericInputLength,
+            isDense: true,
+            enabled: enabled,
+          ),
+        ),
       ],
     );
   }

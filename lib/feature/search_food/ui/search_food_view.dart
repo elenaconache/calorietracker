@@ -42,16 +42,16 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.meal == null ? AppStrings.searchIngredientTitle : AppStrings.searchFoodsLabel),
-      ),
+      appBar: AppBar(title: Text(widget.meal == null ? AppStrings.searchIngredientTitle : AppStrings.searchFoodsLabel)),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 4),
-              child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
                 Expanded(
                   child: SearchTextField(
                     labelText: AppStrings.searchForFoodLabel,
@@ -70,14 +70,12 @@ class _SearchFoodViewState extends State<SearchFoodView> {
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    size: 28,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
+                  icon: Icon(Icons.add, size: 28, color: Theme.of(context).iconTheme.color),
                   onPressed: () => _navigateToCreateFood(context),
-                )
-              ])),
+                ),
+              ],
+            ),
+          ),
           Expanded(child: SearchResultsSection(meal: widget.meal)),
         ],
       ),
@@ -85,10 +83,7 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   }
 
   void _navigateToCreateFood(BuildContext context) async {
-    final result = await Navigator.of(context).pushNamed(
-      Routes.createFood.path,
-      arguments: widget.meal,
-    );
+    final result = await Navigator.of(context).pushNamed(Routes.createFood.path, arguments: widget.meal);
     if (result is RecipeIngredient && context.mounted) {
       Navigator.of(context).pop(result);
     }

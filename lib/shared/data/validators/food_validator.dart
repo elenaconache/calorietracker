@@ -7,7 +7,7 @@ class FoodValidator {
     if (text == null || text.isEmpty) {
       return null;
     }
-    if (double.tryParse(text) == null) {
+    if (double.tryParse(text.replaceAll(',', '.')) == null) {
       return AppStrings.invalidError;
     }
     return null;
@@ -17,7 +17,7 @@ class FoodValidator {
     if (text == null || text.isEmpty) {
       return AppStrings.requiredError;
     }
-    if (double.tryParse(text) == null) {
+    if (double.tryParse(text.replaceAll(',', '.')) == null) {
       return AppStrings.invalidError;
     }
     return null;
@@ -27,7 +27,7 @@ class FoodValidator {
     if (text == null || text.isEmpty) {
       return AppStrings.requiredError;
     }
-    if (int.tryParse(text) == null) {
+    if (int.tryParse(text.replaceAll(',', '.')) == null) {
       return AppStrings.invalidError;
     }
     return null;
@@ -37,7 +37,7 @@ class FoodValidator {
     if (text == null || text.isEmpty) {
       return AppStrings.requiredError;
     }
-    if (double.tryParse(text) == null) {
+    if (double.tryParse(text.replaceAll(',', '.')) == null) {
       return AppStrings.invalidError;
     }
     return null;

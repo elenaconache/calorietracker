@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AddFoodState {
 
- Meal? get selectedMeal; bool get isLoading; double? get servingSize; Nutrition get nutrition;
+ Meal? get selectedMeal; double? get servingSize; Nutrition get nutrition; AsyncState get addFoodResult;
 /// Create a copy of AddFoodState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AddFoodStateCopyWith<AddFoodState> get copyWith => _$AddFoodStateCopyWithImpl<A
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddFoodState&&(identical(other.selectedMeal, selectedMeal) || other.selectedMeal == selectedMeal)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.servingSize, servingSize) || other.servingSize == servingSize)&&(identical(other.nutrition, nutrition) || other.nutrition == nutrition));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddFoodState&&(identical(other.selectedMeal, selectedMeal) || other.selectedMeal == selectedMeal)&&(identical(other.servingSize, servingSize) || other.servingSize == servingSize)&&(identical(other.nutrition, nutrition) || other.nutrition == nutrition)&&(identical(other.addFoodResult, addFoodResult) || other.addFoodResult == addFoodResult));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedMeal,isLoading,servingSize,nutrition);
+int get hashCode => Object.hash(runtimeType,selectedMeal,servingSize,nutrition,addFoodResult);
 
 @override
 String toString() {
-  return 'AddFoodState(selectedMeal: $selectedMeal, isLoading: $isLoading, servingSize: $servingSize, nutrition: $nutrition)';
+  return 'AddFoodState(selectedMeal: $selectedMeal, servingSize: $servingSize, nutrition: $nutrition, addFoodResult: $addFoodResult)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $AddFoodStateCopyWith<$Res>  {
   factory $AddFoodStateCopyWith(AddFoodState value, $Res Function(AddFoodState) _then) = _$AddFoodStateCopyWithImpl;
 @useResult
 $Res call({
- Meal? selectedMeal, bool isLoading, double? servingSize, Nutrition nutrition
+ Meal? selectedMeal, double? servingSize, Nutrition nutrition, AsyncState addFoodResult
 });
 
 
-
+$AsyncStateCopyWith<dynamic, $Res> get addFoodResult;
 
 }
 /// @nodoc
@@ -62,16 +62,25 @@ class _$AddFoodStateCopyWithImpl<$Res>
 
 /// Create a copy of AddFoodState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? selectedMeal = freezed,Object? isLoading = null,Object? servingSize = freezed,Object? nutrition = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? selectedMeal = freezed,Object? servingSize = freezed,Object? nutrition = null,Object? addFoodResult = null,}) {
   return _then(_self.copyWith(
 selectedMeal: freezed == selectedMeal ? _self.selectedMeal : selectedMeal // ignore: cast_nullable_to_non_nullable
-as Meal?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,servingSize: freezed == servingSize ? _self.servingSize : servingSize // ignore: cast_nullable_to_non_nullable
+as Meal?,servingSize: freezed == servingSize ? _self.servingSize : servingSize // ignore: cast_nullable_to_non_nullable
 as double?,nutrition: null == nutrition ? _self.nutrition : nutrition // ignore: cast_nullable_to_non_nullable
-as Nutrition,
+as Nutrition,addFoodResult: null == addFoodResult ? _self.addFoodResult : addFoodResult // ignore: cast_nullable_to_non_nullable
+as AsyncState,
   ));
 }
-
+/// Create a copy of AddFoodState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AsyncStateCopyWith<dynamic, $Res> get addFoodResult {
+  
+  return $AsyncStateCopyWith<dynamic, $Res>(_self.addFoodResult, (value) {
+    return _then(_self.copyWith(addFoodResult: value));
+  });
+}
 }
 
 
@@ -153,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Meal? selectedMeal,  bool isLoading,  double? servingSize,  Nutrition nutrition)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Meal? selectedMeal,  double? servingSize,  Nutrition nutrition,  AsyncState addFoodResult)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AddFoodState() when $default != null:
-return $default(_that.selectedMeal,_that.isLoading,_that.servingSize,_that.nutrition);case _:
+return $default(_that.selectedMeal,_that.servingSize,_that.nutrition,_that.addFoodResult);case _:
   return orElse();
 
 }
@@ -174,10 +183,10 @@ return $default(_that.selectedMeal,_that.isLoading,_that.servingSize,_that.nutri
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Meal? selectedMeal,  bool isLoading,  double? servingSize,  Nutrition nutrition)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Meal? selectedMeal,  double? servingSize,  Nutrition nutrition,  AsyncState addFoodResult)  $default,) {final _that = this;
 switch (_that) {
 case _AddFoodState():
-return $default(_that.selectedMeal,_that.isLoading,_that.servingSize,_that.nutrition);case _:
+return $default(_that.selectedMeal,_that.servingSize,_that.nutrition,_that.addFoodResult);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +203,10 @@ return $default(_that.selectedMeal,_that.isLoading,_that.servingSize,_that.nutri
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Meal? selectedMeal,  bool isLoading,  double? servingSize,  Nutrition nutrition)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Meal? selectedMeal,  double? servingSize,  Nutrition nutrition,  AsyncState addFoodResult)?  $default,) {final _that = this;
 switch (_that) {
 case _AddFoodState() when $default != null:
-return $default(_that.selectedMeal,_that.isLoading,_that.servingSize,_that.nutrition);case _:
+return $default(_that.selectedMeal,_that.servingSize,_that.nutrition,_that.addFoodResult);case _:
   return null;
 
 }
@@ -209,13 +218,13 @@ return $default(_that.selectedMeal,_that.isLoading,_that.servingSize,_that.nutri
 
 
 class _AddFoodState implements AddFoodState {
-  const _AddFoodState({this.selectedMeal, required this.isLoading, this.servingSize, required this.nutrition});
+  const _AddFoodState({this.selectedMeal, this.servingSize, required this.nutrition, required this.addFoodResult});
   
 
 @override final  Meal? selectedMeal;
-@override final  bool isLoading;
 @override final  double? servingSize;
 @override final  Nutrition nutrition;
+@override final  AsyncState addFoodResult;
 
 /// Create a copy of AddFoodState
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +236,16 @@ _$AddFoodStateCopyWith<_AddFoodState> get copyWith => __$AddFoodStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddFoodState&&(identical(other.selectedMeal, selectedMeal) || other.selectedMeal == selectedMeal)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.servingSize, servingSize) || other.servingSize == servingSize)&&(identical(other.nutrition, nutrition) || other.nutrition == nutrition));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddFoodState&&(identical(other.selectedMeal, selectedMeal) || other.selectedMeal == selectedMeal)&&(identical(other.servingSize, servingSize) || other.servingSize == servingSize)&&(identical(other.nutrition, nutrition) || other.nutrition == nutrition)&&(identical(other.addFoodResult, addFoodResult) || other.addFoodResult == addFoodResult));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedMeal,isLoading,servingSize,nutrition);
+int get hashCode => Object.hash(runtimeType,selectedMeal,servingSize,nutrition,addFoodResult);
 
 @override
 String toString() {
-  return 'AddFoodState(selectedMeal: $selectedMeal, isLoading: $isLoading, servingSize: $servingSize, nutrition: $nutrition)';
+  return 'AddFoodState(selectedMeal: $selectedMeal, servingSize: $servingSize, nutrition: $nutrition, addFoodResult: $addFoodResult)';
 }
 
 
@@ -247,11 +256,11 @@ abstract mixin class _$AddFoodStateCopyWith<$Res> implements $AddFoodStateCopyWi
   factory _$AddFoodStateCopyWith(_AddFoodState value, $Res Function(_AddFoodState) _then) = __$AddFoodStateCopyWithImpl;
 @override @useResult
 $Res call({
- Meal? selectedMeal, bool isLoading, double? servingSize, Nutrition nutrition
+ Meal? selectedMeal, double? servingSize, Nutrition nutrition, AsyncState addFoodResult
 });
 
 
-
+@override $AsyncStateCopyWith<dynamic, $Res> get addFoodResult;
 
 }
 /// @nodoc
@@ -264,17 +273,26 @@ class __$AddFoodStateCopyWithImpl<$Res>
 
 /// Create a copy of AddFoodState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? selectedMeal = freezed,Object? isLoading = null,Object? servingSize = freezed,Object? nutrition = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? selectedMeal = freezed,Object? servingSize = freezed,Object? nutrition = null,Object? addFoodResult = null,}) {
   return _then(_AddFoodState(
 selectedMeal: freezed == selectedMeal ? _self.selectedMeal : selectedMeal // ignore: cast_nullable_to_non_nullable
-as Meal?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,servingSize: freezed == servingSize ? _self.servingSize : servingSize // ignore: cast_nullable_to_non_nullable
+as Meal?,servingSize: freezed == servingSize ? _self.servingSize : servingSize // ignore: cast_nullable_to_non_nullable
 as double?,nutrition: null == nutrition ? _self.nutrition : nutrition // ignore: cast_nullable_to_non_nullable
-as Nutrition,
+as Nutrition,addFoodResult: null == addFoodResult ? _self.addFoodResult : addFoodResult // ignore: cast_nullable_to_non_nullable
+as AsyncState,
   ));
 }
 
-
+/// Create a copy of AddFoodState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AsyncStateCopyWith<dynamic, $Res> get addFoodResult {
+  
+  return $AsyncStateCopyWith<dynamic, $Res>(_self.addFoodResult, (value) {
+    return _then(_self.copyWith(addFoodResult: value));
+  });
+}
 }
 
 // dart format on

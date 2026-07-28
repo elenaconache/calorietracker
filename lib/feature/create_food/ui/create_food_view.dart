@@ -58,12 +58,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
 
     _servingSizeController.text = 100.toString();
 
-    _errorAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-      lowerBound: 0.0,
-      upperBound: 1.0,
-    );
+    _errorAnimationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this, lowerBound: 0.0, upperBound: 1.0);
   }
 
   @override
@@ -78,113 +73,89 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     return BlocListener<CreateFoodCubit, CreateFoodState>(
       listenWhen: (previous, current) => previous.createdFood != current.createdFood && current.createdFood.status is SuccessStatus,
       listener: (context, state) {
-        final createdFood = state.createdFood.data;
-        if (createdFood?.localId == null && createdFood?.createdFoodId == null) {
-          getIt<LoggingService>().info('Could not save food locally neither on the API.');
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppStrings.errorCreateFood)),
-          );
-        } else {
-          final food = Food.input(foodInput: _foodInput, id: createdFood?.createdFoodId);
-          Navigator.of(context)
-              .pushNamed(Routes.addFood.path,
-                  arguments: AddFoodArguments(
-                    meal: widget.meal,
-                    food: food,
-                    localFoodId: createdFood?.localId,
-                  ))
-              .then((value) {
-            if (context.mounted) {
-              Navigator.of(context).pop(value);
-            }
-          });
-        }
+        _handleCreateFoodResponse(context, state);
       },
       child: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(AppStrings.createFoodLabel),
-              actions: [
-                BlocBuilder<CreateFoodCubit, CreateFoodState>(
-                  builder: (context, state) {
-                    return state.createdFood.status.maybeMap(
-                      orElse: () => IconButton(
-                          onPressed: () => _onDonePressed(context),
-                          icon: const Icon(
-                            Icons.check,
-                            size: 32,
-                          )),
-                      loading: (_) => const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16), child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator())),
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(AppStrings.createFoodLabel),
+            actions: [
+              BlocBuilder<CreateFoodCubit, CreateFoodState>(
+                builder: (context, state) {
+                  return state.createdFood.status.maybeMap(
+                    orElse: () => IconButton(onPressed: () => _onDonePressed(context), icon: const Icon(Icons.check, size: 32)),
+                    loading: (_) => const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          body: Column(
+            children: [
+              BlocSelector<CreateFoodCubit, CreateFoodState, FoodError?>(
+                selector: (state) {
+                  return state.validationError;
+                },
+                builder: (context, foodError) {
+                  if (foodError == null && _errorAnimationController.status == AnimationStatus.dismissed) {
+                    return const SizedBox.shrink();
+                  } else {
+                    _animateErrorBox(foodError);
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                      child: ErrorBox(
+                        message: _getErrorMessage(foodError),
+                        animationController: _errorAnimationController,
+                        onErrorDismissed: () => _errorAnimationController.reverse().then((value) => context.read<CreateFoodCubit>().hideError()),
+                      ),
                     );
-                  },
-                ),
-              ],
-            ),
-            body: Column(
-              children: [
-                BlocSelector<CreateFoodCubit, CreateFoodState, FoodError?>(
-                  selector: (state) {
-                    return state.validationError;
-                  },
-                  builder: (context, foodError) {
-                    if (foodError == null && _errorAnimationController.status == AnimationStatus.dismissed) {
-                      return const SizedBox.shrink();
-                    } else {
-                      _animateErrorBox(foodError);
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
-                        child: ErrorBox(
-                            message: _getErrorMessage(foodError),
-                            animationController: _errorAnimationController,
-                            onErrorDismissed: () => _errorAnimationController.reverse().then((value) => context.read<CreateFoodCubit>().hideError())),
-                      );
-                    }
-                  },
-                ),
-                BlocBuilder<CreateFoodCubit, CreateFoodState>(
-                  builder: (context, state) {
-                    return Expanded(
-                        child: Form(
-                            key: _formKey,
-                            child: FoodForm(
-                              brandNameController: _brandNameController,
-                              caloriesController: _caloriesController,
-                              carbsController: _carbsController,
-                              fatController: _fatController,
-                              foodNameController: _foodNameController,
-                              proteinController: _proteinController,
-                              servingSizeController: _servingSizeController,
-                              sugarController: _sugarController,
-                              fiberController: _fiberController,
-                              fatSaturatedController: _fatSaturatedController,
-                              fatTransController: _fatTransController,
-                              cholesterolController: _cholesterolController,
-                              ironController: _ironController,
-                              potassiumController: _potassiumController,
-                              saltController: _saltController,
-                              calciumController: _calciumController,
-                              vitaminAController: _vitaminAController,
-                              vitaminCController: _vitaminCController,
-                              vitaminDController: _vitaminDController,
-                              insolubleFiberController: _insolubleFiberController,
-                              enabled: state.createdFood.status is! LoadingStatus,
-                            )));
-                  },
-                )
-              ],
-            ),
-          )),
+                  }
+                },
+              ),
+              BlocBuilder<CreateFoodCubit, CreateFoodState>(
+                builder: (context, state) {
+                  return Expanded(
+                    child: Form(
+                      key: _formKey,
+                      child: FoodForm(
+                        brandNameController: _brandNameController,
+                        caloriesController: _caloriesController,
+                        carbsController: _carbsController,
+                        fatController: _fatController,
+                        foodNameController: _foodNameController,
+                        proteinController: _proteinController,
+                        servingSizeController: _servingSizeController,
+                        sugarController: _sugarController,
+                        fiberController: _fiberController,
+                        fatSaturatedController: _fatSaturatedController,
+                        fatTransController: _fatTransController,
+                        cholesterolController: _cholesterolController,
+                        ironController: _ironController,
+                        potassiumController: _potassiumController,
+                        saltController: _saltController,
+                        calciumController: _calciumController,
+                        vitaminAController: _vitaminAController,
+                        vitaminCController: _vitaminCController,
+                        vitaminDController: _vitaminDController,
+                        insolubleFiberController: _insolubleFiberController,
+                        enabled: state.createdFood.status is! LoadingStatus,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  String _getErrorMessage(FoodError? foodError) => foodError == null
-      ? ''
-      : _getGroupErrorMessage(
-          foodError: foodError,
-        );
+  String _getErrorMessage(FoodError? foodError) => foodError == null ? '' : _getGroupErrorMessage(foodError: foodError);
 
   void _animateErrorBox(FoodError? foodError) {
     if (foodError == null) {
@@ -207,10 +178,7 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
           builder: (context) => AdaptiveDialog(
             title: AppStrings.warningTitle,
             message: AppStrings.nutrientAccurateMessage,
-            primaryAction: TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(AppStrings.cancelLabel),
-            ),
+            primaryAction: TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppStrings.cancelLabel)),
             secondaryAction: TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -350,25 +318,50 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   }
 
   FoodInput get _foodInput => FoodInput(
-        name: _foodNameController.text,
-        brand: _brandNameController.text,
-        servingSize: _servingSizeController.text,
-        calories: _caloriesController.text,
-        carbs: _carbsController.text,
-        protein: _proteinController.text,
-        fat: _fatController.text,
-        sugar: _sugarController.text,
-        fiber: _fiberController.text,
-        insolubleFiber: _insolubleFiberController.text,
-        saturatedFat: _fatSaturatedController.text,
-        transFat: _fatTransController.text,
-        cholesterol: _cholesterolController.text,
-        salt: _saltController.text,
-        iron: _ironController.text,
-        potassium: _potassiumController.text,
-        calcium: _calciumController.text,
-        vitaminA: _vitaminAController.text,
-        vitaminC: _vitaminCController.text,
-        vitaminD: _vitaminDController.text,
-      );
+    name: _foodNameController.text,
+    brand: _brandNameController.text,
+    servingSize: _servingSizeController.text,
+    calories: _caloriesController.text,
+    carbs: _carbsController.text,
+    protein: _proteinController.text,
+    fat: _fatController.text,
+    sugar: _sugarController.text,
+    fiber: _fiberController.text,
+    insolubleFiber: _insolubleFiberController.text,
+    saturatedFat: _fatSaturatedController.text,
+    transFat: _fatTransController.text,
+    cholesterol: _cholesterolController.text,
+    salt: _saltController.text,
+    iron: _ironController.text,
+    potassium: _potassiumController.text,
+    calcium: _calciumController.text,
+    vitaminA: _vitaminAController.text,
+    vitaminC: _vitaminCController.text,
+    vitaminD: _vitaminDController.text,
+  );
+  
+  void _handleCreateFoodResponse(BuildContext context, CreateFoodState state) {
+    final createdFood = state.createdFood.data;
+        if (createdFood?.localId == null && createdFood?.createdFoodId == null) {
+          getIt<LoggingService>().info('Could not save food locally neither on the API.');
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppStrings.errorCreateFood)),
+          );
+        } else {
+          final food = Food.input(foodInput: _foodInput, id: createdFood?.createdFoodId);
+          Navigator.of(context)
+              .pushNamed(Routes.addFood.path,
+                  arguments: AddFoodArguments(
+                    meal: widget.meal,
+                    food: food,
+                    localFoodId: createdFood?.localId,
+                  ))
+              .then((value) {
+            if (context.mounted) {
+              Navigator.of(context).pop(value);
+            }
+          });
+        }
+  }
 }
