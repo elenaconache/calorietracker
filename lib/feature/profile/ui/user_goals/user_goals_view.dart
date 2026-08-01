@@ -37,12 +37,10 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
     _tabController = TabController(length: 2, vsync: this);
     _caloriesController.addListener(_onCaloriesChanged);
     _formKey = GlobalKey<FormState>(debugLabel: 'goalsForm');
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        final initialState = context.read<UserGoalsCubit>().state;
-        _updateTextFields(initialState);
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final initialState = context.read<UserGoalsCubit>().state;
+      _updateTextFields(initialState);
+    });
   }
 
   @override
@@ -63,12 +61,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(AppStrings.myGoalsLabel),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.done),
-            onPressed: _onDonePressed,
-          )
-        ],
+        actions: [IconButton(icon: const Icon(Icons.done), onPressed: _onDonePressed)],
       ),
       body: BlocConsumer<UserGoalsCubit, UserGoalsState>(
         listenWhen: (previous, current) => previous.macroGoals.data != current.macroGoals.data || previous.userGoals.data != current.userGoals.data,
@@ -77,74 +70,68 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
         builder: (context, state) {
           return switch (state.userGoals.status) {
             AsyncStatus s when [LoadingStatus, SuccessStatus].contains(s.runtimeType) => Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Form(
-                      key: _formKey,
-                      child: AppTextField(
-                        autofocus: true,
-                        validate: getIt<FoodValidator>().validateCalories,
-                        controller: _caloriesController,
-                        maxLength: 5,
-                        labelText: AppStrings.caloriesLabel,
-                        inputType: TextInputType.number,
-                        action: TextInputAction.next,
-                        enabled: s is! LoadingStatus,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Form(
+                    key: _formKey,
+                    child: AppTextField(
+                      autofocus: true,
+                      validate: getIt<FoodValidator>().validateCalories,
+                      controller: _caloriesController,
+                      maxLength: 5,
+                      labelText: AppStrings.caloriesLabel,
+                      inputType: TextInputType.number,
+                      action: TextInputAction.next,
+                      enabled: s is! LoadingStatus,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TabBar(
+                    tabs: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(AppStrings.gramsLabel, style: Theme.of(context).textTheme.titleMedium),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(AppStrings.percentagesLabel, style: Theme.of(context).textTheme.titleMedium),
+                      ),
+                    ],
+                    controller: _tabController,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TabBar(
-                      tabs: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text(
-                            AppStrings.gramsLabel,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: MacrosForm(
+                          carbsController: _carbsController,
+                          proteinController: _proteinController,
+                          fatController: _fatController,
+                          enabled: s is! LoadingStatus,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text(
-                            AppStrings.percentagesLabel,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
-                      ],
-                      controller: _tabController,
-                    ),
+                      ),
+                      state.macroGoals.data == null
+                          ? const SizedBox.shrink()
+                          : MacroPercentageGoals(
+                              enabled: s is! LoadingStatus,
+                              macroGoals: state.macroGoals.data!,
+                              onMacroPercentagePicked: _onMacroPercentagePicked,
+                            ),
+                    ],
                   ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: MacrosForm(
-                            carbsController: _carbsController,
-                            proteinController: _proteinController,
-                            fatController: _fatController,
-                            enabled: s is! LoadingStatus,
-                          ),
-                        ),
-                        state.macroGoals.data == null
-                            ? const SizedBox.shrink()
-                            : MacroPercentageGoals(
-                                enabled: s is! LoadingStatus,
-                                macroGoals: state.macroGoals.data!,
-                                onMacroPercentagePicked: _onMacroPercentagePicked,
-                              ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
+            ),
             FutureError<dynamic> _ => const Center(child: GeneralErrorView()),
-            _ => const SizedBox.shrink()
+            _ => const SizedBox.shrink(),
           };
         },
       ),
@@ -182,7 +169,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
   void _onCaloriesChanged() {
     final cubit = context.read<UserGoalsCubit>();
     final state = cubit.state.macroGoals.data;
-    final calories = double.tryParse(_caloriesController.text);
+    final calories = double.tryParse(_caloriesController.text.replaceAll(',', '.'));
     if (calories != null && calories != state?.calories) {
       _removeMacrosListeners();
       cubit.onCaloriesChanged(calories: calories);
@@ -222,11 +209,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
   void _onDonePressed() {
     final isValid = _formKey.currentState?.validate();
     if (isValid == false) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppStrings.macroGoalsError),
-        ),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.macroGoalsError)));
     } else if (isValid == true) {
       final cubit = context.read<UserGoalsCubit>();
       cubit.saveUserGoals();

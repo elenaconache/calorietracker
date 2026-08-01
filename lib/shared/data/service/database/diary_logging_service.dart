@@ -56,41 +56,6 @@ class DiaryLoggingService {
     mealsLoading.value = mealsLoadingState;
   }
 
-  // Future<void> saveDiaryEntry({
-  //   int? remoteFoodId,
-  //   required String username,
-  //   required FoodLog foodLog,
-  //   int? localFoodId,
-  // }) async {
-  //   if (remoteFoodId != null) {
-  //     final collectionApiService = await getIt.getAsync<CollectionApiService>();
-  //     await collectionApiService
-  //         .createDiaryEntry(
-  //       body: AddDiaryEntryRequest(
-  //         entryDate: getIt<DateFormattingService>().format(
-  //           dateTime: foodLog.date.toString(),
-  //           format: collectionApiDateFormat,
-  //         ),
-  //         userId: username,
-  //         foodUnitId: collectionGramsUnitId,
-  //         meal: foodLog.meal,
-  //         foodId: remoteFoodId,
-  //         servingQuantity: foodLog.servingQuantity,
-  //       ),
-  //     )
-  //         .catchError((error, stackTrace) async {
-  //       if (error is DioException && error.isConnectionError) {
-  //         await saveDiaryEntryLocally(foodLog, username);
-  //         return IdResponse(id: 0);
-  //       } else {
-  //         getIt<LoggingService>().handle(error, stackTrace);
-  //         throw error;
-  //       }
-  //     });
-  //   } else {
-  //     await saveDiaryEntryLocally(foodLog.copyWith(localFoodId: localFoodId), username);
-  //   }
-  // }
 
   Future<void> saveDiaryEntryLocally(FoodLog foodLog, String? username) async {
     final diaryEntriesService = getIt.get<DiaryEntryService>();
@@ -101,9 +66,10 @@ class DiaryLoggingService {
       throw Exception('Could not save local diary entry with missing local food id.');
     } else {
       final localDiaryFood = (foodLog.food.localFood..id = localFoodId);
-      await diaryEntriesService
-          .upsertDiaryEntry(localDiaryEntry: _getLocalDiaryEntry(localDiaryFood, foodLog, username))
-          .catchError((error, stackTrace) {
+      await diaryEntriesService.upsertDiaryEntry(localDiaryEntry: _getLocalDiaryEntry(localDiaryFood, foodLog, username)).catchError((
+        error,
+        stackTrace,
+      ) {
         getIt<LoggingService>().handle(error, stackTrace);
         throw error;
       });
@@ -141,21 +107,18 @@ class DiaryLoggingService {
 
     await diaryEntryService.upsertDiaryEntries(localEntries: pushed);
 
-    diaryEntryService.deleteDiaryEntries( pending.map((e) => e.localId).toList());
+    diaryEntryService.deleteDiaryEntries(pending.map((e) => e.localId).toList());
   }
 
   LocalDiaryEntry _getLocalDiaryEntry(LocalFood localDiaryFood, FoodLog foodLog, String? userId) => LocalDiaryEntry.withParams(
-        localFoodId: localDiaryFood.id,
-        entryDate: foodLog.date,
-        servingQuantity: foodLog.servingQuantity,
-        unitId: collectionGramsUnitId,
-        username: userId!,
-      )..meal = foodLog.meal;
+    localFoodId: localDiaryFood.id,
+    entryDate: foodLog.date,
+    servingQuantity: foodLog.servingQuantity,
+    unitId: collectionGramsUnitId,
+    username: userId!,
+  )..meal = foodLog.meal;
 
-  Future<bool> copyDiaryEntries({
-    required List<MealEntriesList> mealsEntries,
-    required DateTime toDate,
-  }) async {
+  Future<bool> copyDiaryEntries({required List<MealEntriesList> mealsEntries, required DateTime toDate}) async {
     final diaryEntriesService = getIt.get<DiaryEntryService>();
     final username = _authRepository.selectedUser?.username;
     if (username == null) {
@@ -165,17 +128,17 @@ class DiaryLoggingService {
       final entries = await diaryEntriesService.getDiaryEntriesByIds(entries: entriesToCopy);
 
       await diaryEntriesService.upsertDiaryEntries(
-          pushFoods: false,
-          localEntries: entries.map((entry) {
-            final copiedEntry = LocalDiaryEntry.withParams(
-              entryDate: toDate,
-              username: entry.username,
-              unitId: entry.unitId,
-              servingQuantity: entry.servingQuantity,
-              localFoodId: entry.localFood.targetId,
-            )..meal = entry.meal;
-            return copiedEntry;
-          }).toList());
+        localEntries: entries.map((entry) {
+          final copiedEntry = LocalDiaryEntry.withParams(
+            entryDate: toDate,
+            username: entry.username,
+            unitId: entry.unitId,
+            servingQuantity: entry.servingQuantity,
+            localFoodId: entry.localFood.targetId,
+          )..meal = entry.meal;
+          return copiedEntry;
+        }).toList(),
+      );
       return true;
     }
   }

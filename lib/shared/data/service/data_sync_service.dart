@@ -10,7 +10,6 @@ import 'package:calorietracker/shared/data/model/collection/create_food_error.da
 import 'package:calorietracker/shared/data/model/collection/meal_entries_response.dart';
 import 'package:calorietracker/shared/data/model/local/local_diary_entry.dart';
 import 'package:calorietracker/shared/data/model/local/local_food.dart';
-import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/data/model/meal_entries_list.dart';
 import 'package:calorietracker/shared/data/model/user.dart';
 import 'package:calorietracker/shared/data/service/api/collection_api_service.dart';
@@ -20,18 +19,20 @@ import 'package:calorietracker/shared/data/service/date_formatting_service.dart'
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class DataSyncService {
   bool isUploadInProgress = false;
+
   final DiaryEntryService _diaryEntryService;
   final CollectionApiService _collectionApiService;
   final LoggingService _loggingService;
   final FoodService _foodService;
   final DateFormattingService _dateFormattingService;
   final AuthRepository _authRepository;
+
+  StreamSubscription? _userSubscription;
 
   DataSyncService(
     this._diaryEntryService,
@@ -63,6 +64,10 @@ class DataSyncService {
       await _fetchRemoteDiary(user: user, date: selectedDay);
     } else {
       _loggingService.info('Could not pull remote diary, user was null');
+      _userSubscription = _authRepository.selectedUserStream.listen((_) {
+        _userSubscription?.cancel();
+        uploadLocalData();
+      });
     }
 
     _loggingService.info('Local data upload done: ${DateTime.now()}');
@@ -174,18 +179,16 @@ class DataSyncService {
     if (entriesToDelete.isEmpty) {
       return;
     }
-    unawaited(
-      _collectionApiService
-          .deleteDiaryEntries(ids: entriesToDelete)
-          .then((_) async {
-            _diaryEntryService.deleteDiaryEntries(
-              uploadReadyEntries.where((entry) => entry.deletedEntry && entry.entryId != null).map((entry) => entry.localId).toList(),
-            );
-          })
-          .catchError((error, stackTrace) {
-            _loggingService.handle(error, stackTrace);
-          }),
-    );
+    await _collectionApiService
+        .deleteDiaryEntries(ids: entriesToDelete)
+        .then((_) async {
+          _diaryEntryService.deleteDiaryEntries(
+            uploadReadyEntries.where((entry) => entry.deletedEntry && entry.entryId != null).map((entry) => entry.localId).toList(),
+          );
+        })
+        .catchError((error, stackTrace) {
+          _loggingService.handle(error, stackTrace);
+        });
   }
 
   Future<List<AddLocalDataResponse>> _createRemoteDiaryEntries(List<LocalDiaryEntry> uploadReadyEntries) async {
@@ -229,7 +232,7 @@ class DataSyncService {
       return;
     }
 
-    debugPrint('Foods to retry nutrition: ${foodsToRetry.map((e) => e.nutrition)}');
+    _loggingService.info('Foods to retry: ${foodsToRetry.map((e) => '${e.name} ${e.nutrition.calories}cal per 100g')}');
     final retryRequestFoods = foodsToRetry.map((localFood) => localFood.addLocalFoodRequest).toList();
 
     final addedFoods = await (_collectionApiService.createFoods(localFoods: retryRequestFoods)
@@ -326,51 +329,59 @@ class DataSyncService {
     required String userId,
   }) async {
     var remoteDiary = collectionDiary.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
-    final localDisplayDiary = await _diaryEntryService.getDisplayDiaryEntries(date: diaryDate.toString(), filterPending: true);
 
-    await (_upsertLocalDiary(remoteDiary, userId));
-    await (_deleteMissingPushedLocalDiaryEntries(remoteDiary, diaryDate));
-
-    var result = <MealEntriesList>[];
-    for (final meal in Meal.values) {
-      final remoteDiaryEntries = remoteDiary
-          .where((list) => list.meal == meal)
-          .map((element) => element.diaryEntries)
-          .expand((element) => element)
-          .toList();
-      final localDiaryEntries = localDisplayDiary
-          .where((list) => list.meal == meal)
-          .map((element) => element.diaryEntries)
-          .expand((element) => element)
-          .toList();
-      result.add(MealEntriesList(meal: meal, diaryEntries: [...remoteDiaryEntries, ...localDiaryEntries]));
-    }
+    await _upsertLocalDiary(remoteDiary, userId);
+    await _deleteMissingPushedLocalDiaryEntries(remoteDiary, diaryDate);
   }
 
   Future<void> _upsertLocalDiary(List<MealEntriesList> remoteDiary, String userId) async {
-    final pushedLocalEntries = await _diaryEntryService.getDiaryEntries(filterPushed: true);
     var mappedEntries = <LocalDiaryEntry>[];
+    var foodsToUpsert = <LocalFood>[];
+
     for (final remoteMealEntriesList in remoteDiary) {
       for (final entry in remoteMealEntriesList.diaryEntries) {
-        if (!pushedLocalEntries.any((localEntry) => localEntry.entryId == entry.collectionId)) {
-          mappedEntries.add(
-            LocalDiaryEntry.withParams(
-              entryId: entry.collectionId,
-              pushedEntry: true,
-              servingQuantity: entry.servingQuantity,
-              unitId: entry.unitId,
-              entryDate: _dateFormattingService.parse(formattedDate: entry.date, format: collectionApiDateFormat),
-              localFoodId: entry.food.localFood.id,
-              username: userId,
-              deletedEntry: false,
-              errorPushingEntry: false,
-            )..meal = remoteMealEntriesList.meal,
-          );
+        final foodId = entry.food.id;
+        if (foodId == null) {
+          _loggingService.info('Pulling food with null id $entry');
+          continue;
         }
+        foodsToUpsert.add(entry.food.localFood);
+      }
+    }
+
+    final existingLocalFoodsMatchingPulled = await _foodService.findLocalFoodsByRemoteIds(ids: foodsToUpsert.map((e) => e.foodId!).toList());
+    final mappedToUpsertFoods = foodsToUpsert.map((food) {
+      return food..id = existingLocalFoodsMatchingPulled.firstWhereOrNull((local) => local.foodId == food.foodId)?.id ?? 0;
+    }).toList();
+    await _foodService.upsertFoods(localFoods: mappedToUpsertFoods);
+    final updatedLocalFoods = await _foodService.findLocalFoodsByRemoteIds(ids: foodsToUpsert.map((e) => e.foodId!).toList());
+
+    for (final remoteMealEntriesList in remoteDiary) {
+      for (final entry in remoteMealEntriesList.diaryEntries) {
+        final localEntry = await _diaryEntryService.getDiaryEntry(collectionId: entry.collectionId);
+        final localFoodId = updatedLocalFoods.firstWhereOrNull((element) => element.foodId == entry.food.id)?.id;
+        if (localFoodId == null) {
+          _loggingService.info('Missing local food, skipping diary entry $entry');
+          continue;
+        }
+        mappedEntries.add(
+          LocalDiaryEntry.withParams(
+            entryId: entry.collectionId,
+            localId: localEntry?.localId ?? 0,
+            pushedEntry: true,
+            servingQuantity: entry.servingQuantity,
+            unitId: entry.unitId,
+            entryDate: _dateFormattingService.parse(formattedDate: entry.date, format: collectionApiDateFormat),
+            localFoodId: localFoodId,
+            username: userId,
+            deletedEntry: false,
+            errorPushingEntry: false,
+          )..meal = remoteMealEntriesList.meal,
+        );
       }
     }
     if (mappedEntries.isNotEmpty) {
-      _diaryEntryService.upsertDiaryEntries(localEntries: mappedEntries, pushFoods: true);
+      await _diaryEntryService.upsertDiaryEntries(localEntries: mappedEntries);
     }
   }
 
@@ -380,7 +391,12 @@ class DataSyncService {
     var discardedDiaryEntriesIds = <int>[];
 
     for (final localEntry in pushedLocalEntries) {
-      if (localEntry.entryDate == diaryDate && remoteEntries.none((remoteEntry) => localEntry.entryId == remoteEntry.collectionId)) {
+      if (localEntry.entryDate.day == diaryDate.day &&
+          localEntry.entryDate.month == diaryDate.month &&
+          localEntry.entryDate.year == diaryDate.year &&
+          remoteEntries.none((entry) => entry.collectionId == localEntry.entryId)) {
+        // Local diary entry found for the same date that was fetched from remote
+        // And no remote entry matches the id
         discardedDiaryEntriesIds.add(localEntry.localId);
       }
     }

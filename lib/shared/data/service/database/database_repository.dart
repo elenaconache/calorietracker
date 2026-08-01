@@ -17,16 +17,12 @@ class DatabaseRepository {
     _store = await openStore(directory: appDirectory);
   }
 
-  Future<List<int>> upsertList<T>({required List<T> items}) {
-    return _store.box<T>().putManyAsync(items);
+  Future<List<int>> upsertList<T>({required List<T> items}) async {
+    return await _store.box<T>().putManyAsync(items);
   }
 
   Future<int> upsert<T>({required T item}) {
     return _store.box<T>().putAsync(item);
-  }
-
-  Future<List<int>> writeDiaryEntriesRecursively({required List<LocalDiaryEntry> entries}) {
-    return _store.runInTransactionAsync(TxMode.write, writeDiaryEntriesAndFoods, entries);
   }
 
   void removeList<T>({required List<int> ids}) {
@@ -129,19 +125,16 @@ class DatabaseRepository {
     Condition<LocalFood> condition = LocalFood_.id.equals(localId);
     return _store.box<LocalFood>().query(condition).build().findFirstAsync();
   }
-}
 
-List<int> writeDiaryEntriesAndFoods(Store store, List<LocalDiaryEntry> entries) {
-  final foodsBox = store.box<LocalFood>();
-  final foods = entries.map((entry) => entry.localFood.target).whereType<LocalFood>().toList();
-  final addedFoodsIds = foodsBox.putMany(foods);
+  Future<LocalFood?> findFoodByRemoteId({required int remoteId}) {
+    Condition<LocalFood> condition = LocalFood_.foodId.equals(remoteId);
+    return _store.box<LocalFood>().query(condition).build().findFirstAsync();
+  }
 
-  final diaryEntriesBox = store.box<LocalDiaryEntry>();
-  final diaryEntries = List.generate(addedFoodsIds.length, (index) {
-    final entry = entries[index];
-    return entry..localFood.targetId = addedFoodsIds[index];
-  });
-  return diaryEntriesBox.putMany(diaryEntries);
+  Future<List<LocalFood>> findFoodsByRemoteIds({required List<int> remoteIds}) async {
+    Condition<LocalFood> condition = LocalFood_.foodId.oneOf(remoteIds);
+    return await _store.box<LocalFood>().query(condition).build().findAsync();
+  }
 }
 
 Map<LocalFood, LocalDiaryEntry?> searchDiaryFoods(Store store, String searchQuery) {

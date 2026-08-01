@@ -10,7 +10,6 @@ import 'package:calorietracker/feature/diary/ui/carousel/diary_overview_carousel
 import 'package:calorietracker/feature/diary/ui/meal_title.dart';
 import 'package:calorietracker/feature/diary/ui/selected_day_line.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
-import 'package:calorietracker/shared/model/helpers/future_response.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/shared/data/service/data_sync_service.dart';
 import 'package:calorietracker/ui/app_strings.dart';
@@ -22,25 +21,20 @@ class DiaryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DiaryBloc, DiaryState>(builder: (context, state) {
-      final bloc = context.read<DiaryBloc>();
-      final dayMealEntries = state.selectedDayMealEntries;
-      return Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: DiaryAppBar(
-          editable: state.editMode,
-          onExitEditMode: () => _onExitEditMode(context),
-        ),
-        body: RefreshIndicator(
+    return BlocBuilder<DiaryBloc, DiaryState>(
+      builder: (context, state) {
+        final bloc = context.read<DiaryBloc>();
+        final dayMealEntries = state.selectedDayMealEntries;
+        return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar: DiaryAppBar(editable: state.editMode, onExitEditMode: () => _onExitEditMode(context)),
+          body: RefreshIndicator(
             onRefresh: () => getIt<DataSyncService>().uploadLocalData(selectedDay: state.selectedDay),
             child: CustomScrollView(
               slivers: [
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),
                 SliverToBoxAdapter(
-                  child: SelectedDayLine(
-                    onDateSelected: (date) => _onDateSelected(context, date),
-                    diary: state,
-                  ),
+                  child: SelectedDayLine(onDateSelected: (date) => _onDateSelected(context, date), diary: state),
                 ),
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),
                 SliverToBoxAdapter(child: DiaryOverviewCarousel(diary: state)),
@@ -56,9 +50,7 @@ class DiaryView extends StatelessWidget {
                 dayMealEntries.status is LoadingStatus
                     ? const SliverPadding(
                         padding: EdgeInsets.only(top: 12),
-                        sliver: SliverToBoxAdapter(
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
+                        sliver: SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
                       )
                     : DiaryEntriesSliverList(
                         entries: state.getMealEntries(meal: Meal.breakfast),
@@ -86,16 +78,14 @@ class DiaryView extends StatelessWidget {
                     diary: state,
                   ),
                 ),
-                dayMealEntries is FutureLoading
+                dayMealEntries.status is LoadingStatus
                     ? const SliverPadding(
                         padding: EdgeInsets.only(top: 12),
-                        sliver: SliverToBoxAdapter(
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
+                        sliver: SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
                       )
                     : DiaryEntriesSliverList(
                         entries: state.getMealEntries(meal: Meal.lunch),
-                        error: dayMealEntries is FutureError,
+                        error: dayMealEntries.status is FailureStatus,
                         meal: Meal.lunch,
                         diary: state,
                       ),
@@ -122,13 +112,11 @@ class DiaryView extends StatelessWidget {
                 dayMealEntries.status is LoadingStatus
                     ? const SliverPadding(
                         padding: EdgeInsets.only(top: 12),
-                        sliver: SliverToBoxAdapter(
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
+                        sliver: SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
                       )
                     : DiaryEntriesSliverList(
                         entries: state.getMealEntries(meal: Meal.dinner),
-                        error: dayMealEntries is FutureError,
+                        error: dayMealEntries.status is FailureStatus,
                         meal: Meal.dinner,
                         diary: state,
                       ),
@@ -152,13 +140,11 @@ class DiaryView extends StatelessWidget {
                 dayMealEntries.status is LoadingStatus
                     ? const SliverPadding(
                         padding: EdgeInsets.only(top: 12),
-                        sliver: SliverToBoxAdapter(
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
+                        sliver: SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
                       )
                     : DiaryEntriesSliverList(
                         entries: state.getMealEntries(meal: Meal.snacks),
-                        error: dayMealEntries is FutureError,
+                        error: dayMealEntries.status is FailureStatus,
                         meal: Meal.snacks,
                         diary: state,
                       ),
@@ -175,9 +161,11 @@ class DiaryView extends StatelessWidget {
                 ),
                 const SliverPadding(padding: EdgeInsets.only(top: 100)),
               ],
-            )),
-      );
-    });
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _openSearchFoodScreen(BuildContext context, Meal meal) {

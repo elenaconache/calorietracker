@@ -42,6 +42,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
         dayCheckChanged: (bool? checked) async => await _onDayCheckChanged(checked, emit),
         mealCheckChanged: (bool? checked, Meal meal) async => await _onMealCheckChanged(checked, meal, emit),
         diaryEntryCheckChanged: (bool checked, DiaryEntry entry) async => await _onEntryCheckChanged(checked, entry, emit),
+        refreshDiary: () async => await _onDiaryRefresh(emit),
       );
     });
   }
@@ -58,7 +59,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           _loggingService.info('Null user');
           return state.copyWith(selectedDayMealEntries: AsyncState.failure(GeneralFailure(message: 'Null user')));
         }
-        unawaited(_subscribeToCurrentUserDiary(emit, user));
+        add(DiaryEvent.selectDay(date: state.selectedDay));
         return state;
       },
       onError: (error, stackTrace) {
@@ -74,24 +75,18 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   }
 
   Future<void> _subscribeToCurrentUserDiary(Emitter<DiaryState> emit, User user) async {
-    emit(state.copyWith(selectedDayMealEntries: AsyncState.loading()));
-
     await _diarySubscription?.cancel();
 
     _diarySubscription = _diaryEntryService
         .watchDisplayDiaryEntries(date: state.selectedDay.toString(), username: user.username)
         .listen(
-          (data) {
-            emit(state.copyWith(selectedDayMealEntries: AsyncState.success(data)));
+          (_) {
+            if (!isClosed) {
+              add(DiaryEvent.refreshDiary());
+            }
           },
           onError: (error, stackTrace) {
             _loggingService.handle(error, stackTrace);
-
-            emit(
-              state.copyWith(
-                selectedDayMealEntries: AsyncState.failure(GeneralFailure(message: 'Error in display-ready local diary entries stream')),
-              ),
-            );
           },
         );
   }
@@ -155,5 +150,16 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       currentlyChecked.removeWhere((element) => element.localId == entry.localId);
     }
     emit(state.copyWith(checkedEntries: currentlyChecked));
+  }
+
+  Future<void> _onDiaryRefresh(Emitter<DiaryState> emit) async {
+    emit(state.copyWith(selectedDayMealEntries: AsyncState.loading()));
+    try {
+      final entries = await _diaryEntryService.getDisplayDiaryEntries(date: state.selectedDay.toString());
+      emit(state.copyWith(selectedDayMealEntries: AsyncState.success(entries)));
+    } catch (e, stack) {
+      _loggingService.handle(e, stack);
+      emit(state.copyWith(selectedDayMealEntries: AsyncState.failure(GeneralFailure(message: 'Error in display-ready local diary entries stream'))));
+    }
   }
 }

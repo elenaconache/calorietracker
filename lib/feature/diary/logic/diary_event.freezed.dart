@@ -55,13 +55,14 @@ extension DiaryEventPatterns on DiaryEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ToggleMacroPercentageEvent value)?  toggleMacroPercentage,TResult Function( RequestAuthSubscriptionEvent value)?  requestAuthSubscription,TResult Function( SelectDayEvent value)?  selectDay,TResult Function( EnterEditModeEvent value)?  enterEditMode,TResult Function( ExitEditModeEvent value)?  exitEditMode,TResult Function( RemoveEntryEvent value)?  removeSingleDiaryEntry,TResult Function( RemoveCheckedEntriesEvent value)?  removeCheckedDiaryEntries,TResult Function( DayCheckChanged value)?  dayCheckChanged,TResult Function( MealCheckChanged value)?  mealCheckChanged,TResult Function( EntryCheckChanged value)?  diaryEntryCheckChanged,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ToggleMacroPercentageEvent value)?  toggleMacroPercentage,TResult Function( RequestAuthSubscriptionEvent value)?  requestAuthSubscription,TResult Function( SelectDayEvent value)?  selectDay,TResult Function( RefreshDiaryEvent value)?  refreshDiary,TResult Function( EnterEditModeEvent value)?  enterEditMode,TResult Function( ExitEditModeEvent value)?  exitEditMode,TResult Function( RemoveEntryEvent value)?  removeSingleDiaryEntry,TResult Function( RemoveCheckedEntriesEvent value)?  removeCheckedDiaryEntries,TResult Function( DayCheckChanged value)?  dayCheckChanged,TResult Function( MealCheckChanged value)?  mealCheckChanged,TResult Function( EntryCheckChanged value)?  diaryEntryCheckChanged,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case ToggleMacroPercentageEvent() when toggleMacroPercentage != null:
 return toggleMacroPercentage(_that);case RequestAuthSubscriptionEvent() when requestAuthSubscription != null:
 return requestAuthSubscription(_that);case SelectDayEvent() when selectDay != null:
-return selectDay(_that);case EnterEditModeEvent() when enterEditMode != null:
+return selectDay(_that);case RefreshDiaryEvent() when refreshDiary != null:
+return refreshDiary(_that);case EnterEditModeEvent() when enterEditMode != null:
 return enterEditMode(_that);case ExitEditModeEvent() when exitEditMode != null:
 return exitEditMode(_that);case RemoveEntryEvent() when removeSingleDiaryEntry != null:
 return removeSingleDiaryEntry(_that);case RemoveCheckedEntriesEvent() when removeCheckedDiaryEntries != null:
@@ -86,13 +87,14 @@ return diaryEntryCheckChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ToggleMacroPercentageEvent value)  toggleMacroPercentage,required TResult Function( RequestAuthSubscriptionEvent value)  requestAuthSubscription,required TResult Function( SelectDayEvent value)  selectDay,required TResult Function( EnterEditModeEvent value)  enterEditMode,required TResult Function( ExitEditModeEvent value)  exitEditMode,required TResult Function( RemoveEntryEvent value)  removeSingleDiaryEntry,required TResult Function( RemoveCheckedEntriesEvent value)  removeCheckedDiaryEntries,required TResult Function( DayCheckChanged value)  dayCheckChanged,required TResult Function( MealCheckChanged value)  mealCheckChanged,required TResult Function( EntryCheckChanged value)  diaryEntryCheckChanged,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ToggleMacroPercentageEvent value)  toggleMacroPercentage,required TResult Function( RequestAuthSubscriptionEvent value)  requestAuthSubscription,required TResult Function( SelectDayEvent value)  selectDay,required TResult Function( RefreshDiaryEvent value)  refreshDiary,required TResult Function( EnterEditModeEvent value)  enterEditMode,required TResult Function( ExitEditModeEvent value)  exitEditMode,required TResult Function( RemoveEntryEvent value)  removeSingleDiaryEntry,required TResult Function( RemoveCheckedEntriesEvent value)  removeCheckedDiaryEntries,required TResult Function( DayCheckChanged value)  dayCheckChanged,required TResult Function( MealCheckChanged value)  mealCheckChanged,required TResult Function( EntryCheckChanged value)  diaryEntryCheckChanged,}){
 final _that = this;
 switch (_that) {
 case ToggleMacroPercentageEvent():
 return toggleMacroPercentage(_that);case RequestAuthSubscriptionEvent():
 return requestAuthSubscription(_that);case SelectDayEvent():
-return selectDay(_that);case EnterEditModeEvent():
+return selectDay(_that);case RefreshDiaryEvent():
+return refreshDiary(_that);case EnterEditModeEvent():
 return enterEditMode(_that);case ExitEditModeEvent():
 return exitEditMode(_that);case RemoveEntryEvent():
 return removeSingleDiaryEntry(_that);case RemoveCheckedEntriesEvent():
@@ -116,13 +118,14 @@ return diaryEntryCheckChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ToggleMacroPercentageEvent value)?  toggleMacroPercentage,TResult? Function( RequestAuthSubscriptionEvent value)?  requestAuthSubscription,TResult? Function( SelectDayEvent value)?  selectDay,TResult? Function( EnterEditModeEvent value)?  enterEditMode,TResult? Function( ExitEditModeEvent value)?  exitEditMode,TResult? Function( RemoveEntryEvent value)?  removeSingleDiaryEntry,TResult? Function( RemoveCheckedEntriesEvent value)?  removeCheckedDiaryEntries,TResult? Function( DayCheckChanged value)?  dayCheckChanged,TResult? Function( MealCheckChanged value)?  mealCheckChanged,TResult? Function( EntryCheckChanged value)?  diaryEntryCheckChanged,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ToggleMacroPercentageEvent value)?  toggleMacroPercentage,TResult? Function( RequestAuthSubscriptionEvent value)?  requestAuthSubscription,TResult? Function( SelectDayEvent value)?  selectDay,TResult? Function( RefreshDiaryEvent value)?  refreshDiary,TResult? Function( EnterEditModeEvent value)?  enterEditMode,TResult? Function( ExitEditModeEvent value)?  exitEditMode,TResult? Function( RemoveEntryEvent value)?  removeSingleDiaryEntry,TResult? Function( RemoveCheckedEntriesEvent value)?  removeCheckedDiaryEntries,TResult? Function( DayCheckChanged value)?  dayCheckChanged,TResult? Function( MealCheckChanged value)?  mealCheckChanged,TResult? Function( EntryCheckChanged value)?  diaryEntryCheckChanged,}){
 final _that = this;
 switch (_that) {
 case ToggleMacroPercentageEvent() when toggleMacroPercentage != null:
 return toggleMacroPercentage(_that);case RequestAuthSubscriptionEvent() when requestAuthSubscription != null:
 return requestAuthSubscription(_that);case SelectDayEvent() when selectDay != null:
-return selectDay(_that);case EnterEditModeEvent() when enterEditMode != null:
+return selectDay(_that);case RefreshDiaryEvent() when refreshDiary != null:
+return refreshDiary(_that);case EnterEditModeEvent() when enterEditMode != null:
 return enterEditMode(_that);case ExitEditModeEvent() when exitEditMode != null:
 return exitEditMode(_that);case RemoveEntryEvent() when removeSingleDiaryEntry != null:
 return removeSingleDiaryEntry(_that);case RemoveCheckedEntriesEvent() when removeCheckedDiaryEntries != null:
@@ -146,12 +149,13 @@ return diaryEntryCheckChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  toggleMacroPercentage,TResult Function()?  requestAuthSubscription,TResult Function( DateTime date)?  selectDay,TResult Function()?  enterEditMode,TResult Function()?  exitEditMode,TResult Function( int localId)?  removeSingleDiaryEntry,TResult Function()?  removeCheckedDiaryEntries,TResult Function( bool? checked)?  dayCheckChanged,TResult Function( bool? checked,  Meal meal)?  mealCheckChanged,TResult Function( bool checked,  DiaryEntry entry)?  diaryEntryCheckChanged,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  toggleMacroPercentage,TResult Function()?  requestAuthSubscription,TResult Function( DateTime date)?  selectDay,TResult Function()?  refreshDiary,TResult Function()?  enterEditMode,TResult Function()?  exitEditMode,TResult Function( int localId)?  removeSingleDiaryEntry,TResult Function()?  removeCheckedDiaryEntries,TResult Function( bool? checked)?  dayCheckChanged,TResult Function( bool? checked,  Meal meal)?  mealCheckChanged,TResult Function( bool checked,  DiaryEntry entry)?  diaryEntryCheckChanged,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ToggleMacroPercentageEvent() when toggleMacroPercentage != null:
 return toggleMacroPercentage();case RequestAuthSubscriptionEvent() when requestAuthSubscription != null:
 return requestAuthSubscription();case SelectDayEvent() when selectDay != null:
-return selectDay(_that.date);case EnterEditModeEvent() when enterEditMode != null:
+return selectDay(_that.date);case RefreshDiaryEvent() when refreshDiary != null:
+return refreshDiary();case EnterEditModeEvent() when enterEditMode != null:
 return enterEditMode();case ExitEditModeEvent() when exitEditMode != null:
 return exitEditMode();case RemoveEntryEvent() when removeSingleDiaryEntry != null:
 return removeSingleDiaryEntry(_that.localId);case RemoveCheckedEntriesEvent() when removeCheckedDiaryEntries != null:
@@ -176,12 +180,13 @@ return diaryEntryCheckChanged(_that.checked,_that.entry);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  toggleMacroPercentage,required TResult Function()  requestAuthSubscription,required TResult Function( DateTime date)  selectDay,required TResult Function()  enterEditMode,required TResult Function()  exitEditMode,required TResult Function( int localId)  removeSingleDiaryEntry,required TResult Function()  removeCheckedDiaryEntries,required TResult Function( bool? checked)  dayCheckChanged,required TResult Function( bool? checked,  Meal meal)  mealCheckChanged,required TResult Function( bool checked,  DiaryEntry entry)  diaryEntryCheckChanged,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  toggleMacroPercentage,required TResult Function()  requestAuthSubscription,required TResult Function( DateTime date)  selectDay,required TResult Function()  refreshDiary,required TResult Function()  enterEditMode,required TResult Function()  exitEditMode,required TResult Function( int localId)  removeSingleDiaryEntry,required TResult Function()  removeCheckedDiaryEntries,required TResult Function( bool? checked)  dayCheckChanged,required TResult Function( bool? checked,  Meal meal)  mealCheckChanged,required TResult Function( bool checked,  DiaryEntry entry)  diaryEntryCheckChanged,}) {final _that = this;
 switch (_that) {
 case ToggleMacroPercentageEvent():
 return toggleMacroPercentage();case RequestAuthSubscriptionEvent():
 return requestAuthSubscription();case SelectDayEvent():
-return selectDay(_that.date);case EnterEditModeEvent():
+return selectDay(_that.date);case RefreshDiaryEvent():
+return refreshDiary();case EnterEditModeEvent():
 return enterEditMode();case ExitEditModeEvent():
 return exitEditMode();case RemoveEntryEvent():
 return removeSingleDiaryEntry(_that.localId);case RemoveCheckedEntriesEvent():
@@ -205,12 +210,13 @@ return diaryEntryCheckChanged(_that.checked,_that.entry);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  toggleMacroPercentage,TResult? Function()?  requestAuthSubscription,TResult? Function( DateTime date)?  selectDay,TResult? Function()?  enterEditMode,TResult? Function()?  exitEditMode,TResult? Function( int localId)?  removeSingleDiaryEntry,TResult? Function()?  removeCheckedDiaryEntries,TResult? Function( bool? checked)?  dayCheckChanged,TResult? Function( bool? checked,  Meal meal)?  mealCheckChanged,TResult? Function( bool checked,  DiaryEntry entry)?  diaryEntryCheckChanged,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  toggleMacroPercentage,TResult? Function()?  requestAuthSubscription,TResult? Function( DateTime date)?  selectDay,TResult? Function()?  refreshDiary,TResult? Function()?  enterEditMode,TResult? Function()?  exitEditMode,TResult? Function( int localId)?  removeSingleDiaryEntry,TResult? Function()?  removeCheckedDiaryEntries,TResult? Function( bool? checked)?  dayCheckChanged,TResult? Function( bool? checked,  Meal meal)?  mealCheckChanged,TResult? Function( bool checked,  DiaryEntry entry)?  diaryEntryCheckChanged,}) {final _that = this;
 switch (_that) {
 case ToggleMacroPercentageEvent() when toggleMacroPercentage != null:
 return toggleMacroPercentage();case RequestAuthSubscriptionEvent() when requestAuthSubscription != null:
 return requestAuthSubscription();case SelectDayEvent() when selectDay != null:
-return selectDay(_that.date);case EnterEditModeEvent() when enterEditMode != null:
+return selectDay(_that.date);case RefreshDiaryEvent() when refreshDiary != null:
+return refreshDiary();case EnterEditModeEvent() when enterEditMode != null:
 return enterEditMode();case ExitEditModeEvent() when exitEditMode != null:
 return exitEditMode();case RemoveEntryEvent() when removeSingleDiaryEntry != null:
 return removeSingleDiaryEntry(_that.localId);case RemoveCheckedEntriesEvent() when removeCheckedDiaryEntries != null:
@@ -354,6 +360,38 @@ as DateTime,
 
 
 }
+
+/// @nodoc
+
+
+class RefreshDiaryEvent implements DiaryEvent {
+  const RefreshDiaryEvent();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RefreshDiaryEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'DiaryEvent.refreshDiary()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 

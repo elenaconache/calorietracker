@@ -58,4 +58,12 @@ class FoodService {
   Future<LocalFood?> findLocalFoodById({required int id}) {
     return database.findFoodByLocalId(localId: id);
   }
+
+  Future<LocalFood?> findLocalFoodByRemoteId({required int id}) {
+    return database.findFoodByRemoteId(remoteId: id);
+  }
+
+  Future<List<LocalFood>> findLocalFoodsByRemoteIds({required List<int> ids}) async {
+    return await database.findFoodsByRemoteIds(remoteIds: ids);
+  }
 }

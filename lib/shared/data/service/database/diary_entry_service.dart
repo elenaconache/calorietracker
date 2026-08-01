@@ -20,32 +20,26 @@ class DiaryEntryService {
 
   DiaryEntryService(this._databaseRepository, this._authRepository);
 
-  Future<void> upsertDiaryEntries({required List<LocalDiaryEntry> localEntries, bool pushFoods = false}) async {
-    await _writeDiaryEntries(localEntries, pushFoods).catchError((error, stackTrace) {
+  Future<void> upsertDiaryEntries({required List<LocalDiaryEntry> localEntries}) async {
+    await _writeDiaryEntries(localEntries).catchError((error, stackTrace) {
       getIt<LoggingService>().handle(error, stackTrace);
       return <int>[];
     });
   }
 
   Future<int?> upsertDiaryEntry({required LocalDiaryEntry localDiaryEntry}) async {
-    return _writeDiaryEntry(localDiaryEntry).catchError(
-      (error, stackTrace) {
-        getIt<LoggingService>().handle(error, stackTrace);
-        return null;
-      },
-    );
+    return _writeDiaryEntry(localDiaryEntry).catchError((error, stackTrace) {
+      getIt<LoggingService>().handle(error, stackTrace);
+      return null;
+    });
   }
 
   Future<int?> _writeDiaryEntry(LocalDiaryEntry entry) {
     return _databaseRepository.upsert(item: entry);
   }
 
-  Future<List<int>> _writeDiaryEntries(List<LocalDiaryEntry> entries, bool pushFoods) {
-    if (pushFoods) {
-      return _databaseRepository.writeDiaryEntriesRecursively(entries: entries);
-    } else {
-      return _databaseRepository.upsertList(items: entries);
-    }
+  Future<List<int>> _writeDiaryEntries(List<LocalDiaryEntry> entries) async {
+    return await _databaseRepository.upsertList(items: entries);
   }
 
   void deleteDiaryEntries(List<int> entries) async {
@@ -127,20 +121,18 @@ class DiaryEntryService {
   Future<List<MealEntriesList>> getDisplayDiaryEntries({required String date, bool filterPending = false}) async {
     final dateFormattingService = getIt<DateFormattingService>();
     final formattedDate = dateFormattingService.format(dateTime: date, format: collectionApiDateFormat);
-    final dateFilter = dateFormattingService.parse(
-      formattedDate: formattedDate,
-      format: collectionApiDateFormat,
-    );
-    final List<LocalDiaryEntry> entries = await _readDiaryEntries(
-      dateFilter: dateFilter,
-      excludeDeleted: true,
-      filterPending: filterPending,
-      filterUploadReady: false,
-      filterPushed: false,
-    ).catchError((error, stackTrace) {
-      getIt<LoggingService>().handle(error, stackTrace);
-      return <LocalDiaryEntry>[];
-    });
+    final dateFilter = dateFormattingService.parse(formattedDate: formattedDate, format: collectionApiDateFormat);
+    final List<LocalDiaryEntry> entries =
+        await _readDiaryEntries(
+          dateFilter: dateFilter,
+          excludeDeleted: true,
+          filterPending: filterPending,
+          filterUploadReady: false,
+          filterPushed: false,
+        ).catchError((error, stackTrace) {
+          getIt<LoggingService>().handle(error, stackTrace);
+          return <LocalDiaryEntry>[];
+        });
     final map = entries.groupListsBy((element) => element.meal);
     return List.generate(Meal.values.length, (index) {
       final meal = Meal.values[index];
@@ -151,36 +143,25 @@ class DiaryEntryService {
     });
   }
 
-  Stream<List<MealEntriesList>> watchDisplayDiaryEntries({
-    required String date,
-    required String username,
-  }) {
+  Stream<List<MealEntriesList>> watchDisplayDiaryEntries({required String date, required String username}) {
     final dateFormattingService = getIt<DateFormattingService>();
-    final formattedDate = dateFormattingService.format(
-      dateTime: date,
-      format: collectionApiDateFormat,
-    );
-    final dateFilter = dateFormattingService.parse(
-      formattedDate: formattedDate,
-      format: collectionApiDateFormat,
-    );
-    return _databaseRepository.watchDiaryEntries(
-      username: username,
-      dateFilter: dateFilter
-    ).map(
-      (entries) {
-        final map = entries.groupListsBy((element) => element.meal);
-        return List.generate(Meal.values.length, (index) {
-          final meal = Meal.values[index];
-          return MealEntriesList(
-            meal: meal,
-            diaryEntries: map[meal]?.map((e) => DiaryEntry.local(localEntry: e)).toList() ?? [],
-          );
+    final formattedDate = dateFormattingService.format(dateTime: date, format: collectionApiDateFormat);
+    final dateFilter = dateFormattingService.parse(formattedDate: formattedDate, format: collectionApiDateFormat);
+    return _databaseRepository
+        .watchDiaryEntries(username: username, dateFilter: dateFilter)
+        .map((entries) {
+          final map = entries.groupListsBy((element) => element.meal);
+          return List.generate(Meal.values.length, (index) {
+            final meal = Meal.values[index];
+            return MealEntriesList(
+              meal: meal,
+              diaryEntries: map[meal]?.map((e) => DiaryEntry.local(localEntry: e)).toList() ?? [],
+            );
+          });
+        })
+        .onErrorResume((error, stackTrace) {
+          getIt<LoggingService>().handle(error, stackTrace);
+          return Stream.empty();
         });
-      },
-    ).onErrorResume((error, stackTrace) {
-      getIt<LoggingService>().handle(error, stackTrace);
-      return Stream.empty();
-    });
   }
 }
