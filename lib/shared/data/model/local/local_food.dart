@@ -69,6 +69,8 @@ class LocalFood {
   AddLocalFoodRequest get addLocalFoodRequest => AddLocalFoodRequest(
     localId: id,
     name: name,
+    brand: brand,
+    barcode: barcode,
     nutritionInfo: Nutrition(
       calories: calories,
       fat: fat,

@@ -109,7 +109,7 @@ class FoodForm extends StatelessWidget {
           child: AppTextField(
             labelText: AppStrings.sugarGramsLabel,
             controller: sugarController,
-            inputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
+            inputType: const TextInputType.numberWithOptions(signed: true, decimal: true),
             validate: validator.validateMicronutrient,
             maxLength: AppTextField.maxNumericInputLength,
             isDense: true,

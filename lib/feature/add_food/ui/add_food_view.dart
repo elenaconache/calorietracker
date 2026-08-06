@@ -96,12 +96,13 @@ class AddFoodView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: AppTextField(
+                    initialValue: args.servingSize != null ?  args.servingSize.toString() : '',
                     enabled: state.addFoodResult.status is! LoadingStatus,
                     labelText: AppStrings.servingsLabel,
                     suffixIcon: Icons.clear,
                     onSuffixIconPressed: () => _onServingSizeChanged(context, ''),
                     onChanged: (value) => _onServingSizeChanged(context, value),
-                    inputType: const TextInputType.numberWithOptions(decimal: true, signed: false),
+                    inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
                     maxLength: 6,
                     autofocus: true,
                     action: TextInputAction.done,

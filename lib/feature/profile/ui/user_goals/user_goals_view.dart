@@ -83,7 +83,7 @@ class _UserGoalsViewState extends State<UserGoalsView> with SingleTickerProvider
                       controller: _caloriesController,
                       maxLength: 5,
                       labelText: AppStrings.caloriesLabel,
-                      inputType: TextInputType.number,
+                      inputType: TextInputType.numberWithOptions(signed: true),
                       action: TextInputAction.next,
                       enabled: s is! LoadingStatus,
                     ),

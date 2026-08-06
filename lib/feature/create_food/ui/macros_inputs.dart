@@ -22,53 +22,48 @@ class MacrosInputSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final validator = getIt<FoodValidator>();
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-                child: AppTextField(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: AppTextField(
               labelText: AppStrings.carbsGramsLabel,
               controller: carbsController,
-              inputType: const TextInputType.numberWithOptions(
-                decimal: true,
-                signed: false,
-              ),
+              inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
               enabled: enabled,
-            )),
-            const SizedBox(width: 12),
-            Expanded(
-                child: AppTextField(
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: AppTextField(
               labelText: AppStrings.fatGramsLabel,
               controller: fatController,
-              inputType: const TextInputType.numberWithOptions(
-                decimal: true,
-                signed: false,
-              ),
+              inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
               enabled: enabled,
-            )),
-            const SizedBox(width: 12),
-            Expanded(
-                child: AppTextField(
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: AppTextField(
               labelText: AppStrings.proteinGramsLabel,
               controller: proteinController,
-              inputType: const TextInputType.numberWithOptions(
-                decimal: true,
-                signed: false,
-              ),
+              inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
               enabled: enabled,
-            ))
-          ],
-        ));
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -10,13 +10,7 @@ class MacrosForm extends StatelessWidget {
   final TextEditingController fatController;
   final bool enabled;
 
-  const MacrosForm({
-    super.key,
-    required this.carbsController,
-    required this.proteinController,
-    required this.fatController,
-    required this.enabled,
-  });
+  const MacrosForm({super.key, required this.carbsController, required this.proteinController, required this.fatController, required this.enabled});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +24,7 @@ class MacrosForm extends StatelessWidget {
           controller: carbsController,
           maxLength: 4,
           labelText: AppStrings.carbsLabel,
-          inputType: TextInputType.number,
+          inputType: TextInputType.numberWithOptions(signed: true),
           action: TextInputAction.next,
           enabled: enabled,
         ),
@@ -40,7 +34,7 @@ class MacrosForm extends StatelessWidget {
           controller: proteinController,
           maxLength: 4,
           labelText: AppStrings.proteinLabel,
-          inputType: TextInputType.number,
+          inputType: TextInputType.numberWithOptions(signed: true),
           action: TextInputAction.next,
           enabled: enabled,
         ),
@@ -50,7 +44,7 @@ class MacrosForm extends StatelessWidget {
           controller: fatController,
           maxLength: 4,
           labelText: AppStrings.fatLabel,
-          inputType: TextInputType.number,
+          inputType: TextInputType.numberWithOptions(signed: true),
           action: TextInputAction.next,
           enabled: enabled,
         ),
