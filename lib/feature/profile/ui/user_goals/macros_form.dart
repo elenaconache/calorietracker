@@ -10,7 +10,13 @@ class MacrosForm extends StatelessWidget {
   final TextEditingController fatController;
   final bool enabled;
 
-  const MacrosForm({super.key, required this.carbsController, required this.proteinController, required this.fatController, required this.enabled});
+  const MacrosForm({
+    super.key,
+    required this.carbsController,
+    required this.proteinController,
+    required this.fatController,
+    required this.enabled,
+  });
 
   @override
   Widget build(BuildContext context) {

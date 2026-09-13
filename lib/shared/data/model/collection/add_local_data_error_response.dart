@@ -9,7 +9,8 @@ class AddLocalDataErrorResponse {
 
   const AddLocalDataErrorResponse({this.errors});
 
-  factory AddLocalDataErrorResponse.fromJson(Map<String, dynamic> json) => _$AddLocalDataErrorResponseFromJson(json);
+  factory AddLocalDataErrorResponse.fromJson(Map<String, dynamic> json) =>
+      _$AddLocalDataErrorResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddLocalDataErrorResponseToJson(this);
 
@@ -17,4 +18,6 @@ class AddLocalDataErrorResponse {
   String toString() => toJson().toString();
 }
 
-AddLocalDataErrorResponse deserializeAddLocalDataErrorResponse(Map<String, dynamic> json) => AddLocalDataErrorResponse.fromJson(json);
+AddLocalDataErrorResponse deserializeAddLocalDataErrorResponse(
+  Map<String, dynamic> json,
+) => AddLocalDataErrorResponse.fromJson(json);

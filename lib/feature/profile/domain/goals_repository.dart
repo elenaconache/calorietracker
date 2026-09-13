@@ -29,14 +29,20 @@ class GoalsRepository {
       fromJson: UserGoals.fromJson,
     );
 
-    final index = allUsersGoals.indexWhere((element) => element.username == goals.username);
+    final index = allUsersGoals.indexWhere(
+      (element) => element.username == goals.username,
+    );
     if (index == -1) {
       allUsersGoals.add(goals);
     } else {
       allUsersGoals[index] = goals;
     }
 
-    await _secureStorageService.saveList(key: usersGoalsKey, list: allUsersGoals, toJson: (goals) => goals.toJson());
+    await _secureStorageService.saveList(
+      key: usersGoalsKey,
+      list: allUsersGoals,
+      toJson: (goals) => goals.toJson(),
+    );
   }
 
   MacroGoals calculateMacroGoalsFromMacrosGrams({
@@ -45,25 +51,38 @@ class GoalsRepository {
     double? fat,
     double? carb,
   }) {
-    final goals = calculateUserGoalsFromMacrosGrams(userGoals: userGoals, protein: protein, fat: fat, carb: carb);
+    final goals = calculateUserGoalsFromMacrosGrams(
+      userGoals: userGoals,
+      protein: protein,
+      fat: fat,
+      carb: carb,
+    );
 
     int roundedProteinPercentage = goals.proteinPercentage.round();
     int roundedFatPercentage = goals.fatPercentage.round();
     int roundedCarbsPercentage = goals.carbsPercentage.round();
 
-    int adjustment = 100 - (roundedProteinPercentage + roundedFatPercentage + roundedCarbsPercentage);
+    int adjustment =
+        100 -
+        (roundedProteinPercentage +
+            roundedFatPercentage +
+            roundedCarbsPercentage);
     if (adjustment > 0) {
-      if (roundedProteinPercentage >= roundedFatPercentage && roundedProteinPercentage >= roundedCarbsPercentage) {
+      if (roundedProteinPercentage >= roundedFatPercentage &&
+          roundedProteinPercentage >= roundedCarbsPercentage) {
         roundedProteinPercentage += adjustment;
-      } else if (roundedFatPercentage >= roundedProteinPercentage && roundedFatPercentage >= roundedCarbsPercentage) {
+      } else if (roundedFatPercentage >= roundedProteinPercentage &&
+          roundedFatPercentage >= roundedCarbsPercentage) {
         roundedFatPercentage += adjustment;
       } else {
         roundedCarbsPercentage += adjustment;
       }
     } else if (adjustment < 0) {
-      if (roundedProteinPercentage >= roundedFatPercentage && roundedProteinPercentage >= roundedCarbsPercentage) {
+      if (roundedProteinPercentage >= roundedFatPercentage &&
+          roundedProteinPercentage >= roundedCarbsPercentage) {
         roundedProteinPercentage += adjustment;
-      } else if (roundedFatPercentage >= roundedProteinPercentage && roundedFatPercentage >= roundedCarbsPercentage) {
+      } else if (roundedFatPercentage >= roundedProteinPercentage &&
+          roundedFatPercentage >= roundedCarbsPercentage) {
         roundedFatPercentage += adjustment;
       } else {
         roundedCarbsPercentage += adjustment;
@@ -71,13 +90,14 @@ class GoalsRepository {
     }
 
     return MacroGoals(
-        calories: goals.calories.floor(),
-        roundedCarbsGrams: goals.carbsGramsGoal.floor(),
-        roundedProteinGrams: goals.proteinGramsGoal.floor(),
-        roundedFatGrams: goals.fatGramsGoal.floor(),
-        roundedCarbsPercentage: roundedCarbsPercentage,
-        roundedProteinPercentage: roundedProteinPercentage,
-        roundedFatPercentage: roundedFatPercentage);
+      calories: goals.calories.floor(),
+      roundedCarbsGrams: goals.carbsGramsGoal.floor(),
+      roundedProteinGrams: goals.proteinGramsGoal.floor(),
+      roundedFatGrams: goals.fatGramsGoal.floor(),
+      roundedCarbsPercentage: roundedCarbsPercentage,
+      roundedProteinPercentage: roundedProteinPercentage,
+      roundedFatPercentage: roundedFatPercentage,
+    );
   }
 
   UserGoals calculateUserGoalsFromMacrosGrams({
@@ -108,22 +128,25 @@ class GoalsRepository {
     required MacroGoals macroGoals,
     required double totalCalories,
   }) {
-    final proteinGrams = totalCalories / 4 / 100 * currentUserGoals.proteinPercentage;
+    final proteinGrams =
+        totalCalories / 4 / 100 * currentUserGoals.proteinPercentage;
     final fatGrams = totalCalories / 9 / 100 * currentUserGoals.fatPercentage;
-    final carbGrams = totalCalories / 4 / 100 * currentUserGoals.carbsPercentage;
+    final carbGrams =
+        totalCalories / 4 / 100 * currentUserGoals.carbsPercentage;
 
     int roundedProteinGrams = proteinGrams.floor();
     int roundedFatGrams = fatGrams.floor();
     int roundedCarbsGrams = carbGrams.floor();
 
     return MacroGoals(
-        calories: totalCalories.floor(),
-        roundedCarbsGrams: roundedCarbsGrams,
-        roundedProteinGrams: roundedProteinGrams,
-        roundedFatGrams: roundedFatGrams,
-        roundedCarbsPercentage: macroGoals.roundedCarbsPercentage,
-        roundedProteinPercentage: macroGoals.roundedProteinPercentage,
-        roundedFatPercentage: macroGoals.roundedFatPercentage);
+      calories: totalCalories.floor(),
+      roundedCarbsGrams: roundedCarbsGrams,
+      roundedProteinGrams: roundedProteinGrams,
+      roundedFatGrams: roundedFatGrams,
+      roundedCarbsPercentage: macroGoals.roundedCarbsPercentage,
+      roundedProteinPercentage: macroGoals.roundedProteinPercentage,
+      roundedFatPercentage: macroGoals.roundedFatPercentage,
+    );
   }
 
   MacroGoals updateMacroPercentage({
@@ -134,17 +157,17 @@ class GoalsRepository {
   }) {
     return switch (macro) {
       Macro.carbohydrates => macroGoals.copyWith(
-          roundedCarbsPercentage: percentage,
-          roundedCarbsGrams: calories * percentage / 100 ~/ 4,
-        ),
+        roundedCarbsPercentage: percentage,
+        roundedCarbsGrams: calories * percentage / 100 ~/ 4,
+      ),
       Macro.protein => macroGoals.copyWith(
-          roundedProteinPercentage: percentage,
-          roundedProteinGrams: calories * percentage / 100 ~/ 4,
-        ),
+        roundedProteinPercentage: percentage,
+        roundedProteinGrams: calories * percentage / 100 ~/ 4,
+      ),
       Macro.fat => macroGoals.copyWith(
-          roundedFatPercentage: percentage,
-          roundedFatGrams: calories * percentage / 100 ~/ 9,
-        ),
+        roundedFatPercentage: percentage,
+        roundedFatGrams: calories * percentage / 100 ~/ 9,
+      ),
     };
   }
 }

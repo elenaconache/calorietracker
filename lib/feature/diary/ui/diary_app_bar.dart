@@ -9,7 +9,11 @@ class DiaryAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool editable;
   final VoidCallback onExitEditMode;
 
-  const DiaryAppBar({super.key, required this.editable, required this.onExitEditMode});
+  const DiaryAppBar({
+    super.key,
+    required this.editable,
+    required this.onExitEditMode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +22,21 @@ class DiaryAppBar extends StatelessWidget implements PreferredSizeWidget {
         duration: const Duration(milliseconds: 300),
         child: Text(
           editable ? AppStrings.deleteEntriesTitle : AppStrings.diaryTitle,
-          key: ValueKey(editable ? AppStrings.deleteEntriesTitle : AppStrings.diaryTitle),
+          key: ValueKey(
+            editable ? AppStrings.deleteEntriesTitle : AppStrings.diaryTitle,
+          ),
         ),
       ),
       scrolledUnderElevation: 8,
       leading: editable
-          ? IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: onExitEditMode,
-            )
+          ? IconButton(icon: const Icon(Icons.close), onPressed: onExitEditMode)
           : null,
       actions: editable
           ? [
               IconButton(
                 icon: const Icon(Icons.done),
                 onPressed: () => _onDonePressed(context),
-              )
+              ),
             ]
           : const [UserAvatarAction()],
     );
@@ -42,5 +45,6 @@ class DiaryAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
-  void _onDonePressed(BuildContext context) => context.read<DiaryBloc>().add(RemoveCheckedEntriesEvent());
+  void _onDonePressed(BuildContext context) =>
+      context.read<DiaryBloc>().add(RemoveCheckedEntriesEvent());
 }

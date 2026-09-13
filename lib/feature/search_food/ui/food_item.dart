@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:calorietracker/feature/diary/logic/diary_bloc.dart';
+import 'package:calorietracker/shared/data/model/local/local_ingredient.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/home/ui/home_view.dart';
@@ -9,7 +10,6 @@ import 'package:calorietracker/shared/data/model/food.dart';
 import 'package:calorietracker/shared/data/model/local/local_food.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';
-import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
 import 'package:calorietracker/shared/data/service/numeric_formatting_service.dart';
@@ -64,62 +64,72 @@ class _FoodItemState extends State<FoodItem> {
           color: Theme.of(context).scaffoldBackgroundColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(children: [
-              const AppDivider(),
-              const SizedBox(height: 8),
-              Row(children: [
-                Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(
-                      name ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    if (brand != null)
-                      Text(
-                        brand!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    const SizedBox(height: 2),
-                    Text(
-                      _caloriesText,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ]),
-                ),
-                const SizedBox(width: 24),
-                SizedBox(
-                  width: 48,
-                  height: 48,
-                  child: ValueListenableBuilder(
-                    valueListenable: _controller.isLoggingLoading,
-                    builder: (_, loading, __) => loading
-                        ? const Center(
-                            child: SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        : Ink(
-                            decoration: _getAddButtonDecoration(context),
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: () => _onAddPressed(context),
-                              icon: Icon(
-                                Icons.add,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
+            child: Column(
+              children: [
+                const AppDivider(),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                  ),
+                          if (brand != null)
+                            Text(
+                              brand!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          const SizedBox(height: 2),
+                          Text(
+                            _caloriesText,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 24),
+                    if (widget.meal != null)
+                      SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: ValueListenableBuilder(
+                          valueListenable: _controller.isLoggingLoading,
+                          builder: (_, loading, __) => loading
+                              ? const Center(
+                                  child: SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : Ink(
+                                  decoration: _getAddButtonDecoration(context),
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () => _onAddPressed(context),
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+                  ],
                 ),
-              ]),
-              const SizedBox(height: 8),
-            ]),
+                const SizedBox(height: 8),
+              ],
+            ),
           ),
         ),
       ),
@@ -128,7 +138,9 @@ class _FoodItemState extends State<FoodItem> {
 
   void _onAddPressed(BuildContext context) {
     if (widget.localFood == null && widget.remoteFood == null) {
-      getIt<LoggingService>().info('Missing food data, could not log to diary.');
+      getIt<LoggingService>().info(
+        'Missing food data, could not log to diary.',
+      );
     } else if (widget.meal == null) {
       // TODO: quick add ingredient to recipe
     } else {
@@ -136,26 +148,29 @@ class _FoodItemState extends State<FoodItem> {
       unawaited(
         _controller
             .logFood(
-          food: widget.remoteFood ?? Food.local(localFood: widget.localFood!),
-          meal: widget.meal!,
-          servingQuantity: widget.servingQuantity,
-          localFoodId: widget.localFood?.id,
-          remoteFoodId: widget.remoteFood?.id ?? widget.localFood?.foodId,
-          date: date,
-        )
+              food:
+                  widget.remoteFood ?? Food.local(localFood: widget.localFood!),
+              meal: widget.meal!,
+              servingQuantity: widget.servingQuantity,
+              localFoodId: widget.localFood?.id,
+              remoteFoodId: widget.remoteFood?.id ?? widget.localFood?.foodId,
+              date: date,
+            )
             .then((added) {
-          _handleLogFoodResult(added);
-        }),
+              _handleLogFoodResult(added);
+            }),
       );
     }
   }
 
   void _handleLogFoodResult(bool added) {
     if (context.mounted) {
-      final message = added ? AppStrings.foodLoggedMessage : AppStrings.errorAddFood;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      final message = added
+          ? AppStrings.foodLoggedMessage
+          : AppStrings.errorAddFood;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
@@ -164,9 +179,9 @@ class _FoodItemState extends State<FoodItem> {
   String? get brand => widget.remoteFood?.brandName ?? widget.localFood?.brand;
 
   BoxDecoration _getAddButtonDecoration(BuildContext context) => BoxDecoration(
-        shape: BoxShape.circle,
-        color: Theme.of(context).primaryColor,
-      );
+    shape: BoxShape.circle,
+    color: Theme.of(context).primaryColor,
+  );
 
   String get _caloriesText {
     final numericFormatter = getIt<NumericFormattingService>();
@@ -179,7 +194,9 @@ class _FoodItemState extends State<FoodItem> {
 
   void _navigateToAddFood(BuildContext context) async {
     if (widget.remoteFood == null && widget.localFood == null) {
-      getIt<LoggingService>().info('Attempt to log food when both collection and local search result were empty.');
+      getIt<LoggingService>().info(
+        'Attempt to log food when both collection and local search result were empty.',
+      );
       return;
     }
     final result = await Navigator.pushNamed(
@@ -191,7 +208,7 @@ class _FoodItemState extends State<FoodItem> {
         localFoodId: widget.localFood?.id,
       ),
     );
-    if (result is RecipeIngredient) {
+    if (result is LocalIngredient) {
       Navigator.of(recipeNavigatorKey.currentContext!).pop(result);
     }
   }

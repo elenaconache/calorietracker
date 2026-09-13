@@ -13,5 +13,6 @@ sealed class BaseCollectionErrorResponse with _$BaseCollectionErrorResponse {
     @CollectionErrorConverter() required List<BaseCollectionError> errors,
   }) = _BaseCollectionErrorResponse;
 
-  factory BaseCollectionErrorResponse.fromJson(Map<String, dynamic> json) => _$BaseCollectionErrorResponseFromJson(json);
+  factory BaseCollectionErrorResponse.fromJson(Map<String, dynamic> json) =>
+      _$BaseCollectionErrorResponseFromJson(json);
 }

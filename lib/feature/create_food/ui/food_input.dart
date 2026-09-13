@@ -83,11 +83,17 @@ class FoodInput {
     barcode: null,
     name: name,
     brand: (brand?.isEmpty ?? true) ? null : brand,
-    nutritionInfo: Nutrition.fromServing(nutritionPerServing: nutrition, servingSizeGrams: servingSizeValue).round(),
+    nutritionInfo: Nutrition.fromServing(
+      nutritionPerServing: nutrition,
+      servingSizeGrams: servingSizeValue,
+    ).round(),
   );
 
   LocalFood get localFood {
-    final foodNutrition = Nutrition.fromServing(nutritionPerServing: nutrition, servingSizeGrams: servingSizeValue).round();
+    final foodNutrition = Nutrition.fromServing(
+      nutritionPerServing: nutrition,
+      servingSizeGrams: servingSizeValue,
+    ).round();
     return LocalFood(
       barcode: null,
       name: name,
@@ -113,7 +119,8 @@ class FoodInput {
     );
   }
 
-  double _parseInput(String input) => double.tryParse(input.replaceAll(',', '.')) ?? 0;
+  double _parseInput(String input) =>
+      double.tryParse(input.replaceAll(',', '.')) ?? 0;
 
   double get servingSizeValue => _parseInput(servingSize);
 

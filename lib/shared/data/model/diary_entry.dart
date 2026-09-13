@@ -27,18 +27,19 @@ class DiaryEntry {
   });
 
   DiaryEntry.local({required LocalDiaryEntry localEntry})
-      : collectionId = localEntry.entryId,
-        localId = localEntry.localId,
-        food = Food.local(localFood: localEntry.localFood.target!),
-        date = getIt<DateFormattingService>().format(
-          dateTime: localEntry.entryDate.toString(),
-          format: collectionApiDateFormat,
-        ),
-        unitId = localEntry.unitId,
-        servingQuantity = localEntry.servingQuantity,
-        errorPushing = localEntry.errorPushingEntry;
+    : collectionId = localEntry.entryId,
+      localId = localEntry.localId,
+      food = Food.local(localFood: localEntry.localFood.target!),
+      date = getIt<DateFormattingService>().format(
+        dateTime: localEntry.entryDate.toString(),
+        format: collectionApiDateFormat,
+      ),
+      unitId = localEntry.unitId,
+      servingQuantity = localEntry.servingQuantity,
+      errorPushing = localEntry.errorPushingEntry;
 
-  factory DiaryEntry.fromJson(Map<String, dynamic> json) => _$DiaryEntryFromJson(json);
+  factory DiaryEntry.fromJson(Map<String, dynamic> json) =>
+      _$DiaryEntryFromJson(json);
 
   Map<String, dynamic> toJson() => _$DiaryEntryToJson(this);
 
@@ -53,14 +54,13 @@ class DiaryEntry {
     int? unitId,
     double? servingQuantity,
     bool? errorPushing,
-  }) =>
-      DiaryEntry(
-        food: food ?? this.food,
-        servingQuantity: servingQuantity ?? this.servingQuantity,
-        date: date ?? this.date,
-        collectionId: collectionId ?? this.collectionId,
-        localId: localId ?? this.localId,
-        unitId: unitId ?? this.unitId,
-        errorPushing: errorPushing ?? this.errorPushing,
-      );
+  }) => DiaryEntry(
+    food: food ?? this.food,
+    servingQuantity: servingQuantity ?? this.servingQuantity,
+    date: date ?? this.date,
+    collectionId: collectionId ?? this.collectionId,
+    localId: localId ?? this.localId,
+    unitId: unitId ?? this.unitId,
+    errorPushing: errorPushing ?? this.errorPushing,
+  );
 }

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateRecipeState {
 
- List<RecipeIngredient> get ingredients; Nutrition get nutrition; AsyncState get createRecipeStatus;
+ List<LocalIngredient> get ingredients; Nutrition get nutrition; AsyncState get createRecipeStatus;
 /// Create a copy of CreateRecipeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $CreateRecipeStateCopyWith<$Res>  {
   factory $CreateRecipeStateCopyWith(CreateRecipeState value, $Res Function(CreateRecipeState) _then) = _$CreateRecipeStateCopyWithImpl;
 @useResult
 $Res call({
- List<RecipeIngredient> ingredients, Nutrition nutrition, AsyncState createRecipeStatus
+ List<LocalIngredient> ingredients, Nutrition nutrition, AsyncState createRecipeStatus
 });
 
 
@@ -65,7 +65,7 @@ class _$CreateRecipeStateCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? ingredients = null,Object? nutrition = null,Object? createRecipeStatus = null,}) {
   return _then(_self.copyWith(
 ingredients: null == ingredients ? _self.ingredients : ingredients // ignore: cast_nullable_to_non_nullable
-as List<RecipeIngredient>,nutrition: null == nutrition ? _self.nutrition : nutrition // ignore: cast_nullable_to_non_nullable
+as List<LocalIngredient>,nutrition: null == nutrition ? _self.nutrition : nutrition // ignore: cast_nullable_to_non_nullable
 as Nutrition,createRecipeStatus: null == createRecipeStatus ? _self.createRecipeStatus : createRecipeStatus // ignore: cast_nullable_to_non_nullable
 as AsyncState,
   ));
@@ -161,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<RecipeIngredient> ingredients,  Nutrition nutrition,  AsyncState createRecipeStatus)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<LocalIngredient> ingredients,  Nutrition nutrition,  AsyncState createRecipeStatus)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateRecipeState() when $default != null:
 return $default(_that.ingredients,_that.nutrition,_that.createRecipeStatus);case _:
@@ -182,7 +182,7 @@ return $default(_that.ingredients,_that.nutrition,_that.createRecipeStatus);case
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<RecipeIngredient> ingredients,  Nutrition nutrition,  AsyncState createRecipeStatus)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<LocalIngredient> ingredients,  Nutrition nutrition,  AsyncState createRecipeStatus)  $default,) {final _that = this;
 switch (_that) {
 case _CreateRecipeState():
 return $default(_that.ingredients,_that.nutrition,_that.createRecipeStatus);case _:
@@ -202,7 +202,7 @@ return $default(_that.ingredients,_that.nutrition,_that.createRecipeStatus);case
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<RecipeIngredient> ingredients,  Nutrition nutrition,  AsyncState createRecipeStatus)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<LocalIngredient> ingredients,  Nutrition nutrition,  AsyncState createRecipeStatus)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateRecipeState() when $default != null:
 return $default(_that.ingredients,_that.nutrition,_that.createRecipeStatus);case _:
@@ -217,11 +217,11 @@ return $default(_that.ingredients,_that.nutrition,_that.createRecipeStatus);case
 
 
 class _CreateRecipeState implements CreateRecipeState {
-  const _CreateRecipeState({required final  List<RecipeIngredient> ingredients, required this.nutrition, required this.createRecipeStatus}): _ingredients = ingredients;
+  const _CreateRecipeState({required final  List<LocalIngredient> ingredients, required this.nutrition, required this.createRecipeStatus}): _ingredients = ingredients;
   
 
- final  List<RecipeIngredient> _ingredients;
-@override List<RecipeIngredient> get ingredients {
+ final  List<LocalIngredient> _ingredients;
+@override List<LocalIngredient> get ingredients {
   if (_ingredients is EqualUnmodifiableListView) return _ingredients;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_ingredients);
@@ -260,7 +260,7 @@ abstract mixin class _$CreateRecipeStateCopyWith<$Res> implements $CreateRecipeS
   factory _$CreateRecipeStateCopyWith(_CreateRecipeState value, $Res Function(_CreateRecipeState) _then) = __$CreateRecipeStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<RecipeIngredient> ingredients, Nutrition nutrition, AsyncState createRecipeStatus
+ List<LocalIngredient> ingredients, Nutrition nutrition, AsyncState createRecipeStatus
 });
 
 
@@ -280,7 +280,7 @@ class __$CreateRecipeStateCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? ingredients = null,Object? nutrition = null,Object? createRecipeStatus = null,}) {
   return _then(_CreateRecipeState(
 ingredients: null == ingredients ? _self._ingredients : ingredients // ignore: cast_nullable_to_non_nullable
-as List<RecipeIngredient>,nutrition: null == nutrition ? _self.nutrition : nutrition // ignore: cast_nullable_to_non_nullable
+as List<LocalIngredient>,nutrition: null == nutrition ? _self.nutrition : nutrition // ignore: cast_nullable_to_non_nullable
 as Nutrition,createRecipeStatus: null == createRecipeStatus ? _self.createRecipeStatus : createRecipeStatus // ignore: cast_nullable_to_non_nullable
 as AsyncState,
   ));

@@ -6,7 +6,13 @@ class MacroItem extends StatelessWidget {
   final String name;
   final Color color;
 
-  const MacroItem({super.key, required this.percentage, required this.quantityInGrams, required this.name, required this.color});
+  const MacroItem({
+    super.key,
+    required this.percentage,
+    required this.quantityInGrams,
+    required this.name,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +28,7 @@ class MacroItem extends StatelessWidget {
           style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 4),
-        Text(
-          name,
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
+        Text(name, style: Theme.of(context).textTheme.labelMedium),
       ],
     );
   }

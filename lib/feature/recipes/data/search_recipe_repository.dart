@@ -10,6 +10,8 @@ class SearchRecipeRepository {
 
   Future<List<Recipe>> fetchRecipes() async {
     final collectionRecipes = await _apiService.getRecipes();
-    return collectionRecipes.map((collectionRecipe) => Recipe.collection(recipe: collectionRecipe)).toList();
+    return collectionRecipes
+        .map((collectionRecipe) => Recipe.collection(recipe: collectionRecipe))
+        .toList();
   }
 }

@@ -8,9 +8,13 @@ const userFormat = 'EEE, MMMM d';
 
 @injectable
 class DateFormattingService {
-  String format({required String dateTime, String format = calendarFormat}) => DateFormat(format).format(DateTime.parse(dateTime));
+  String format({required String dateTime, String format = calendarFormat}) =>
+      DateFormat(format).format(DateTime.parse(dateTime));
 
-  DateTime parse({required String formattedDate, String format = calendarFormat}) => DateFormat(format).parse(formattedDate);
+  DateTime parse({
+    required String formattedDate,
+    String format = calendarFormat,
+  }) => DateFormat(format).parse(formattedDate);
 
   String formatUserFriendly({required String dateTime}) {
     final now = DateTime.now();
@@ -18,7 +22,11 @@ class DateFormattingService {
     final yesterday = DateTime(now.year, now.month, now.day - 1);
     final tomorrow = DateTime(now.year, now.month, now.day + 1);
     final dateToCheck = DateTime.parse(dateTime);
-    final calendarDateToCheck = DateTime(dateToCheck.year, dateToCheck.month, dateToCheck.day);
+    final calendarDateToCheck = DateTime(
+      dateToCheck.year,
+      dateToCheck.month,
+      dateToCheck.day,
+    );
 
     if (calendarDateToCheck == today) {
       return AppStrings.todayTitle;

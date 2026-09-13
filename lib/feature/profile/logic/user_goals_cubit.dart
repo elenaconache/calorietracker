@@ -24,11 +24,11 @@ class UserGoalsCubit extends Cubit<UserGoalsState> {
     this._goalsRepository,
     this._loggingService,
   ) : super(
-          UserGoalsState(
-            userGoals: AsyncState.initial(),
-            macroGoals: AsyncState.initial(),
-          ),
-        ) {
+        UserGoalsState(
+          userGoals: AsyncState.initial(),
+          macroGoals: AsyncState.initial(),
+        ),
+      ) {
     _fetchStoredUserGoals();
   }
 
@@ -39,20 +39,24 @@ class UserGoalsCubit extends Cubit<UserGoalsState> {
     } else {
       UserGoals? userGoals;
       try {
-        userGoals = await _goalsRepository.fetchSavedUserGoals(username: currentUser);
+        userGoals = await _goalsRepository.fetchSavedUserGoals(
+          username: currentUser,
+        );
         emit(state.copyWith(userGoals: AsyncState.success(userGoals)));
       } catch (e, stackTrace) {
         _loggingService.handle(e, stackTrace);
-        emit(state.copyWith(userGoals: AsyncState.failure(Failure.generalFailure())));
+        emit(
+          state.copyWith(
+            userGoals: AsyncState.failure(Failure.generalFailure()),
+          ),
+        );
       }
 
       if (userGoals != null) {
         final macroGoals = _goalsRepository.calculateMacroGoalsFromMacrosGrams(
           userGoals: userGoals,
         );
-        emit(state.copyWith(
-          macroGoals: AsyncState.success(macroGoals),
-        ));
+        emit(state.copyWith(macroGoals: AsyncState.success(macroGoals)));
       }
     }
   }
@@ -98,10 +102,12 @@ class UserGoalsCubit extends Cubit<UserGoalsState> {
       macroGoals: macroGoals,
       totalCalories: calories,
     );
-    emit(state.copyWith(
-      macroGoals: AsyncState.success(calculatedGoals),
-      userGoals: AsyncState.success(userGoals.copyWith(calories: calories)),
-    ));
+    emit(
+      state.copyWith(
+        macroGoals: AsyncState.success(calculatedGoals),
+        userGoals: AsyncState.success(userGoals.copyWith(calories: calories)),
+      ),
+    );
   }
 
   void onMacroPercentageChanged({required Macro macro, required int value}) {
@@ -122,7 +128,9 @@ class UserGoalsCubit extends Cubit<UserGoalsState> {
         macroGoals: AsyncState.success(updatedMacros),
         userGoals: AsyncState.success(
           goals.copyWith(
-            carbsPercentage: macro == Macro.carbohydrates ? value.toDouble() : null,
+            carbsPercentage: macro == Macro.carbohydrates
+                ? value.toDouble()
+                : null,
             proteinPercentage: macro == Macro.protein ? value.toDouble() : null,
             fatPercentage: macro == Macro.fat ? value.toDouble() : null,
           ),
@@ -148,10 +156,20 @@ class UserGoalsCubit extends Cubit<UserGoalsState> {
         Future.delayed(const Duration(milliseconds: 600)),
       ]);
 
-      emit(state.copyWith(macroGoals: AsyncState.success(macroGoals), userGoals: AsyncState.success(goals)));
+      emit(
+        state.copyWith(
+          macroGoals: AsyncState.success(macroGoals),
+          userGoals: AsyncState.success(goals),
+        ),
+      );
     } catch (e, stackTrace) {
       _loggingService.handle(e, stackTrace);
-      emit(state.copyWith(macroGoals: AsyncState.failure(GeneralFailure()), userGoals: AsyncState.failure(GeneralFailure())));
+      emit(
+        state.copyWith(
+          macroGoals: AsyncState.failure(GeneralFailure()),
+          userGoals: AsyncState.failure(GeneralFailure()),
+        ),
+      );
     }
   }
 }

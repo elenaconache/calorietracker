@@ -15,24 +15,20 @@ class NutrientRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const AppDivider(),
-      Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Text(
-              name,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const Spacer(),
-            Text(
-              displayValue,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-          ],
+    return Column(
+      children: [
+        const AppDivider(),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Text(name, style: Theme.of(context).textTheme.labelLarge),
+              const Spacer(),
+              Text(displayValue, style: Theme.of(context).textTheme.labelLarge),
+            ],
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }

@@ -11,7 +11,12 @@ class MealMacros extends StatelessWidget {
   final bool enabledPercentageMode;
   final DiaryState diary;
 
-  const MealMacros({super.key, required this.meal, required this.enabledPercentageMode, required this.diary});
+  const MealMacros({
+    super.key,
+    required this.meal,
+    required this.enabledPercentageMode,
+    required this.diary,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +27,11 @@ class MealMacros extends StatelessWidget {
     return Row(
       children: [
         AnimatedSize(
-            duration: const Duration(milliseconds: 300),
-            child: Text(
-              enabledPercentageMode
-                  ? AppStrings.carbsPercentageValue(mealNutrition.carbsPercentage)
-                  : AppStrings.carbsValue(mealNutrition.carbohydrates.toInt()),
-              style: Theme.of(context).textTheme.labelMedium,
-            )),
-        const SizedBox(width: 8),
-        const Dot(),
-        const SizedBox(width: 8),
-        AnimatedSize(
           duration: const Duration(milliseconds: 300),
           child: Text(
-            enabledPercentageMode ? AppStrings.fatPercentageValue(mealNutrition.fatPercentage) : AppStrings.fatValue(mealNutrition.fat.toInt()),
+            enabledPercentageMode
+                ? AppStrings.carbsPercentageValue(mealNutrition.carbsPercentage)
+                : AppStrings.carbsValue(mealNutrition.carbohydrates.toInt()),
             style: Theme.of(context).textTheme.labelMedium,
           ),
         ),
@@ -43,13 +39,28 @@ class MealMacros extends StatelessWidget {
         const Dot(),
         const SizedBox(width: 8),
         AnimatedSize(
-            duration: const Duration(milliseconds: 300),
-            child: Text(
-              enabledPercentageMode
-                  ? AppStrings.proteinPercentageValue(mealNutrition.proteinPercentage)
-                  : AppStrings.proteinValue(mealNutrition.protein.toInt()),
-              style: Theme.of(context).textTheme.labelMedium,
-            )),
+          duration: const Duration(milliseconds: 300),
+          child: Text(
+            enabledPercentageMode
+                ? AppStrings.fatPercentageValue(mealNutrition.fatPercentage)
+                : AppStrings.fatValue(mealNutrition.fat.toInt()),
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
+        const SizedBox(width: 8),
+        const Dot(),
+        const SizedBox(width: 8),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          child: Text(
+            enabledPercentageMode
+                ? AppStrings.proteinPercentageValue(
+                    mealNutrition.proteinPercentage,
+                  )
+                : AppStrings.proteinValue(mealNutrition.protein.toInt()),
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
       ],
     );
   }

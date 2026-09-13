@@ -1,9 +1,9 @@
-import 'package:calorietracker/feature/recipes/data/create_recipe_error.dart';
-import 'package:calorietracker/feature/recipes/data/create_recipe_repository.dart';
 import 'package:calorietracker/shared/data/helper/async_state.dart';
-import 'package:calorietracker/shared/data/helper/failure.dart';
+import 'package:calorietracker/shared/data/model/local/local_ingredient.dart';
+import 'package:calorietracker/shared/data/model/local/local_recipe.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';
-import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
+import 'package:calorietracker/shared/data/service/database/food_repository.dart';
+import 'package:calorietracker/shared/data/service/database/recipe_repository.dart';
 import 'package:calorietracker/shared/helpers/recipe_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -15,18 +15,35 @@ part 'create_recipe_cubit.freezed.dart';
 @injectable
 class CreateRecipeCubit extends Cubit<CreateRecipeState> {
   final RecipeHelper _recipeHelper;
-  final CreateRecipeRepository _createRecipeRepository;
+  final FoodRepository _foodRepository;
+  final RecipeRepository _recipeRepository;
 
-  CreateRecipeCubit(this._recipeHelper, this._createRecipeRepository)
-      : super(CreateRecipeState(
+  CreateRecipeCubit(
+    this._recipeHelper,
+    this._foodRepository,
+    this._recipeRepository,
+  ) : super(
+        CreateRecipeState(
           ingredients: [],
           nutrition: Nutrition(),
           createRecipeStatus: AsyncState.initial(),
-        ));
+        ),
+      );
 
-  void addIngredient({required RecipeIngredient ingredient, required int cookedQuantity}) {
+  void addIngredient({
+    required LocalIngredient ingredient,
+    required int cookedQuantity,
+  }) {
     final updatedIngredients = [...state.ingredients, ingredient];
-    final totalNutrition = _recipeHelper.calculateTotalIngredientsNutrition(ingredients: updatedIngredients);
+    final foods = _foodRepository.findByLocalIds(
+      localIds: updatedIngredients.map((e) => e.localFood.targetId).toList(),
+    );
+
+    final totalNutrition = _recipeHelper.calculateTotalIngredientsNutrition(
+      ingredients: updatedIngredients,
+      foods: foods,
+    );
+
     emit(
       state.copyWith(
         ingredients: updatedIngredients,
@@ -39,24 +56,29 @@ class CreateRecipeCubit extends Cubit<CreateRecipeState> {
   }
 
   void updateCookedQuantity({required int cookedQuantity}) {
-    emit(state.copyWith(
-        nutrition: _recipeHelper.calculateRecipeNutrition(
-      ingredients: state.ingredients,
-      cookedQuantity: cookedQuantity,
-    )));
-  }
-
-  void saveRecipe({required String name, required int cookedQuantity}) async {
-    emit(state.copyWith(createRecipeStatus: AsyncState.loading()));
-    final result = await _createRecipeRepository.createRecipe(
-      name: name,
-      ingredients: state.ingredients,
-      cookedQuantity: cookedQuantity,
+    final foods = _foodRepository.findByLocalIds(
+      localIds: state.ingredients.map((e) => e.localFood.targetId).toList(),
     );
     emit(
       state.copyWith(
-          createRecipeStatus: result == CreateRecipeError.none ? AsyncState.success(null) : AsyncState.failure(Failure.createRecipe(type: result))),
+        nutrition: _recipeHelper.calculateRecipeNutrition(
+          ingredients: state.ingredients,
+          cookedQuantity: cookedQuantity,
+          foods: foods,
+        ),
+      ),
     );
+  }
+
+  void saveRecipe({required String name, required int cookedQuantity}) async {
+    _recipeRepository.upsert(
+      LocalRecipe.withParams(
+        ingredients: state.ingredients,
+        cookedWeight: cookedQuantity,
+        name: name,
+      ),
+    );
+    emit(state.copyWith(createRecipeStatus: AsyncState.success(null)));
   }
 
   void removeIngredient({required int index, required int cookedQuantity}) {
@@ -64,24 +86,42 @@ class CreateRecipeCubit extends Cubit<CreateRecipeState> {
       ...state.ingredients.sublist(0, index),
       ...state.ingredients.sublist(index + 1),
     ];
-    emit(state.copyWith(
-      nutrition: _recipeHelper.calculateRecipeNutrition(ingredients: ingredients, cookedQuantity: cookedQuantity),
-    ));
+    final foods = _foodRepository.findByLocalIds(
+      localIds: ingredients.map((e) => e.localFood.targetId).toList(),
+    );
+
+    emit(
+      state.copyWith(
+        nutrition: _recipeHelper.calculateRecipeNutrition(
+          ingredients: ingredients,
+          cookedQuantity: cookedQuantity,
+          foods: foods,
+        ),
+      ),
+    );
   }
 
-  void updateIngredientQuantity({required int index, required double ingredientQuantity, required int cookedQuantity}) {
+  void updateIngredientQuantity({
+    required int index,
+    required double ingredientQuantity,
+    required int cookedQuantity,
+  }) {
     final ingredients = [
       ...state.ingredients.sublist(0, index),
-      RecipeIngredient(food: state.ingredients[index].food, servingQuantity: ingredientQuantity),
+      state.ingredients[index]..servingQuantity = ingredientQuantity,
       ...state.ingredients.sublist(index + 1),
     ];
+    final foods = _foodRepository.findByLocalIds(
+      localIds: ingredients.map((e) => e.localFood.targetId).toList(),
+    );
+
     final recipeNutrition = Nutrition.fromServing(
-      nutritionPerServing: _recipeHelper.calculateTotalIngredientsNutrition(ingredients: ingredients),
+      nutritionPerServing: _recipeHelper.calculateTotalIngredientsNutrition(
+        ingredients: ingredients,
+        foods: foods,
+      ),
       servingSizeGrams: cookedQuantity == 0 ? 100 : cookedQuantity.toDouble(),
     );
-    emit(state.copyWith(
-      ingredients: ingredients,
-      nutrition: recipeNutrition,
-    ));
+    emit(state.copyWith(ingredients: ingredients, nutrition: recipeNutrition));
   }
 }

@@ -1,5 +1,1 @@
-enum FutureResponseStatus {
-  loading,
-  success,
-  error,
-}
+enum FutureResponseStatus { loading, success, error }

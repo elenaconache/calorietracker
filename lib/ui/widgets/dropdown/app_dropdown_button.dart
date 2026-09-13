@@ -31,7 +31,8 @@ class AppDropdownButton<T> extends StatefulWidget {
   State<AppDropdownButton> createState() => _AppDropdownButtonState<T>();
 }
 
-class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> with SingleTickerProviderStateMixin {
+class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>>
+    with SingleTickerProviderStateMixin {
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
   late final AnimationController _animationController;
@@ -41,7 +42,10 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> with Single
   void initState() {
     super.initState();
     _controller = getIt<AppDropdownButtonController>();
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
   }
 
   @override
@@ -65,11 +69,12 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> with Single
           child: ValueListenableBuilder(
             valueListenable: _controller.isOpen,
             builder: (context, isOpen, child) => DropdownButtonContent<T>(
-                enabled: widget.enabled,
-                isOpen: isOpen,
-                hint: widget.hint,
-                optionNameMapper: widget.optionNameMapper,
-                selectedOption: widget.selectedOption),
+              enabled: widget.enabled,
+              isOpen: isOpen,
+              hint: widget.hint,
+              optionNameMapper: widget.optionNameMapper,
+              selectedOption: widget.selectedOption,
+            ),
           ),
         ),
       ),
@@ -101,28 +106,34 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> with Single
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Stack(children: [
-            Positioned(
-              left: offset.dx,
-              top: topOffset,
-              width: size.width,
-              child: CompositedTransformFollower(
-                offset: Offset(0, size.height),
-                link: _layerLink,
-                showWhenUnlinked: false,
-                child: AppDropdownMenu<T>(
-                  animationController: _animationController,
-                  maxHeight: (MediaQuery.of(context).size.height - topOffset).isNegative ? 100 : MediaQuery.of(context).size.height - topOffset,
-                  options: widget.options,
-                  onItemTap: (item) {
-                    widget.onChanged?.call(item);
-                    _toggleDropdown();
-                  },
-                  optionNameMapper: widget.optionNameMapper,
+          child: Stack(
+            children: [
+              Positioned(
+                left: offset.dx,
+                top: topOffset,
+                width: size.width,
+                child: CompositedTransformFollower(
+                  offset: Offset(0, size.height),
+                  link: _layerLink,
+                  showWhenUnlinked: false,
+                  child: AppDropdownMenu<T>(
+                    animationController: _animationController,
+                    maxHeight:
+                        (MediaQuery.of(context).size.height - topOffset)
+                            .isNegative
+                        ? 100
+                        : MediaQuery.of(context).size.height - topOffset,
+                    options: widget.options,
+                    onItemTap: (item) {
+                      widget.onChanged?.call(item);
+                      _toggleDropdown();
+                    },
+                    optionNameMapper: widget.optionNameMapper,
+                  ),
                 ),
               ),
-            ),
-          ]),
+            ],
+          ),
         ),
       ),
     );

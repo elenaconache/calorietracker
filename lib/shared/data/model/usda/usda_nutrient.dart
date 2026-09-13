@@ -14,11 +14,18 @@ class UsdaNutrient {
 
   final double? value;
 
-  bool matchesNutrient({required Nutrient nutrient}) => nutrientId == usdaNutrientMap[nutrient];
+  bool matchesNutrient({required Nutrient nutrient}) =>
+      nutrientId == usdaNutrientMap[nutrient];
 
-  const UsdaNutrient({required this.value, required this.nutrientId, required this.nutrientName, required this.unitName});
+  const UsdaNutrient({
+    required this.value,
+    required this.nutrientId,
+    required this.nutrientName,
+    required this.unitName,
+  });
 
-  factory UsdaNutrient.fromJson(Map<String, dynamic> json) => _$UsdaNutrientFromJson(json);
+  factory UsdaNutrient.fromJson(Map<String, dynamic> json) =>
+      _$UsdaNutrientFromJson(json);
 
   Map<String, dynamic> toJson() => _$UsdaNutrientToJson(this);
 

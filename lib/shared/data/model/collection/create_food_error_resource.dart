@@ -9,7 +9,8 @@ class CreateFoodErrorResource {
 
   const CreateFoodErrorResource({required this.id});
 
-  factory CreateFoodErrorResource.fromJson(Map<String, dynamic> json) => _$CreateFoodErrorResourceFromJson(json);
+  factory CreateFoodErrorResource.fromJson(Map<String, dynamic> json) =>
+      _$CreateFoodErrorResourceFromJson(json);
 
   Map<String, dynamic> toJson() => _$CreateFoodErrorResourceToJson(this);
 

@@ -7,9 +7,12 @@ part 'base_collection_error.freezed.dart';
 
 @freezed
 sealed class BaseCollectionError with _$BaseCollectionError {
-  const factory BaseCollectionError.createFood(CreateFoodError error) = CreateFoodApiError;
-  const factory BaseCollectionError.addLocalData(AddLocalDataError error) = AddLocalDataApiError;
-  const factory BaseCollectionError.unknown(Map<String, dynamic> json) = UnknownApiError;
+  const factory BaseCollectionError.createFood(CreateFoodError error) =
+      CreateFoodApiError;
+  const factory BaseCollectionError.addLocalData(AddLocalDataError error) =
+      AddLocalDataApiError;
+  const factory BaseCollectionError.unknown(Map<String, dynamic> json) =
+      UnknownApiError;
 
   factory BaseCollectionError.fromJson(Map<String, dynamic> json) {
     if (json.containsKey('resource')) {

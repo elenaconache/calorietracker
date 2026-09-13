@@ -6,7 +6,12 @@ class SearchTextField extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String)? onSubmitted;
 
-  const SearchTextField({super.key, this.labelText, this.controller, this.onSubmitted});
+  const SearchTextField({
+    super.key,
+    this.labelText,
+    this.controller,
+    this.onSubmitted,
+  });
 
   @override
   Widget build(BuildContext context) {

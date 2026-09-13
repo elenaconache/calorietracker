@@ -7,25 +7,20 @@ part 'async_state.freezed.dart';
 sealed class AsyncState<T> with _$AsyncState<T> {
   const AsyncState._();
 
-  factory AsyncState({
-    required AsyncStatus status,
-    T? data,
-    Failure? failure,
-  }) = _AsyncState<T>;
+  factory AsyncState({required AsyncStatus status, T? data, Failure? failure}) =
+      _AsyncState<T>;
 
-  factory AsyncState.initial() => AsyncState<T>(status: const AsyncStatus.initial());
+  factory AsyncState.initial() =>
+      AsyncState<T>(status: const AsyncStatus.initial());
 
-  factory AsyncState.loading() => AsyncState<T>(status: const AsyncStatus.loading());
+  factory AsyncState.loading() =>
+      AsyncState<T>(status: const AsyncStatus.loading());
 
-  factory AsyncState.success(T data) => AsyncState<T>(
-        status: const AsyncStatus.success(),
-        data: data,
-      );
+  factory AsyncState.success(T data) =>
+      AsyncState<T>(status: const AsyncStatus.success(), data: data);
 
-  factory AsyncState.failure(Failure failure) => AsyncState<T>(
-        status: const AsyncStatus.failure(),
-        failure: failure,
-      );
+  factory AsyncState.failure(Failure failure) =>
+      AsyncState<T>(status: const AsyncStatus.failure(), failure: failure);
 }
 
 @freezed

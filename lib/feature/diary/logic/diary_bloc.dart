@@ -8,9 +8,10 @@ import 'package:calorietracker/shared/data/model/diary_entry.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
 import 'package:calorietracker/shared/data/model/meal_entries_list.dart';
 import 'package:calorietracker/shared/data/model/user.dart';
-import 'package:calorietracker/shared/data/service/database/diary_entry_service.dart';
+import 'package:calorietracker/shared/data/service/database/diary_entry_repository.dart';
 import 'package:calorietracker/shared/data/service/database/diary_logging_service.dart';
 import 'package:calorietracker/shared/data/service/logging_service.dart';
+import 'package:calorietracker/shared/extension/local_diary_entry_list_extension.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,33 +23,49 @@ part 'diary_bloc.freezed.dart';
 @injectable
 class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   final AuthRepository _authRepository;
-  final DiaryEntryService _diaryEntryService;
+  final DiaryEntryRepository _diaryEntryRepository;
   final DiaryLoggingService _diaryLoggingService;
   final LoggingService _loggingService;
 
   StreamSubscription<List<MealEntriesList>>? _diarySubscription;
 
-  DiaryBloc(this._authRepository, this._diaryEntryService, this._diaryLoggingService, this._loggingService)
-    : super(InitialDiaryState(selectedDay: DateTime.now(), selectedDayMealEntries: AsyncState.initial())) {
+  DiaryBloc(
+    this._authRepository,
+    this._diaryEntryRepository,
+    this._diaryLoggingService,
+    this._loggingService,
+  ) : super(
+        InitialDiaryState(
+          selectedDay: DateTime.now(),
+          selectedDayMealEntries: AsyncState.initial(),
+        ),
+      ) {
     on<DiaryEvent>((event, emit) async {
       await event.when(
         toggleMacroPercentage: () async => await _onToggleMacroPercentage(emit),
-        requestAuthSubscription: () async => await _onAuthSubscriptionRequested(emit),
+        requestAuthSubscription: () async =>
+            await _onAuthSubscriptionRequested(emit),
         selectDay: (date) async => await _onDaySelected(date, emit),
         enterEditMode: () async => await _onEnterEditMode(emit),
         exitEditMode: () async => await _onExitEditMode(emit),
-        removeSingleDiaryEntry: (localId) async => await _onRemoveEntry(localId),
-        removeCheckedDiaryEntries: () async => await _onRemoveCheckedEntries(emit),
-        dayCheckChanged: (bool? checked) async => await _onDayCheckChanged(checked, emit),
-        mealCheckChanged: (bool? checked, Meal meal) async => await _onMealCheckChanged(checked, meal, emit),
-        diaryEntryCheckChanged: (bool checked, DiaryEntry entry) async => await _onEntryCheckChanged(checked, entry, emit),
+        removeSingleDiaryEntry: (localId) async => _onRemoveEntry(localId),
+        removeCheckedDiaryEntries: () async =>
+            await _onRemoveCheckedEntries(emit),
+        dayCheckChanged: (bool? checked) async =>
+            await _onDayCheckChanged(checked, emit),
+        mealCheckChanged: (bool? checked, Meal meal) async =>
+            await _onMealCheckChanged(checked, meal, emit),
+        diaryEntryCheckChanged: (bool checked, DiaryEntry entry) async =>
+            await _onEntryCheckChanged(checked, entry, emit),
         refreshDiary: () async => await _onDiaryRefresh(emit),
       );
     });
   }
 
   FutureOr<void> _onToggleMacroPercentage(Emitter<DiaryState> emit) {
-    emit(state.copyWith(macrosPercentageEnabled: !state.macrosPercentageEnabled));
+    emit(
+      state.copyWith(macrosPercentageEnabled: !state.macrosPercentageEnabled),
+    );
   }
 
   Future<void> _onAuthSubscriptionRequested(Emitter<DiaryState> emit) async {
@@ -57,14 +74,22 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       onData: (user) {
         if (user == null) {
           _loggingService.info('Null user');
-          return state.copyWith(selectedDayMealEntries: AsyncState.failure(GeneralFailure(message: 'Null user')));
+          return state.copyWith(
+            selectedDayMealEntries: AsyncState.failure(
+              GeneralFailure(message: 'Null user'),
+            ),
+          );
         }
         add(DiaryEvent.selectDay(date: state.selectedDay));
         return state;
       },
       onError: (error, stackTrace) {
         _loggingService.handle(error, stackTrace);
-        return state.copyWith(selectedDayMealEntries: AsyncState.failure(GeneralFailure(message: 'Error in user stream')));
+        return state.copyWith(
+          selectedDayMealEntries: AsyncState.failure(
+            GeneralFailure(message: 'Error in user stream'),
+          ),
+        );
       },
     );
   }
@@ -74,11 +99,18 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     await _subscribeToCurrentUserDiary(emit, _authRepository.selectedUser!);
   }
 
-  Future<void> _subscribeToCurrentUserDiary(Emitter<DiaryState> emit, User user) async {
+  Future<void> _subscribeToCurrentUserDiary(
+    Emitter<DiaryState> emit,
+    User user,
+  ) async {
     await _diarySubscription?.cancel();
 
-    _diarySubscription = _diaryEntryService
-        .watchDisplayDiaryEntries(date: state.selectedDay.toString(), username: user.username)
+    _diarySubscription = _diaryEntryRepository
+        .watchDisplayDiaryEntries(
+          date: state.selectedDay,
+          username: user.username,
+        )
+        .map((localDiaryEntries) => localDiaryEntries.mealEntriesList)
         .listen(
           (_) {
             if (!isClosed) {
@@ -105,8 +137,8 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     emit(state.copyWith(editMode: false, checkedEntries: []));
   }
 
-  Future<void> _onRemoveEntry(int localId) async {
-    await _diaryLoggingService.markDeletedDiaryEntryLocally(localId: localId);
+  void _onRemoveEntry(int localId) {
+    _diaryLoggingService.markDeletedDiaryEntryLocally(localId: localId);
   }
 
   Future<void> _onRemoveCheckedEntries(Emitter<DiaryState> emit) async {
@@ -116,7 +148,10 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     emit(state.copyWith(checkedEntries: [], editMode: false));
   }
 
-  Future<void> _onDayCheckChanged(bool? checked, Emitter<DiaryState> emit) async {
+  Future<void> _onDayCheckChanged(
+    bool? checked,
+    Emitter<DiaryState> emit,
+  ) async {
     final List<DiaryEntry> checkedEntries;
     if (checked ?? false) {
       checkedEntries = state.dayEntries;
@@ -126,40 +161,78 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     emit(state.copyWith(checkedEntries: checkedEntries));
   }
 
-  Future<void> _onMealCheckChanged(bool? checked, Meal meal, Emitter<DiaryState> emit) async {
+  Future<void> _onMealCheckChanged(
+    bool? checked,
+    Meal meal,
+    Emitter<DiaryState> emit,
+  ) async {
     var currentlyChecked = List<DiaryEntry>.from(state.checkedEntries);
     if (checked ?? false) {
       final newlyChecked = state
           .getMealEntries(meal: meal)
-          .where((entry) => currentlyChecked.none((checkedEntry) => entry.localId == checkedEntry.localId));
+          .where(
+            (entry) => currentlyChecked.none(
+              (checkedEntry) => entry.localId == checkedEntry.localId,
+            ),
+          );
       currentlyChecked.addAll(newlyChecked);
     } else {
       final alreadyChecked = state
           .getMealEntries(meal: meal)
-          .where((entry) => currentlyChecked.any((checkedEntry) => entry.localId == checkedEntry.localId));
-      currentlyChecked.removeWhere((element) => alreadyChecked.any((checkedEntry) => checkedEntry.localId == element.localId));
+          .where(
+            (entry) => currentlyChecked.any(
+              (checkedEntry) => entry.localId == checkedEntry.localId,
+            ),
+          );
+      currentlyChecked.removeWhere(
+        (element) => alreadyChecked.any(
+          (checkedEntry) => checkedEntry.localId == element.localId,
+        ),
+      );
     }
     emit(state.copyWith(checkedEntries: currentlyChecked));
   }
 
-  Future<void> _onEntryCheckChanged(bool checked, DiaryEntry entry, Emitter<DiaryState> emit) async {
+  Future<void> _onEntryCheckChanged(
+    bool checked,
+    DiaryEntry entry,
+    Emitter<DiaryState> emit,
+  ) async {
     var currentlyChecked = List<DiaryEntry>.from(state.checkedEntries);
     if (checked) {
       currentlyChecked.add(entry);
     } else {
-      currentlyChecked.removeWhere((element) => element.localId == entry.localId);
+      currentlyChecked.removeWhere(
+        (element) => element.localId == entry.localId,
+      );
     }
     emit(state.copyWith(checkedEntries: currentlyChecked));
   }
 
   Future<void> _onDiaryRefresh(Emitter<DiaryState> emit) async {
     emit(state.copyWith(selectedDayMealEntries: AsyncState.loading()));
+    final username = _authRepository.selectedUser?.username;
     try {
-      final entries = await _diaryEntryService.getDisplayDiaryEntries(date: state.selectedDay.toString());
-      emit(state.copyWith(selectedDayMealEntries: AsyncState.success(entries)));
+      final entries = _diaryEntryRepository.getDisplayDiaryEntries(
+        date: state.selectedDay,
+        username: username!,
+      );
+      emit(
+        state.copyWith(
+          selectedDayMealEntries: AsyncState.success(entries.mealEntriesList),
+        ),
+      );
     } catch (e, stack) {
       _loggingService.handle(e, stack);
-      emit(state.copyWith(selectedDayMealEntries: AsyncState.failure(GeneralFailure(message: 'Error in display-ready local diary entries stream'))));
+      emit(
+        state.copyWith(
+          selectedDayMealEntries: AsyncState.failure(
+            GeneralFailure(
+              message: 'Error in display-ready local diary entries stream',
+            ),
+          ),
+        ),
+      );
     }
   }
 }

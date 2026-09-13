@@ -19,9 +19,11 @@ class UserResponse {
     required this.lastName,
   });
 
-  factory UserResponse.fromJson(Map<String, dynamic> json) => _$UserResponseFromJson(json);
+  factory UserResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 }
 
-UserResponse deserializeUserResponse(Map<String, dynamic> json) => UserResponse.fromJson(json);
+UserResponse deserializeUserResponse(Map<String, dynamic> json) =>
+    UserResponse.fromJson(json);

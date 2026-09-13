@@ -21,13 +21,18 @@ class CollectionRecipeIngredientResponse {
     required this.quantity,
   });
 
-  factory CollectionRecipeIngredientResponse.fromJson(Map<String, dynamic> json) => _$CollectionRecipeIngredientResponseFromJson(json);
+  factory CollectionRecipeIngredientResponse.fromJson(
+    Map<String, dynamic> json,
+  ) => _$CollectionRecipeIngredientResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CollectionRecipeIngredientResponseToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$CollectionRecipeIngredientResponseToJson(this);
 
   @override
   String toString() => toJson().toString();
 }
 
-List<CollectionRecipeIngredientResponse> deserializeCollectionRecipeIngredientResponseList(List<Map<String, dynamic>> json) =>
-    json.map((e) => CollectionRecipeIngredientResponse.fromJson(e)).toList();
+List<CollectionRecipeIngredientResponse>
+deserializeCollectionRecipeIngredientResponseList(
+  List<Map<String, dynamic>> json,
+) => json.map((e) => CollectionRecipeIngredientResponse.fromJson(e)).toList();

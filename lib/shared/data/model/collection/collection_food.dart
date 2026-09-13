@@ -24,7 +24,8 @@ class CollectionFood {
     this.barcode,
   });
 
-  factory CollectionFood.fromJson(Map<String, dynamic> json) => _$CollectionFoodFromJson(json);
+  factory CollectionFood.fromJson(Map<String, dynamic> json) =>
+      _$CollectionFoodFromJson(json);
 
   Map<String, dynamic> toJson() => _$CollectionFoodToJson(this);
 
@@ -32,4 +33,6 @@ class CollectionFood {
   String toString() => toJson().toString();
 }
 
-List<CollectionFood> deserializeCollectionFoodList(List<Map<String, dynamic>> json) => json.map((e) => CollectionFood.fromJson(e)).toList();
+List<CollectionFood> deserializeCollectionFoodList(
+  List<Map<String, dynamic>> json,
+) => json.map((e) => CollectionFood.fromJson(e)).toList();

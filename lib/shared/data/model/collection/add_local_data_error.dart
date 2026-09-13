@@ -19,7 +19,8 @@ class AddLocalDataError {
     required this.localId,
   });
 
-  factory AddLocalDataError.fromJson(Map<String, dynamic> json) => _$AddLocalDataErrorFromJson(json);
+  factory AddLocalDataError.fromJson(Map<String, dynamic> json) =>
+      _$AddLocalDataErrorFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddLocalDataErrorToJson(this);
 

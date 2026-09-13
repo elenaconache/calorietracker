@@ -19,9 +19,12 @@ class AddLocalFoodRequest {
     required this.nutritionInfo,
   });
 
-  factory AddLocalFoodRequest.fromJson(Map<String, dynamic> json) => _$AddLocalFoodRequestFromJson(json);
+  factory AddLocalFoodRequest.fromJson(Map<String, dynamic> json) =>
+      _$AddLocalFoodRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddLocalFoodRequestToJson(this);
 }
 
-List<Map<String, dynamic>> serializeAddLocalFoodRequestList(List<AddLocalFoodRequest> objects) => objects.map((e) => e.toJson()).toList();
+List<Map<String, dynamic>> serializeAddLocalFoodRequestList(
+  List<AddLocalFoodRequest> objects,
+) => objects.map((e) => e.toJson()).toList();

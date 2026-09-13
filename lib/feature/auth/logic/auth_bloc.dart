@@ -20,9 +20,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoggingService _loggingService;
 
   AuthBloc(this._authRepository, this._loggingService)
-      : super(
-          AuthState(selectedUser: AsyncState.initial(), users: AsyncState.initial()),
-        ) {
+    : super(
+        AuthState(
+          selectedUser: AsyncState.initial(),
+          users: AsyncState.initial(),
+        ),
+      ) {
     on<AuthEvent>((event, emit) async {
       await event.when(
         logIn: (username) => _logIn(username, emit),
@@ -39,10 +42,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _authRepository.login(username: username);
       await _fetchUsers(emit);
     } catch (error) {
-      final failure = AuthError.values.firstWhere((element) => error.toString().contains(element.name), orElse: () => AuthError.unknown);
-      emit(state.copyWith(selectedUser: AsyncState.failure(AuthFailure(type: failure))));
+      final failure = AuthError.values.firstWhere(
+        (element) => error.toString().contains(element.name),
+        orElse: () => AuthError.unknown,
+      );
+      emit(
+        state.copyWith(
+          selectedUser: AsyncState.failure(AuthFailure(type: failure)),
+        ),
+      );
       if (_authRepository.selectedUser != null) {
-        emit(state.copyWith(selectedUser: AsyncState.success(_authRepository.selectedUser!)));
+        emit(
+          state.copyWith(
+            selectedUser: AsyncState.success(_authRepository.selectedUser!),
+          ),
+        );
       }
     }
   }
@@ -52,12 +66,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await emit.forEach(
       _authRepository.selectedUserStream,
       onData: (data) {
-        return state.copyWith(selectedUser: data == null ? AsyncState.failure(AuthFailure()) : AsyncState.success(data));
+        return state.copyWith(
+          selectedUser: data == null
+              ? AsyncState.failure(AuthFailure())
+              : AsyncState.success(data),
+        );
       },
       onError: (error, stackTrace) {
         return state.copyWith(
           selectedUser: AsyncState.failure(
-            AuthFailure(type: AuthError.values.firstWhere((element) => error.toString().contains(element.name), orElse: () => AuthError.unknown)),
+            AuthFailure(
+              type: AuthError.values.firstWhere(
+                (element) => error.toString().contains(element.name),
+                orElse: () => AuthError.unknown,
+              ),
+            ),
           ),
         );
       },
@@ -80,7 +103,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _authRepository.selectUser(username: username);
     } catch (error, stackTrace) {
       _loggingService.handle(error, stackTrace);
-      emit(state.copyWith(selectedUser: AsyncState.failure(Failure.generalFailure())));
+      emit(
+        state.copyWith(
+          selectedUser: AsyncState.failure(Failure.generalFailure()),
+        ),
+      );
     }
     await _fetchUsers(emit);
   }

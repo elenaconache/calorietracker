@@ -26,5 +26,6 @@ class UserAvatarAction extends StatelessWidget {
     );
   }
 
-  void _navigateToAccounts(BuildContext context) => Navigator.of(context).pushNamed(Routes.profile.path);
+  void _navigateToAccounts(BuildContext context) =>
+      Navigator.of(context).pushNamed(Routes.profile.path);
 }

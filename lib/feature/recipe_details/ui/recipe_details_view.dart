@@ -1,28 +1,24 @@
-
-
 import 'package:calorietracker/feature/recipe_details/logic/recipe_details_cubit.dart';
 import 'package:calorietracker/shared/data/helper/async_state.dart';
-
 import 'package:calorietracker/feature/recipes/ui/nutrition_tile.dart';
 import 'package:calorietracker/feature/recipes/ui/recipe_name_field.dart';
 import 'package:calorietracker/feature/recipes/ui/recipe_servings_field.dart';
 import 'package:calorietracker/feature/recipes/ui/create_recipe/ingredient_item.dart';
-import 'package:calorietracker/feature/recipe_details/ui/recipe_details_arguments.dart';
-
+import 'package:calorietracker/shared/data/model/food.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';
-import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
-
+import 'package:calorietracker/shared/data/model/recipe.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/widgets/app_divider.dart';
 import 'package:calorietracker/ui/widgets/calories_macros_section.dart';
 import 'package:calorietracker/ui/widgets/general_error_view.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RecipeDetailsView extends StatefulWidget {
-  final RecipeDetailsArguments arguments;
+  final Recipe recipe;
 
-  const RecipeDetailsView({super.key, required this.arguments});
+  const RecipeDetailsView({super.key, required this.recipe});
 
   @override
   State<RecipeDetailsView> createState() => _RecipeDetailsViewState();
@@ -42,15 +38,16 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
 
     _formKey = GlobalKey<FormState>(debugLabel: 'recipeDetailsForm');
     _nameTextFieldController = TextEditingController();
-    _nameTextFieldController.text = widget.arguments.recipeName;
+    _nameTextFieldController.text = widget.recipe.name;
     _servingSizeTextController = TextEditingController()
-      ..text = '100'
+      ..text = widget.recipe.cookedWeight.toString()
       ..addListener(_onServingSizeChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<RecipeDetailsCubit>().fetchRecipe(
-            recipeId: widget.arguments.recipeId,
-            cookedQuantity: widget.arguments.cookedQuantity,
-          );
+        recipeId: widget.recipe.id,
+        localRecipeId: widget.recipe.localId,
+        cookedQuantity: widget.recipe.cookedWeight,
+      );
     });
   }
 
@@ -101,37 +98,43 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
             ),
           ),
           SliverToBoxAdapter(
-            child: BlocSelector<RecipeDetailsCubit, RecipeDetailsState, AsyncState<Nutrition>>(
-              selector: (state) => state.nutrition,
-              builder: (context, state) {
-                return state.status.when(
-                  initial: () => const SizedBox.shrink(),
-                  loading: () => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Center(
-                      child: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(),
+            child:
+                BlocSelector<
+                  RecipeDetailsCubit,
+                  RecipeDetailsState,
+                  AsyncState<Nutrition>
+                >(
+                  selector: (state) => state.nutrition,
+                  builder: (context, state) {
+                    return state.status.when(
+                      initial: () => const SizedBox.shrink(),
+                      loading: () => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Center(
+                          child: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  success: () {
-                    final nutrition = state.data;
-                    return nutrition == null ? const SizedBox.shrink():
-                     Column(
-                      children: [
-                        CaloriesMacrosSection(nutrition: nutrition),
-                        const AppDivider(height: 2),
-                        NutritionTile(nutrition: nutrition),
-                        const AppDivider(height: 2),
-                      ],
+                      success: () {
+                        final nutrition = state.data;
+                        return nutrition == null
+                            ? const SizedBox.shrink()
+                            : Column(
+                                children: [
+                                  CaloriesMacrosSection(nutrition: nutrition),
+                                  const AppDivider(height: 2),
+                                  NutritionTile(nutrition: nutrition),
+                                  const AppDivider(height: 2),
+                                ],
+                              );
+                      },
+                      failure: () => const GeneralErrorView(),
                     );
                   },
-                  failure: () => const GeneralErrorView(),
-                );
-              },
-            ),
+                ),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(top: 16, left: 18, right: 12),
@@ -143,13 +146,10 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
             ),
           ),
           const SliverPadding(padding: EdgeInsets.only(top: 16)),
-          BlocSelector<RecipeDetailsCubit, RecipeDetailsState, AsyncState<List<RecipeIngredient>>>(
-            selector: (state) => state.ingredients,
+          BlocBuilder<RecipeDetailsCubit, RecipeDetailsState>(
             builder: (context, state) {
-              return state.status.when(
-                initial: () => const SliverPadding(
-                  padding: EdgeInsets.zero,
-                ),
+              return state.ingredients.status.when(
+                initial: () => const SliverPadding(padding: EdgeInsets.zero),
                 loading: () => const SliverPadding(
                   padding: EdgeInsets.symmetric(vertical: 12),
                   sliver: SliverToBoxAdapter(
@@ -163,22 +163,32 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                   ),
                 ),
                 success: () => SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (_, index) => IngredientItem(
-                      ingredient: state.data![index],
+                  delegate: SliverChildBuilderDelegate((_, index) {
+                    final ingredient = state.ingredients.data?[index];
+                    final food = state.ingredientsFoods.data?.firstWhereOrNull(
+                      (element) => element.id == ingredient?.localFood.targetId,
+                    );
+                    if (ingredient == null || food == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return IngredientItem(
+                      ingredient: ingredient,
+                      food: Food.local(localFood: food),
                       onSwipe: () {},
                       onTap: () {},
                       enabled: false,
-                    ),
-                    childCount: state.data?.length ?? 0,
-                  ),
+                    );
+                  }, childCount: state.ingredients.data?.length ?? 0),
                 ),
-                failure: () => const SliverToBoxAdapter(child: GeneralErrorView()),
+                failure: () =>
+                    const SliverToBoxAdapter(child: GeneralErrorView()),
               );
             },
           ),
           SliverPadding(
-            padding: EdgeInsets.only(bottom: 2 * MediaQuery.of(context).padding.bottom),
+            padding: EdgeInsets.only(
+              bottom: 2 * MediaQuery.of(context).padding.bottom,
+            ),
           ),
         ],
       ),
@@ -188,7 +198,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
   void _onServingSizeChanged() {
     if (!mounted) return;
     context.read<RecipeDetailsCubit>().updateNutrition(
-          cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
-        );
+      cookedQuantity: int.tryParse(_servingSizeTextController.text) ?? 100,
+    );
   }
 }

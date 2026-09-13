@@ -17,9 +17,11 @@ class AddFoodRequest {
     required this.nutritionInfo,
   });
 
-  factory AddFoodRequest.fromJson(Map<String, dynamic> json) => _$AddFoodRequestFromJson(json);
+  factory AddFoodRequest.fromJson(Map<String, dynamic> json) =>
+      _$AddFoodRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddFoodRequestToJson(this);
 }
 
-Map<String, dynamic> serializeAddFoodRequest(AddFoodRequest object) => object.toJson();
+Map<String, dynamic> serializeAddFoodRequest(AddFoodRequest object) =>
+    object.toJson();

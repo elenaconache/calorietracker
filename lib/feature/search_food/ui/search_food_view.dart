@@ -1,11 +1,9 @@
-import 'dart:async';
-
+import 'package:calorietracker/shared/data/model/local/local_ingredient.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/main.dart';
 import 'package:calorietracker/feature/search_food/data/search_food_service.dart';
 import 'package:calorietracker/feature/search_food/ui/search_results_section.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
-import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/widgets/text_field/search_text_field.dart';
@@ -29,7 +27,8 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   void initState() {
     super.initState();
     _foodSearchService = getIt<SearchFoodService>();
-    _searchQueryTextController = TextEditingController()..addListener(_onSearchQueryChanged);
+    _searchQueryTextController = TextEditingController()
+      ..addListener(_onSearchQueryChanged);
   }
 
   @override
@@ -42,13 +41,24 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.meal == null ? AppStrings.searchIngredientTitle : AppStrings.searchFoodsLabel)),
+      appBar: AppBar(
+        title: Text(
+          widget.meal == null
+              ? AppStrings.searchIngredientTitle
+              : AppStrings.searchFoodsLabel,
+        ),
+      ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 4),
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: 4,
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -56,7 +66,8 @@ class _SearchFoodViewState extends State<SearchFoodView> {
                   child: SearchTextField(
                     labelText: AppStrings.searchForFoodLabel,
                     controller: _searchQueryTextController,
-                    onSubmitted: (query) => _foodSearchService.searchRemotely(query: query),
+                    onSubmitted: (query) =>
+                        _foodSearchService.searchRemotely(query: query),
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -65,12 +76,19 @@ class _SearchFoodViewState extends State<SearchFoodView> {
                     'assets/icons/barcode_scanner.svg',
                     width: 28,
                     height: 28,
-                    colorFilter: ColorFilter.mode(Theme.of(context).iconTheme.color ?? primaryColor, BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).iconTheme.color ?? primaryColor,
+                      BlendMode.srcIn,
+                    ),
                   ),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Icons.add, size: 28, color: Theme.of(context).iconTheme.color),
+                  icon: Icon(
+                    Icons.add,
+                    size: 28,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                   onPressed: () => _navigateToCreateFood(context),
                 ),
               ],
@@ -83,8 +101,10 @@ class _SearchFoodViewState extends State<SearchFoodView> {
   }
 
   void _navigateToCreateFood(BuildContext context) async {
-    final result = await Navigator.of(context).pushNamed(Routes.createFood.path, arguments: widget.meal);
-    if (result is RecipeIngredient && context.mounted) {
+    final result = await Navigator.of(
+      context,
+    ).pushNamed(Routes.createFood.path, arguments: widget.meal);
+    if (result is LocalIngredient && context.mounted) {
       Navigator.of(context).pop(result);
     }
   }
@@ -94,6 +114,6 @@ class _SearchFoodViewState extends State<SearchFoodView> {
       _foodSearchService.clearResults();
       return;
     }
-    unawaited(_foodSearchService.searchLocally(query: _searchQueryTextController.text));
+    _foodSearchService.searchLocally(query: _searchQueryTextController.text);
   }
 }

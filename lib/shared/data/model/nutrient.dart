@@ -16,5 +16,5 @@ enum Nutrient {
   iron,
   vitaminA,
   vitaminC,
-  vitaminD
+  vitaminD,
 }

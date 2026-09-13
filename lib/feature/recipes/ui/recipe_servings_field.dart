@@ -6,13 +6,20 @@ class RecipeServingsField extends StatelessWidget {
   final TextEditingController textController;
   final bool enabled;
 
-  const RecipeServingsField({super.key, required this.textController, this.enabled = true});
+  const RecipeServingsField({
+    super.key,
+    required this.textController,
+    this.enabled = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppTextField(
       labelText: AppStrings.cookedQuantityGramsLabel,
-      inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+      inputType: const TextInputType.numberWithOptions(
+        decimal: true,
+        signed: true,
+      ),
       maxLength: 6,
       autofocus: true,
       action: TextInputAction.done,

@@ -8,32 +8,29 @@ class DottedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      DecoratedBox(
-        decoration: ShapeDecoration(
-          shape: const BeveledRectangleBorder(),
-          color: Theme.of(context).colorScheme.primary,
+    return Row(
+      children: [
+        DecoratedBox(
+          decoration: ShapeDecoration(
+            shape: const BeveledRectangleBorder(),
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          child: const SizedBox(height: 8, width: 8),
         ),
-        child: const SizedBox(
-          height: 8,
-          width: 8,
-        ),
-      ),
-      const SizedBox(width: 8),
-      Expanded(
+        const SizedBox(width: 8),
+        Expanded(
           flex: 2,
-          child: Text(
-            '$label:',
-            style: Theme.of(context).textTheme.bodyLarge,
-          )),
-      Expanded(
-        flex: 1,
-        child: Text(
-          value,
-          textAlign: TextAlign.right,
-          style: Theme.of(context).textTheme.bodyLarge,
+          child: Text('$label:', style: Theme.of(context).textTheme.bodyLarge),
         ),
-      )
-    ]);
+        Expanded(
+          flex: 1,
+          child: Text(
+            value,
+            textAlign: TextAlign.right,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+      ],
+    );
   }
 }

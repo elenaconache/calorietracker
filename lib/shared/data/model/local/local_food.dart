@@ -92,7 +92,8 @@ class LocalFood {
     ).round(),
   );
 
-  int compareCreatedAtDateDesc(LocalFood second) => -createdAtDate.compareTo(second.createdAtDate);
+  int compareCreatedAtDateDesc(LocalFood second) =>
+      -createdAtDate.compareTo(second.createdAtDate);
 
   LocalFood({
     this.id = 0,

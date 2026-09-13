@@ -19,7 +19,8 @@ part 'collection_api_service.g.dart';
 
 @RestApi(parser: Parser.FlutterCompute)
 abstract class CollectionApiService {
-  factory CollectionApiService(Dio dio, {String baseUrl}) = _CollectionApiService;
+  factory CollectionApiService(Dio dio, {String baseUrl}) =
+      _CollectionApiService;
 
   @GET('diary-entries/{username}/{date}')
   Future<List<MealEntriesResponse>> getDiaryEntries({
@@ -28,13 +29,19 @@ abstract class CollectionApiService {
   });
 
   @POST('foods/add')
-  Future<CreatedFoodResponse?> createFood({@Body() required AddFoodRequest body});
+  Future<CreatedFoodResponse?> createFood({
+    @Body() required AddFoodRequest body,
+  });
 
   @GET('foods/find-by/{query}')
-  Future<List<CollectionFood>> searchFood({@Path('query') required String query});
+  Future<List<CollectionFood>> searchFood({
+    @Path('query') required String query,
+  });
 
   @POST('foods/add-list')
-  Future<List<AddLocalDataResponse>> createFoods({@Body() required List<AddLocalFoodRequest> localFoods});
+  Future<List<AddLocalDataResponse>> createFoods({
+    @Body() required List<AddLocalFoodRequest> localFoods,
+  });
 
   @POST('diary-entries/add/list')
   Future<List<AddLocalDataResponse>> createDiaryEntries({
@@ -42,7 +49,9 @@ abstract class CollectionApiService {
   });
 
   @DELETE('diary-entries/delete/{diaryEntryId}')
-  Future<void> deleteDiaryEntry({@Path('diaryEntryId') required int diaryEntryId});
+  Future<void> deleteDiaryEntry({
+    @Path('diaryEntryId') required int diaryEntryId,
+  });
 
   @POST('diary-entries/delete/list')
   @Headers({HttpHeaders.contentTypeHeader: 'application/json'})
@@ -55,5 +64,7 @@ abstract class CollectionApiService {
   Future<IdResponse> createRecipe({@Body() required AddRecipeRequest body});
 
   @GET('recipes/{recipeId}/ingredients')
-  Future<List<CollectionRecipeIngredientResponse>> getRecipeIngredients({@Path('recipeId') required int recipeId});
+  Future<List<CollectionRecipeIngredientResponse>> getRecipeIngredients({
+    @Path('recipeId') required int recipeId,
+  });
 }

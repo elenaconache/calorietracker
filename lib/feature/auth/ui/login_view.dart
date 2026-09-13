@@ -59,7 +59,9 @@ class _LoginViewState extends State<LoginView> {
                   errorMessage = AppStrings.generalErrorMessage;
                   break;
               }
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(errorMessage)));
             }
             cubit.onLoginResult();
 
@@ -76,22 +78,27 @@ class _LoginViewState extends State<LoginView> {
             children: [
               const SizedBox(height: 120),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: AppTextField(
-                    action: TextInputAction.done,
-                    labelText: AppStrings.usernameLabel,
-                    controller: _usernameController,
-                  )),
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: AppTextField(
+                  action: TextInputAction.done,
+                  labelText: AppStrings.usernameLabel,
+                  controller: _usernameController,
+                ),
+              ),
               const SizedBox(height: 40),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: BlocBuilder<LoginCubit, LoginState>(
                   builder: (context, state) => FilledButton(
-                    onPressed: state.enabled && !state.loading ? () => _onLoginPressed(context) : null,
+                    onPressed: state.enabled && !state.loading
+                        ? () => _onLoginPressed(context)
+                        : null,
                     style: ButtonStyle(
-                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      )),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                      ),
                     ),
                     child: Text(AppStrings.continueLabel),
                   ),
@@ -105,10 +112,14 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void _onUsernameChanged() {
-    context.read<LoginCubit>().onUsernameChanged(username: _usernameController.text);
+    context.read<LoginCubit>().onUsernameChanged(
+      username: _usernameController.text,
+    );
   }
 
   void _onLoginPressed(BuildContext context) {
-    context.read<AuthBloc>().add(AuthEvent.logIn(username: _usernameController.text));
+    context.read<AuthBloc>().add(
+      AuthEvent.logIn(username: _usernameController.text),
+    );
   }
 }

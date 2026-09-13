@@ -12,10 +12,7 @@ class Dot extends StatelessWidget {
         shape: BoxShape.circle,
         color: Theme.of(context).primaryColorLight,
       ),
-      child: const SizedBox(
-        width: _size,
-        height: _size,
-      ),
+      child: const SizedBox(width: _size, height: _size),
     );
   }
 }

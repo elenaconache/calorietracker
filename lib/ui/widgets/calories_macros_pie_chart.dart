@@ -29,52 +29,67 @@ class CaloriesMacrosPieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      SizedBox(
+    return Stack(
+      children: [
+        SizedBox(
           height: _pieChartSize,
           width: _pieChartSize,
-          child: PieChart(PieChartData(sectionsSpace: 4, centerSpaceRadius: 40, sections: _macrosPieChartSections))),
-      SizedBox(
-          height: _pieChartSize,
-          width: _pieChartSize,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              calories.toString(),
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          child: PieChart(
+            PieChartData(
+              sectionsSpace: 4,
+              centerSpaceRadius: 40,
+              sections: _macrosPieChartSections,
             ),
-            Text(
-              AppStrings.caloriesShortGenericLabel,
-              style: Theme.of(context).textTheme.titleSmall,
-            )
-          ]))
-    ]);
+          ),
+        ),
+        SizedBox(
+          height: _pieChartSize,
+          width: _pieChartSize,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                calories.toString(),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                AppStrings.caloriesShortGenericLabel,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   List<PieChartSectionData> get _macrosPieChartSections => [
-        PieChartSectionData(
-          color: carbsColor,
-          value: carbs,
-          title: '',
-          radius: _pieChartEntryRadius,
-        ),
-        PieChartSectionData(
-          color: fatColor,
-          value: fat,
-          title: '',
-          radius: _pieChartEntryRadius,
-        ),
-        PieChartSectionData(
-          color: proteinColor,
-          value: protein,
-          title: '',
-          radius: _pieChartEntryRadius,
-        ),
-        if (protein == 0 && fat == 0 && carbs == 0)
-          PieChartSectionData(
-            color: defaultMacroNutrient,
-            value: 100,
-            title: '',
-            radius: _pieChartEntryRadius,
-          )
-      ];
+    PieChartSectionData(
+      color: carbsColor,
+      value: carbs,
+      title: '',
+      radius: _pieChartEntryRadius,
+    ),
+    PieChartSectionData(
+      color: fatColor,
+      value: fat,
+      title: '',
+      radius: _pieChartEntryRadius,
+    ),
+    PieChartSectionData(
+      color: proteinColor,
+      value: protein,
+      title: '',
+      radius: _pieChartEntryRadius,
+    ),
+    if (protein == 0 && fat == 0 && carbs == 0)
+      PieChartSectionData(
+        color: defaultMacroNutrient,
+        value: 100,
+        title: '',
+        radius: _pieChartEntryRadius,
+      ),
+  ];
 }

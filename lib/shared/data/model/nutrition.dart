@@ -45,51 +45,158 @@ class Nutrition {
     this.insolubleFiber = 0,
   });
 
-  Nutrition.perServing({required Nutrition nutritionPer100Grams, required double servingSizeGrams})
-    : fat = _getNutrientPerServing(nutritionPer100Grams.fat, servingSizeGrams),
-      carbohydrates = _getNutrientPerServing(nutritionPer100Grams.carbohydrates, servingSizeGrams),
-      fatSaturated = _getNutrientPerServing(nutritionPer100Grams.fatSaturated, servingSizeGrams),
-      fatTrans = _getNutrientPerServing(nutritionPer100Grams.fatTrans, servingSizeGrams),
-      cholesterol = _getNutrientPerServing(nutritionPer100Grams.cholesterol, servingSizeGrams),
-      sodium = _getNutrientPerServing(nutritionPer100Grams.sodium, servingSizeGrams),
-      potassium = _getNutrientPerServing(nutritionPer100Grams.potassium, servingSizeGrams),
-      calcium = _getNutrientPerServing(nutritionPer100Grams.calcium, servingSizeGrams),
-      iron = _getNutrientPerServing(nutritionPer100Grams.iron, servingSizeGrams),
-      vitaminA = _getNutrientPerServing(nutritionPer100Grams.vitaminA, servingSizeGrams),
-      vitaminC = _getNutrientPerServing(nutritionPer100Grams.vitaminC, servingSizeGrams),
-      vitaminD = _getNutrientPerServing(nutritionPer100Grams.vitaminD, servingSizeGrams),
-      protein = _getNutrientPerServing(nutritionPer100Grams.protein, servingSizeGrams),
-      calories = _getNutrientPerServing(nutritionPer100Grams.calories, servingSizeGrams),
-      sugar = _getNutrientPerServing(nutritionPer100Grams.sugar, servingSizeGrams),
-      fiber = _getNutrientPerServing(nutritionPer100Grams.fiber, servingSizeGrams),
-      insolubleFiber = _getNutrientPerServing(nutritionPer100Grams.insolubleFiber, servingSizeGrams);
+  Nutrition.perServing({
+    required Nutrition nutritionPer100Grams,
+    required double servingSizeGrams,
+  }) : fat = _getNutrientPerServing(nutritionPer100Grams.fat, servingSizeGrams),
+       carbohydrates = _getNutrientPerServing(
+         nutritionPer100Grams.carbohydrates,
+         servingSizeGrams,
+       ),
+       fatSaturated = _getNutrientPerServing(
+         nutritionPer100Grams.fatSaturated,
+         servingSizeGrams,
+       ),
+       fatTrans = _getNutrientPerServing(
+         nutritionPer100Grams.fatTrans,
+         servingSizeGrams,
+       ),
+       cholesterol = _getNutrientPerServing(
+         nutritionPer100Grams.cholesterol,
+         servingSizeGrams,
+       ),
+       sodium = _getNutrientPerServing(
+         nutritionPer100Grams.sodium,
+         servingSizeGrams,
+       ),
+       potassium = _getNutrientPerServing(
+         nutritionPer100Grams.potassium,
+         servingSizeGrams,
+       ),
+       calcium = _getNutrientPerServing(
+         nutritionPer100Grams.calcium,
+         servingSizeGrams,
+       ),
+       iron = _getNutrientPerServing(
+         nutritionPer100Grams.iron,
+         servingSizeGrams,
+       ),
+       vitaminA = _getNutrientPerServing(
+         nutritionPer100Grams.vitaminA,
+         servingSizeGrams,
+       ),
+       vitaminC = _getNutrientPerServing(
+         nutritionPer100Grams.vitaminC,
+         servingSizeGrams,
+       ),
+       vitaminD = _getNutrientPerServing(
+         nutritionPer100Grams.vitaminD,
+         servingSizeGrams,
+       ),
+       protein = _getNutrientPerServing(
+         nutritionPer100Grams.protein,
+         servingSizeGrams,
+       ),
+       calories = _getNutrientPerServing(
+         nutritionPer100Grams.calories,
+         servingSizeGrams,
+       ),
+       sugar = _getNutrientPerServing(
+         nutritionPer100Grams.sugar,
+         servingSizeGrams,
+       ),
+       fiber = _getNutrientPerServing(
+         nutritionPer100Grams.fiber,
+         servingSizeGrams,
+       ),
+       insolubleFiber = _getNutrientPerServing(
+         nutritionPer100Grams.insolubleFiber,
+         servingSizeGrams,
+       );
 
-  Nutrition.fromServing({required Nutrition nutritionPerServing, required double servingSizeGrams})
-    : fat = getNutrientFromServing(nutritionPerServing.fat, servingSizeGrams),
-      carbohydrates = getNutrientFromServing(nutritionPerServing.carbohydrates, servingSizeGrams),
-      fatSaturated = getNutrientFromServing(nutritionPerServing.fatSaturated, servingSizeGrams),
-      fatTrans = getNutrientFromServing(nutritionPerServing.fatTrans, servingSizeGrams),
-      cholesterol = getNutrientFromServing(nutritionPerServing.cholesterol, servingSizeGrams),
-      sodium = getNutrientFromServing(nutritionPerServing.sodium, servingSizeGrams),
-      potassium = getNutrientFromServing(nutritionPerServing.potassium, servingSizeGrams),
-      calcium = getNutrientFromServing(nutritionPerServing.calcium, servingSizeGrams),
-      iron = getNutrientFromServing(nutritionPerServing.iron, servingSizeGrams),
-      vitaminA = getNutrientFromServing(nutritionPerServing.vitaminA, servingSizeGrams),
-      vitaminC = getNutrientFromServing(nutritionPerServing.vitaminC, servingSizeGrams),
-      vitaminD = getNutrientFromServing(nutritionPerServing.vitaminD, servingSizeGrams),
-      protein = getNutrientFromServing(nutritionPerServing.protein, servingSizeGrams),
-      calories = getNutrientFromServing(nutritionPerServing.calories, servingSizeGrams),
-      sugar = getNutrientFromServing(nutritionPerServing.sugar, servingSizeGrams),
-      fiber = getNutrientFromServing(nutritionPerServing.fiber, servingSizeGrams),
-      insolubleFiber = getNutrientFromServing(nutritionPerServing.insolubleFiber, servingSizeGrams);
+  Nutrition.fromServing({
+    required Nutrition nutritionPerServing,
+    required double servingSizeGrams,
+  }) : fat = getNutrientFromServing(nutritionPerServing.fat, servingSizeGrams),
+       carbohydrates = getNutrientFromServing(
+         nutritionPerServing.carbohydrates,
+         servingSizeGrams,
+       ),
+       fatSaturated = getNutrientFromServing(
+         nutritionPerServing.fatSaturated,
+         servingSizeGrams,
+       ),
+       fatTrans = getNutrientFromServing(
+         nutritionPerServing.fatTrans,
+         servingSizeGrams,
+       ),
+       cholesterol = getNutrientFromServing(
+         nutritionPerServing.cholesterol,
+         servingSizeGrams,
+       ),
+       sodium = getNutrientFromServing(
+         nutritionPerServing.sodium,
+         servingSizeGrams,
+       ),
+       potassium = getNutrientFromServing(
+         nutritionPerServing.potassium,
+         servingSizeGrams,
+       ),
+       calcium = getNutrientFromServing(
+         nutritionPerServing.calcium,
+         servingSizeGrams,
+       ),
+       iron = getNutrientFromServing(
+         nutritionPerServing.iron,
+         servingSizeGrams,
+       ),
+       vitaminA = getNutrientFromServing(
+         nutritionPerServing.vitaminA,
+         servingSizeGrams,
+       ),
+       vitaminC = getNutrientFromServing(
+         nutritionPerServing.vitaminC,
+         servingSizeGrams,
+       ),
+       vitaminD = getNutrientFromServing(
+         nutritionPerServing.vitaminD,
+         servingSizeGrams,
+       ),
+       protein = getNutrientFromServing(
+         nutritionPerServing.protein,
+         servingSizeGrams,
+       ),
+       calories = getNutrientFromServing(
+         nutritionPerServing.calories,
+         servingSizeGrams,
+       ),
+       sugar = getNutrientFromServing(
+         nutritionPerServing.sugar,
+         servingSizeGrams,
+       ),
+       fiber = getNutrientFromServing(
+         nutritionPerServing.fiber,
+         servingSizeGrams,
+       ),
+       insolubleFiber = getNutrientFromServing(
+         nutritionPerServing.insolubleFiber,
+         servingSizeGrams,
+       );
 
-  factory Nutrition.fromJson(Map<String, dynamic> json) => _$NutritionFromJson(json);
+  factory Nutrition.fromJson(Map<String, dynamic> json) =>
+      _$NutritionFromJson(json);
 
   Map<String, dynamic> toJson() => _$NutritionToJson(this);
 
-  static double _getNutrientPerServing(double? nutrientPer100Grams, double servingSizeGrams) => (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
+  static double _getNutrientPerServing(
+    double? nutrientPer100Grams,
+    double servingSizeGrams,
+  ) => (nutrientPer100Grams ?? 0) * servingSizeGrams / 100;
 
-  static double getNutrientFromServing(double? nutrientPerServing, double servingSizeGrams) => (nutrientPerServing ?? 0) / servingSizeGrams * 100;
+  static double getNutrientFromServing(
+    double? nutrientPerServing,
+    double servingSizeGrams,
+  ) => (nutrientPerServing ?? 0) / servingSizeGrams * 100;
 
   String get formattedCalories => '${calories.toStringAsFixed(1)} g';
 
@@ -148,17 +255,29 @@ class Nutrition {
     insolubleFiber: insolubleFiber.toPrecision(2),
   );
 
-  double get totalMacrosFromPercentages => carbohydrates * 4 + protein * 4 + fat * 9;
+  double get totalMacrosFromPercentages =>
+      carbohydrates * 4 + protein * 4 + fat * 9;
 
-  int get carbsPercentage => totalMacrosFromPercentages == 0 ? 0 : (carbohydrates * 4 / totalMacrosFromPercentages * 100).toInt();
+  int get carbsPercentage => totalMacrosFromPercentages == 0
+      ? 0
+      : (carbohydrates * 4 / totalMacrosFromPercentages * 100).toInt();
 
-  int get fatPercentage => totalMacrosFromPercentages == 0 ? 0 : (fat * 9 / totalMacrosFromPercentages * 100).toInt();
+  int get fatPercentage => totalMacrosFromPercentages == 0
+      ? 0
+      : (fat * 9 / totalMacrosFromPercentages * 100).toInt();
 
-  int get proteinPercentage => totalMacrosFromPercentages == 0 ? 0 : (protein * 4 / totalMacrosFromPercentages * 100).toInt();
+  int get proteinPercentage => totalMacrosFromPercentages == 0
+      ? 0
+      : (protein * 4 / totalMacrosFromPercentages * 100).toInt();
 
-  double get _solubleFiber => fiber > insolubleFiber ? fiber - insolubleFiber : 0;
+  double get _solubleFiber =>
+      fiber > insolubleFiber ? fiber - insolubleFiber : 0;
 
-  double get expectedCalories => (carbohydrates - _solubleFiber) * 4 + _solubleFiber * 2 + protein * 4 + fat * 9;
+  double get expectedCalories =>
+      (carbohydrates - _solubleFiber) * 4 +
+      _solubleFiber * 2 +
+      protein * 4 +
+      fat * 9;
 
   double get netCarbs => carbohydrates - fiber;
 

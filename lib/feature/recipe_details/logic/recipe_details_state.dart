@@ -4,6 +4,7 @@ part of 'recipe_details_cubit.dart';
 abstract class RecipeDetailsState with _$RecipeDetailsState {
   const factory RecipeDetailsState({
     required AsyncState<Nutrition> nutrition,
-    required AsyncState<List<RecipeIngredient>> ingredients,
+    required AsyncState<List<LocalIngredient>> ingredients,
+    required AsyncState<List<LocalFood>> ingredientsFoods,
   }) = _RecipeDetailsState;
 }

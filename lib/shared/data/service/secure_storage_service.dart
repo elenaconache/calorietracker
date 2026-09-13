@@ -14,24 +14,19 @@ const usersGoalsKey = 'usersGoals';
 
 @injectable
 class SecureStorageService {
-  Future<String?> get({required String key}) => getIt<FlutterSecureStorage>().read(
-        key: key,
-        aOptions: _androidOptions,
-        iOptions: _iosOptions,
-      );
+  Future<String?> get({required String key}) => getIt<FlutterSecureStorage>()
+      .read(key: key, aOptions: _androidOptions, iOptions: _iosOptions);
 
-  Future<void> save({required String key, required String value}) => getIt<FlutterSecureStorage>().write(
+  Future<void> save({required String key, required String value}) =>
+      getIt<FlutterSecureStorage>().write(
         key: key,
         value: value,
         aOptions: _androidOptions,
         iOptions: _iosOptions,
       );
 
-  Future<void> delete({required String key}) => getIt<FlutterSecureStorage>().delete(
-        key: key,
-        aOptions: _androidOptions,
-        iOptions: _iosOptions,
-      );
+  Future<void> delete({required String key}) => getIt<FlutterSecureStorage>()
+      .delete(key: key, aOptions: _androidOptions, iOptions: _iosOptions);
 
   Future<void> saveObject<T>({
     required String key,
@@ -42,7 +37,10 @@ class SecureStorageService {
     await save(key: key, value: jsonString);
   }
 
-  Future<T?> getObject<T>({required String key, required T Function(Map<String, dynamic>) fromJson}) async {
+  Future<T?> getObject<T>({
+    required String key,
+    required T Function(Map<String, dynamic>) fromJson,
+  }) async {
     final jsonString = await get(key: key);
     if (jsonString == null) return null;
 
@@ -50,14 +48,15 @@ class SecureStorageService {
     return fromJson(jsonData);
   }
 
-  List<T> _listFromJson<T>({required List<dynamic> jsonList, required T Function(Map<String, dynamic>) fromJson}) =>
-      jsonList.map((jsonObject) => fromJson(jsonObject)).toList();
+  List<T> _listFromJson<T>({
+    required List<dynamic> jsonList,
+    required T Function(Map<String, dynamic>) fromJson,
+  }) => jsonList.map((jsonObject) => fromJson(jsonObject)).toList();
 
   List<Map<String, dynamic>> _listToJson<T>({
     required List<T> list,
     required Map<String, dynamic> Function(T) toJson,
-  }) =>
-      list.map((object) => toJson(object)).toList();
+  }) => list.map((object) => toJson(object)).toList();
 
   Future<void> saveList<T>({
     required String key,
@@ -69,7 +68,10 @@ class SecureStorageService {
     await save(key: key, value: jsonString);
   }
 
-  Future<List<T>> getList<T>({required String key, required T Function(Map<String, dynamic>) fromJson}) async {
+  Future<List<T>> getList<T>({
+    required String key,
+    required T Function(Map<String, dynamic>) fromJson,
+  }) async {
     final jsonString = await get(key: key);
     if (jsonString == null) return [];
 

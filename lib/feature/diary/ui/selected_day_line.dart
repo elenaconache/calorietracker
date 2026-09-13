@@ -12,7 +12,11 @@ class SelectedDayLine extends StatelessWidget {
   final Function(DateTime date) onDateSelected;
   final DiaryState diary;
 
-  const SelectedDayLine({super.key, required this.onDateSelected, required this.diary});
+  const SelectedDayLine({
+    super.key,
+    required this.onDateSelected,
+    required this.diary,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,9 @@ class SelectedDayLine extends StatelessWidget {
               ? Checkbox(
                   tristate: true,
                   value: diary.isDayChecked,
-                  onChanged: (checked) => context.read<DiaryBloc>().add(DayCheckChanged(checked: checked)),
+                  onChanged: (checked) => context.read<DiaryBloc>().add(
+                    DayCheckChanged(checked: checked),
+                  ),
                 )
               : IconButton(
                   onPressed: _selectPreviousDay,
@@ -45,7 +51,9 @@ class SelectedDayLine extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text(
-                getIt<DateFormattingService>().formatUserFriendly(dateTime: diary.selectedDay.toString()),
+                getIt<DateFormattingService>().formatUserFriendly(
+                  dateTime: diary.selectedDay.toString(),
+                ),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),

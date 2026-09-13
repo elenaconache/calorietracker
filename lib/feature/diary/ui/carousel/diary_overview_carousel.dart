@@ -29,49 +29,52 @@ class DiaryOverviewCarousel extends StatelessWidget {
                   child: diary.selectedDayMealEntries.status is FailureStatus
                       ? const SizedBox.shrink()
                       : SingleChildScrollView(
-                          child: Column(children: [
-                            Row(
-                              children: [
-                                Expanded(flex: 3, child: SizedBox.shrink()),
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(AppStrings.totalLabel),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(AppStrings.goalLabel),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(AppStrings.leftLabel),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            NutrientProgressBar(
-                              current: diary.selectedDayNutrition.calories,
-                              goal: goals?.calories,
-                              label: AppStrings.caloriesLabel,
-                            ),
-                            const SizedBox(height: 4),
-                            NutrientProgressBar(
-                              current: diary.selectedDayNutrition.carbohydrates,
-                              goal: goals?.roundedCarbsGrams,
-                              label: AppStrings.carbohydratesLabel,
-                            ),
-                            const SizedBox(height: 4),
-                            NutrientProgressBar(
-                              current: diary.selectedDayNutrition.protein,
-                              goal: goals?.roundedProteinGrams,
-                              label: AppStrings.proteinLabel,
-                            ),
-                            const SizedBox(height: 4),
-                            NutrientProgressBar(
-                              current: diary.selectedDayNutrition.fat,
-                              goal: goals?.roundedFatGrams,
-                              label: AppStrings.fatLabel,
-                            ),
-                          ]),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(flex: 3, child: SizedBox.shrink()),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(AppStrings.totalLabel),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(AppStrings.goalLabel),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(AppStrings.leftLabel),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              NutrientProgressBar(
+                                current: diary.selectedDayNutrition.calories,
+                                goal: goals?.calories,
+                                label: AppStrings.caloriesLabel,
+                              ),
+                              const SizedBox(height: 4),
+                              NutrientProgressBar(
+                                current:
+                                    diary.selectedDayNutrition.carbohydrates,
+                                goal: goals?.roundedCarbsGrams,
+                                label: AppStrings.carbohydratesLabel,
+                              ),
+                              const SizedBox(height: 4),
+                              NutrientProgressBar(
+                                current: diary.selectedDayNutrition.protein,
+                                goal: goals?.roundedProteinGrams,
+                                label: AppStrings.proteinLabel,
+                              ),
+                              const SizedBox(height: 4),
+                              NutrientProgressBar(
+                                current: diary.selectedDayNutrition.fat,
+                                goal: goals?.roundedFatGrams,
+                                label: AppStrings.fatLabel,
+                              ),
+                            ],
+                          ),
                         ),
                 ),
               ),
@@ -81,32 +84,40 @@ class DiaryOverviewCarousel extends StatelessWidget {
               child: DecoratedBox(
                 decoration: _getDecoration(context),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 24,
+                  ),
                   child: Center(
-                      child: diary.selectedDayMealEntries.status is FailureStatus
-                          ? const SizedBox.shrink()
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                DottedItem(
-                                  label: AppStrings.carbohydratesLabel,
-                                  value: diary.selectedDayNutrition.carbohydrates.toStringAsFixed(0),
-                                ),
-                                DottedItem(
-                                  label: AppStrings.fiberLabel,
-                                  value: diary.selectedDayNutrition.fiber.toStringAsFixed(0),
-                                ),
-                                DottedItem(
-                                  label: AppStrings.netCarbsLabel,
-                                  value: diary.selectedDayNutrition.netCarbs.toStringAsFixed(0),
-                                ),
-                                DottedItem(
-                                  label: AppStrings.sugarLabel,
-                                  value: diary.selectedDayNutrition.sugar.toStringAsFixed(0),
-                                ),
-                              ],
-                            )),
+                    child: diary.selectedDayMealEntries.status is FailureStatus
+                        ? const SizedBox.shrink()
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              DottedItem(
+                                label: AppStrings.carbohydratesLabel,
+                                value: diary.selectedDayNutrition.carbohydrates
+                                    .toStringAsFixed(0),
+                              ),
+                              DottedItem(
+                                label: AppStrings.fiberLabel,
+                                value: diary.selectedDayNutrition.fiber
+                                    .toStringAsFixed(0),
+                              ),
+                              DottedItem(
+                                label: AppStrings.netCarbsLabel,
+                                value: diary.selectedDayNutrition.netCarbs
+                                    .toStringAsFixed(0),
+                              ),
+                              DottedItem(
+                                label: AppStrings.sugarLabel,
+                                value: diary.selectedDayNutrition.sugar
+                                    .toStringAsFixed(0),
+                              ),
+                            ],
+                          ),
+                  ),
                 ),
               ),
             ),
@@ -117,10 +128,9 @@ class DiaryOverviewCarousel extends StatelessWidget {
   }
 
   BoxDecoration _getDecoration(BuildContext context) => BoxDecoration(
-        border: Border.fromBorderSide(BorderSide(
-          width: 2,
-          color: Theme.of(context).dividerColor,
-        )),
-        borderRadius: BorderRadius.circular(8),
-      );
+    border: Border.fromBorderSide(
+      BorderSide(width: 2, color: Theme.of(context).dividerColor),
+    ),
+    borderRadius: BorderRadius.circular(8),
+  );
 }

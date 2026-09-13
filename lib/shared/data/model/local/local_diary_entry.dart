@@ -25,6 +25,7 @@ class LocalDiaryEntry {
   @Transient()
   Meal? meal;
 
+  // TODO: Prefer storing as name instead of index, less fragile
   int? get dbMeal {
     return meal?.index;
   }
@@ -33,7 +34,9 @@ class LocalDiaryEntry {
     if (value == null) {
       meal = null;
     } else {
-      meal = Meal.values.length > value ? Meal.values[value] : Meal.values.first;
+      meal = Meal.values.length > value
+          ? Meal.values[value]
+          : Meal.values.first;
     }
   }
 
@@ -68,12 +71,17 @@ class LocalDiaryEntry {
 
   AddLocalDiaryEntryRequest? get addLocalDiaryEntryRequest {
     if (localFood.target?.foodId == null) {
-      getIt<LoggingService>().info('Missing food for adding diary entry $entryDate, $meal, ${localFood.target}');
+      getIt<LoggingService>().info(
+        'Missing food for adding diary entry $entryDate, $meal, ${localFood.target}',
+      );
       return null;
     }
     return AddLocalDiaryEntryRequest(
       localId: localId,
-      entryDate: getIt<DateFormattingService>().format(dateTime: entryDate.toString(), format: collectionApiDateFormat),
+      entryDate: getIt<DateFormattingService>().format(
+        dateTime: entryDate.toString(),
+        format: collectionApiDateFormat,
+      ),
       userId: username,
       servingQuantity: servingQuantity,
       meal: meal ?? Meal.values.first,

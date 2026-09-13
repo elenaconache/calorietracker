@@ -12,13 +12,18 @@ class DiscoverResultsSection extends StatefulWidget {
   final Meal? meal;
   final FutureResponse<UsdaSearchResponse> response;
 
-  const DiscoverResultsSection({super.key, required this.meal, required this.response});
+  const DiscoverResultsSection({
+    super.key,
+    required this.meal,
+    required this.response,
+  });
 
   @override
   State<DiscoverResultsSection> createState() => _DiscoverResultsSectionState();
 }
 
-class _DiscoverResultsSectionState extends State<DiscoverResultsSection> with AutomaticKeepAliveClientMixin {
+class _DiscoverResultsSectionState extends State<DiscoverResultsSection>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -28,21 +33,22 @@ class _DiscoverResultsSectionState extends State<DiscoverResultsSection> with Au
 
     return switch (widget.response) {
       FutureLoading _ => const Center(child: CircularProgressIndicator()),
-      FutureSuccess<UsdaSearchResponse> response => response.data.foods.isEmpty
-          ? const EmptyView()
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                final item = response.data.foods[index];
-                return FoodItem(
-                  remoteFood: Food.usda(usdaFood: item),
-                  nutritionPerServingQuantity: item.nutrition,
-                  meal: widget.meal,
-                  unitName: AppStrings.gramsShortLabel,
-                  servingQuantity: 100,
-                );
-              },
-              itemCount: response.data.foods.length,
-            ),
+      FutureSuccess<UsdaSearchResponse> response =>
+        response.data.foods.isEmpty
+            ? const EmptyView()
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  final item = response.data.foods[index];
+                  return FoodItem(
+                    remoteFood: Food.usda(usdaFood: item),
+                    nutritionPerServingQuantity: item.nutrition,
+                    meal: widget.meal,
+                    unitName: AppStrings.gramsShortLabel,
+                    servingQuantity: 100,
+                  );
+                },
+                itemCount: response.data.foods.length,
+              ),
       FutureError _ => const GeneralErrorView(),
       FutureInitialState _ => const SizedBox.shrink(),
     };

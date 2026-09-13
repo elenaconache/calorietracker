@@ -5,5 +5,6 @@ extension DioErrorExtension on DioException {
       type == DioExceptionType.connectionError ||
       type == DioExceptionType.connectionTimeout ||
       type == DioExceptionType.receiveTimeout ||
-      type == DioExceptionType.unknown && toString().contains('SocketException');
+      type == DioExceptionType.unknown &&
+          toString().contains('SocketException');
 }

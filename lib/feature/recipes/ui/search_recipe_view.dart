@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:calorietracker/feature/recipes/logic/search_recipe_cubit.dart';
+import 'package:calorietracker/feature/recipes/logic/search_recipe_bloc.dart';
+import 'package:calorietracker/feature/recipes/logic/search_recipe_event.dart';
 import 'package:calorietracker/shared/data/helper/async_state.dart';
 import 'package:calorietracker/feature/recipes/ui/recipe_item.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
@@ -25,7 +26,8 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
   @override
   void initState() {
     super.initState();
-    _searchFieldController = TextEditingController()..addListener(_onSearchQueryChanged);
+    _searchFieldController = TextEditingController()
+      ..addListener(_onSearchQueryChanged);
   }
 
   @override
@@ -49,9 +51,12 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: SearchTextField(
-                      labelText: AppStrings.searchRecipeLabel,
-                      controller: _searchFieldController,
-                      onSubmitted: (query) => context.read<SearchRecipeCubit>().searchRecipe(query: query)),
+                    labelText: AppStrings.searchRecipeLabel,
+                    controller: _searchFieldController,
+                    onSubmitted: (query) => context
+                        .read<SearchRecipeBloc>()
+                        .add(FindRecipeEvent(query: query)),
+                  ),
                 ),
                 const SizedBox(width: 4),
                 IconButton(
@@ -68,7 +73,7 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
             const SizedBox(height: 12),
             const AppDivider(),
             Expanded(
-              child: BlocBuilder<SearchRecipeCubit, SearchRecipeState>(
+              child: BlocBuilder<SearchRecipeBloc, SearchRecipeState>(
                 builder: (context, state) {
                   final searchResults = state.searchResults;
                   final allRecipes = state.allRecipes.data ?? [];
@@ -76,21 +81,27 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
                   final results = query.isEmpty ? allRecipes : searchResults;
 
                   return switch (state.allRecipes.status) {
-                    LoadingStatus _ => const Center(child: CircularProgressIndicator()),
+                    LoadingStatus _ => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
                     FailureStatus _ => RefreshIndicator(
-                        onRefresh: () async => await _refreshRecipes(context), child: ListView(children: const [Center(child: GeneralErrorView())])),
-                    SuccessStatus _ => RefreshIndicator(
-                        onRefresh: () async => await _refreshRecipes(context),
-                        child: results.isEmpty
-                            ? ListView(children: const [EmptyView()])
-                            : ListView.builder(
-                                itemBuilder: (_, index) => RecipeItem(
-                                  recipe: results[index],
-                                  showTopDivider: index != 0,
-                                ),
-                                itemCount: results.length,
-                              ),
+                      onRefresh: () async => await _refreshRecipes(context),
+                      child: ListView(
+                        children: const [Center(child: GeneralErrorView())],
                       ),
+                    ),
+                    SuccessStatus _ => RefreshIndicator(
+                      onRefresh: () async => await _refreshRecipes(context),
+                      child: results.isEmpty
+                          ? ListView(children: const [EmptyView()])
+                          : ListView.builder(
+                              itemBuilder: (_, index) => RecipeItem(
+                                recipe: results[index],
+                                showTopDivider: index != 0,
+                              ),
+                              itemCount: results.length,
+                            ),
+                    ),
                     _ => const SizedBox.shrink(),
                   };
                 },
@@ -103,12 +114,12 @@ class _SearchRecipeViewState extends State<SearchRecipeView> {
   }
 
   Future<void> _refreshRecipes(BuildContext context) async {
-    final cubit = context.read<SearchRecipeCubit>();
     final query = _searchFieldController.text;
-    query.isEmpty ? await cubit.fetchRecipes() : cubit.searchRecipe(query: query);
+    context.read<SearchRecipeBloc>().add(FindRecipeEvent(query: query));
   }
 
   void _onSearchQueryChanged() => _refreshRecipes(context);
 
-  void _onCreateRecipePressed() => Navigator.of(context).pushNamed(Routes.createRecipe.name);
+  void _onCreateRecipePressed() =>
+      Navigator.of(context).pushNamed(Routes.createRecipe.path);
 }

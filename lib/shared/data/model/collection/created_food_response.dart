@@ -9,9 +9,11 @@ class CreatedFoodResponse {
 
   const CreatedFoodResponse({required this.id});
 
-  factory CreatedFoodResponse.fromJson(Map<String, dynamic> json) => _$CreatedFoodResponseFromJson(json);
+  factory CreatedFoodResponse.fromJson(Map<String, dynamic> json) =>
+      _$CreatedFoodResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CreatedFoodResponseToJson(this);
 }
 
-CreatedFoodResponse deserializeCreatedFoodResponse(Map<String, dynamic> json) => CreatedFoodResponse.fromJson(json);
+CreatedFoodResponse deserializeCreatedFoodResponse(Map<String, dynamic> json) =>
+    CreatedFoodResponse.fromJson(json);

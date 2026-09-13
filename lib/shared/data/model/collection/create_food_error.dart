@@ -12,7 +12,8 @@ class CreateFoodError {
 
   const CreateFoodError({required this.resource, required this.localId});
 
-  factory CreateFoodError.fromJson(Map<String, dynamic> json) => _$CreateFoodErrorFromJson(json);
+  factory CreateFoodError.fromJson(Map<String, dynamic> json) =>
+      _$CreateFoodErrorFromJson(json);
 
   Map<String, dynamic> toJson() => _$CreateFoodErrorToJson(this);
 

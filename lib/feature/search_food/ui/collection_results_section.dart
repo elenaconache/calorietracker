@@ -18,10 +18,12 @@ class CollectionResultsSection extends StatefulWidget {
   const CollectionResultsSection({super.key, required this.meal});
 
   @override
-  State<CollectionResultsSection> createState() => _CollectionResultsSectionState();
+  State<CollectionResultsSection> createState() =>
+      _CollectionResultsSectionState();
 }
 
-class _CollectionResultsSectionState extends State<CollectionResultsSection> with AutomaticKeepAliveClientMixin {
+class _CollectionResultsSectionState extends State<CollectionResultsSection>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -30,55 +32,61 @@ class _CollectionResultsSectionState extends State<CollectionResultsSection> wit
     super.build(context);
     final foodSearchService = getIt<SearchFoodService>();
     return ValueListenableBuilder(
-        valueListenable: foodSearchService.collectionSearchResponse,
-        builder: (_, collectionResponse, __) => ValueListenableBuilder(
-            valueListenable: foodSearchService.localSearchResponse,
-            builder: (_, localResponse, __) {
-              final hasRemoteResults = localResponse is FutureInitialState;
-              final searchResponse = hasRemoteResults ? collectionResponse : localResponse;
-              return switch (searchResponse) {
-                FutureLoading _ => const Center(child: CircularProgressIndicator()),
-                FutureSuccess<List<Food>> remoteResponse => remoteResponse.data.isEmpty
-                    ? const EmptyView()
-                    : ListView.builder(
-                        itemBuilder: (context, index) {
-                          final item = remoteResponse.data[index];
-                          final nutrition = item.nutrition;
-                          return FoodItem(
-                            nutritionPerServingQuantity: nutrition,
-                            remoteFood: item,
-                            localFood: null,
-                            meal: widget.meal,
-                            unitName: AppStrings.gramsShortLabel,
-                            servingQuantity: 100,
-                          );
-                        },
-                        itemCount: remoteResponse.data.length,
-                      ),
-                FutureSuccess<Map<LocalFood, LocalDiaryEntry?>> localResponse => localResponse.data.isEmpty
-                    ? const EmptyView()
-                    : ListView.builder(
-                        itemBuilder: (_, index) {
-                          final item = localResponse.data.entries.toList()[index];
-                          final nutrition = item.key.nutrition;
-                          final quantity = item.value?.servingQuantity ?? 100;
-                          return FoodItem(
-                            nutritionPerServingQuantity: Nutrition.perServing(
-                              nutritionPer100Grams: nutrition,
-                              servingSizeGrams: quantity,
-                            ),
-                            remoteFood: null,
-                            localFood: item.key,
-                            meal: widget.meal,
-                            unitName: AppStrings.gramsShortLabel,
-                            servingQuantity: quantity,
-                          );
-                        },
-                        itemCount: localResponse.data.length,
-                      ),
-                FutureError _ => const GeneralErrorView(),
-                _ => const SizedBox.shrink(),
-              };
-            }));
+      valueListenable: foodSearchService.collectionSearchResponse,
+      builder: (_, collectionResponse, __) => ValueListenableBuilder(
+        valueListenable: foodSearchService.localSearchResponse,
+        builder: (_, localResponse, __) {
+          final hasRemoteResults = localResponse is FutureInitialState;
+          final searchResponse = hasRemoteResults
+              ? collectionResponse
+              : localResponse;
+          return switch (searchResponse) {
+            FutureLoading _ => const Center(child: CircularProgressIndicator()),
+            FutureSuccess<List<Food>> remoteResponse =>
+              remoteResponse.data.isEmpty
+                  ? const EmptyView()
+                  : ListView.builder(
+                      itemBuilder: (context, index) {
+                        final item = remoteResponse.data[index];
+                        final nutrition = item.nutrition;
+                        return FoodItem(
+                          nutritionPerServingQuantity: nutrition,
+                          remoteFood: item,
+                          localFood: null,
+                          meal: widget.meal,
+                          unitName: AppStrings.gramsShortLabel,
+                          servingQuantity: 100,
+                        );
+                      },
+                      itemCount: remoteResponse.data.length,
+                    ),
+            FutureSuccess<Map<LocalFood, LocalDiaryEntry?>> localResponse =>
+              localResponse.data.isEmpty
+                  ? const EmptyView()
+                  : ListView.builder(
+                      itemBuilder: (_, index) {
+                        final item = localResponse.data.entries.toList()[index];
+                        final nutrition = item.key.nutrition;
+                        final quantity = item.value?.servingQuantity ?? 100;
+                        return FoodItem(
+                          nutritionPerServingQuantity: Nutrition.perServing(
+                            nutritionPer100Grams: nutrition,
+                            servingSizeGrams: quantity,
+                          ),
+                          remoteFood: null,
+                          localFood: item.key,
+                          meal: widget.meal,
+                          unitName: AppStrings.gramsShortLabel,
+                          servingQuantity: quantity,
+                        );
+                      },
+                      itemCount: localResponse.data.length,
+                    ),
+            FutureError _ => const GeneralErrorView(),
+            _ => const SizedBox.shrink(),
+          };
+        },
+      ),
+    );
   }
 }

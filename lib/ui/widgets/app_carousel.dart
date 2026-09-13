@@ -30,25 +30,31 @@ class _AppCarouselState extends State<AppCarousel> {
     return Column(
       children: [
         SizedBox(
-            height: 160,
-            child: PageView(
-              controller: _indicatorController,
-              children: widget.items,
-            )),
+          height: 160,
+          child: PageView(
+            controller: _indicatorController,
+            children: widget.items,
+          ),
+        ),
         const SizedBox(height: 8),
         Center(
-            child: SmoothPageIndicator(
-          controller: _indicatorController,
-          count: widget.items.length,
-          effect: ScaleEffect(
-            dotHeight: 10,
-            dotWidth: 10,
-            activeDotColor: Theme.of(context).colorScheme.primary,
-            scale: 1.5,
-            dotColor: Theme.of(context).disabledColor,
+          child: SmoothPageIndicator(
+            controller: _indicatorController,
+            count: widget.items.length,
+            effect: ScaleEffect(
+              dotHeight: 10,
+              dotWidth: 10,
+              activeDotColor: Theme.of(context).colorScheme.primary,
+              scale: 1.5,
+              dotColor: Theme.of(context).disabledColor,
+            ),
+            onDotClicked: (index) => _indicatorController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.bounceInOut,
+            ),
           ),
-          onDotClicked: (index) => _indicatorController.animateToPage(index, duration: const Duration(milliseconds: 400), curve: Curves.bounceInOut),
-        )),
+        ),
       ],
     );
   }

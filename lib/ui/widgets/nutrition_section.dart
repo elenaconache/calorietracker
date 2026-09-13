@@ -12,21 +12,67 @@ class NutritionSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        NutrientRow(name: AppStrings.caloriesLabel, displayValue: nutrition.formattedCalories),
-        NutrientRow(name: AppStrings.fatLabel, displayValue: nutrition.formattedFat),
-        NutrientRow(name: AppStrings.saturatedFatLabel, displayValue: nutrition.formattedSaturatedFat),
-        NutrientRow(name: AppStrings.transFatLabel, displayValue: nutrition.formattedTransFat),
-        NutrientRow(name: AppStrings.cholesterolLabel, displayValue: nutrition.formattedCholesterol),
-        NutrientRow(name: AppStrings.sodiumLabel, displayValue: nutrition.formattedSodium),
-        NutrientRow(name: AppStrings.potassiumLabel, displayValue: nutrition.formattedPotassium),
-        NutrientRow(name: AppStrings.carbohydratesLabel, displayValue: nutrition.formattedCarbs),
-        NutrientRow(name: AppStrings.fiberLabel, displayValue: nutrition.formattedFiber),
-        NutrientRow(name: AppStrings.sugarLabel, displayValue: nutrition.formattedSugar),
-        NutrientRow(name: AppStrings.vitaminALabel, displayValue: nutrition.formattedVitaminA),
-        NutrientRow(name: AppStrings.vitaminCLabel, displayValue: nutrition.formattedVitaminC),
-        NutrientRow(name: AppStrings.vitaminDLabel, displayValue: nutrition.formattedVitaminD),
-        NutrientRow(name: AppStrings.calciumLabel, displayValue: nutrition.formattedCalcium),
-        NutrientRow(name: AppStrings.ironLabel, displayValue: nutrition.formattedIron, isLast: true),
+        NutrientRow(
+          name: AppStrings.caloriesLabel,
+          displayValue: nutrition.formattedCalories,
+        ),
+        NutrientRow(
+          name: AppStrings.fatLabel,
+          displayValue: nutrition.formattedFat,
+        ),
+        NutrientRow(
+          name: AppStrings.saturatedFatLabel,
+          displayValue: nutrition.formattedSaturatedFat,
+        ),
+        NutrientRow(
+          name: AppStrings.transFatLabel,
+          displayValue: nutrition.formattedTransFat,
+        ),
+        NutrientRow(
+          name: AppStrings.cholesterolLabel,
+          displayValue: nutrition.formattedCholesterol,
+        ),
+        NutrientRow(
+          name: AppStrings.sodiumLabel,
+          displayValue: nutrition.formattedSodium,
+        ),
+        NutrientRow(
+          name: AppStrings.potassiumLabel,
+          displayValue: nutrition.formattedPotassium,
+        ),
+        NutrientRow(
+          name: AppStrings.carbohydratesLabel,
+          displayValue: nutrition.formattedCarbs,
+        ),
+        NutrientRow(
+          name: AppStrings.fiberLabel,
+          displayValue: nutrition.formattedFiber,
+        ),
+        NutrientRow(
+          name: AppStrings.sugarLabel,
+          displayValue: nutrition.formattedSugar,
+        ),
+        NutrientRow(
+          name: AppStrings.vitaminALabel,
+          displayValue: nutrition.formattedVitaminA,
+        ),
+        NutrientRow(
+          name: AppStrings.vitaminCLabel,
+          displayValue: nutrition.formattedVitaminC,
+        ),
+        NutrientRow(
+          name: AppStrings.vitaminDLabel,
+          displayValue: nutrition.formattedVitaminD,
+        ),
+        NutrientRow(
+          name: AppStrings.calciumLabel,
+          displayValue: nutrition.formattedCalcium,
+        ),
+        NutrientRow(
+          name: AppStrings.ironLabel,
+          displayValue: nutrition.formattedIron,
+          isLast: true,
+        ),
       ],
     );
   }

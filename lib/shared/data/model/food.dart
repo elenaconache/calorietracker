@@ -27,38 +27,38 @@ class Food {
   });
 
   Food.usda({required UsdaFood usdaFood})
-      : name = usdaFood.name,
-        nutrition = usdaFood.nutrition,
-        brandName = usdaFood.brandOwner,
-        barcode = null,
-        id = null,
-        localId = null;
+    : name = usdaFood.name,
+      nutrition = usdaFood.nutrition,
+      brandName = usdaFood.brandOwner,
+      barcode = null,
+      id = null,
+      localId = null;
 
   Food.input({required FoodInput foodInput, required this.id})
-      : name = foodInput.name,
-        nutrition = Nutrition.fromServing(
-          nutritionPerServing: foodInput.nutrition,
-          servingSizeGrams: foodInput.servingSizeValue,
-        ),
-        brandName = (foodInput.brand?.isEmpty ?? true) ? null : foodInput.brand,
-        barcode = null,
-        localId = null;
+    : name = foodInput.name,
+      nutrition = Nutrition.fromServing(
+        nutritionPerServing: foodInput.nutrition,
+        servingSizeGrams: foodInput.servingSizeValue,
+      ),
+      brandName = (foodInput.brand?.isEmpty ?? true) ? null : foodInput.brand,
+      barcode = null,
+      localId = null;
 
   Food.collection({required CollectionFood food})
-      : name = food.name,
-        nutrition = food.nutritionInfo,
-        barcode = food.barcode,
-        brandName = food.brand,
-        id = food.id,
-        localId = null;
+    : name = food.name,
+      nutrition = food.nutritionInfo,
+      barcode = food.barcode,
+      brandName = food.brand,
+      id = food.id,
+      localId = null;
 
   Food.local({required LocalFood localFood})
-      : name = localFood.name,
-        nutrition = localFood.nutrition,
-        brandName = localFood.brand,
-        id = null,
-        barcode = localFood.barcode,
-        localId = localFood.id;
+    : name = localFood.name,
+      nutrition = localFood.nutrition,
+      brandName = localFood.brand,
+      id = null,
+      barcode = localFood.barcode,
+      localId = localFood.id;
 
   LocalFood get localFood {
     final localFood = LocalFood(
@@ -91,11 +91,11 @@ class Food {
   }
 
   AddFoodRequest get addFoodRequest => AddFoodRequest(
-        barcode: null,
-        name: name,
-        brand: brandName,
-        nutritionInfo: nutrition.round(),
-      );
+    barcode: null,
+    name: name,
+    brand: brandName,
+    nutritionInfo: nutrition.round(),
+  );
 
   factory Food.fromJson(Map<String, dynamic> json) => _$FoodFromJson(json);
 
@@ -111,13 +111,12 @@ class Food {
     int? id,
     String? barcode,
     int? localId,
-  }) =>
-      Food(
-        name: name ?? this.name,
-        id: id ?? this.id,
-        barcode: barcode ?? this.barcode,
-        nutrition: nutrition ?? this.nutrition,
-        brandName: brandName ?? this.brandName,
-        localId: localId ?? this.localId,
-      );
+  }) => Food(
+    name: name ?? this.name,
+    id: id ?? this.id,
+    barcode: barcode ?? this.barcode,
+    nutrition: nutrition ?? this.nutrition,
+    brandName: brandName ?? this.brandName,
+    localId: localId ?? this.localId,
+  );
 }

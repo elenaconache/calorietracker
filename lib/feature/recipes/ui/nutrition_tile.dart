@@ -14,7 +14,8 @@ class NutritionTile extends StatefulWidget {
   State<NutritionTile> createState() => _NutritionTileState();
 }
 
-class _NutritionTileState extends State<NutritionTile> with SingleTickerProviderStateMixin {
+class _NutritionTileState extends State<NutritionTile>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _rotationController;
 
   @override

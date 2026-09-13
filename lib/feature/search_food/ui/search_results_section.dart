@@ -16,7 +16,8 @@ class SearchResultsSection extends StatefulWidget {
   State<SearchResultsSection> createState() => _SearchResultsSectionState();
 }
 
-class _SearchResultsSectionState extends State<SearchResultsSection> with SingleTickerProviderStateMixin {
+class _SearchResultsSectionState extends State<SearchResultsSection>
+    with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
@@ -29,44 +30,49 @@ class _SearchResultsSectionState extends State<SearchResultsSection> with Single
   Widget build(BuildContext context) {
     final foodSearchService = getIt<SearchFoodService>();
     return SafeArea(
-      child: Column(mainAxisSize: MainAxisSize.max, children: [
-        TabBar(
-          tabs: [
-            Padding(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          TabBar(
+            tabs: [
+              Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Text(
                   AppStrings.collectionLabel,
                   style: Theme.of(context).textTheme.titleMedium,
-                )),
-            Padding(
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Text(
                   AppStrings.discoverLabel,
                   style: Theme.of(context).textTheme.titleMedium,
-                )),
-          ],
-          controller: _tabController,
-        ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              CollectionResultsSection(meal: widget.meal),
-              PoweredByWrapper(
-                child: ValueListenableBuilder(
-                  valueListenable: foodSearchService.usdaSearchResponse,
-                  builder: (context, searchResponse, child) {
-                    return DiscoverResultsSection(
-                      meal: widget.meal,
-                      response: searchResponse,
-                    );
-                  },
                 ),
               ),
             ],
+            controller: _tabController,
           ),
-        )
-      ]),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                CollectionResultsSection(meal: widget.meal),
+                PoweredByWrapper(
+                  child: ValueListenableBuilder(
+                    valueListenable: foodSearchService.usdaSearchResponse,
+                    builder: (context, searchResponse, child) {
+                      return DiscoverResultsSection(
+                        meal: widget.meal,
+                        response: searchResponse,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

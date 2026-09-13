@@ -1,11 +1,13 @@
 import 'package:calorietracker/feature/diary/ui/swipe_to_delete_background.dart';
-import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
+import 'package:calorietracker/shared/data/model/food.dart';
+import 'package:calorietracker/shared/data/model/local/local_ingredient.dart';
 import 'package:calorietracker/ui/app_strings.dart';
 import 'package:calorietracker/ui/widgets/app_divider.dart';
 import 'package:flutter/material.dart';
 
 class IngredientItem extends StatelessWidget {
-  final RecipeIngredient ingredient;
+  final LocalIngredient ingredient;
+  final Food food;
   final VoidCallback onSwipe;
   final VoidCallback onTap;
   final bool enabled;
@@ -13,6 +15,7 @@ class IngredientItem extends StatelessWidget {
   const IngredientItem({
     super.key,
     required this.ingredient,
+    required this.food,
     required this.onSwipe,
     required this.onTap,
     this.enabled = true,
@@ -20,13 +23,16 @@ class IngredientItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final calories = ingredient.servingQuantity * ingredient.food.nutrition.calories ~/ 100;
+    final calories =
+        ingredient.servingQuantity * food.nutrition.calories ~/ 100;
     return Dismissible(
       key: UniqueKey(),
       direction: enabled ? DismissDirection.horizontal : DismissDirection.none,
       onDismissed: (_) => onSwipe(),
       background: const SwipeToDeleteBackground(direction: TextDirection.ltr),
-      secondaryBackground: const SwipeToDeleteBackground(direction: TextDirection.rtl),
+      secondaryBackground: const SwipeToDeleteBackground(
+        direction: TextDirection.rtl,
+      ),
       child: Column(
         children: [
           const AppDivider(),
@@ -41,7 +47,7 @@ class IngredientItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          ingredient.food.name,
+                          food.name,
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                         Text(

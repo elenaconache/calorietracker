@@ -31,7 +31,10 @@ class MacrosInputSection extends StatelessWidget {
             child: AppTextField(
               labelText: AppStrings.carbsGramsLabel,
               controller: carbsController,
-              inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+              inputType: const TextInputType.numberWithOptions(
+                decimal: true,
+                signed: true,
+              ),
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
@@ -43,7 +46,10 @@ class MacrosInputSection extends StatelessWidget {
             child: AppTextField(
               labelText: AppStrings.fatGramsLabel,
               controller: fatController,
-              inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+              inputType: const TextInputType.numberWithOptions(
+                decimal: true,
+                signed: true,
+              ),
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,
@@ -55,7 +61,10 @@ class MacrosInputSection extends StatelessWidget {
             child: AppTextField(
               labelText: AppStrings.proteinGramsLabel,
               controller: proteinController,
-              inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+              inputType: const TextInputType.numberWithOptions(
+                decimal: true,
+                signed: true,
+              ),
               validate: validator.validateMacro,
               maxLength: AppTextField.maxNumericInputLength,
               isDense: true,

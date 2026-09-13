@@ -48,51 +48,70 @@ class MealTitle extends StatelessWidget {
                 children: [
                   diary.hasMealEntries(meal: meal)
                       ? editable
-                          ? Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: Checkbox(
-                                  tristate: true,
-                                  value: diary.isMealChecked(meal: meal),
-                                  onChanged: (checked) => context.read<DiaryBloc>().add(MealCheckChanged(checked: checked, meal: meal)),
+                            ? Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: Checkbox(
+                                    tristate: true,
+                                    value: diary.isMealChecked(meal: meal),
+                                    onChanged: (checked) =>
+                                        context.read<DiaryBloc>().add(
+                                          MealCheckChanged(
+                                            checked: checked,
+                                            meal: meal,
+                                          ),
+                                        ),
+                                  ),
                                 ),
-                              ),
-                            )
-                          : const SizedBox.shrink()
+                              )
+                            : const SizedBox.shrink()
                       : const SizedBox.shrink(),
                   Expanded(
                     child: ValueListenableBuilder(
-                      valueListenable: getIt<DiaryLoggingService>().mealsLoading,
+                      valueListenable:
+                          getIt<DiaryLoggingService>().mealsLoading,
                       child: Text(
                         _mealLabel,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      builder: (context, loading, child) => (loading[meal] ?? false)
-                          ? Row(children: [
-                              child!,
-                              const SizedBox(width: 12),
-                              if (loading[meal] ?? false)
-                                const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(strokeWidth: 2),
-                                ),
-                            ])
+                      builder: (context, loading, child) =>
+                          (loading[meal] ?? false)
+                          ? Row(
+                              children: [
+                                child!,
+                                const SizedBox(width: 12),
+                                if (loading[meal] ?? false)
+                                  const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                              ],
+                            )
                           : child!,
                     ),
                   ),
                   if (diary.selectedDayMealEntries.status is! FutureError)
                     Text(
-                      AppStrings.caloriesShortLabel(mealNutrition.calories.toInt()),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                    )
+                      AppStrings.caloriesShortLabel(
+                        mealNutrition.calories.toInt(),
+                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                 ],
               ),
               const SizedBox(height: 8),
               Padding(
-                padding: EdgeInsets.only(left: editable && diary.hasMealEntries(meal: meal) ? 32 : 0),
+                padding: EdgeInsets.only(
+                  left: editable && diary.hasMealEntries(meal: meal) ? 32 : 0,
+                ),
                 child: MealMacros(
                   meal: meal,
                   enabledPercentageMode: enabledMacrosPercentageMode,

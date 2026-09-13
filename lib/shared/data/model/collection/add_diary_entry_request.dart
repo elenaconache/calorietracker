@@ -21,9 +21,12 @@ class AddDiaryEntryRequest {
     required this.meal,
   });
 
-  factory AddDiaryEntryRequest.fromJson(Map<String, dynamic> json) => _$AddDiaryEntryRequestFromJson(json);
+  factory AddDiaryEntryRequest.fromJson(Map<String, dynamic> json) =>
+      _$AddDiaryEntryRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddDiaryEntryRequestToJson(this);
 }
 
-Map<String, dynamic> serializeAddDiaryEntryRequest(AddDiaryEntryRequest object) => object.toJson();
+Map<String, dynamic> serializeAddDiaryEntryRequest(
+  AddDiaryEntryRequest object,
+) => object.toJson();

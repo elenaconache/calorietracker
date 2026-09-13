@@ -13,36 +13,41 @@ class DayNutritionSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (diary.selectedDayMealEntries.status) {
       LoadingStatus _ => const Padding(
-          padding: EdgeInsets.all(12),
-          child: Center(child: CircularProgressIndicator()),
-        ),
+        padding: EdgeInsets.all(12),
+        child: Center(child: CircularProgressIndicator()),
+      ),
       FailureStatus _ => Text(
-          AppStrings.generalErrorMessage,
-          style: Theme.of(context).textTheme.bodyLarge,
-          textAlign: TextAlign.center,
-        ),
+        AppStrings.generalErrorMessage,
+        style: Theme.of(context).textTheme.bodyLarge,
+        textAlign: TextAlign.center,
+      ),
       SuccessStatus _ => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            NutrientItem(
-              formattedValue: diary.selectedDayNutrition.carbohydrates.toStringAsFixed(1),
-              name: AppStrings.carbsLabel,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          NutrientItem(
+            formattedValue: diary.selectedDayNutrition.carbohydrates
+                .toStringAsFixed(1),
+            name: AppStrings.carbsLabel,
+          ),
+          NutrientItem(
+            formattedValue: diary.selectedDayNutrition.fat.toStringAsFixed(1),
+            name: AppStrings.fatLabel,
+          ),
+          NutrientItem(
+            formattedValue: diary.selectedDayNutrition.protein.toStringAsFixed(
+              1,
             ),
-            NutrientItem(
-              formattedValue: diary.selectedDayNutrition.fat.toStringAsFixed(1),
-              name: AppStrings.fatLabel,
+            name: AppStrings.proteinLabel,
+          ),
+          NutrientItem(
+            formattedValue: diary.selectedDayNutrition.calories.toStringAsFixed(
+              0,
             ),
-            NutrientItem(
-              formattedValue: diary.selectedDayNutrition.protein.toStringAsFixed(1),
-              name: AppStrings.proteinLabel,
-            ),
-            NutrientItem(
-              formattedValue: diary.selectedDayNutrition.calories.toStringAsFixed(0),
-              name: AppStrings.caloriesLabel,
-            ),
-          ],
-        ),
-      _ => const SizedBox.shrink()
+            name: AppStrings.caloriesLabel,
+          ),
+        ],
+      ),
+      _ => const SizedBox.shrink(),
     };
   }
 }

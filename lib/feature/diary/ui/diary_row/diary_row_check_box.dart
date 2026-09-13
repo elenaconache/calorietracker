@@ -28,8 +28,11 @@ class DiaryRowCheckBox extends StatelessWidget {
               child: Checkbox(
                 value: isChecked,
                 onChanged: (checked) => context.read<DiaryBloc>().add(
-                      EntryCheckChanged(checked: checked ?? false, entry: diaryEntry),
-                    ),
+                  EntryCheckChanged(
+                    checked: checked ?? false,
+                    entry: diaryEntry,
+                  ),
+                ),
               ),
             ),
           )

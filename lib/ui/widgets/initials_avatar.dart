@@ -6,23 +6,28 @@ class InitialsAvatar extends StatelessWidget {
   final String text;
   final double size;
 
-  const InitialsAvatar({super.key, required this.text, this.size = defaultAvatarSize});
+  const InitialsAvatar({
+    super.key,
+    required this.text,
+    this.size = defaultAvatarSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: BoxDecoration(
-        color: _color,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: _color, shape: BoxShape.circle),
       child: SizedBox(
         width: size,
         height: size,
         child: Center(
-            child: Text(
-          _initials,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600, color: Colors.white),
-        )),
+          child: Text(
+            _initials,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -34,6 +39,9 @@ class InitialsAvatar extends StatelessWidget {
     return color.withValues(alpha: .9);
   }
 
-  String get _initials =>
-      text.split(' ').take(2).map((word) => word.characters.isEmpty ? '' : word[0].toUpperCase()).join('');
+  String get _initials => text
+      .split(' ')
+      .take(2)
+      .map((word) => word.characters.isEmpty ? '' : word[0].toUpperCase())
+      .join('');
 }

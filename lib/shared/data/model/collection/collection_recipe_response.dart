@@ -23,7 +23,8 @@ class CollectionRecipeResponse {
     required this.cookedWeight,
   });
 
-  factory CollectionRecipeResponse.fromJson(Map<String, dynamic> json) => _$CollectionRecipeResponseFromJson(json);
+  factory CollectionRecipeResponse.fromJson(Map<String, dynamic> json) =>
+      _$CollectionRecipeResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CollectionRecipeResponseToJson(this);
 
@@ -31,5 +32,6 @@ class CollectionRecipeResponse {
   String toString() => toJson().toString();
 }
 
-List<CollectionRecipeResponse> deserializeCollectionRecipeResponseList(List<Map<String, dynamic>> json) =>
-    json.map((e) => CollectionRecipeResponse.fromJson(e)).toList();
+List<CollectionRecipeResponse> deserializeCollectionRecipeResponseList(
+  List<Map<String, dynamic>> json,
+) => json.map((e) => CollectionRecipeResponse.fromJson(e)).toList();

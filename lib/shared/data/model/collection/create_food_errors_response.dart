@@ -10,7 +10,8 @@ class CreateFoodErrorsResponse {
 
   const CreateFoodErrorsResponse({required this.errors});
 
-  factory CreateFoodErrorsResponse.fromJson(Map<String, dynamic> json) => _$CreateFoodErrorsResponseFromJson(json);
+  factory CreateFoodErrorsResponse.fromJson(Map<String, dynamic> json) =>
+      _$CreateFoodErrorsResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CreateFoodErrorsResponseToJson(this);
 
@@ -18,4 +19,6 @@ class CreateFoodErrorsResponse {
   String toString() => toJson().toString();
 }
 
-CreateFoodErrorsResponse deserializeCreateFoodErrorsResponse(Map<String, dynamic> json) => CreateFoodErrorsResponse.fromJson(json);
+CreateFoodErrorsResponse deserializeCreateFoodErrorsResponse(
+  Map<String, dynamic> json,
+) => CreateFoodErrorsResponse.fromJson(json);

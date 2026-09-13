@@ -9,7 +9,8 @@ part 'login_cubit.freezed.dart';
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginState());
 
-  void onUsernameChanged({required String username}) => emit(state.copyWith(enabled: username.isNotEmpty));
+  void onUsernameChanged({required String username}) =>
+      emit(state.copyWith(enabled: username.isNotEmpty));
 
   void onLoginSubmit() => emit(state.copyWith(loading: true));
 

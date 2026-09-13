@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'search_recipe_cubit.dart';
+part of 'search_recipe_bloc.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SearchRecipeState {
 
- AsyncState<List<Recipe>> get allRecipes; List<Recipe> get searchResults;
+ AsyncState<List<Recipe>> get allRecipes; List<Recipe> get searchResults; String? get query;
 /// Create a copy of SearchRecipeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SearchRecipeStateCopyWith<SearchRecipeState> get copyWith => _$SearchRecipeStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchRecipeState&&(identical(other.allRecipes, allRecipes) || other.allRecipes == allRecipes)&&const DeepCollectionEquality().equals(other.searchResults, searchResults));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchRecipeState&&(identical(other.allRecipes, allRecipes) || other.allRecipes == allRecipes)&&const DeepCollectionEquality().equals(other.searchResults, searchResults)&&(identical(other.query, query) || other.query == query));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,allRecipes,const DeepCollectionEquality().hash(searchResults));
+int get hashCode => Object.hash(runtimeType,allRecipes,const DeepCollectionEquality().hash(searchResults),query);
 
 @override
 String toString() {
-  return 'SearchRecipeState(allRecipes: $allRecipes, searchResults: $searchResults)';
+  return 'SearchRecipeState(allRecipes: $allRecipes, searchResults: $searchResults, query: $query)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SearchRecipeStateCopyWith<$Res>  {
   factory $SearchRecipeStateCopyWith(SearchRecipeState value, $Res Function(SearchRecipeState) _then) = _$SearchRecipeStateCopyWithImpl;
 @useResult
 $Res call({
- AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults
+ AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults, String? query
 });
 
 
@@ -62,11 +62,12 @@ class _$SearchRecipeStateCopyWithImpl<$Res>
 
 /// Create a copy of SearchRecipeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? allRecipes = null,Object? searchResults = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? allRecipes = null,Object? searchResults = null,Object? query = freezed,}) {
   return _then(_self.copyWith(
 allRecipes: null == allRecipes ? _self.allRecipes : allRecipes // ignore: cast_nullable_to_non_nullable
 as AsyncState<List<Recipe>>,searchResults: null == searchResults ? _self.searchResults : searchResults // ignore: cast_nullable_to_non_nullable
-as List<Recipe>,
+as List<Recipe>,query: freezed == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 /// Create a copy of SearchRecipeState
@@ -160,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AsyncState<List<Recipe>> allRecipes,  List<Recipe> searchResults)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AsyncState<List<Recipe>> allRecipes,  List<Recipe> searchResults,  String? query)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SearchRecipeState() when $default != null:
-return $default(_that.allRecipes,_that.searchResults);case _:
+return $default(_that.allRecipes,_that.searchResults,_that.query);case _:
   return orElse();
 
 }
@@ -181,10 +182,10 @@ return $default(_that.allRecipes,_that.searchResults);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AsyncState<List<Recipe>> allRecipes,  List<Recipe> searchResults)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AsyncState<List<Recipe>> allRecipes,  List<Recipe> searchResults,  String? query)  $default,) {final _that = this;
 switch (_that) {
 case _SearchRecipeState():
-return $default(_that.allRecipes,_that.searchResults);case _:
+return $default(_that.allRecipes,_that.searchResults,_that.query);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +202,10 @@ return $default(_that.allRecipes,_that.searchResults);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AsyncState<List<Recipe>> allRecipes,  List<Recipe> searchResults)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AsyncState<List<Recipe>> allRecipes,  List<Recipe> searchResults,  String? query)?  $default,) {final _that = this;
 switch (_that) {
 case _SearchRecipeState() when $default != null:
-return $default(_that.allRecipes,_that.searchResults);case _:
+return $default(_that.allRecipes,_that.searchResults,_that.query);case _:
   return null;
 
 }
@@ -216,7 +217,7 @@ return $default(_that.allRecipes,_that.searchResults);case _:
 
 
 class _SearchRecipeState implements SearchRecipeState {
-  const _SearchRecipeState({required this.allRecipes, required final  List<Recipe> searchResults}): _searchResults = searchResults;
+  const _SearchRecipeState({required this.allRecipes, required final  List<Recipe> searchResults, this.query}): _searchResults = searchResults;
   
 
 @override final  AsyncState<List<Recipe>> allRecipes;
@@ -227,6 +228,7 @@ class _SearchRecipeState implements SearchRecipeState {
   return EqualUnmodifiableListView(_searchResults);
 }
 
+@override final  String? query;
 
 /// Create a copy of SearchRecipeState
 /// with the given fields replaced by the non-null parameter values.
@@ -238,16 +240,16 @@ _$SearchRecipeStateCopyWith<_SearchRecipeState> get copyWith => __$SearchRecipeS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchRecipeState&&(identical(other.allRecipes, allRecipes) || other.allRecipes == allRecipes)&&const DeepCollectionEquality().equals(other._searchResults, _searchResults));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchRecipeState&&(identical(other.allRecipes, allRecipes) || other.allRecipes == allRecipes)&&const DeepCollectionEquality().equals(other._searchResults, _searchResults)&&(identical(other.query, query) || other.query == query));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,allRecipes,const DeepCollectionEquality().hash(_searchResults));
+int get hashCode => Object.hash(runtimeType,allRecipes,const DeepCollectionEquality().hash(_searchResults),query);
 
 @override
 String toString() {
-  return 'SearchRecipeState(allRecipes: $allRecipes, searchResults: $searchResults)';
+  return 'SearchRecipeState(allRecipes: $allRecipes, searchResults: $searchResults, query: $query)';
 }
 
 
@@ -258,7 +260,7 @@ abstract mixin class _$SearchRecipeStateCopyWith<$Res> implements $SearchRecipeS
   factory _$SearchRecipeStateCopyWith(_SearchRecipeState value, $Res Function(_SearchRecipeState) _then) = __$SearchRecipeStateCopyWithImpl;
 @override @useResult
 $Res call({
- AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults
+ AsyncState<List<Recipe>> allRecipes, List<Recipe> searchResults, String? query
 });
 
 
@@ -275,11 +277,12 @@ class __$SearchRecipeStateCopyWithImpl<$Res>
 
 /// Create a copy of SearchRecipeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? allRecipes = null,Object? searchResults = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? allRecipes = null,Object? searchResults = null,Object? query = freezed,}) {
   return _then(_SearchRecipeState(
 allRecipes: null == allRecipes ? _self.allRecipes : allRecipes // ignore: cast_nullable_to_non_nullable
 as AsyncState<List<Recipe>>,searchResults: null == searchResults ? _self._searchResults : searchResults // ignore: cast_nullable_to_non_nullable
-as List<Recipe>,
+as List<Recipe>,query: freezed == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

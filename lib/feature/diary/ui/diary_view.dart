@@ -27,14 +27,22 @@ class DiaryView extends StatelessWidget {
         final dayMealEntries = state.selectedDayMealEntries;
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: DiaryAppBar(editable: state.editMode, onExitEditMode: () => _onExitEditMode(context)),
+          appBar: DiaryAppBar(
+            editable: state.editMode,
+            onExitEditMode: () => _onExitEditMode(context),
+          ),
           body: RefreshIndicator(
-            onRefresh: () => getIt<DataSyncService>().uploadLocalData(selectedDay: state.selectedDay),
+            onRefresh: () => getIt<DataSyncService>().uploadLocalData(
+              selectedDay: state.selectedDay,
+            ),
             child: CustomScrollView(
               slivers: [
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),
                 SliverToBoxAdapter(
-                  child: SelectedDayLine(onDateSelected: (date) => _onDateSelected(context, date), diary: state),
+                  child: SelectedDayLine(
+                    onDateSelected: (date) => _onDateSelected(context, date),
+                    diary: state,
+                  ),
                 ),
                 const SliverPadding(padding: EdgeInsets.only(top: 12)),
                 SliverToBoxAdapter(child: DiaryOverviewCarousel(diary: state)),
@@ -50,7 +58,9 @@ class DiaryView extends StatelessWidget {
                 dayMealEntries.status is LoadingStatus
                     ? const SliverPadding(
                         padding: EdgeInsets.only(top: 12),
-                        sliver: SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
+                        sliver: SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
                       )
                     : DiaryEntriesSliverList(
                         entries: state.getMealEntries(meal: Meal.breakfast),
@@ -63,7 +73,8 @@ class DiaryView extends StatelessWidget {
                   sliver: SliverToBoxAdapter(
                     child: Center(
                       child: TextButton(
-                        onPressed: () => _openSearchFoodScreen(context, Meal.breakfast),
+                        onPressed: () =>
+                            _openSearchFoodScreen(context, Meal.breakfast),
                         child: Text(AppStrings.logFoodLabel.toUpperCase()),
                       ),
                     ),
@@ -81,7 +92,9 @@ class DiaryView extends StatelessWidget {
                 dayMealEntries.status is LoadingStatus
                     ? const SliverPadding(
                         padding: EdgeInsets.only(top: 12),
-                        sliver: SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
+                        sliver: SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
                       )
                     : DiaryEntriesSliverList(
                         entries: state.getMealEntries(meal: Meal.lunch),
@@ -94,7 +107,8 @@ class DiaryView extends StatelessWidget {
                   sliver: SliverToBoxAdapter(
                     child: Center(
                       child: TextButton(
-                        onPressed: () => _openSearchFoodScreen(context, Meal.lunch),
+                        onPressed: () =>
+                            _openSearchFoodScreen(context, Meal.lunch),
                         child: Text(AppStrings.logFoodLabel.toUpperCase()),
                       ),
                     ),
@@ -112,7 +126,9 @@ class DiaryView extends StatelessWidget {
                 dayMealEntries.status is LoadingStatus
                     ? const SliverPadding(
                         padding: EdgeInsets.only(top: 12),
-                        sliver: SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
+                        sliver: SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
                       )
                     : DiaryEntriesSliverList(
                         entries: state.getMealEntries(meal: Meal.dinner),
@@ -123,7 +139,8 @@ class DiaryView extends StatelessWidget {
                 SliverToBoxAdapter(
                   child: Center(
                     child: TextButton(
-                      onPressed: () => _openSearchFoodScreen(context, Meal.dinner),
+                      onPressed: () =>
+                          _openSearchFoodScreen(context, Meal.dinner),
                       child: Text(AppStrings.logFoodLabel.toUpperCase()),
                     ),
                   ),
@@ -140,7 +157,9 @@ class DiaryView extends StatelessWidget {
                 dayMealEntries.status is LoadingStatus
                     ? const SliverPadding(
                         padding: EdgeInsets.only(top: 12),
-                        sliver: SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
+                        sliver: SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
                       )
                     : DiaryEntriesSliverList(
                         entries: state.getMealEntries(meal: Meal.snacks),
@@ -153,7 +172,8 @@ class DiaryView extends StatelessWidget {
                   sliver: SliverToBoxAdapter(
                     child: Center(
                       child: TextButton(
-                        onPressed: () => _openSearchFoodScreen(context, Meal.snacks),
+                        onPressed: () =>
+                            _openSearchFoodScreen(context, Meal.snacks),
                         child: Text(AppStrings.logFoodLabel.toUpperCase()),
                       ),
                     ),
@@ -172,7 +192,9 @@ class DiaryView extends StatelessWidget {
     if (context.mounted) {
       Navigator.of(context).pushNamed(Routes.foodSearch.path, arguments: meal);
     } else {
-      getIt<LoggingService>().info('context unmounted, could not navigate to food search');
+      getIt<LoggingService>().info(
+        'context unmounted, could not navigate to food search',
+      );
     }
   }
 
@@ -190,7 +212,9 @@ class DiaryView extends StatelessWidget {
       final bloc = context.read<DiaryBloc>();
       bloc.add(ExitEditModeEvent());
     } else {
-      getIt<LoggingService>().info('context unmounted, could not exit edit mode');
+      getIt<LoggingService>().info(
+        'context unmounted, could not exit edit mode',
+      );
     }
   }
 }

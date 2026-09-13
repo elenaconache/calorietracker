@@ -23,9 +23,12 @@ class AddLocalDiaryEntryRequest {
     required this.foodId,
   });
 
-  factory AddLocalDiaryEntryRequest.fromJson(Map<String, dynamic> json) => _$AddLocalDiaryEntryRequestFromJson(json);
+  factory AddLocalDiaryEntryRequest.fromJson(Map<String, dynamic> json) =>
+      _$AddLocalDiaryEntryRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddLocalDiaryEntryRequestToJson(this);
 }
 
-List<Map<String, dynamic>> serializeAddLocalDiaryEntryRequestList(List<AddLocalDiaryEntryRequest> objects) => objects.map((e) => e.toJson()).toList();
+List<Map<String, dynamic>> serializeAddLocalDiaryEntryRequestList(
+  List<AddLocalDiaryEntryRequest> objects,
+) => objects.map((e) => e.toJson()).toList();

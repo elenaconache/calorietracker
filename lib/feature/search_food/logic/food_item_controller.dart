@@ -46,7 +46,7 @@ class FoodItemController {
             )
             .then((_) => true)
             .catchError((_, __) => false),
-        Future.delayed(const Duration(milliseconds: 500))
+        Future.delayed(const Duration(milliseconds: 500)),
       ]);
       added = results.firstOrNull ?? false;
     }

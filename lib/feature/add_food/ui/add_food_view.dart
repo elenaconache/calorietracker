@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:calorietracker/feature/diary/logic/diary_bloc.dart';
 import 'package:calorietracker/shared/data/helper/async_state.dart';
+import 'package:calorietracker/shared/data/model/local/local_ingredient.dart';
 import 'package:calorietracker/shared/data/model/nutrition.dart';
 import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:calorietracker/feature/add_food/data/add_food_arguments.dart';
 import 'package:calorietracker/feature/add_food/logic/add_food_cubit.dart';
 import 'package:calorietracker/feature/add_food/data/food_log.dart';
-import 'package:calorietracker/shared/data/model/recipe_ingredient.dart';
 import 'package:calorietracker/ui/widgets/calories_macros_section.dart';
 import 'package:calorietracker/ui/widgets/nutrition_section.dart';
 import 'package:calorietracker/shared/data/model/meal.dart';
@@ -24,6 +24,8 @@ class AddFoodView extends StatelessWidget {
 
   const AddFoodView({super.key, required this.args});
 
+  bool get _isAddIngredientView => args.meal == null;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AddFoodCubit>(
@@ -32,7 +34,9 @@ class AddFoodView extends StatelessWidget {
           ..selectMeal(meal: args.meal)
           ..initializeNutrients(nutrition: args.food.nutrition);
         if ((args.servingSize ?? 100) != 100) {
-          cubit.recalculateNutrition(servingSizeGrams: args.servingSize.toString());
+          cubit.recalculateNutrition(
+            servingSizeGrams: args.servingSize.toString(),
+          );
         }
         return cubit;
       },
@@ -43,20 +47,37 @@ class AddFoodView extends StatelessWidget {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(args.diaryEntryId != null || args.localDiaryEntryId != null ? AppStrings.updateLogError : AppStrings.errorAddFood),
+                    content: Text(
+                      args.diaryEntryId != null ||
+                              args.localDiaryEntryId != null
+                          ? AppStrings.updateLogError
+                          : AppStrings.errorAddFood,
+                    ),
                   ),
                 );
               } else {
-                getIt<LoggingService>().info('Could not show error snack bar. Context unmounted.');
+                getIt<LoggingService>().info(
+                  'Could not show error snack bar. Context unmounted.',
+                );
               }
             },
             success: () {
               if (context.mounted) {
-                Navigator.pop(context);
-                final message = AppStrings.foodLoggedMessage;
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+                if (_isAddIngredientView) {
+                  final localIngredient =
+                      state.addFoodResult.data as LocalIngredient;
+                  Navigator.of(context).pop(localIngredient);
+                } else {
+                  Navigator.pop(context);
+                  final message = AppStrings.foodLoggedMessage;
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(message)));
+                }
               } else {
-                getIt<LoggingService>().info('Could not pop add food screen. Context unmounted.');
+                getIt<LoggingService>().info(
+                  'Could not pop add food screen. Context unmounted.',
+                );
               }
             },
             orElse: () {},
@@ -65,16 +86,25 @@ class AddFoodView extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(args.meal == null ? AppStrings.addIngredientTitle : AppStrings.logFoodLabel),
+              title: Text(
+                _isAddIngredientView
+                    ? AppStrings.addIngredientTitle
+                    : AppStrings.logFoodLabel,
+              ),
               actions: [
                 state.addFoodResult.status is LoadingStatus
                     ? const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()),
+                        child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(),
+                        ),
                       )
                     : IconButton(
                         // TODO: send barcode as parameter to this view if the user scanned a barcode.
-                        onPressed: () => _confirmFood(context, state.servingSize ?? 100),
+                        onPressed: () =>
+                            _confirmFood(context, state.servingSize ?? 100),
                         icon: const Icon(Icons.check, size: 32),
                       ),
               ],
@@ -83,12 +113,20 @@ class AddFoodView extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 24, left: 16, right: 16),
-                  child: Text(args.food.name, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                  child: Text(
+                    args.food.name,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
                 if (args.food.brandName != null)
                   Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: Text(args.food.brandName!, style: Theme.of(context).textTheme.titleMedium),
+                    child: Text(
+                      args.food.brandName!,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
                 const SizedBox(height: 12),
                 const AppDivider(),
@@ -96,13 +134,19 @@ class AddFoodView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: AppTextField(
-                    initialValue: args.servingSize != null ?  args.servingSize.toString() : '',
+                    initialValue: args.servingSize != null
+                        ? args.servingSize.toString()
+                        : '',
                     enabled: state.addFoodResult.status is! LoadingStatus,
                     labelText: AppStrings.servingsLabel,
                     suffixIcon: Icons.clear,
-                    onSuffixIconPressed: () => _onServingSizeChanged(context, ''),
+                    onSuffixIconPressed: () =>
+                        _onServingSizeChanged(context, ''),
                     onChanged: (value) => _onServingSizeChanged(context, value),
-                    inputType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+                    inputType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                      signed: true,
+                    ),
                     maxLength: 6,
                     autofocus: true,
                     action: TextInputAction.done,
@@ -115,7 +159,9 @@ class AddFoodView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: AppDropdownButton<Meal>(
                       hint: AppStrings.mealLabel,
-                      onChanged: (selectedMeal) => context.read<AddFoodCubit>().selectMeal(meal: selectedMeal),
+                      onChanged: (selectedMeal) => context
+                          .read<AddFoodCubit>()
+                          .selectMeal(meal: selectedMeal),
                       optionNameMapper: (meal) => meal.label,
                       options: Meal.values,
                       selectedOption: state.selectedMeal,
@@ -126,12 +172,18 @@ class AddFoodView extends StatelessWidget {
                 const SizedBox(height: 24),
                 const AppDivider(),
                 CaloriesMacrosSection(
-                  nutrition: Nutrition.perServing(nutritionPer100Grams: state.nutrition, servingSizeGrams: state.servingSize ?? 100),
+                  nutrition: Nutrition.perServing(
+                    nutritionPer100Grams: state.nutrition,
+                    servingSizeGrams: state.servingSize ?? 100,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 const AppDivider(),
                 NutritionSection(
-                  nutrition: Nutrition.perServing(nutritionPer100Grams: state.nutrition, servingSizeGrams: state.servingSize ?? 100),
+                  nutrition: Nutrition.perServing(
+                    nutritionPer100Grams: state.nutrition,
+                    servingSizeGrams: state.servingSize ?? 100,
+                  ),
                 ),
                 const SizedBox(height: 100),
               ],
@@ -144,9 +196,12 @@ class AddFoodView extends StatelessWidget {
 
   void _confirmFood(BuildContext context, double? servingQuantity) {
     if (servingQuantity == null) {
-      getIt<LoggingService>().handle(Exception('Could not log food with null serving quantity.'), StackTrace.current);
+      getIt<LoggingService>().handle(
+        Exception('Could not log food with null serving quantity.'),
+        StackTrace.current,
+      );
     } else {
-      if (args.meal == null) {
+      if (_isAddIngredientView) {
         _confirmRecipeIngredient(context, servingQuantity);
       } else {
         final date = context.read<DiaryBloc>().state.selectedDay;
@@ -155,7 +210,11 @@ class AddFoodView extends StatelessWidget {
     }
   }
 
-  void _confirmDiaryLog(double servingQuantity, DateTime date, BuildContext context) {
+  void _confirmDiaryLog(
+    double servingQuantity,
+    DateTime date,
+    BuildContext context,
+  ) {
     final cubit = context.read<AddFoodCubit>();
     final foodLog = FoodLog(
       meal: cubit.state.selectedMeal ?? args.meal!,
@@ -165,34 +224,25 @@ class AddFoodView extends StatelessWidget {
       date: date,
     );
     unawaited(
-      cubit.logFood(foodLog: foodLog, remoteDiaryEntryId: args.diaryEntryId, localDiaryEntryId: args.localDiaryEntryId, initialMeal: args.meal),
+      cubit.logFood(
+        foodLog: foodLog,
+        remoteDiaryEntryId: args.diaryEntryId,
+        localDiaryEntryId: args.localDiaryEntryId,
+        initialMeal: args.meal,
+      ),
     );
   }
 
   void _confirmRecipeIngredient(BuildContext context, double servingQuantity) {
-    context.read<AddFoodCubit>().createFood(food: args.food).then((createdFoodId) {
-      if (createdFoodId != null) {
-        if (context.mounted) {
-          Navigator.of(context).pop(
-            RecipeIngredient(
-              food: args.food.copyWith(id: createdFoodId),
-              servingQuantity: servingQuantity,
-            ),
-          );
-        } else {
-          getIt<LoggingService>().info('Could not pop screen. Context unmounted.');
-        }
-      } else {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.addIngredientError)));
-        } else {
-          getIt<LoggingService>().info('Could not show error snack bar. Context unmounted.');
-        }
-      }
-    });
+    context.read<AddFoodCubit>().createFood(
+      food: args.food,
+      servingSize: servingQuantity,
+    );
   }
 
   void _onServingSizeChanged(BuildContext context, String? value) {
-    context.read<AddFoodCubit>().recalculateNutrition(servingSizeGrams: value ?? '');
+    context.read<AddFoodCubit>().recalculateNutrition(
+      servingSizeGrams: value ?? '',
+    );
   }
 }

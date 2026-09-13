@@ -8,9 +8,14 @@ class CollectionRecipeIngredient {
   final int foodUnitId;
   final double quantity;
 
-  const CollectionRecipeIngredient({required this.foodId, required this.foodUnitId, required this.quantity});
+  const CollectionRecipeIngredient({
+    required this.foodId,
+    required this.foodUnitId,
+    required this.quantity,
+  });
 
-  factory CollectionRecipeIngredient.fromJson(Map<String, dynamic> json) => _$CollectionRecipeIngredientFromJson(json);
+  factory CollectionRecipeIngredient.fromJson(Map<String, dynamic> json) =>
+      _$CollectionRecipeIngredientFromJson(json);
 
   Map<String, dynamic> toJson() => _$CollectionRecipeIngredientToJson(this);
 }

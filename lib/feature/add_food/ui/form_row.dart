@@ -8,17 +8,17 @@ class FormRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      const SizedBox(width: 16),
-      Expanded(
+    return Row(
+      children: [
+        const SizedBox(width: 16),
+        Expanded(
           flex: 1,
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.bodyLarge,
-          )),
-      const SizedBox(width: 8),
-      Expanded(flex: 2, child: valueWidget),
-      const SizedBox(width: 16),
-    ]);
+          child: Text(label, style: Theme.of(context).textTheme.bodyLarge),
+        ),
+        const SizedBox(width: 8),
+        Expanded(flex: 2, child: valueWidget),
+        const SizedBox(width: 16),
+      ],
+    );
   }
 }

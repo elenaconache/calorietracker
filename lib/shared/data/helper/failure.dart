@@ -8,6 +8,9 @@ part 'failure.freezed.dart';
 class Failure with _$Failure {
   const factory Failure.generalFailure({String? message}) = GeneralFailure;
   const factory Failure.connection({String? message}) = ConnectionFailure;
-  const factory Failure.auth({@Default(AuthError.unknown) AuthError type}) = AuthFailure;
-  const factory Failure.createRecipe({@Default(CreateRecipeError.unknown) CreateRecipeError type}) = CreateRecipeFailure;
+  const factory Failure.auth({@Default(AuthError.unknown) AuthError type}) =
+      AuthFailure;
+  const factory Failure.createRecipe({
+    @Default(CreateRecipeError.unknown) CreateRecipeError type,
+  }) = CreateRecipeFailure;
 }

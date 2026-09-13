@@ -48,10 +48,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => getIt<AuthBloc>()..add(AuthEvent.authSubscriptionRequested()),
+          create: (_) =>
+              getIt<AuthBloc>()..add(AuthEvent.authSubscriptionRequested()),
         ),
         BlocProvider(
-          create: (_) => getIt<DiaryBloc>()..add(DiaryEvent.requestAuthSubscription()),
+          create: (_) =>
+              getIt<DiaryBloc>()..add(DiaryEvent.requestAuthSubscription()),
         ),
       ],
       child: MaterialApp(
@@ -59,7 +61,8 @@ class MyApp extends StatelessWidget {
         home: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (previous, current) =>
               previous.selectedUser.status is InitialStatus ||
-              current.selectedUser.status is! LoadingStatus && previous.selectedUser != current.selectedUser,
+              current.selectedUser.status is! LoadingStatus &&
+                  previous.selectedUser != current.selectedUser,
           builder: (context, state) {
             return state.selectedUser.status.maybeMap(
               failure: (_) => BlocProvider(
@@ -79,11 +82,8 @@ class MyApp extends StatelessWidget {
                   );
                 }
               },
-              orElse: () => Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+              orElse: () =>
+                  Scaffold(body: Center(child: CircularProgressIndicator())),
             );
           },
         ),
@@ -111,7 +111,9 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.black,
           snackBarTheme: SnackBarThemeData(
             backgroundColor: _defaultDarkColorScheme.surface,
-            contentTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: _defaultDarkColorScheme.tertiary),
+            contentTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: _defaultDarkColorScheme.tertiary,
+            ),
           ),
           progressIndicatorTheme: ProgressIndicatorThemeData(
             borderRadius: BorderRadius.circular(8),

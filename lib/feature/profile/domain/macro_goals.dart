@@ -25,14 +25,15 @@ class MacroGoals {
     int? roundedCarbsPercentage,
     int? roundedProteinPercentage,
     int? roundedFatPercentage,
-  }) =>
-      MacroGoals(
-        calories: calories ?? this.calories,
-        roundedCarbsGrams: roundedCarbsGrams ?? this.roundedCarbsGrams,
-        roundedCarbsPercentage: roundedCarbsPercentage ?? this.roundedCarbsPercentage,
-        roundedProteinGrams: roundedProteinGrams ?? this.roundedProteinGrams,
-        roundedProteinPercentage: roundedProteinPercentage ?? this.roundedProteinPercentage,
-        roundedFatGrams: roundedFatGrams ?? this.roundedFatGrams,
-        roundedFatPercentage: roundedFatPercentage ?? this.roundedFatPercentage,
-      );
+  }) => MacroGoals(
+    calories: calories ?? this.calories,
+    roundedCarbsGrams: roundedCarbsGrams ?? this.roundedCarbsGrams,
+    roundedCarbsPercentage:
+        roundedCarbsPercentage ?? this.roundedCarbsPercentage,
+    roundedProteinGrams: roundedProteinGrams ?? this.roundedProteinGrams,
+    roundedProteinPercentage:
+        roundedProteinPercentage ?? this.roundedProteinPercentage,
+    roundedFatGrams: roundedFatGrams ?? this.roundedFatGrams,
+    roundedFatPercentage: roundedFatPercentage ?? this.roundedFatPercentage,
+  );
 }

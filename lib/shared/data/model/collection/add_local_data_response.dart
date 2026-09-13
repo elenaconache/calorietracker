@@ -15,7 +15,8 @@ class AddLocalDataResponse {
     required this.localResourceId,
   });
 
-  factory AddLocalDataResponse.fromJson(Map<String, dynamic> json) => _$AddLocalDataResponseFromJson(json);
+  factory AddLocalDataResponse.fromJson(Map<String, dynamic> json) =>
+      _$AddLocalDataResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddLocalDataResponseToJson(this);
 
@@ -23,5 +24,6 @@ class AddLocalDataResponse {
   String toString() => toJson().toString();
 }
 
-List<AddLocalDataResponse> deserializeAddLocalDataResponseList(List<Map<String, dynamic>> json) =>
-    json.map((e) => AddLocalDataResponse.fromJson(e)).toList();
+List<AddLocalDataResponse> deserializeAddLocalDataResponseList(
+  List<Map<String, dynamic>> json,
+) => json.map((e) => AddLocalDataResponse.fromJson(e)).toList();

@@ -23,7 +23,8 @@ class UnitResponse {
     required this.weightInGrams,
   });
 
-  factory UnitResponse.fromJson(Map<String, dynamic> json) => _$UnitResponseFromJson(json);
+  factory UnitResponse.fromJson(Map<String, dynamic> json) =>
+      _$UnitResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$UnitResponseToJson(this);
 

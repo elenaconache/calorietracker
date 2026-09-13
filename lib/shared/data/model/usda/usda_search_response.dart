@@ -17,7 +17,8 @@ class UsdaSearchResponse {
     required this.foods,
   });
 
-  factory UsdaSearchResponse.fromJson(Map<String, dynamic> json) => _$UsdaSearchResponseFromJson(json);
+  factory UsdaSearchResponse.fromJson(Map<String, dynamic> json) =>
+      _$UsdaSearchResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$UsdaSearchResponseToJson(this);
 
@@ -25,4 +26,5 @@ class UsdaSearchResponse {
   String toString() => toJson().toString();
 }
 
-UsdaSearchResponse deserializeUsdaSearchResponse(Map<String, dynamic> json) => UsdaSearchResponse.fromJson(json);
+UsdaSearchResponse deserializeUsdaSearchResponse(Map<String, dynamic> json) =>
+    UsdaSearchResponse.fromJson(json);

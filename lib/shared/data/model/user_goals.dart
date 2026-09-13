@@ -18,7 +18,8 @@ class UserGoals {
     required this.username,
   });
 
-  factory UserGoals.fromJson(Map<String, dynamic> json) => _$UserGoalsFromJson(json);
+  factory UserGoals.fromJson(Map<String, dynamic> json) =>
+      _$UserGoalsFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserGoalsToJson(this);
 
@@ -28,14 +29,13 @@ class UserGoals {
     double? proteinPercentage,
     double? fatPercentage,
     String? username,
-  }) =>
-      UserGoals(
-        calories: calories ?? this.calories,
-        username: username ?? this.username,
-        carbsPercentage: carbsPercentage ?? this.carbsPercentage,
-        fatPercentage: fatPercentage ?? this.fatPercentage,
-        proteinPercentage: proteinPercentage ?? this.proteinPercentage,
-      );
+  }) => UserGoals(
+    calories: calories ?? this.calories,
+    username: username ?? this.username,
+    carbsPercentage: carbsPercentage ?? this.carbsPercentage,
+    fatPercentage: fatPercentage ?? this.fatPercentage,
+    proteinPercentage: proteinPercentage ?? this.proteinPercentage,
+  );
 
   double get carbsGramsGoal => calories * carbsPercentage / 100 / 4;
 

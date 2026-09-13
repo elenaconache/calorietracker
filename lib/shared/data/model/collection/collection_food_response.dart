@@ -26,7 +26,8 @@ class CollectionFoodResponse {
     required this.nutritionInfo,
   });
 
-  factory CollectionFoodResponse.fromJson(Map<String, dynamic> json) => _$CollectionFoodResponseFromJson(json);
+  factory CollectionFoodResponse.fromJson(Map<String, dynamic> json) =>
+      _$CollectionFoodResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$CollectionFoodResponseToJson(this);
 
@@ -36,5 +37,6 @@ class CollectionFoodResponse {
   Nutrition get nutrition => nutritionInfo;
 }
 
-List<CollectionFoodResponse> deserializeCollectionFoodResponseList(List<Map<String, dynamic>> json) =>
-    json.map((e) => CollectionFoodResponse.fromJson(e)).toList();
+List<CollectionFoodResponse> deserializeCollectionFoodResponseList(
+  List<Map<String, dynamic>> json,
+) => json.map((e) => CollectionFoodResponse.fromJson(e)).toList();

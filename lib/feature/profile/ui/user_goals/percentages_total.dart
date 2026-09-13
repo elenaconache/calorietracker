@@ -33,10 +33,9 @@ class PercentagesTotal extends StatelessWidget {
             const SizedBox(width: 12),
             Text(
               '$totalPercentage%',
-              style: Theme.of(context)
-                  .textTheme
-                  .displaySmall
-                  ?.copyWith(color: totalPercentage == 100 ? pastelGreen : bittersweetRed),
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                color: totalPercentage == 100 ? pastelGreen : bittersweetRed,
+              ),
             ),
           ],
         ),

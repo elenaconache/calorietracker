@@ -16,6 +16,8 @@ import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart';
 
 import 'shared/data/model/local/local_diary_entry.dart';
 import 'shared/data/model/local/local_food.dart';
+import 'shared/data/model/local/local_ingredient.dart';
+import 'shared/data/model/local/local_recipe.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -270,6 +272,101 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(5, 2973208409050251489),
+    name: 'LocalIngredient',
+    lastPropertyId: const obx_int.IdUid(5, 1963306082810561497),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 6093777940309553963),
+        name: 'localId',
+        type: 6,
+        flags: 129,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 5678152583366537141),
+        name: 'unitId',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 8286397187121118784),
+        name: 'servingQuantity',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 8663882421997691161),
+        name: 'localFoodId',
+        type: 11,
+        flags: 520,
+        indexId: const obx_int.IdUid(10, 8457911075573444926),
+        relationField: 'localFood',
+        relationTarget: 'LocalFood',
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 1963306082810561497),
+        name: 'dbState',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(6, 6092922705534872855),
+    name: 'LocalRecipe',
+    lastPropertyId: const obx_int.IdUid(6, 8753853085356072603),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 5065762841029010272),
+        name: 'localId',
+        type: 6,
+        flags: 129,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 3727133277729500852),
+        name: 'name',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 5270889437725318919),
+        name: 'description',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 1182972338215864553),
+        name: 'cookedWeight',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 9136240826243293664),
+        name: 'dbState',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 8753853085356072603),
+        name: 'remoteId',
+        type: 6,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[
+      obx_int.ModelRelation(
+        id: const obx_int.IdUid(1, 8887779499144796341),
+        name: 'localIngredients',
+        targetId: const obx_int.IdUid(5, 2973208409050251489),
+      ),
+    ],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -315,9 +412,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(4, 4051744504196569127),
-    lastIndexId: const obx_int.IdUid(9, 4824245897194383854),
-    lastRelationId: const obx_int.IdUid(0, 0),
+    lastEntityId: const obx_int.IdUid(6, 6092922705534872855),
+    lastIndexId: const obx_int.IdUid(10, 8457911075573444926),
+    lastRelationId: const obx_int.IdUid(1, 8887779499144796341),
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [5131412822362615304, 4051744504196569127],
     retiredIndexUids: const [],
@@ -655,6 +752,112 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    LocalIngredient: obx_int.EntityDefinition<LocalIngredient>(
+      model: _entities[2],
+      toOneRelations: (LocalIngredient object) => [object.localFood],
+      toManyRelations: (LocalIngredient object) => {},
+      getId: (LocalIngredient object) => object.localId,
+      setId: (LocalIngredient object, int id) {
+        object.localId = id;
+      },
+      objectToFB: (LocalIngredient object, fb.Builder fbb) {
+        final dbStateOffset = fbb.writeString(object.dbState);
+        fbb.startTable(6);
+        fbb.addInt64(0, object.localId);
+        fbb.addInt64(1, object.unitId);
+        fbb.addFloat64(2, object.servingQuantity);
+        fbb.addInt64(3, object.localFood.targetId);
+        fbb.addOffset(4, dbStateOffset);
+        fbb.finish(fbb.endTable());
+        return object.localId;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+
+        final object = LocalIngredient()
+          ..localId = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+          ..unitId = const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0)
+          ..servingQuantity = const fb.Float64Reader().vTableGet(
+            buffer,
+            rootOffset,
+            8,
+            0,
+          )
+          ..dbState = const fb.StringReader(
+            asciiOptimization: true,
+          ).vTableGet(buffer, rootOffset, 12, '');
+        object.localFood.targetId = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          10,
+          0,
+        );
+        object.localFood.attach(store);
+        return object;
+      },
+    ),
+    LocalRecipe: obx_int.EntityDefinition<LocalRecipe>(
+      model: _entities[3],
+      toOneRelations: (LocalRecipe object) => [],
+      toManyRelations: (LocalRecipe object) => {
+        obx_int.RelInfo<LocalRecipe>.toMany(1, object.localId):
+            object.localIngredients,
+      },
+      getId: (LocalRecipe object) => object.localId,
+      setId: (LocalRecipe object, int id) {
+        object.localId = id;
+      },
+      objectToFB: (LocalRecipe object, fb.Builder fbb) {
+        final nameOffset = fbb.writeString(object.name);
+        final descriptionOffset = object.description == null
+            ? null
+            : fbb.writeString(object.description!);
+        final dbStateOffset = fbb.writeString(object.dbState);
+        fbb.startTable(7);
+        fbb.addInt64(0, object.localId);
+        fbb.addOffset(1, nameOffset);
+        fbb.addOffset(2, descriptionOffset);
+        fbb.addInt64(3, object.cookedWeight);
+        fbb.addOffset(4, dbStateOffset);
+        fbb.addInt64(5, object.remoteId);
+        fbb.finish(fbb.endTable());
+        return object.localId;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+
+        final object = LocalRecipe()
+          ..localId = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+          ..name = const fb.StringReader(
+            asciiOptimization: true,
+          ).vTableGet(buffer, rootOffset, 6, '')
+          ..description = const fb.StringReader(
+            asciiOptimization: true,
+          ).vTableGetNullable(buffer, rootOffset, 8)
+          ..cookedWeight = const fb.Int64Reader().vTableGet(
+            buffer,
+            rootOffset,
+            10,
+            0,
+          )
+          ..dbState = const fb.StringReader(
+            asciiOptimization: true,
+          ).vTableGet(buffer, rootOffset, 12, '')
+          ..remoteId = const fb.Int64Reader().vTableGetNullable(
+            buffer,
+            rootOffset,
+            14,
+          );
+        obx_int.InternalToManyAccess.setRelInfo<LocalRecipe>(
+          object.localIngredients,
+          store,
+          obx_int.RelInfo<LocalRecipe>.toMany(1, object.localId),
+        );
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -849,4 +1052,71 @@ class LocalDiaryEntry_ {
   static final dbMeal = obx.QueryIntegerProperty<LocalDiaryEntry>(
     _entities[1].properties[10],
   );
+}
+
+/// [LocalIngredient] entity fields to define ObjectBox queries.
+class LocalIngredient_ {
+  /// See [LocalIngredient.localId].
+  static final localId = obx.QueryIntegerProperty<LocalIngredient>(
+    _entities[2].properties[0],
+  );
+
+  /// See [LocalIngredient.unitId].
+  static final unitId = obx.QueryIntegerProperty<LocalIngredient>(
+    _entities[2].properties[1],
+  );
+
+  /// See [LocalIngredient.servingQuantity].
+  static final servingQuantity = obx.QueryDoubleProperty<LocalIngredient>(
+    _entities[2].properties[2],
+  );
+
+  /// See [LocalIngredient.localFood].
+  static final localFood = obx.QueryRelationToOne<LocalIngredient, LocalFood>(
+    _entities[2].properties[3],
+  );
+
+  /// See [LocalIngredient.dbState].
+  static final dbState = obx.QueryStringProperty<LocalIngredient>(
+    _entities[2].properties[4],
+  );
+}
+
+/// [LocalRecipe] entity fields to define ObjectBox queries.
+class LocalRecipe_ {
+  /// See [LocalRecipe.localId].
+  static final localId = obx.QueryIntegerProperty<LocalRecipe>(
+    _entities[3].properties[0],
+  );
+
+  /// See [LocalRecipe.name].
+  static final name = obx.QueryStringProperty<LocalRecipe>(
+    _entities[3].properties[1],
+  );
+
+  /// See [LocalRecipe.description].
+  static final description = obx.QueryStringProperty<LocalRecipe>(
+    _entities[3].properties[2],
+  );
+
+  /// See [LocalRecipe.cookedWeight].
+  static final cookedWeight = obx.QueryIntegerProperty<LocalRecipe>(
+    _entities[3].properties[3],
+  );
+
+  /// See [LocalRecipe.dbState].
+  static final dbState = obx.QueryStringProperty<LocalRecipe>(
+    _entities[3].properties[4],
+  );
+
+  /// See [LocalRecipe.remoteId].
+  static final remoteId = obx.QueryIntegerProperty<LocalRecipe>(
+    _entities[3].properties[5],
+  );
+
+  /// see [LocalRecipe.localIngredients]
+  static final localIngredients =
+      obx.QueryRelationToMany<LocalRecipe, LocalIngredient>(
+        _entities[3].relations[0],
+      );
 }

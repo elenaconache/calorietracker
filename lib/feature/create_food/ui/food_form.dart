@@ -100,7 +100,12 @@ class FoodForm extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        MacrosInputSection(carbsController: carbsController, fatController: fatController, proteinController: proteinController, enabled: enabled),
+        MacrosInputSection(
+          carbsController: carbsController,
+          fatController: fatController,
+          proteinController: proteinController,
+          enabled: enabled,
+        ),
         const SizedBox(height: 8),
         const AppDivider(),
         const SizedBox(height: 12),
@@ -109,7 +114,10 @@ class FoodForm extends StatelessWidget {
           child: AppTextField(
             labelText: AppStrings.sugarGramsLabel,
             controller: sugarController,
-            inputType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+            inputType: const TextInputType.numberWithOptions(
+              signed: true,
+              decimal: true,
+            ),
             validate: validator.validateMicronutrient,
             maxLength: AppTextField.maxNumericInputLength,
             isDense: true,

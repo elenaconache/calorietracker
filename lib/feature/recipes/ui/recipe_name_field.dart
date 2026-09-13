@@ -25,10 +25,13 @@ class RecipeNameField extends StatelessWidget {
         enabled: enabled,
         validate: _validateRecipeName,
         controller: textController,
-        textColor: !enabled ? Theme.of(context).textTheme.bodyLarge?.color : null,
+        textColor: !enabled
+            ? Theme.of(context).textTheme.bodyLarge?.color
+            : null,
       ),
     );
   }
 
-  String? _validateRecipeName(String? text) => (text?.isNotEmpty ?? false) ? null : AppStrings.emptyRecipeNameError;
+  String? _validateRecipeName(String? text) =>
+      (text?.isNotEmpty ?? false) ? null : AppStrings.emptyRecipeNameError;
 }

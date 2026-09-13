@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 
 class MacroPercentageGoals extends StatelessWidget {
   final MacroGoals macroGoals;
-  final Function(Macro selectedMacro, int selectedPercentage) onMacroPercentagePicked;
+  final Function(Macro selectedMacro, int selectedPercentage)
+  onMacroPercentagePicked;
   final bool enabled;
 
   const MacroPercentageGoals({
@@ -18,7 +19,10 @@ class MacroPercentageGoals extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalPercentage = macroGoals.roundedCarbsPercentage + macroGoals.roundedFatPercentage + macroGoals.roundedProteinPercentage;
+    final totalPercentage =
+        macroGoals.roundedCarbsPercentage +
+        macroGoals.roundedFatPercentage +
+        macroGoals.roundedProteinPercentage;
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -26,7 +30,11 @@ class MacroPercentageGoals extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SizedBox(
               height: 300,
-              child: MacrosPickers(enabled: enabled, macroGoals: macroGoals, onValuePicked: onMacroPercentagePicked),
+              child: MacrosPickers(
+                enabled: enabled,
+                macroGoals: macroGoals,
+                onValuePicked: onMacroPercentagePicked,
+              ),
             ),
           ),
         ),

@@ -22,12 +22,11 @@ class FoodLog {
     double? servingQuantity,
     int? localFoodId,
     DateTime? date,
-  }) =>
-      FoodLog(
-        meal: meal ?? this.meal,
-        food: food ?? this.food,
-        servingQuantity: servingQuantity ?? this.servingQuantity,
-        localFoodId: localFoodId ?? this.localFoodId,
-        date: date ?? this.date,
-      );
+  }) => FoodLog(
+    meal: meal ?? this.meal,
+    food: food ?? this.food,
+    servingQuantity: servingQuantity ?? this.servingQuantity,
+    localFoodId: localFoodId ?? this.localFoodId,
+    date: date ?? this.date,
+  );
 }

@@ -59,20 +59,20 @@ class CopyDiaryModal extends StatelessWidget {
     unawaited(
       getIt<DiaryLoggingService>()
           .copyDiary(
-        meal: meal,
-        fromDate: previousDay,
-        selectedDay: selectedDay,
-      )
+            meal: meal,
+            fromDate: previousDay,
+            selectedDay: selectedDay,
+          )
           .then((copied) {
-        if (!copied) {
-          // TODO: Use Scaffold messenger set in Material App instead
-          ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(
-            SnackBar(
-              content: Text(AppStrings.copyDiaryError),
-            ),
-          );
-        }
-      }),
+            if (!copied) {
+              // TODO: Use Scaffold messenger set in Material App instead
+              ScaffoldMessenger.of(
+                rootNavigatorKey.currentContext!,
+              ).showSnackBar(
+                SnackBar(content: Text(AppStrings.copyDiaryError)),
+              );
+            }
+          }),
     );
     Navigator.of(rootNavigatorKey.currentContext!).pop();
   }
@@ -82,19 +82,19 @@ class CopyDiaryModal extends StatelessWidget {
     unawaited(
       getIt<DiaryLoggingService>()
           .copyDiary(
-        meal: meal,
-        toDate: DateTime.now(),
-        selectedDay: selectedDay,
-      )
+            meal: meal,
+            toDate: DateTime.now(),
+            selectedDay: selectedDay,
+          )
           .then((copied) {
-        if (!copied) {
-          ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(
-            SnackBar(
-              content: Text(AppStrings.copyDiaryError),
-            ),
-          );
-        }
-      }),
+            if (!copied) {
+              ScaffoldMessenger.of(
+                rootNavigatorKey.currentContext!,
+              ).showSnackBar(
+                SnackBar(content: Text(AppStrings.copyDiaryError)),
+              );
+            }
+          }),
     );
     Navigator.of(rootNavigatorKey.currentContext!).pop();
   }
@@ -112,18 +112,20 @@ class CopyDiaryModal extends StatelessWidget {
         unawaited(
           getIt<DiaryLoggingService>()
               .copyDiary(
-            meal: meal,
-            fromDate: isFromSelection ? selectedDate : null,
-            toDate: isFromSelection ? null : selectedDate,
-            selectedDay: selectedDiaryDay,
-          )
+                meal: meal,
+                fromDate: isFromSelection ? selectedDate : null,
+                toDate: isFromSelection ? null : selectedDate,
+                selectedDay: selectedDiaryDay,
+              )
               .then((copied) {
-            if (!copied) {
-              ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(
-                SnackBar(content: Text(AppStrings.copyDiaryError)),
-              );
-            }
-          }),
+                if (!copied) {
+                  ScaffoldMessenger.of(
+                    rootNavigatorKey.currentContext!,
+                  ).showSnackBar(
+                    SnackBar(content: Text(AppStrings.copyDiaryError)),
+                  );
+                }
+              }),
         );
       }
     });

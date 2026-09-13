@@ -1,4 +1,3 @@
-import 'package:calorietracker/feature/recipe_details/ui/recipe_details_arguments.dart';
 import 'package:calorietracker/shared/data/model/recipe.dart';
 import 'package:calorietracker/shared/navigation/routes.dart';
 import 'package:calorietracker/ui/widgets/app_divider.dart';
@@ -8,7 +7,11 @@ class RecipeItem extends StatelessWidget {
   final Recipe recipe;
   final bool showTopDivider;
 
-  const RecipeItem({super.key, required this.recipe, required this.showTopDivider});
+  const RecipeItem({
+    super.key,
+    required this.recipe,
+    required this.showTopDivider,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +23,29 @@ class RecipeItem extends StatelessWidget {
           child: Column(
             children: [
               if (showTopDivider) const AppDivider(),
-              Row(children: [
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    recipe.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyLarge,
+              Row(
+                children: [
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Text(
+                      recipe.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 24),
-                SizedBox(
-                  width: 48,
-                  height: 48,
-                  child: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.primary),
-                ),
-                const SizedBox(width: 16),
-              ]),
+                  const SizedBox(width: 24),
+                  SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Icon(
+                      Icons.chevron_right,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                ],
+              ),
             ],
           ),
         ),
@@ -45,12 +53,6 @@ class RecipeItem extends StatelessWidget {
     );
   }
 
-  void _navigateToRecipeDetails(BuildContext context) => Navigator.of(context).pushNamed(
-        Routes.recipe.path,
-        arguments: RecipeDetailsArguments(
-          recipeId: recipe.id,
-          recipeName: recipe.name,
-          cookedQuantity: recipe.cookedWeight,
-        ),
-      );
+  void _navigateToRecipeDetails(BuildContext context) =>
+      Navigator.of(context).pushNamed(Routes.recipe.path, arguments: recipe);
 }

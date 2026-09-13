@@ -11,7 +11,8 @@ class MealEntriesList {
 
   const MealEntriesList({required this.meal, required this.diaryEntries});
 
-  factory MealEntriesList.fromJson(Map<String, dynamic> json) => _$MealEntriesListFromJson(json);
+  factory MealEntriesList.fromJson(Map<String, dynamic> json) =>
+      _$MealEntriesListFromJson(json);
 
   Map<String, dynamic> toJson() => _$MealEntriesListToJson(this);
 

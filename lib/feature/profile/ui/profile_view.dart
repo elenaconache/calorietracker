@@ -16,7 +16,8 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> with SingleTickerProviderStateMixin {
+class _ProfileViewState extends State<ProfileView>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _rotationController;
 
   @override
@@ -45,10 +46,7 @@ class _ProfileViewState extends State<ProfileView> with SingleTickerProviderStat
           ProfileItem(
             onTap: () => Navigator.pushNamed(context, Routes.accounts.path),
             title: AppStrings.switchAccountLabel,
-            icon: const Icon(
-              Icons.chevron_right_rounded,
-              size: 32,
-            ),
+            icon: const Icon(Icons.chevron_right_rounded, size: 32),
           ),
           ProfileItem(
             onTap: () {
@@ -56,26 +54,22 @@ class _ProfileViewState extends State<ProfileView> with SingleTickerProviderStat
               if (!dataSyncService.isUploadInProgress) {
                 _rotationController.repeat();
                 final selectedDay = context.read<DiaryBloc>().state.selectedDay;
-                dataSyncService.uploadLocalData( selectedDay: selectedDay).then((_) => _rotationController.stop());
+                dataSyncService
+                    .uploadLocalData(selectedDay: selectedDay)
+                    .then((_) => _rotationController.stop());
               }
             },
             title: AppStrings.syncDataLabel,
             icon: RotationTransition(
               turns: _rotationController,
-              child: const Icon(
-                Icons.sync,
-                size: 32,
-              ),
+              child: const Icon(Icons.sync, size: 32),
             ),
           ),
           ProfileItem(
             onTap: () => Navigator.pushNamed(context, Routes.userGoals.path),
             title: AppStrings.myGoalsLabel,
-            icon: const Icon(
-              Icons.chevron_right_rounded,
-              size: 32,
-            ),
-          )
+            icon: const Icon(Icons.chevron_right_rounded, size: 32),
+          ),
         ],
       ),
     );

@@ -31,13 +31,12 @@ class AdaptiveDialog extends StatelessWidget {
           children: [
             Text(
               title,
-              style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600),
+              style: textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 16),
-            Text(
-              message,
-              style: textTheme.bodyMedium?.copyWith(height: 1.45),
-            ),
+            Text(message, style: textTheme.bodyMedium?.copyWith(height: 1.45)),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

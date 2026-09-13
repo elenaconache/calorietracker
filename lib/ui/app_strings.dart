@@ -16,8 +16,15 @@ class AppStrings {
   static String get searchForFoodLabel => S.current.searchForFoodLabel;
   static String get generalErrorMessage => S.current.generalErrorMessage;
   static String get usdaDataSource => S.current.usdaDataSource;
-  static String caloriesServingShortLabel(calories, servingQuantity, servingUnit) =>
-      S.current.caloriesServingShortLabel(calories, servingQuantity, servingUnit);
+  static String caloriesServingShortLabel(
+    calories,
+    servingQuantity,
+    servingUnit,
+  ) => S.current.caloriesServingShortLabel(
+    calories,
+    servingQuantity,
+    servingUnit,
+  );
   static String get discoverLabel => S.current.discoverLabel;
   static String get noResultsTitle => S.current.noResultsTitle;
   static String get breakfastLabel => S.current.breakfastLabel;
@@ -25,10 +32,12 @@ class AppStrings {
   static String get dinnerLabel => S.current.dinnerLabel;
   static String get snacksLabel => S.current.snacksLabel;
   static String get noFoodLoggedMessage => S.current.noFoodLoggedMessage;
-  static String caloriesShortLabel(int calories) => S.current.caloriesShortLabel(calories);
+  static String caloriesShortLabel(int calories) =>
+      S.current.caloriesShortLabel(calories);
   static String get mealLabel => S.current.mealLabel;
   static String get servingsLabel => S.current.servingsLabel;
-  static String get caloriesShortGenericLabel => S.current.caloriesShortGenericLabel;
+  static String get caloriesShortGenericLabel =>
+      S.current.caloriesShortGenericLabel;
   static String get saturatedFatLabel => S.current.saturatedFatLabel;
   static String get transFatLabel => S.current.transFatLabel;
   static String get cholesterolLabel => S.current.cholesterolLabel;
@@ -48,9 +57,12 @@ class AppStrings {
   static String get loginTitle => S.current.loginTitle;
   static String get usernameLabel => S.current.usernameLabel;
   static String get userNotFoundError => S.current.userNotFoundError;
-  static String carbsPercentageValue(int percentage) => S.current.carbsPercentageValue(percentage);
-  static String proteinPercentageValue(int percentage) => S.current.proteinPercentageValue(percentage);
-  static String fatPercentageValue(int percentage) => S.current.fatPercentageValue(percentage);
+  static String carbsPercentageValue(int percentage) =>
+      S.current.carbsPercentageValue(percentage);
+  static String proteinPercentageValue(int percentage) =>
+      S.current.proteinPercentageValue(percentage);
+  static String fatPercentageValue(int percentage) =>
+      S.current.fatPercentageValue(percentage);
   static String get accountsTitle => S.current.accountsTitle;
   static String get logoutLabel => S.current.logoutLabel;
   static String get addAccountLabel => S.current.addAccountLabel;
@@ -65,21 +77,35 @@ class AppStrings {
   static String get invalidServingError => S.current.invalidServingError;
   static String get requiredError => S.current.requiredError;
   static String get invalidError => S.current.invalidError;
-  static String macrosOrCaloriesError(int calories) => S.current.macrosOrCaloriesError(calories);
+  static String macrosOrCaloriesError(int calories) =>
+      S.current.macrosOrCaloriesError(calories);
   static String get insolubleFiberLabel => S.current.insolubleFiberLabel;
-  static String get sugarsExceedNetCarbsLabel => S.current.sugarsExceedNetCarbsError;
-  static String sumFatsExceedsTotalFatError(int fat) => S.current.sumFatsExceedsTotalFatError(fat);
-  static String get cholesterolExceedsFatError => S.current.cholesterolExceedsFatError;
-  static String macrosExceedServingSizeError(int servingSize) => S.current.macrosExceedServingSizeError(servingSize);
-  static String cholesterolExceedsMaxPerServingError(int expectedCholesterol) => S.current.cholesterolExceedsMaxPerServingError(expectedCholesterol);
-  static String get insolubleFiberExceedsFiberError => S.current.insolubleFiberExceedsFiberError;
-  static String get saltExceedsServingSizeError => S.current.saltExceedsServingSizeError;
-  static String ironExceedsMaxPerServingError(int expectedIron) => S.current.ironExceedsMaxPerServingError(expectedIron);
-  static String potassiumExceedsMaxPerServingError(int expectedPotassium) => S.current.potassiumExceedsMaxPerServingError(expectedPotassium);
-  static String calciumExceedsMaxPerServingError(int expectedCalcium) => S.current.calciumExceedsMaxPerServingError(expectedCalcium);
-  static String vitaminAExceedsMaxPerServingError(int expectedVitaminA) => S.current.vitaminAExceedsMaxPerServingError(expectedVitaminA);
-  static String vitaminCExceedsMaxPerServingError(int expectedVitaminC) => S.current.vitaminCExceedsMaxPerServingError(expectedVitaminC);
-  static String vitaminDExceedsMaxPerServingError(int expectedVitaminD) => S.current.vitaminDExceedsMaxPerServingError(expectedVitaminD);
+  static String get sugarsExceedNetCarbsLabel =>
+      S.current.sugarsExceedNetCarbsError;
+  static String sumFatsExceedsTotalFatError(int fat) =>
+      S.current.sumFatsExceedsTotalFatError(fat);
+  static String get cholesterolExceedsFatError =>
+      S.current.cholesterolExceedsFatError;
+  static String macrosExceedServingSizeError(int servingSize) =>
+      S.current.macrosExceedServingSizeError(servingSize);
+  static String cholesterolExceedsMaxPerServingError(int expectedCholesterol) =>
+      S.current.cholesterolExceedsMaxPerServingError(expectedCholesterol);
+  static String get insolubleFiberExceedsFiberError =>
+      S.current.insolubleFiberExceedsFiberError;
+  static String get saltExceedsServingSizeError =>
+      S.current.saltExceedsServingSizeError;
+  static String ironExceedsMaxPerServingError(int expectedIron) =>
+      S.current.ironExceedsMaxPerServingError(expectedIron);
+  static String potassiumExceedsMaxPerServingError(int expectedPotassium) =>
+      S.current.potassiumExceedsMaxPerServingError(expectedPotassium);
+  static String calciumExceedsMaxPerServingError(int expectedCalcium) =>
+      S.current.calciumExceedsMaxPerServingError(expectedCalcium);
+  static String vitaminAExceedsMaxPerServingError(int expectedVitaminA) =>
+      S.current.vitaminAExceedsMaxPerServingError(expectedVitaminA);
+  static String vitaminCExceedsMaxPerServingError(int expectedVitaminC) =>
+      S.current.vitaminCExceedsMaxPerServingError(expectedVitaminC);
+  static String vitaminDExceedsMaxPerServingError(int expectedVitaminD) =>
+      S.current.vitaminDExceedsMaxPerServingError(expectedVitaminD);
   static String get carbsGramsLabel => S.current.carbsGramsLabel;
   static String get fatGramsLabel => S.current.fatGramsLabel;
   static String get proteinGramsLabel => S.current.proteinGramsLabel;
@@ -97,7 +123,8 @@ class AppStrings {
   static String get vitaminAIULabel => S.current.vitaminAIULabel;
   static String get vitaminCMgLabel => S.current.vitaminCMgLabel;
   static String get vitaminDIULabel => S.current.vitaminDIULabel;
-  static String get insolubleFiberGramsLabel => S.current.insolubleFiberGramsLabel;
+  static String get insolubleFiberGramsLabel =>
+      S.current.insolubleFiberGramsLabel;
   static String gramsValue(double grams) => S.current.gramsValue(grams);
   static String get collectionLabel => S.current.collectionLabel;
   static String get gramsShortLabel => S.current.gramsShortLabel;
@@ -118,9 +145,11 @@ class AppStrings {
   static String get searchIngredientTitle => S.current.searchIngredientTitle;
   static String get addIngredientTitle => S.current.addIngredientTitle;
   static String get nutritionTitle => S.current.nutritionTitle;
-  static String get cookedQuantityGramsLabel => S.current.cookedQuantityGramsLabel;
+  static String get cookedQuantityGramsLabel =>
+      S.current.cookedQuantityGramsLabel;
   static String get summary100GramsMessage => S.current.summary100GramsMessage;
-  static String get errorCreatingRecipeMessage => S.current.errorCreatingRecipeMessage;
+  static String get errorCreatingRecipeMessage =>
+      S.current.errorCreatingRecipeMessage;
   static String get emptyRecipeNameError => S.current.emptyRecipeNameError;
   static String get addIngredientError => S.current.addIngredientError;
   static String get recipeDetailsTitle => S.current.recipeDetailsTitle;
@@ -138,11 +167,13 @@ class AppStrings {
   static String get gramsLabel => S.current.gramsLabel;
   static String get percentagesLabel => S.current.percentagesLabel;
   static String get totalLabel => S.current.totalLabel;
-  static String get macroPercentagesSumMessage => S.current.macroPercentagesSumMessage;
+  static String get macroPercentagesSumMessage =>
+      S.current.macroPercentagesSumMessage;
   static String get macroGoalsError => S.current.macroGoalsError;
   static String get goalLabel => S.current.goalLabel;
   static String get leftLabel => S.current.leftLabel;
-  static String get nutrientAccurateMessage => S.current.nutrientAccurateMessage;
+  static String get nutrientAccurateMessage =>
+      S.current.nutrientAccurateMessage;
   static String get warningTitle => S.current.warningTitle;
   static String get cancelLabel => S.current.cancelLabel;
   static String get confirmLabel => S.current.confirmLabel;

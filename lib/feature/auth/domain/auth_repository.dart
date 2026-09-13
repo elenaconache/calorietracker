@@ -27,7 +27,9 @@ class AuthRepository {
   );
 
   Future<void> logOut({required String username}) async {
-    final updatedUsers = (await fetchUsers()).where((user) => user.username != username).toList();
+    final updatedUsers = (await fetchUsers())
+        .where((user) => user.username != username)
+        .toList();
 
     if (updatedUsers.isEmpty) {
       await _secureStorageService.delete(key: usersKey);
@@ -35,7 +37,11 @@ class AuthRepository {
         await selectUser(username: null);
       }
     } else {
-      await _secureStorageService.saveList(key: usersKey, list: updatedUsers, toJson: (user) => user.toJson());
+      await _secureStorageService.saveList(
+        key: usersKey,
+        list: updatedUsers,
+        toJson: (user) => user.toJson(),
+      );
       if (selectedUser?.username == username) {
         final updatedSelection = updatedUsers.first;
         await selectUser(username: updatedSelection.username);
@@ -44,9 +50,9 @@ class AuthRepository {
   }
 
   Future<List<User>> fetchUsers() => _secureStorageService.getList(
-        key: usersKey,
-        fromJson: (json) => User.fromJson(json),
-      );
+    key: usersKey,
+    fromJson: (json) => User.fromJson(json),
+  );
 
   void dispose() => _selectedUserController.close();
 
@@ -63,38 +69,45 @@ class AuthRepository {
       _loggingService.info('Already logged in as $username');
       await selectUser(username: username);
     } else {
-      await _userApiService.getUserId(username: username).then((user) async {
-        if (user.username.isNotEmpty) {
-          await saveUser(username: user.username);
-        } else {
-          throw Exception(AuthError.unknown);
-        }
-      }).catchError((error, stackTrace) {
-        final AuthError loginError;
-        _loggingService.handle(error, stackTrace);
-        if (error is DioException) {
-          if (error.isConnectionError) {
-            loginError = AuthError.connection;
-          } else if (error.response?.statusCode == HttpStatus.notFound) {
-            loginError = AuthError.notFound;
-          } else {
-            loginError = AuthError.unknown;
-          }
-          throw Exception(loginError);
-        } else {
-          throw Exception(AuthError.unknown);
-        }
-      });
+      await _userApiService
+          .getUserId(username: username)
+          .then((user) async {
+            if (user.username.isNotEmpty) {
+              await saveUser(username: user.username);
+            } else {
+              throw Exception(AuthError.unknown);
+            }
+          })
+          .catchError((error, stackTrace) {
+            final AuthError loginError;
+            _loggingService.handle(error, stackTrace);
+            if (error is DioException) {
+              if (error.isConnectionError) {
+                loginError = AuthError.connection;
+              } else if (error.response?.statusCode == HttpStatus.notFound) {
+                loginError = AuthError.notFound;
+              } else {
+                loginError = AuthError.unknown;
+              }
+              throw Exception(loginError);
+            } else {
+              throw Exception(AuthError.unknown);
+            }
+          });
     }
   }
 
   Future<void> saveUser({required String username}) async {
-    await _secureStorageService.save(key: selectedUserKey, value: username).catchError((error, stackTrace) {
-      _loggingService.handle(error, stackTrace);
-    });
+    await _secureStorageService
+        .save(key: selectedUserKey, value: username)
+        .catchError((error, stackTrace) {
+          _loggingService.handle(error, stackTrace);
+        });
     var storedUsers = await fetchUsers();
     if (storedUsers.any((user) => user.username == username)) {
-      _loggingService.info('Skipping saving username as it was already stored.');
+      _loggingService.info(
+        'Skipping saving username as it was already stored.',
+      );
     } else {
       storedUsers.add(User(username: username));
       await _secureStorageService.saveList(
@@ -113,7 +126,9 @@ class AuthRepository {
       fromJson: (json) => User.fromJson(json),
     );
     if (username != null) {
-      final selectedUser = users.firstWhereOrNull((element) => element.username == username);
+      final selectedUser = users.firstWhereOrNull(
+        (element) => element.username == username,
+      );
       _selectedUserController.add(selectedUser);
     } else {
       if (users.isNotEmpty) {
@@ -133,7 +148,9 @@ class AuthRepository {
 
   Future<void> selectUser({String? username}) async {
     final users = await fetchUsers();
-    final selection = users.toList().firstWhereOrNull((element) => element.username == username);
+    final selection = users.toList().firstWhereOrNull(
+      (element) => element.username == username,
+    );
     _selectedUserController.add(selection);
 
     if (selection != null) {

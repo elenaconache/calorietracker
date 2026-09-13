@@ -17,9 +17,11 @@ class AddRecipeRequest {
     required this.ingredients,
   });
 
-  factory AddRecipeRequest.fromJson(Map<String, dynamic> json) => _$AddRecipeRequestFromJson(json);
+  factory AddRecipeRequest.fromJson(Map<String, dynamic> json) =>
+      _$AddRecipeRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddRecipeRequestToJson(this);
 }
 
-Map<String, dynamic> serializeAddRecipeRequest(AddRecipeRequest object) => object.toJson();
+Map<String, dynamic> serializeAddRecipeRequest(AddRecipeRequest object) =>
+    object.toJson();

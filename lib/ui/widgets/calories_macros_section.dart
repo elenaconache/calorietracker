@@ -13,10 +13,7 @@ const _unknownMacroColor = blanchedAlmond;
 class CaloriesMacrosSection extends StatelessWidget {
   final Nutrition nutrition;
 
-  const CaloriesMacrosSection({
-    super.key,
-    required this.nutrition,
-  });
+  const CaloriesMacrosSection({super.key, required this.nutrition});
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +22,45 @@ class CaloriesMacrosSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const SizedBox(width: 16),
-        
+
         Expanded(
-            flex: 2,
-            child: CaloriesMacrosPieChart(
-              carbs: carbsPercentage.toDouble(),
-              fat: fatPercentage.toDouble(),
-              protein: proteinPercentage.toDouble(),
-              calories: calories,
-              carbsColor: _carbsColor,
-              fatColor: _fatColor,
-              proteinColor: _proteinColor,
-              defaultMacroNutrient: _unknownMacroColor,
-            )),
-        Expanded(child: MacroItem(percentage: carbsPercentage, quantityInGrams: carbsInGrams, name: AppStrings.carbsLabel, color: _carbsColor)),
-        Expanded(child: MacroItem(percentage: fatPercentage, quantityInGrams: fatInGrams, name: AppStrings.fatLabel, color: _fatColor)),
+          flex: 2,
+          child: CaloriesMacrosPieChart(
+            carbs: carbsPercentage.toDouble(),
+            fat: fatPercentage.toDouble(),
+            protein: proteinPercentage.toDouble(),
+            calories: calories,
+            carbsColor: _carbsColor,
+            fatColor: _fatColor,
+            proteinColor: _proteinColor,
+            defaultMacroNutrient: _unknownMacroColor,
+          ),
+        ),
         Expanded(
-            child: MacroItem(percentage: proteinPercentage, quantityInGrams: proteinInGrams, name: AppStrings.proteinLabel, color: _proteinColor)),
-        const SizedBox(width: 16)
+          child: MacroItem(
+            percentage: carbsPercentage,
+            quantityInGrams: carbsInGrams,
+            name: AppStrings.carbsLabel,
+            color: _carbsColor,
+          ),
+        ),
+        Expanded(
+          child: MacroItem(
+            percentage: fatPercentage,
+            quantityInGrams: fatInGrams,
+            name: AppStrings.fatLabel,
+            color: _fatColor,
+          ),
+        ),
+        Expanded(
+          child: MacroItem(
+            percentage: proteinPercentage,
+            quantityInGrams: proteinInGrams,
+            name: AppStrings.proteinLabel,
+            color: _proteinColor,
+          ),
+        ),
+        const SizedBox(width: 16),
       ],
     );
   }

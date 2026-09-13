@@ -28,7 +28,9 @@ abstract class RegisterModule {
   @LazySingleton(order: 1)
   @preResolve
   Future<UserApiService> get userApiService async {
-    final baseUrl = (await getIt.getAsync<AppEnvironment>()).getString(key: userApiBaseUrlKey);
+    final baseUrl = (await getIt.getAsync<AppEnvironment>()).getString(
+      key: userApiBaseUrlKey,
+    );
     final dioProvider = getIt<DioProvider>(param1: baseUrl);
     return UserApiService(dioProvider.dio);
   }
@@ -46,7 +48,9 @@ abstract class RegisterModule {
   @LazySingleton(order: 2)
   @preResolve
   Future<CollectionApiService> get collectionApiService async {
-    final baseUrl = (await getIt.getAsync<AppEnvironment>()).getString(key: collectionApiBaseUrlKey);
+    final baseUrl = (await getIt.getAsync<AppEnvironment>()).getString(
+      key: collectionApiBaseUrlKey,
+    );
     final dioProvider = getIt<DioProvider>(param1: baseUrl);
     return CollectionApiService(dioProvider.dio);
   }

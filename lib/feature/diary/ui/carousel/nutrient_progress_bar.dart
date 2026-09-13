@@ -5,7 +5,12 @@ class NutrientProgressBar extends StatelessWidget {
   final int? goal;
   final String label;
 
-  const NutrientProgressBar({super.key, required this.current, required this.goal, required this.label});
+  const NutrientProgressBar({
+    super.key,
+    required this.current,
+    required this.goal,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,28 +18,24 @@ class NutrientProgressBar extends StatelessWidget {
       children: [
         Row(
           children: [
+            Expanded(flex: 3, child: Text(label)),
+            Expanded(flex: 1, child: Text(current.toStringAsFixed(0))),
             Expanded(
-              flex: 3,
-              child: Text(label),
+              flex: 1,
+              child: goal == null
+                  ? const SizedBox.shrink()
+                  : Text(goal.toString()),
             ),
             Expanded(
               flex: 1,
-              child: Text(current.toStringAsFixed(0)),
-            ),
-            Expanded(
-              flex: 1,
-              child: goal == null ? const SizedBox.shrink() : Text(goal.toString()),
-            ),
-            Expanded(
-              flex: 1,
-              child: goal == null ? const SizedBox.shrink() : Text((goal! - current).toStringAsFixed(0)),
+              child: goal == null
+                  ? const SizedBox.shrink()
+                  : Text((goal! - current).toStringAsFixed(0)),
             ),
           ],
         ),
         const SizedBox(height: 4),
-        LinearProgressIndicator(
-          value: (goal ?? 0) == 0 ? 0 : current / goal!,
-        ),
+        LinearProgressIndicator(value: (goal ?? 0) == 0 ? 0 : current / goal!),
       ],
     );
   }

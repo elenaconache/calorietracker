@@ -218,11 +218,93 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "5:2973208409050251489",
+      "lastPropertyId": "5:1963306082810561497",
+      "name": "LocalIngredient",
+      "properties": [
+        {
+          "id": "1:6093777940309553963",
+          "name": "localId",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:5678152583366537141",
+          "name": "unitId",
+          "type": 6
+        },
+        {
+          "id": "3:8286397187121118784",
+          "name": "servingQuantity",
+          "type": 8
+        },
+        {
+          "id": "4:8663882421997691161",
+          "name": "localFoodId",
+          "indexId": "10:8457911075573444926",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "LocalFood"
+        },
+        {
+          "id": "5:1963306082810561497",
+          "name": "dbState",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:6092922705534872855",
+      "lastPropertyId": "6:8753853085356072603",
+      "name": "LocalRecipe",
+      "properties": [
+        {
+          "id": "1:5065762841029010272",
+          "name": "localId",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:3727133277729500852",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:5270889437725318919",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "4:1182972338215864553",
+          "name": "cookedWeight",
+          "type": 6
+        },
+        {
+          "id": "5:9136240826243293664",
+          "name": "dbState",
+          "type": 9
+        },
+        {
+          "id": "6:8753853085356072603",
+          "name": "remoteId",
+          "type": 6
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:8887779499144796341",
+          "name": "localIngredients",
+          "targetId": "5:2973208409050251489"
+        }
+      ]
     }
   ],
-  "lastEntityId": "4:4051744504196569127",
-  "lastIndexId": "9:4824245897194383854",
-  "lastRelationId": "0:0",
+  "lastEntityId": "6:6092922705534872855",
+  "lastIndexId": "10:8457911075573444926",
+  "lastRelationId": "1:8887779499144796341",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,

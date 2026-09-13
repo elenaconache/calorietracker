@@ -1,5 +1,1 @@
-enum AuthError {
-  notFound,
-  connection,
-  unknown;
-}
+enum AuthError { notFound, connection, unknown }

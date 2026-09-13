@@ -10,13 +10,24 @@ class DioProvider {
   DioProvider({@factoryParam String? baseUrl}) {
     final cacheOptions = CacheOptions(
       store: MemCacheStore(),
-      hitCacheOnErrorExcept: [HttpStatus.notFound, HttpStatus.unauthorized, HttpStatus.badRequest, HttpStatus.conflict],
+      hitCacheOnErrorExcept: [
+        HttpStatus.notFound,
+        HttpStatus.unauthorized,
+        HttpStatus.badRequest,
+        HttpStatus.conflict,
+      ],
       policy: CachePolicy.refresh,
       maxStale: const Duration(days: 2),
       allowPostMethod: false,
     );
     final cacheInterceptor = DioCacheInterceptor(options: cacheOptions);
-    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 9), receiveTimeout: const Duration(seconds: 9), baseUrl: baseUrl ?? ''));
+    final dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 9),
+        receiveTimeout: const Duration(seconds: 9),
+        baseUrl: baseUrl ?? '',
+      ),
+    );
     dio.interceptors.add(cacheInterceptor);
     dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
     this.dio = dio;

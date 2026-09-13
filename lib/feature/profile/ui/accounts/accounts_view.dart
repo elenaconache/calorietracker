@@ -18,29 +18,47 @@ class AccountsView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BlocBuilder<AuthBloc, AuthState>(
-              buildWhen: (previous, current) => previous.selectedUser != current.selectedUser,
+              buildWhen: (previous, current) =>
+                  previous.selectedUser != current.selectedUser,
               builder: (_, state) {
                 final selectedUser = state.selectedUser.data;
-                return selectedUser != null ? UserItem.large(user: selectedUser) : const SizedBox.shrink();
+                return selectedUser != null
+                    ? UserItem.large(user: selectedUser)
+                    : const SizedBox.shrink();
               },
             ),
             Expanded(
               child: BlocBuilder<AuthBloc, AuthState>(
-                buildWhen: (previous, current) => previous.users != current.users,
+                buildWhen: (previous, current) =>
+                    previous.users != current.users,
                 builder: (context, state) {
                   if (state.users.status is LoadingStatus) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  final unselectedUsers = state.users.data?.where((element) => element.username != state.selectedUser.data?.username).toList() ?? [];
+                  final unselectedUsers =
+                      state.users.data
+                          ?.where(
+                            (element) =>
+                                element.username !=
+                                state.selectedUser.data?.username,
+                          )
+                          .toList() ??
+                      [];
                   return ListView.builder(
-                    itemBuilder: (context, index) => UserItem(user: unselectedUsers[index]),
+                    itemBuilder: (context, index) =>
+                        UserItem(user: unselectedUsers[index]),
                     itemCount: unselectedUsers.length,
                   );
                 },
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 12, left: 24, right: 24),
+              padding: const EdgeInsets.only(
+                top: 12,
+                bottom: 12,
+                left: 24,
+                right: 24,
+              ),
               child: FilledButton(
                 onPressed: () => _navigateToLogin(context),
                 child: Text(AppStrings.addAccountLabel),
@@ -52,5 +70,6 @@ class AccountsView extends StatelessWidget {
     );
   }
 
-  void _navigateToLogin(BuildContext context) => Navigator.of(context).pushNamed(Routes.login.path);
+  void _navigateToLogin(BuildContext context) =>
+      Navigator.of(context).pushNamed(Routes.login.path);
 }

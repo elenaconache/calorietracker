@@ -24,7 +24,8 @@ class CreateFoodView extends StatefulWidget {
   State<CreateFoodView> createState() => _CreateFoodViewState();
 }
 
-class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStateMixin {
+class _CreateFoodViewState extends State<CreateFoodView>
+    with TickerProviderStateMixin {
   late final TextEditingController _foodNameController;
   late final TextEditingController _brandNameController;
   late final TextEditingController _servingSizeController;
@@ -58,7 +59,12 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
 
     _servingSizeController.text = 100.toString();
 
-    _errorAnimationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this, lowerBound: 0.0, upperBound: 1.0);
+    _errorAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+      lowerBound: 0.0,
+      upperBound: 1.0,
+    );
   }
 
   @override
@@ -71,7 +77,9 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     return BlocListener<CreateFoodCubit, CreateFoodState>(
-      listenWhen: (previous, current) => previous.createdFood != current.createdFood && current.createdFood.status is SuccessStatus,
+      listenWhen: (previous, current) =>
+          previous.createdFood != current.createdFood &&
+          current.createdFood.status is SuccessStatus,
       listener: (context, state) {
         _handleCreateFoodResponse(context, state);
       },
@@ -84,10 +92,17 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
               BlocBuilder<CreateFoodCubit, CreateFoodState>(
                 builder: (context, state) {
                   return state.createdFood.status.maybeMap(
-                    orElse: () => IconButton(onPressed: () => _onDonePressed(context), icon: const Icon(Icons.check, size: 32)),
+                    orElse: () => IconButton(
+                      onPressed: () => _onDonePressed(context),
+                      icon: const Icon(Icons.check, size: 32),
+                    ),
                     loading: (_) => const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: SizedBox(height: 24, width: 24, child: CircularProgressIndicator()),
+                      child: SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
                   );
                 },
@@ -101,16 +116,26 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
                   return state.validationError;
                 },
                 builder: (context, foodError) {
-                  if (foodError == null && _errorAnimationController.status == AnimationStatus.dismissed) {
+                  if (foodError == null &&
+                      _errorAnimationController.status ==
+                          AnimationStatus.dismissed) {
                     return const SizedBox.shrink();
                   } else {
                     _animateErrorBox(foodError);
                     return Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        top: 12,
+                      ),
                       child: ErrorBox(
                         message: _getErrorMessage(foodError),
                         animationController: _errorAnimationController,
-                        onErrorDismissed: () => _errorAnimationController.reverse().then((value) => context.read<CreateFoodCubit>().hideError()),
+                        onErrorDismissed: () =>
+                            _errorAnimationController.reverse().then(
+                              (value) =>
+                                  context.read<CreateFoodCubit>().hideError(),
+                            ),
                       ),
                     );
                   }
@@ -155,7 +180,8 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     );
   }
 
-  String _getErrorMessage(FoodError? foodError) => foodError == null ? '' : _getGroupErrorMessage(foodError: foodError);
+  String _getErrorMessage(FoodError? foodError) =>
+      foodError == null ? '' : _getGroupErrorMessage(foodError: foodError);
 
   void _animateErrorBox(FoodError? foodError) {
     if (foodError == null) {
@@ -178,7 +204,10 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
           builder: (context) => AdaptiveDialog(
             title: AppStrings.warningTitle,
             message: AppStrings.nutrientAccurateMessage,
-            primaryAction: TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppStrings.cancelLabel)),
+            primaryAction: TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppStrings.cancelLabel),
+            ),
             secondaryAction: TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -194,19 +223,43 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
 
   String _getGroupErrorMessage({required FoodError foodError}) {
     return switch (foodError) {
-      MacrosNotMatchingCaloriesError _ => AppStrings.macrosOrCaloriesError(foodError.expectedCalories),
-      MacrosNotMatchingServingSizeError _ => AppStrings.macrosExceedServingSizeError(foodError.expectedServingSize),
+      MacrosNotMatchingCaloriesError _ => AppStrings.macrosOrCaloriesError(
+        foodError.expectedCalories,
+      ),
+      MacrosNotMatchingServingSizeError _ =>
+        AppStrings.macrosExceedServingSizeError(foodError.expectedServingSize),
       SugarsExceedNetCarbsError _ => AppStrings.sugarsExceedNetCarbsLabel,
-      CholesterolExceedsTotalFatError _ => AppStrings.cholesterolExceedsFatError,
-      CholesterolExceedsMaxPerServingError _ => AppStrings.cholesterolExceedsMaxPerServingError(foodError.expectedCholesterolMg),
-      InsolubleFiberExceedsFiberError _ => AppStrings.insolubleFiberExceedsFiberError,
+      CholesterolExceedsTotalFatError _ =>
+        AppStrings.cholesterolExceedsFatError,
+      CholesterolExceedsMaxPerServingError _ =>
+        AppStrings.cholesterolExceedsMaxPerServingError(
+          foodError.expectedCholesterolMg,
+        ),
+      InsolubleFiberExceedsFiberError _ =>
+        AppStrings.insolubleFiberExceedsFiberError,
       SaltExceedsServingSizeError _ => AppStrings.saltExceedsServingSizeError,
-      IronExceedsMaxIronPerServingError _ => AppStrings.ironExceedsMaxPerServingError(foodError.expectedIronMg),
-      PotassiumExceedsMaxPotassiumPerServingError _ => AppStrings.potassiumExceedsMaxPerServingError(foodError.expectedPotassiumMg),
-      CalciumExceedsMaxCalciumPerServingError _ => AppStrings.calciumExceedsMaxPerServingError(foodError.expectedCalciumMg),
-      VitaminAExceedsMaxPerServingError _ => AppStrings.vitaminAExceedsMaxPerServingError(foodError.expectedVitaminAIU),
-      VitaminCExceedsMaxPerServingError _ => AppStrings.vitaminCExceedsMaxPerServingError(foodError.expectedVitaminCMg),
-      VitaminDExceedsMaxPerServingError _ => AppStrings.vitaminDExceedsMaxPerServingError(foodError.expectedVitaminDIU),
+      IronExceedsMaxIronPerServingError _ =>
+        AppStrings.ironExceedsMaxPerServingError(foodError.expectedIronMg),
+      PotassiumExceedsMaxPotassiumPerServingError _ =>
+        AppStrings.potassiumExceedsMaxPerServingError(
+          foodError.expectedPotassiumMg,
+        ),
+      CalciumExceedsMaxCalciumPerServingError _ =>
+        AppStrings.calciumExceedsMaxPerServingError(
+          foodError.expectedCalciumMg,
+        ),
+      VitaminAExceedsMaxPerServingError _ =>
+        AppStrings.vitaminAExceedsMaxPerServingError(
+          foodError.expectedVitaminAIU,
+        ),
+      VitaminCExceedsMaxPerServingError _ =>
+        AppStrings.vitaminCExceedsMaxPerServingError(
+          foodError.expectedVitaminCMg,
+        ),
+      VitaminDExceedsMaxPerServingError _ =>
+        AppStrings.vitaminDExceedsMaxPerServingError(
+          foodError.expectedVitaminDIU,
+        ),
     };
   }
 
@@ -339,29 +392,36 @@ class _CreateFoodViewState extends State<CreateFoodView> with TickerProviderStat
     vitaminC: _vitaminCController.text,
     vitaminD: _vitaminDController.text,
   );
-  
+
   void _handleCreateFoodResponse(BuildContext context, CreateFoodState state) {
     final createdFood = state.createdFood.data;
-        if (createdFood?.localId == null && createdFood?.createdFoodId == null) {
-          getIt<LoggingService>().info('Could not save food locally neither on the API.');
+    if (createdFood?.localId == null && createdFood?.createdFoodId == null) {
+      getIt<LoggingService>().info(
+        'Could not save food locally neither on the API.',
+      );
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppStrings.errorCreateFood)),
-          );
-        } else {
-          final food = Food.input(foodInput: _foodInput, id: createdFood?.createdFoodId);
-          Navigator.of(context)
-              .pushNamed(Routes.addFood.path,
-                  arguments: AddFoodArguments(
-                    meal: widget.meal,
-                    food: food,
-                    localFoodId: createdFood?.localId,
-                  ))
-              .then((value) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(AppStrings.errorCreateFood)));
+    } else {
+      final food = Food.input(
+        foodInput: _foodInput,
+        id: createdFood?.createdFoodId,
+      );
+      Navigator.of(context)
+          .pushNamed(
+            Routes.addFood.path,
+            arguments: AddFoodArguments(
+              meal: widget.meal,
+              food: food,
+              localFoodId: createdFood?.localId,
+            ),
+          )
+          .then((value) {
             if (context.mounted) {
               Navigator.of(context).pop(value);
             }
           });
-        }
+    }
   }
 }

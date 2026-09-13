@@ -9,7 +9,12 @@ class MacrosPickers extends StatelessWidget {
   final Function(Macro macro, int pickedValue) onValuePicked;
   final bool enabled;
 
-  const MacrosPickers({super.key, required this.macroGoals, required this.onValuePicked, required this.enabled});
+  const MacrosPickers({
+    super.key,
+    required this.macroGoals,
+    required this.onValuePicked,
+    required this.enabled,
+  });
 
   @override
   Widget build(BuildContext context) {

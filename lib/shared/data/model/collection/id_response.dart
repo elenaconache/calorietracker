@@ -9,7 +9,8 @@ class IdResponse {
 
   const IdResponse({required this.id});
 
-  factory IdResponse.fromJson(Map<String, dynamic> json) => _$IdResponseFromJson(json);
+  factory IdResponse.fromJson(Map<String, dynamic> json) =>
+      _$IdResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$IdResponseToJson(this);
 
@@ -17,4 +18,5 @@ class IdResponse {
   String toString() => toJson().toString();
 }
 
-IdResponse deserializeIdResponse(Map<String, dynamic> json) => IdResponse.fromJson(json);
+IdResponse deserializeIdResponse(Map<String, dynamic> json) =>
+    IdResponse.fromJson(json);

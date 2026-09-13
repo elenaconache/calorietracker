@@ -6,7 +6,13 @@ class AppPicker extends StatelessWidget {
   final Function(int value) onValuePicked;
   final bool enabled;
 
-  const AppPicker({super.key, required this.label, required this.initialValue, required this.onValuePicked, required this.enabled});
+  const AppPicker({
+    super.key,
+    required this.label,
+    required this.initialValue,
+    required this.onValuePicked,
+    required this.enabled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +31,13 @@ class AppPicker extends StatelessWidget {
               squeeze: 1.2,
               useMagnifier: true,
               itemExtent: 50,
-              scrollController: FixedExtentScrollController(initialItem: initialValue),
+              scrollController: FixedExtentScrollController(
+                initialItem: initialValue,
+              ),
               onSelectedItemChanged: onValuePicked,
               children: List<Widget>.generate(
                 101,
-                (int index) => Center(
-                  child: Text(index.toString()),
-                ),
+                (int index) => Center(child: Text(index.toString())),
               ),
             ),
           ),

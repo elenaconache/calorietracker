@@ -31,7 +31,8 @@ class DiaryEntryResponse {
     required this.servingQuantity,
   });
 
-  factory DiaryEntryResponse.fromJson(Map<String, dynamic> json) => _$DiaryEntryResponseFromJson(json);
+  factory DiaryEntryResponse.fromJson(Map<String, dynamic> json) =>
+      _$DiaryEntryResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$DiaryEntryResponseToJson(this);
 
@@ -39,11 +40,11 @@ class DiaryEntryResponse {
   String toString() => toJson().toString();
 
   DiaryEntry get diaryEntry => DiaryEntry(
-        collectionId: id,
-        localId: null,
-        food: Food.collection(food: food),
-        date: entryDate,
-        unitId: unit.id,
-        servingQuantity: servingQuantity,
-      );
+    collectionId: id,
+    localId: null,
+    food: Food.collection(food: food),
+    date: entryDate,
+    unitId: unit.id,
+    servingQuantity: servingQuantity,
+  );
 }

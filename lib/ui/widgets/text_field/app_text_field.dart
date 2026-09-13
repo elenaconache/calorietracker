@@ -79,63 +79,72 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: _error,
-        builder: (context, error, child) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              TextFormField(
-                  onChanged: widget.onChanged,
-                  decoration: _getDecoration(context, error),
-                  controller: _textController,
-                  cursorWidth: 1,
-                  textInputAction: widget.action,
-                  onFieldSubmitted: widget.onSubmitted,
-                  keyboardType: widget.inputType,
-                  maxLength: widget.maxLength,
-                  autofocus: widget.autofocus,
-                  enabled: widget.enabled,
-                  validator: (value) => _validateField(value, error),
-                  onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                  autocorrect: false,
-                  style: widget.textColor == null ? null : Theme.of(context).textTheme.bodyLarge?.copyWith(color: widget.textColor)),
-              if (error != null)
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 8, left: 16),
-                    child: Text(
-                      error,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
-                    ))
-            ]));
+      valueListenable: _error,
+      builder: (context, error, child) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            onChanged: widget.onChanged,
+            decoration: _getDecoration(context, error),
+            controller: _textController,
+            cursorWidth: 1,
+            textInputAction: widget.action,
+            onFieldSubmitted: widget.onSubmitted,
+            keyboardType: widget.inputType,
+            maxLength: widget.maxLength,
+            autofocus: widget.autofocus,
+            enabled: widget.enabled,
+            validator: (value) => _validateField(value, error),
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
+            autocorrect: false,
+            style: widget.textColor == null
+                ? null
+                : Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(color: widget.textColor),
+          ),
+          if (error != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8, left: 16),
+              child: Text(
+                error,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
-  InputDecoration _getDecoration(BuildContext context, String? error) => InputDecoration(
+  InputDecoration _getDecoration(BuildContext context, String? error) =>
+      InputDecoration(
         enabledBorder: _defaultBorder,
         disabledBorder: _disabledBorder,
         focusedBorder: _getFocusedBorder(context),
         focusedErrorBorder: error != null
             ? _getErrorBorder(context)
             : FocusScope.of(context).hasFocus
-                ? _getFocusedBorder(context)
-                : _defaultBorder,
+            ? _getFocusedBorder(context)
+            : _defaultBorder,
         errorBorder: error != null ? _getErrorBorder(context) : _defaultBorder,
         contentPadding: _contentPadding,
         prefixIcon: widget.prefixIcon != null
-            ? Icon(
-                widget.prefixIcon,
-                size: 24,
-              )
+            ? Icon(widget.prefixIcon, size: 24)
             : null,
         suffixIcon: widget.suffixIcon != null
             ? IconButton(
-                icon: Icon(
-                  widget.suffixIcon,
-                  size: 24,
-                ),
+                icon: Icon(widget.suffixIcon, size: 24),
                 onPressed: widget.onSuffixIconPressed,
               )
             : null,
         labelText: widget.labelText,
         labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: error != null ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
-            ),
+          color: error != null
+              ? Theme.of(context).colorScheme.error
+              : Theme.of(context).colorScheme.primary,
+        ),
         counterStyle: const TextStyle(height: 0),
         errorText: null,
         errorStyle: const TextStyle(height: 0),
@@ -154,18 +163,22 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   OutlineInputBorder get _defaultBorder => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(_borderRadius),
-        borderSide: const BorderSide(color: Colors.grey, width: 1),
-      );
+    borderRadius: BorderRadius.circular(_borderRadius),
+    borderSide: const BorderSide(color: Colors.grey, width: 1),
+  );
 
   OutlineInputBorder get _disabledBorder => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(_borderRadius),
-        borderSide: const BorderSide(color: Colors.grey, width: 0.5),
-      );
+    borderRadius: BorderRadius.circular(_borderRadius),
+    borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+  );
 
-  OutlineInputBorder _getFocusedBorder(BuildContext context) => OutlineInputBorder(
+  OutlineInputBorder _getFocusedBorder(BuildContext context) =>
+      OutlineInputBorder(
         borderRadius: BorderRadius.circular(_borderRadius),
-        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1),
+        borderSide: BorderSide(
+          color: Theme.of(context).colorScheme.primary,
+          width: 1,
+        ),
       );
 
   void _onTextChange() {
@@ -177,9 +190,13 @@ class _AppTextFieldState extends State<AppTextField> {
 
   bool get _hasError => _error.value != null;
 
-  OutlineInputBorder _getErrorBorder(BuildContext context) => OutlineInputBorder(
+  OutlineInputBorder _getErrorBorder(BuildContext context) =>
+      OutlineInputBorder(
         borderRadius: BorderRadius.circular(_borderRadius),
-        borderSide: BorderSide(color: Theme.of(context).colorScheme.error, width: 2),
+        borderSide: BorderSide(
+          color: Theme.of(context).colorScheme.error,
+          width: 2,
+        ),
       );
 
   String? _validateField(String? value, String? error) {
