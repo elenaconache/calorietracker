@@ -47,3 +47,5 @@ app.*.map.json
 assets/.env
 android/app/.cxx/
 android/build/
+
+ios/build/

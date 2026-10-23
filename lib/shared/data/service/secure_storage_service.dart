@@ -4,7 +4,7 @@ import 'package:calorietracker/shared/di/dependency_injection.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
-const _androidOptions = AndroidOptions(encryptedSharedPreferences: true);
+const _androidOptions = AndroidOptions(migrateOnAlgorithmChange: true);
 const _iosOptions = IOSOptions(
   accessibility: KeychainAccessibility.first_unlock,
 );

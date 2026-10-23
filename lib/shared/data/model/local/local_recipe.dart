@@ -40,7 +40,8 @@ class LocalRecipe {
     this.description,
     this.cookedWeight = 0,
     this.remoteId,
-  }) : state = LocalDataState.pushPending {
+    this.state = LocalDataState.pushPending,
+  })  {
     localIngredients.addAll(ingredients);
   }
 }

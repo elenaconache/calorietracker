@@ -68,40 +68,32 @@ class DataSyncService {
 
       await _uploadFoods(pendingFoods: pendingFoods, username: user.username);
 
-      final pendingEntries = _diaryEntryService.getList(
-        filterPending: true,
-        username: user.username,
-      );
-      _updateLocalDiaryFoods(pendingEntries: pendingEntries);
-      final uploadReadyEntries = _diaryEntryService.getList(
-        filterUploadReady: true,
-        username: user.username,
-      );
-      final uploadedEntriesIds = await _pushDiary(
-        uploadReadyEntries: uploadReadyEntries,
-      );
-      await _markPushedLocalDiary(
-        addedEntries: uploadedEntriesIds,
-        pendingEntries: uploadReadyEntries,
-      );
-
-      await _fetchRemoteDiary(
-        user: user,
-        date: selectedDay,
-        username: user.username,
-      );
+      await _syncDiary(user, selectedDay);
+      await _syncRecipes();
     } else {
+      await _syncRecipes();
       _loggingService.info('Could not pull remote diary, user was null');
-      _userSubscription = _authRepository.selectedUserStream.listen((_) {
+      _userSubscription?.cancel();
+      _userSubscription = _authRepository.selectedUserStream.listen((user) {
+        if (user == null) return;
+        if (!isUploadInProgress) {
+          uploadLocalData();
+        }
         _userSubscription?.cancel();
-        uploadLocalData();
       });
     }
 
-    await _syncRecipes();
-
     _loggingService.info('Local data upload done: ${DateTime.now()}');
     isUploadInProgress = false;
+  }
+
+  Future<void> _syncDiary(User user, DateTime? selectedDay) async {
+    final pendingEntries = _diaryEntryService.getList(filterPending: true, username: user.username);
+    _updateLocalDiaryFoods(pendingEntries: pendingEntries);
+    final uploadReadyEntries = _diaryEntryService.getList(filterUploadReady: true, username: user.username);
+    final uploadedEntriesIds = await _pushDiary(uploadReadyEntries: uploadReadyEntries);
+    await _markPushedLocalDiary(addedEntries: uploadedEntriesIds, pendingEntries: uploadReadyEntries);
+    await _fetchRemoteDiary(user: user, date: selectedDay, username: user.username);
   }
 
   Future<void> _syncRecipes() async {
@@ -117,33 +109,24 @@ class DataSyncService {
 
     for (final recipe in recipes) {
       final ingredientsFoods = _foodRepository.findByLocalIds(
-        localIds: recipe.localIngredients
-            .map((element) => element.localFood.targetId)
-            .toList(),
+        localIds: recipe.localIngredients.map((element) => element.localFood.targetId).toList(),
       );
-      final hasAllRemoteFoods = ingredientsFoods.none(
-        (food) => food.foodId == null,
-      );
+      final hasAllRemoteFoods = ingredientsFoods.none((food) => food.foodId == null);
       if (hasAllRemoteFoods) {
         try {
-          await _collectionApiService.createRecipe(
+          final response = await _collectionApiService.createRecipe(
             body: AddRecipeRequest(
               name: recipe.name,
               description: recipe.description,
               cookedWeight: recipe.cookedWeight,
               ingredients: recipe.localIngredients.map((element) {
-                final food = ingredientsFoods.firstWhere(
-                  (food) => food.id == element.localFood.targetId,
-                );
-                return CollectionRecipeIngredient(
-                  foodId: food.foodId!,
-                  foodUnitId: collectionGramsUnitId,
-                  quantity: element.servingQuantity,
-                );
+                final food = ingredientsFoods.firstWhere((food) => food.id == element.localFood.targetId);
+                return CollectionRecipeIngredient(foodId: food.foodId!, foodUnitId: collectionGramsUnitId, quantity: element.servingQuantity);
               }).toList(),
             ),
           );
           recipe.state = LocalDataState.pushSuccess;
+          recipe.remoteId = response.id;
           _recipeRepository.upsert(recipe);
         } catch (e, st) {
           recipe.state = LocalDataState.pushError;
@@ -163,9 +146,7 @@ class DataSyncService {
     }
   }
 
-  Future<void> _pullRecipesLocally({
-    required List<Recipe> collectionRecipes,
-  }) async {
+  Future<void> _pullRecipesLocally({required List<Recipe> collectionRecipes}) async {
     _upsertLocalRecipes(collectionRecipes);
     await _deleteMissingPushedLocalRecipes(collectionRecipes);
   }
@@ -173,9 +154,7 @@ class DataSyncService {
   void _upsertLocalRecipes(List<Recipe> collectionRecipes) {
     var mappedRecipes = <LocalRecipe>[];
     for (final remoteRecipe in collectionRecipes) {
-      final localRecipe = _recipeRepository.findRecipeByRemoteId(
-        remoteId: remoteRecipe.id,
-      );
+      final localRecipe = _recipeRepository.findRecipeByRemoteId(remoteId: remoteRecipe.id);
 
       mappedRecipes.add(
         LocalRecipe.withParams(
@@ -185,6 +164,7 @@ class DataSyncService {
           localId: localRecipe?.localId ?? 0,
           name: remoteRecipe.name,
           remoteId: remoteRecipe.id,
+          state: LocalDataState.pushSuccess,
         ),
       );
     }
@@ -192,32 +172,21 @@ class DataSyncService {
     _recipeRepository.upsertList(mappedRecipes);
   }
 
-  Future<void> _deleteMissingPushedLocalRecipes(
-    List<Recipe> collectionRecipes,
-  ) async {}
+  Future<void> _deleteMissingPushedLocalRecipes(List<Recipe> collectionRecipes) async {}
 
-  Future<void> _markPushedLocalDiary({
-    required List<LocalDiaryEntry> pendingEntries,
-    required List<AddLocalDataResponse> addedEntries,
-  }) async {
+  Future<void> _markPushedLocalDiary({required List<LocalDiaryEntry> pendingEntries, required List<AddLocalDataResponse> addedEntries}) async {
     if (addedEntries.isEmpty) {
       return;
     }
 
     final addedEntriesSet = Set<AddLocalDataResponse>.from(addedEntries);
     final entriesToUpdate = pendingEntries.where(
-      (pendingDiaryEntry) => addedEntriesSet.any(
-        (addedEntry) => addedEntry.localResourceId == pendingDiaryEntry.localId,
-      ),
+      (pendingDiaryEntry) => addedEntriesSet.any((addedEntry) => addedEntry.localResourceId == pendingDiaryEntry.localId),
     );
     for (final diaryEntry in entriesToUpdate) {
       diaryEntry.pushedEntry = true;
       diaryEntry.errorPushingEntry = false;
-      diaryEntry.entryId = addedEntriesSet
-          .firstWhereOrNull(
-            (addedEntry) => addedEntry.localResourceId == diaryEntry.localId,
-          )
-          ?.resourceId;
+      diaryEntry.entryId = addedEntriesSet.firstWhereOrNull((addedEntry) => addedEntry.localResourceId == diaryEntry.localId)?.resourceId;
     }
 
     _diaryEntryService.upsertList(localEntries: entriesToUpdate.toList());
@@ -233,34 +202,23 @@ class DataSyncService {
       (entry) => (entry.localFood.target?.foodId ?? 0) == 0,
     );
     for (final entry in entriesToUpdate) {
-      entry.localFood.target = _foodRepository.findFoodByLocalId(
-        localId: entry.localFood.target!.id,
-      );
+      entry.localFood.target = _foodRepository.findFoodByLocalId(localId: entry.localFood.target!.id);
     }
 
     _diaryEntryService.upsertList(localEntries: entriesToUpdate.toList());
   }
 
-  Future<void> _uploadFoods({
-    required List<LocalFood> pendingFoods,
-    required String username,
-  }) async {
+  Future<void> _uploadFoods({required List<LocalFood> pendingFoods, required String username}) async {
     if (pendingFoods.isEmpty) {
       return;
     }
 
-    final requestFoods = pendingFoods
-        .map((localFood) => localFood.addLocalFoodRequest)
-        .toList();
+    final requestFoods = pendingFoods.map((localFood) => localFood.addLocalFoodRequest).toList();
     try {
-      final addedFoods = await _collectionApiService.createFoods(
-        localFoods: requestFoods,
-      );
+      final addedFoods = await _collectionApiService.createFoods(localFoods: requestFoods);
       if (addedFoods.isNotEmpty) {
         for (final food in addedFoods) {
-          final foundFood = _foodRepository.findFoodByLocalId(
-            localId: food.localResourceId,
-          );
+          final foundFood = _foodRepository.findFoodByLocalId(localId: food.localResourceId);
           if (foundFood == null) {
             _loggingService.info('Added food not found in local foods $food');
             continue;
@@ -273,30 +231,17 @@ class DataSyncService {
       }
     } catch (error, stackTrace) {
       if (_isPartiallyInvalid(error)) {
-        _loggingService.info(
-          'Invalid food error while calling foods bulk insert API ${(error as DioException).response?.data}',
-        );
+        _loggingService.info('Invalid food error while calling foods bulk insert API ${(error as DioException).response?.data}');
         final data = error.response?.data;
         final existingResourceErrors = <CreateFoodError>[];
         final localDataErrors = <AddLocalDataError>[];
         if (data is Map<String, dynamic>) {
           final errorResponse = BaseCollectionErrorResponse.fromJson(data);
           for (final error in errorResponse.errors) {
-            error.maybeWhen(
-              orElse: () {},
-              createFood: (e) => existingResourceErrors.add(e),
-              addLocalData: (e) => localDataErrors.add(e),
-            );
+            error.maybeWhen(orElse: () {}, createFood: (e) => existingResourceErrors.add(e), addLocalData: (e) => localDataErrors.add(e));
           }
-          _upsertExistingPendingFoods(
-            pendingFoods: pendingFoods,
-            errors: existingResourceErrors,
-          );
-          _markInvalidLocalFoods(
-            pendingFoods: pendingFoods,
-            errors: localDataErrors,
-            username: username,
-          );
+          _upsertExistingPendingFoods(pendingFoods: pendingFoods, errors: existingResourceErrors);
+          _markInvalidLocalFoods(pendingFoods: pendingFoods, errors: localDataErrors, username: username);
           await _retryUploadValidFoods(errorResponse, pendingFoods);
         }
       } else {
@@ -305,49 +250,32 @@ class DataSyncService {
     }
   }
 
-  void _upsertExistingPendingFoods({
-    required List<LocalFood> pendingFoods,
-    required List<CreateFoodError> errors,
-  }) {
+  void _upsertExistingPendingFoods({required List<LocalFood> pendingFoods, required List<CreateFoodError> errors}) {
     if (errors.isEmpty) {
       return;
     }
 
-    final foodsToUpdate = pendingFoods.where(
-      (pendingFood) => errors.any((error) => error.localId == pendingFood.id),
-    );
+    final foodsToUpdate = pendingFoods.where((pendingFood) => errors.any((error) => error.localId == pendingFood.id));
     for (final food in foodsToUpdate) {
-      food.foodId = errors
-          .firstWhere((element) => element.localId == food.id)
-          .resource
-          .id;
+      food.foodId = errors.firstWhere((element) => element.localId == food.id).resource.id;
       food.pushed = true;
     }
     _foodRepository.upsertList(foodsToUpdate.toList());
   }
 
-  Future<List<AddLocalDataResponse>> _pushDiary({
-    required List<LocalDiaryEntry> uploadReadyEntries,
-  }) async {
+  Future<List<AddLocalDataResponse>> _pushDiary({required List<LocalDiaryEntry> uploadReadyEntries}) async {
     if (uploadReadyEntries.isEmpty) {
       return [];
     }
 
-    final createdEntriesIds = await _createRemoteDiaryEntries(
-      uploadReadyEntries,
-    );
+    final createdEntriesIds = await _createRemoteDiaryEntries(uploadReadyEntries);
     await _deleteRemoteDiaryEntries(uploadReadyEntries);
 
     return createdEntriesIds;
   }
 
-  Future<void> _deleteRemoteDiaryEntries(
-    List<LocalDiaryEntry> uploadReadyEntries,
-  ) async {
-    final entriesToDelete = uploadReadyEntries
-        .where((entry) => entry.deletedEntry && entry.entryId != null)
-        .map((entry) => entry.entryId!)
-        .toList();
+  Future<void> _deleteRemoteDiaryEntries(List<LocalDiaryEntry> uploadReadyEntries) async {
+    final entriesToDelete = uploadReadyEntries.where((entry) => entry.deletedEntry && entry.entryId != null).map((entry) => entry.entryId!).toList();
     if (entriesToDelete.isEmpty) {
       return;
     }
@@ -355,10 +283,7 @@ class DataSyncService {
         .deleteDiaryEntries(ids: entriesToDelete)
         .then((_) async {
           _diaryEntryService.deleteList(
-            uploadReadyEntries
-                .where((entry) => entry.deletedEntry && entry.entryId != null)
-                .map((entry) => entry.localId)
-                .toList(),
+            uploadReadyEntries.where((entry) => entry.deletedEntry && entry.entryId != null).map((entry) => entry.localId).toList(),
           );
         })
         .catchError((error, stackTrace) {
@@ -366,9 +291,7 @@ class DataSyncService {
         });
   }
 
-  Future<List<AddLocalDataResponse>> _createRemoteDiaryEntries(
-    List<LocalDiaryEntry> uploadReadyEntries,
-  ) async {
+  Future<List<AddLocalDataResponse>> _createRemoteDiaryEntries(List<LocalDiaryEntry> uploadReadyEntries) async {
     final entriesToCreate = uploadReadyEntries
         .whereNot((entry) => entry.deletedEntry)
         .map((localDiaryEntry) => localDiaryEntry.addLocalDiaryEntryRequest)
@@ -376,88 +299,56 @@ class DataSyncService {
     if (entriesToCreate.nonNulls.isEmpty) {
       return [];
     }
-    final createdEntriesIds = await (_collectionApiService
-        .createDiaryEntries(
-          localDiaryEntries: entriesToCreate.nonNulls.toList(),
-        )
-        .catchError((error, stackTrace) {
-          if (_isPartiallyInvalid(error)) {
-            _loggingService.info(
-              'Conflict while calling diary bulk insert API. Response: ${error.response?.data}',
-            );
-            final errorResponse = AddLocalDataErrorResponse.fromJson(
-              error.response?.data,
-            );
-            _markInvalidLocalDiaryEntries(
-              pendingEntries: uploadReadyEntries,
-              errors: errorResponse.errors ?? [],
-            );
-            return _retryUploadValidDiaryEntries(
-              errorResponse,
-              uploadReadyEntries,
-            );
-          } else {
-            _loggingService.handle(error, stackTrace);
-            return <AddLocalDataResponse>[];
-          }
-        }));
+    final createdEntriesIds = await (_collectionApiService.createDiaryEntries(localDiaryEntries: entriesToCreate.nonNulls.toList()).catchError((
+      error,
+      stackTrace,
+    ) {
+      if (_isPartiallyInvalid(error)) {
+        _loggingService.info('Conflict while calling diary bulk insert API. Response: ${error.response?.data}');
+        final errorResponse = AddLocalDataErrorResponse.fromJson(error.response?.data);
+        _markInvalidLocalDiaryEntries(pendingEntries: uploadReadyEntries, errors: errorResponse.errors ?? []);
+        return _retryUploadValidDiaryEntries(errorResponse, uploadReadyEntries);
+      } else {
+        _loggingService.handle(error, stackTrace);
+        return <AddLocalDataResponse>[];
+      }
+    }));
     return createdEntriesIds;
   }
 
   bool _isPartiallyInvalid(error) =>
-      error is DioException &&
-      [
-        HttpStatus.conflict,
-        HttpStatus.badRequest,
-        HttpStatus.notFound,
-      ].contains(error.response?.statusCode);
+      error is DioException && [HttpStatus.conflict, HttpStatus.badRequest, HttpStatus.notFound].contains(error.response?.statusCode);
 
-  Future<void> _retryUploadValidFoods(
-    BaseCollectionErrorResponse errorResponse,
-    List<LocalFood> pendingFoods,
-  ) async {
+  Future<void> _retryUploadValidFoods(BaseCollectionErrorResponse errorResponse, List<LocalFood> pendingFoods) async {
     final invalidFoods = Set<BaseCollectionError>.from(errorResponse.errors);
     final foodsToRetry = pendingFoods.where(
       (pendingFood) => !invalidFoods.any(
         (invalidFood) =>
-            invalidFood is AddLocalDataApiError &&
-                invalidFood.error.localId == pendingFood.id ||
-            invalidFood is CreateFoodApiError &&
-                invalidFood.error.localId == pendingFood.id,
+            invalidFood is AddLocalDataApiError && invalidFood.error.localId == pendingFood.id ||
+            invalidFood is CreateFoodApiError && invalidFood.error.localId == pendingFood.id,
       ),
     );
     if (foodsToRetry.isEmpty) {
       return;
     }
 
-    _loggingService.info(
-      'Foods to retry: ${foodsToRetry.map((e) => '${e.name} ${e.nutrition.calories}cal per 100g')}',
-    );
-    final retryRequestFoods = foodsToRetry
-        .map((localFood) => localFood.addLocalFoodRequest)
-        .toList();
+    _loggingService.info('Foods to retry: ${foodsToRetry.map((e) => '${e.name} ${e.nutrition.calories}cal per 100g')}');
+    final retryRequestFoods = foodsToRetry.map((localFood) => localFood.addLocalFoodRequest).toList();
 
-    final addedFoods =
-        await (_collectionApiService.createFoods(localFoods: retryRequestFoods)
-          ..catchError((error, stackTrace) {
-            _loggingService.handle(error, stackTrace);
-            return <AddLocalDataResponse>[];
-          }));
+    final addedFoods = await (_collectionApiService.createFoods(localFoods: retryRequestFoods)
+      ..catchError((error, stackTrace) {
+        _loggingService.handle(error, stackTrace);
+        return <AddLocalDataResponse>[];
+      }));
 
     if (addedFoods.isEmpty) {
       return;
     }
-    final foodsToUpdate = pendingFoods.where(
-      (pendingFood) => addedFoods.any(
-        (addedFood) => addedFood.localResourceId == pendingFood.id,
-      ),
-    );
+    final foodsToUpdate = pendingFoods.where((pendingFood) => addedFoods.any((addedFood) => addedFood.localResourceId == pendingFood.id));
     for (final food in foodsToUpdate) {
       food.pushed = true;
       food.errorPushing = false;
-      food.foodId = addedFoods
-          .firstWhereOrNull((addedFood) => addedFood.localResourceId == food.id)
-          ?.resourceId;
+      food.foodId = addedFoods.firstWhereOrNull((addedFood) => addedFood.localResourceId == food.id)?.resourceId;
     }
 
     _foodRepository.upsertList(foodsToUpdate.toList());
@@ -467,60 +358,38 @@ class DataSyncService {
     AddLocalDataErrorResponse errorResponse,
     List<LocalDiaryEntry> pendingEntries,
   ) async {
-    final invalidEntries = Set<AddLocalDataError>.from(
-      errorResponse.errors ?? <AddLocalDataError>[],
-    );
+    final invalidEntries = Set<AddLocalDataError>.from(errorResponse.errors ?? <AddLocalDataError>[]);
     final entriesToRetry = pendingEntries.where(
-      (pendingEntry) => !invalidEntries.any(
-        (invalidEntry) => invalidEntry.localId == pendingEntry.localId,
-      ),
+      (pendingEntry) => !invalidEntries.any((invalidEntry) => invalidEntry.localId == pendingEntry.localId),
     );
-    final retryRequestEntries = entriesToRetry
-        .map((localDiaryEntry) => localDiaryEntry.addLocalDiaryEntryRequest)
-        .toList();
+    final retryRequestEntries = entriesToRetry.map((localDiaryEntry) => localDiaryEntry.addLocalDiaryEntryRequest).toList();
     if (retryRequestEntries.nonNulls.isEmpty) {
       return [];
     }
 
-    final addedEntries =
-        await (_collectionApiService.createDiaryEntries(
-          localDiaryEntries: retryRequestEntries.nonNulls.toList(),
-        )..catchError((error, stackTrace) {
-          _loggingService.handle(error, stackTrace);
-          return <AddLocalDataResponse>[];
-        }));
+    final addedEntries = await (_collectionApiService.createDiaryEntries(localDiaryEntries: retryRequestEntries.nonNulls.toList())
+      ..catchError((error, stackTrace) {
+        _loggingService.handle(error, stackTrace);
+        return <AddLocalDataResponse>[];
+      }));
     return addedEntries;
   }
 
-  void _markInvalidLocalFoods({
-    required List<LocalFood> pendingFoods,
-    required List<AddLocalDataError> errors,
-    required String username,
-  }) {
+  void _markInvalidLocalFoods({required List<LocalFood> pendingFoods, required List<AddLocalDataError> errors, required String username}) {
     if (errors.isEmpty) {
       return;
     }
 
     final errorFoodsSet = Set<AddLocalDataError>.from(errors);
-    final foodsToUpdate = pendingFoods.where(
-      (pendingFood) =>
-          errorFoodsSet.any((error) => error.localId == pendingFood.id),
-    );
+    final foodsToUpdate = pendingFoods.where((pendingFood) => errorFoodsSet.any((error) => error.localId == pendingFood.id));
     for (final food in foodsToUpdate) {
       food.errorPushing = true;
     }
     _foodRepository.upsertList(foodsToUpdate.toList());
 
-    final pendingDiaryEntries = _diaryEntryService.getList(
-      filterPending: true,
-      username: username,
-    );
+    final pendingDiaryEntries = _diaryEntryService.getList(filterPending: true, username: username);
     final diaryEntriesWithFoodError = pendingDiaryEntries
-        .where(
-          (entry) => foodsToUpdate.any(
-            (localFood) => entry.localFood.targetId == localFood.id,
-          ),
-        )
+        .where((entry) => foodsToUpdate.any((localFood) => entry.localFood.targetId == localFood.id))
         .toList();
     for (final entry in diaryEntriesWithFoodError) {
       entry.errorPushingEntry = true;
@@ -528,20 +397,13 @@ class DataSyncService {
     _diaryEntryService.upsertList(localEntries: diaryEntriesWithFoodError);
   }
 
-  Future<void> _markInvalidLocalDiaryEntries({
-    required List<LocalDiaryEntry> pendingEntries,
-    required List<AddLocalDataError> errors,
-  }) async {
+  Future<void> _markInvalidLocalDiaryEntries({required List<LocalDiaryEntry> pendingEntries, required List<AddLocalDataError> errors}) async {
     if (errors.isEmpty) {
       return;
     }
 
     final errorDiaryEntries = Set<AddLocalDataError>.from(errors);
-    final entriesToUpdate = pendingEntries.where(
-      (pendingEntry) => errorDiaryEntries.any(
-        (error) => error.localId == pendingEntry.localId,
-      ),
-    );
+    final entriesToUpdate = pendingEntries.where((pendingEntry) => errorDiaryEntries.any((error) => error.localId == pendingEntry.localId));
     for (final entry in entriesToUpdate) {
       entry.errorPushingEntry = true;
     }
@@ -549,27 +411,13 @@ class DataSyncService {
     _diaryEntryService.upsertList(localEntries: entriesToUpdate.toList());
   }
 
-  Future<void> _fetchRemoteDiary({
-    required User user,
-    DateTime? date,
-    required String username,
-  }) async {
+  Future<void> _fetchRemoteDiary({required User user, DateTime? date, required String username}) async {
     try {
       // TODO: check if it makes sense to have a repository handling date format and fetch from API
       final day = (date ?? DateTime.now());
-      final formattedDay = _dateFormattingService.format(
-        dateTime: day.toString(),
-        format: collectionApiDateFormat,
-      );
-      final diary = await _collectionApiService.getDiaryEntries(
-        username: user.username,
-        date: formattedDay,
-      );
-      await _pullCollectionLocally(
-        collectionDiary: diary,
-        diaryDate: date ?? DateTime.now(),
-        username: user.username,
-      );
+      final formattedDay = _dateFormattingService.format(dateTime: day.toString(), format: collectionApiDateFormat);
+      final diary = await _collectionApiService.getDiaryEntries(username: user.username, date: formattedDay);
+      await _pullCollectionLocally(collectionDiary: diary, diaryDate: date ?? DateTime.now(), username: user.username);
     } catch (error, stackTrace) {
       _loggingService.handle(error, stackTrace);
     }
@@ -580,16 +428,10 @@ class DataSyncService {
     required DateTime diaryDate,
     required String username,
   }) async {
-    var remoteDiary = collectionDiary
-        .map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList)
-        .toList();
+    var remoteDiary = collectionDiary.map((mealEntriesResponse) => mealEntriesResponse.mealEntriesList).toList();
 
     _upsertLocalDiary(remoteDiary, username);
-    await _deleteMissingPushedLocalDiaryEntries(
-      remoteDiary,
-      diaryDate,
-      username,
-    );
+    await _deleteMissingPushedLocalDiaryEntries(remoteDiary, diaryDate, username);
   }
 
   void _upsertLocalDiary(List<MealEntriesList> remoteDiary, String username) {
@@ -607,34 +449,19 @@ class DataSyncService {
       }
     }
 
-    final existingLocalFoodsMatchingPulled = _foodRepository.findByRemoteIds(
-      remoteIds: foodsToUpsert.map((e) => e.foodId!).toList(),
-    );
+    final existingLocalFoodsMatchingPulled = _foodRepository.findByRemoteIds(remoteIds: foodsToUpsert.map((e) => e.foodId!).toList());
     final mappedToUpsertFoods = foodsToUpsert.map((food) {
-      return food
-        ..id =
-            existingLocalFoodsMatchingPulled
-                .firstWhereOrNull((local) => local.foodId == food.foodId)
-                ?.id ??
-            0;
+      return food..id = existingLocalFoodsMatchingPulled.firstWhereOrNull((local) => local.foodId == food.foodId)?.id ?? 0;
     }).toList();
     _foodRepository.upsertList(mappedToUpsertFoods);
-    final updatedLocalFoods = _foodRepository.findByRemoteIds(
-      remoteIds: foodsToUpsert.map((e) => e.foodId!).toList(),
-    );
+    final updatedLocalFoods = _foodRepository.findByRemoteIds(remoteIds: foodsToUpsert.map((e) => e.foodId!).toList());
 
     for (final remoteMealEntriesList in remoteDiary) {
       for (final entry in remoteMealEntriesList.diaryEntries) {
-        final localEntry = _diaryEntryService.getSingle(
-          collectionId: entry.collectionId,
-        );
-        final localFoodId = updatedLocalFoods
-            .firstWhereOrNull((element) => element.foodId == entry.food.id)
-            ?.id;
+        final localEntry = _diaryEntryService.getSingle(collectionId: entry.collectionId);
+        final localFoodId = updatedLocalFoods.firstWhereOrNull((element) => element.foodId == entry.food.id)?.id;
         if (localFoodId == null) {
-          _loggingService.info(
-            'Missing local food, skipping diary entry $entry',
-          );
+          _loggingService.info('Missing local food, skipping diary entry $entry');
           continue;
         }
         mappedEntries.add(
@@ -644,10 +471,7 @@ class DataSyncService {
             pushedEntry: true,
             servingQuantity: entry.servingQuantity,
             unitId: entry.unitId,
-            entryDate: _dateFormattingService.parse(
-              formattedDate: entry.date,
-              format: collectionApiDateFormat,
-            ),
+            entryDate: _dateFormattingService.parse(formattedDate: entry.date, format: collectionApiDateFormat),
             localFoodId: localFoodId,
             username: username,
             deletedEntry: false,
@@ -661,28 +485,16 @@ class DataSyncService {
     }
   }
 
-  Future<void> _deleteMissingPushedLocalDiaryEntries(
-    List<MealEntriesList> remoteDiary,
-    DateTime diaryDate,
-    String username,
-  ) async {
-    final pushedLocalEntries = _diaryEntryService.getList(
-      filterPushed: true,
-      excludeDeleted: true,
-      username: username,
-    );
-    final remoteEntries = remoteDiary
-        .expand((mealEntriesList) => mealEntriesList.diaryEntries)
-        .toList();
+  Future<void> _deleteMissingPushedLocalDiaryEntries(List<MealEntriesList> remoteDiary, DateTime diaryDate, String username) async {
+    final pushedLocalEntries = _diaryEntryService.getList(filterPushed: true, excludeDeleted: true, username: username);
+    final remoteEntries = remoteDiary.expand((mealEntriesList) => mealEntriesList.diaryEntries).toList();
     var discardedDiaryEntriesIds = <int>[];
 
     for (final localEntry in pushedLocalEntries) {
       if (localEntry.entryDate.day == diaryDate.day &&
           localEntry.entryDate.month == diaryDate.month &&
           localEntry.entryDate.year == diaryDate.year &&
-          remoteEntries.none(
-            (entry) => entry.collectionId == localEntry.entryId,
-          )) {
+          remoteEntries.none((entry) => entry.collectionId == localEntry.entryId)) {
         // Local diary entry found for the same date that was fetched from remote
         // And no remote entry matches the id
         discardedDiaryEntriesIds.add(localEntry.localId);

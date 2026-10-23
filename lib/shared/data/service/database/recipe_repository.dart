@@ -18,36 +18,27 @@ class RecipeRepository {
   }
 
   Stream<List<LocalRecipe>> watchRecipes() {
-    return _recipeBox
-        .query()
-        .watch(triggerImmediately: true)
-        .map((event) => event.find());
+    return _recipeBox.query(LocalRecipe_.dbState.notEquals(LocalDataState.deletePending.name)).watch(triggerImmediately: true).map((event) => event.find());
   }
 
   LocalRecipe? findRecipeByLocalId({required localId}) {
-    final query = _recipeBox
-        .query(LocalRecipe_.localId.equals(localId))
-        .build();
+    final query = _recipeBox.query(LocalRecipe_.localId.equals(localId)).build();
     final result = query.findFirst();
     query.close();
     return result;
   }
 
   List<LocalRecipe> getPendingRecipes() {
-    final query = _recipeBox
-        .query(LocalRecipe_.dbState.equals(LocalDataState.pushPending.name))
-        .build();
+    final builder = _recipeBox.query(LocalRecipe_.dbState.equals(LocalDataState.pushPending.name).and(LocalRecipe_.remoteId.isNull()));
+    builder.linkMany(LocalRecipe_.localIngredients);
+    final query = builder.build();
     final result = query.find();
     query.close();
-    return result
-        .where((element) => element.localIngredients.isNotEmpty)
-        .toList();
+    return result.where((element) => element.localIngredients.isNotEmpty).toList();
   }
 
   LocalRecipe? findRecipeByRemoteId({required remoteId}) {
-    final query = _recipeBox
-        .query(LocalRecipe_.remoteId.equals(remoteId))
-        .build();
+    final query = _recipeBox.query(LocalRecipe_.remoteId.equals(remoteId)).build();
     final result = query.findFirst();
     query.close();
     return result;

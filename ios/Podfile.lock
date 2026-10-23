@@ -1,7 +1,5 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_secure_storage (6.0.0):
-    - Flutter
   - ObjectBox (5.3.0-sync)
   - objectbox_sync_flutter_libs (0.0.1):
     - Flutter
@@ -9,7 +7,6 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - objectbox_sync_flutter_libs (from `.symlinks/plugins/objectbox_sync_flutter_libs/ios`)
 
 SPEC REPOS:
@@ -19,17 +16,14 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_secure_storage:
-    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   objectbox_sync_flutter_libs:
     :path: ".symlinks/plugins/objectbox_sync_flutter_libs/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   ObjectBox: e382976bf848a94a8e94d49d18d28521fd014263
   objectbox_sync_flutter_libs: 6b0abad330f8acd37f8eef30e1b2811a06dcdbfa
 
 PODFILE CHECKSUM: cdddfa9a860416e122205d962ea41bf3029a8aaa
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0
