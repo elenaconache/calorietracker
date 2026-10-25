@@ -47,7 +47,8 @@ class DiaryLoggingService {
     final dayDiary = _diaryEntryRepository
         .getDisplayDiaryEntries(date: copiedDate, username: username)
         .mealEntriesList;
-    final mealDiary = dayDiary
+
+    final mealDiary = meal == null ? dayDiary :  dayDiary
         .where((mealEntriesList) => mealEntriesList.meal == meal)
         .toList();
 

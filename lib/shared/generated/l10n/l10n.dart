@@ -1490,6 +1490,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Diary entries copied successfully!`
+  String get successCopiedDiary {
+    return Intl.message(
+      'Diary entries copied successfully!',
+      name: 'successCopiedDiary',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

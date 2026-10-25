@@ -62,11 +62,15 @@ class DataSyncService {
     }
     isUploadInProgress = true;
     _loggingService.info('Local data upload started: ${DateTime.now()}');
+
+    final pendingFoods = _foodRepository.readPendingFoods();
+    final foodErrors = await _uploadFoods(pendingFoods: pendingFoods);
+
     final user = _authRepository.selectedUser;
     if (user != null) {
-      final pendingFoods = _foodRepository.readPendingFoods();
-
-      await _uploadFoods(pendingFoods: pendingFoods, username: user.username);
+      if (foodErrors?.isNotEmpty ?? false) {
+        _markInvalidLocalFoods(pendingFoods: pendingFoods, errors: foodErrors!, username: user.username);
+      }
 
       await _syncDiary(user, selectedDay);
       await _syncRecipes();
@@ -208,9 +212,9 @@ class DataSyncService {
     _diaryEntryService.upsertList(localEntries: entriesToUpdate.toList());
   }
 
-  Future<void> _uploadFoods({required List<LocalFood> pendingFoods, required String username}) async {
+  Future<List<AddLocalDataError>?> _uploadFoods({required List<LocalFood> pendingFoods}) async {
     if (pendingFoods.isEmpty) {
-      return;
+      return null;
     }
 
     final requestFoods = pendingFoods.map((localFood) => localFood.addLocalFoodRequest).toList();
@@ -241,13 +245,14 @@ class DataSyncService {
             error.maybeWhen(orElse: () {}, createFood: (e) => existingResourceErrors.add(e), addLocalData: (e) => localDataErrors.add(e));
           }
           _upsertExistingPendingFoods(pendingFoods: pendingFoods, errors: existingResourceErrors);
-          _markInvalidLocalFoods(pendingFoods: pendingFoods, errors: localDataErrors, username: username);
           await _retryUploadValidFoods(errorResponse, pendingFoods);
+          return localDataErrors;
         }
       } else {
         _loggingService.handle(error, stackTrace);
       }
     }
+    return null;
   }
 
   void _upsertExistingPendingFoods({required List<LocalFood> pendingFoods, required List<CreateFoodError> errors}) {

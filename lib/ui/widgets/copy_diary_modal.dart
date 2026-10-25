@@ -23,30 +23,15 @@ class CopyDiaryModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 24, width: double.infinity),
-          Text(
-            AppStrings.copyDiaryTitle,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+          Text(AppStrings.copyDiaryTitle, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 24),
-          TextButton(
-            onPressed: () => _copyFromPreviousDay(context),
-            child: Text(AppStrings.fromPreviousDayLabel.toUpperCase()),
-          ),
+          TextButton(onPressed: () => _copyFromPreviousDay(context), child: Text(AppStrings.fromPreviousDayLabel.toUpperCase())),
           const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => _selectDate(context, true),
-            child: Text(AppStrings.fromAnotherDayLabel.toUpperCase()),
-          ),
+          TextButton(onPressed: () => _selectDate(context, true), child: Text(AppStrings.fromAnotherDayLabel.toUpperCase())),
           const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => _copyToToday(context),
-            child: Text(AppStrings.toTodayLabel.toUpperCase()),
-          ),
+          TextButton(onPressed: () => _copyToToday(context), child: Text(AppStrings.toTodayLabel.toUpperCase())),
           const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => _selectDate(context, false),
-            child: Text(AppStrings.toAnotherDayLabel.toUpperCase()),
-          ),
+          TextButton(onPressed: () => _selectDate(context, false), child: Text(AppStrings.toAnotherDayLabel.toUpperCase())),
           const SizedBox(height: 16),
         ],
       ),
@@ -57,22 +42,10 @@ class CopyDiaryModal extends StatelessWidget {
     final selectedDay = context.read<DiaryBloc>().state.selectedDay;
     final previousDay = selectedDay.subtract(const Duration(days: 1));
     unawaited(
-      getIt<DiaryLoggingService>()
-          .copyDiary(
-            meal: meal,
-            fromDate: previousDay,
-            selectedDay: selectedDay,
-          )
-          .then((copied) {
-            if (!copied) {
-              // TODO: Use Scaffold messenger set in Material App instead
-              ScaffoldMessenger.of(
-                rootNavigatorKey.currentContext!,
-              ).showSnackBar(
-                SnackBar(content: Text(AppStrings.copyDiaryError)),
-              );
-            }
-          }),
+      getIt<DiaryLoggingService>().copyDiary(meal: meal, fromDate: previousDay, selectedDay: selectedDay).then((copied) {
+        // TODO: Use Scaffold messenger set in Material App instead
+        _handleCopyDiaryEntriesResult(copied);
+      }),
     );
     Navigator.of(rootNavigatorKey.currentContext!).pop();
   }
@@ -80,21 +53,9 @@ class CopyDiaryModal extends StatelessWidget {
   void _copyToToday(BuildContext context) {
     final selectedDay = context.read<DiaryBloc>().state.selectedDay;
     unawaited(
-      getIt<DiaryLoggingService>()
-          .copyDiary(
-            meal: meal,
-            toDate: DateTime.now(),
-            selectedDay: selectedDay,
-          )
-          .then((copied) {
-            if (!copied) {
-              ScaffoldMessenger.of(
-                rootNavigatorKey.currentContext!,
-              ).showSnackBar(
-                SnackBar(content: Text(AppStrings.copyDiaryError)),
-              );
-            }
-          }),
+      getIt<DiaryLoggingService>().copyDiary(meal: meal, toDate: DateTime.now(), selectedDay: selectedDay).then((copied) {
+        _handleCopyDiaryEntriesResult(copied);
+      }),
     );
     Navigator.of(rootNavigatorKey.currentContext!).pop();
   }
@@ -118,16 +79,18 @@ class CopyDiaryModal extends StatelessWidget {
                 selectedDay: selectedDiaryDay,
               )
               .then((copied) {
-                if (!copied) {
-                  ScaffoldMessenger.of(
-                    rootNavigatorKey.currentContext!,
-                  ).showSnackBar(
-                    SnackBar(content: Text(AppStrings.copyDiaryError)),
-                  );
-                }
+                _handleCopyDiaryEntriesResult(copied);
               }),
         );
       }
     });
+  }
+
+  void _handleCopyDiaryEntriesResult(bool copied) {
+    if (!copied) {
+      ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(SnackBar(content: Text(AppStrings.copyDiaryError)));
+    } else {
+      ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(SnackBar(content: Text(AppStrings.successCopiedDiary)));
+    }
   }
 }

@@ -235,6 +235,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Serving size (g)"),
         "snacksLabel": MessageLookupByLibrary.simpleMessage("Snacks"),
         "sodiumLabel": MessageLookupByLibrary.simpleMessage("Sodium"),
+        "successCopiedDiary": MessageLookupByLibrary.simpleMessage(
+            "Diary entries copied successfully!"),
         "sugarGramsLabel": MessageLookupByLibrary.simpleMessage("Sugar (g)"),
         "sugarLabel": MessageLookupByLibrary.simpleMessage("Sugar"),
         "sugarsExceedNetCarbsError": MessageLookupByLibrary.simpleMessage(
